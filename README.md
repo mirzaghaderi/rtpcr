@@ -16,19 +16,20 @@ Fold change = 2^(-ΔΔCt)
 = 2^[-(ΔCt_Tr - ΔCt_Co)]
 
 
-where Tr is Treatment and Co is Control conditions, respectively. This method assumes that both the target and reference genes are amplified with efficiencies close to 100%, allowing for the relative quantification of gene expression levels¹.
+where Tr is Treatment and Co is Control conditions, respectively. This method assumes that both the target and reference genes are amplified with efficiencies close to 100%, allowing for the relative quantification of gene expression levels.
 
-On the other hand, the Pfaffl method offers a more flexible approach by accounting for differences in amplification efficiencies between the target and reference genes. This method adjusts the calculated expression ratio by incorporating the specific amplification efficiencies, thus providing a more accurate representation of the relative gene expression levels².
+On the other hand, the Pfaffl method offers a more flexible approach by accounting for differences in amplification efficiencies between the target and reference genes. This method adjusts the calculated expression ratio by incorporating the specific amplification efficiencies, thus providing a more accurate representation of the relative gene expression levels.
 
-$$\text{Fold change} = \frac{E^{-(C_{t_{\text{Tr}}}-C_{t_{\text{Co}}})_{target}}}
-{E^{-(C_{t_{\text{Tr}}}-C_{t_{\text{Co}}})_{ref}}}$$
+Fold change = 
+$$E^(-(Ct_Tr-Ct_Co)_target) / E^(-(Ct_Tr-Ct_Co)_ref)$$
 
 # A generalized calculation method
-the iqpcr packager  calculates wDCt values for each experimental conditions based on the efficiency and Ct values as described by Ganger et al. (2017).
+the iqpcr packager  calculates wDCt values for each experimental condition based on the efficiency and Ct values as described by Ganger et al. (2017).
 
 
 $$w\Delta Ct =\log_{10}(E_{target}).Ct_{target}-\log_{10}(E_{ref}).Ct_{ref}$$
-if wDCt values is calculated using the efficiencies (E) values, calculations matches the formula of Pfaffl. if 2 (100% amplification efficiency) is used, calculations matches the formula of Livak. Analysis of variance (ANOVA) and ttest (paired or unpaired) is done on the wDCt values. Subsequently, mean of wCt over each condition along with the resulting statistics (e.g. confidence limits for the means) is converted by a power of ten conversion for presentation. For example relative expression is calculated as:
+
+if wDCt values are calculated using the efficiencies (E) values, calculations match the formula of Pfaffl. if 2 (100% amplification efficiency) is used, calculations match the formula of Livak. Analysis of variance (ANOVA) and t-test (paired or unpaired) is done on the wDCt values. Subsequently, the mean of wCt over each condition along with the resulting statistics (e.g. confidence limits for the means) is converted by a power of ten conversion for presentation. For example, relative expression is calculated as:
 $$\text{Relative Expression} = 10^{-\overline{w\Delta Ct}}$$
 When there are only two conditions (Tr and Co), fold change can also be calculated:
 $$\text{Fold Change}=10^{-(\overline{w\Delta Ct}_{\text{Tr}}-{\overline{w\Delta Ct}_{\text{Co}}})}$$

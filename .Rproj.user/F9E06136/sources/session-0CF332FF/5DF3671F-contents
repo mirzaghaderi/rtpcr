@@ -85,7 +85,7 @@ library(iqpcr)
 The development version of the `iqpcr` package can be obtained through: 
 ```{r eval= F, include= T, message=FALSE, warning = FALSE}
 # install `iqpcr` from github (under development)
-devtools::install_github('Mirzaghaderi/iqpcr')
+devtools::install_github("mirzaghaderi/iqpcr", build_vignettes = TRUE)
 ```
 
 # Amplification efficiency data analysis

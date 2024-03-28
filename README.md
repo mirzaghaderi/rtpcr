@@ -292,16 +292,10 @@ this issue, I used a function that assigns the grouping letters appropriately.
 
 ### Output table of the analysis
 
-The `qpcrANOVA` function produces the main analysis output 
-including mean wDCt, LCL, UCL, grouping letters, and standard deviations. The
-standard deviation for each mean is derived from the back-transformed raw wDCt values from biological
-replicates for that mean.
+The `qpcrANOVA` function produces the main analysis output including mean wDCt, LCL, UCL, grouping letters, and standard deviations. The standard deviation for each mean is derived from the back-transformed raw wDCt values from biological replicates for that mean. If the data includes technical replicates, the means of technical replicates should be calculated first using `ManTech` function.
 
 
 ```r
-# If the data include technical replicates, means of technical replicates
-# should be calculated first using meanTech function.
-
 # Applying ANOVA analysis
 qpcrANOVA(data_3factor_a, p.adj = "none")
 ```

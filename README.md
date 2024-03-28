@@ -137,31 +137,31 @@ data_ttest
 ```
 
 ```
-##    Condition E    Gene    Ct
-## 1    control 2 C2H2-26 31.26
-## 2    control 2 C2H2-26 31.01
-## 3    control 2 C2H2-26 30.97
-## 4  treatment 2 C2H2-26 32.65
-## 5  treatment 2 C2H2-26 32.03
-## 6  treatment 2 C2H2-26 32.40
-## 7    control 2 C2H2-01 31.06
-## 8    control 2 C2H2-01 30.41
-## 9    control 2 C2H2-01 30.97
-## 10 treatment 2 C2H2-01 28.85
-## 11 treatment 2 C2H2-01 28.93
-## 12 treatment 2 C2H2-01 28.90
-## 13   control 2 C2H2-12 28.50
-## 14   control 2 C2H2-12 28.40
-## 15   control 2 C2H2-12 28.80
-## 16 treatment 2 C2H2-12 27.90
-## 17 treatment 2 C2H2-12 28.00
-## 18 treatment 2 C2H2-12 27.90
-## 19   control 2     ref 28.87
-## 20   control 2     ref 28.42
-## 21   control 2     ref 28.53
-## 22 treatment 2     ref 28.31
-## 23 treatment 2     ref 29.14
-## 24 treatment 2     ref 28.63
+Condition E    Gene    Ct
+  control 2 C2H2-26 31.26
+  control 2 C2H2-26 31.01
+  control 2 C2H2-26 30.97
+treatment 2 C2H2-26 32.65
+treatment 2 C2H2-26 32.03
+treatment 2 C2H2-26 32.40
+  control 2 C2H2-01 31.06
+  control 2 C2H2-01 30.41
+  control 2 C2H2-01 30.97
+treatment 2 C2H2-01 28.85
+treatment 2 C2H2-01 28.93
+treatment 2 C2H2-01 28.90
+  control 2 C2H2-12 28.50
+  control 2 C2H2-12 28.40
+  control 2 C2H2-12 28.80
+treatment 2 C2H2-12 27.90
+treatment 2 C2H2-12 28.00
+treatment 2 C2H2-12 27.90
+  control 2     ref 28.87
+  control 2     ref 28.42
+  control 2     ref 28.53
+treatment 2     ref 28.31
+treatment 2     ref 29.14
+treatment 2     ref 28.63
 ```
 
 ### Data analysis under two conditions

@@ -111,7 +111,7 @@ efficiency(data_efficiency)
 
 <img src="https://raw.githubusercontent.com/mirzaghaderi/iqpcr/721b5879bd0ac967b0666e1b40ff4c5ae23b4a3f/Figure1.png" width="800" height="350">
 
-*Standard curve and the amplification efficiency analysis of target and reference genes.*
+*Figure 1 - Standard curve and the amplification efficiency analysis of target and reference genes.*
 
 
 ```
@@ -492,8 +492,10 @@ res
 ## S:0.5  -0.45907074        S     0.5 2.9690 4.1918 2.1030       a 0.1955
 ```
 
+The plot of the Result data with 'Genotype' as a grouping factor is produced as follows. Note that the input file in the result table of the `qpcrANOVA` function.
+
 ```r
-# Plot of the 'res' data with 'Genotype' as grouping factor
+# Plot of the Result data with 'Genotype' as grouping factor
 twoFACTORplot(res,
    x.axis.factor = Drought,
    group.factor = Genotype,
@@ -509,7 +511,7 @@ twoFACTORplot(res,
 
 <img src="https://raw.githubusercontent.com/mirzaghaderi/iqpcr/38a0bad0c7ae2fd40a9abd44d3b4977923c7a276/Figure2-copy.jpg">
 
-*A) Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests via `qpcrTTESTplot` function. Error bars represent 95% confidence interval. B-D) Average relative expression of a target gene under two different or three factors produced by `twoFACTORplot` (C) and `twoFACTORplot` (B and D) functions. Error bars represent standard deviations also they can be set to confidence interval. Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an `LSD.test`.*
+*Figure 2 - A) Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests via `qpcrTTESTplot` function. Error bars represent 95% confidence interval. B-D) Average relative expression of a target gene under two different or three factors produced by `twoFACTORplot` (C) and `twoFACTORplot` (B and D) functions. Error bars represent standard deviations also they can be set to confidence interval. Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an `LSD.test`.*
 
 
 ```r

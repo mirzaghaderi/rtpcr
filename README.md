@@ -164,7 +164,6 @@ treatment 2     ref 29.14
 treatment 2     ref 28.63
 ```
 
-### Data analysis under two conditions
 
 Here, the above data set was used for the Fold Change expression analysis of the target genes using the `qpcrTTEST` function. This function performs a t.test based analysis to any number of genes that 
 have been evaluated under control and treatment conditions. The analysis can be done for unpaired or paired condition. The output is a table of target gene names, fold changes confidence limits and the t.test derived p-values. The `qpcrTTEST` function include the `var.equal` argument. When set to `FALSE`,

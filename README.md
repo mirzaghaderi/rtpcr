@@ -522,11 +522,6 @@ twoFACTORplot(res,
    show.letters = FALSE)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-11-2.png" alt="Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package."  />
-<p class="caption">Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package.</p>
-</div>
-
 
 ### A three-factorial experiment example
 

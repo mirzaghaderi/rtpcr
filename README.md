@@ -10,10 +10,10 @@ iqpcr is a package for statistical analysis and graphical presentation of real-t
 Among the various approaches developed for data analysis in real-time PCR, the Livak method, also known as the $2^{-\Delta\Delta C_t}$ method, stands out for its simplicity and widespread use. 
 
 
-Fold change = 2^(-ΔΔCt)
+$$Fold change = 2^(-ΔΔCt)
 = 2^(-(Ct_target-Ct_ref)_Tr) / 2^(-(Ct_target-Ct_ref)_Co)
 = 2^[-(Ct_target-Ct_ref)_Tr - (Ct_target-Ct_ref)_Co]
-= 2^[-(ΔCt_Tr - ΔCt_Co)]
+= 2^[-(ΔCt_Tr - ΔCt_Co)]$$
 
 
 where Tr is Treatment and Co is Control conditions, respectively. This method assumes that both the target and reference genes are amplified with efficiencies close to 100%, allowing for the relative quantification of gene expression levels.
@@ -26,7 +26,7 @@ Fold change = E^(-(Ct_Tr-Ct_Co)_target) / E^(-(Ct_Tr-Ct_Co)_ref)
 the iqpcr packager  calculates wDCt values for each experimental condition based on the efficiency and Ct values as described by Ganger et al. (2017).
 
 
-wΔCt = log_{10}(E_{target}).Ct_{target} - log_{10}(E_{ref}).Ct_{ref}
+$$wΔCt = log_{10}(E_{target}).Ct_{target} - log_{10}(E_{ref}).Ct_{ref}$$
 
 if wDCt values are calculated using the efficiencies (E) values, calculations match the formula of Pfaffl. if 2 (100% amplification efficiency) is used, calculations match the formula of Livak. Analysis of variance (ANOVA) and t-test (paired or unpaired) is done on the wDCt values. Subsequently, the mean of wCt over each condition along with the resulting statistics (e.g. confidence limits for the means) is converted by a power of ten conversion for presentation. For example, relative expression is calculated as:
 $$\text{Relative Expression} = 10^{-\overline{w\Delta Ct}}$$

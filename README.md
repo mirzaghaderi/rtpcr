@@ -32,7 +32,7 @@ if wDCt values are calculated using the efficiencies (E) values, calculations ma
 $$\text{Relative Expression} = 10^{-\overline{w\Delta Ct}}$$
 When there are only two conditions (Tr and Co), fold change can also be calculated:
 
-$$\text{Fold Change}=10^{-(\overline{w\Delta Ct}_{\text{Tr}}-{\overline{w\Delta Ct}_{\text{Co}}})}$$
+$$Fold Change = 10^{-(\overline{w\Delta Ct}{Tr}-\overline{w\Delta Ct}{Co})}$$
 
 
 # Installing and loading

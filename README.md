@@ -7,11 +7,7 @@ iqpcr is a package for statistical analysis of real-time PCR data in R.
 Real-time polymerase chain reaction (real-time PCR), also known as quantitative PCR (qPCR), is a powerful analytical tool that has revolutionized nucleic acid quantification. The technique’s sensitivity, specificity, and broad quantification range make it the gold standard for the detection and quantification of DNA and RNA sequences. Central to the success of real-time PCR is the application of robust mathematical methodologies that ensure accurate and reproducible results. Among the various approaches developed for data analysis in real-time PCR, the Livak method (Livak and Schmittgen, 2001), also known as the 2^(-ΔΔC_t ) method, stands out for its simplicity and widespread use. This method assumes that both the target and reference genes are amplified with efficiencies close to 100 % the other hand, the Pfaffl method (Pfaffl et al., 2002) offers a more flexible approach by accounting for differences in amplification efficiencies between the target and reference genes. This method adjusts the calculated expression ratio by incorporating the specific amplification efficiencies, thus providing a more accurate representation of the relative gene expression levels (Pfaffl et al., 2002). Both methods have their merits and limitations, and the choice between them depends on the experimental design and the precision required for the study. This paper aims to delve into the mathematical underpinnings of these methodologies, providing a comprehensive understanding of their applications and implications in real-time PCR analysis. Among the various approaches developed for data analysis in real-time PCR, the Livak method, also known as the $2^{-\Delta\Delta C_t}$ method, stands out for its simplicity and widespread use.
 
 
-$$Fold Change = 2^{-ΔΔCt}$$
-
-
-
-Fold change = 2^(-ΔΔCt)
+$$\text{Fold Change} = 2^{-ΔΔCt}$$
 
 = 2^(-(Ct_target-Ct_ref)_Tr) / 2^(-(Ct_target-Ct_ref)_Co)
 
@@ -39,7 +35,7 @@ $$\text{Relative Expression} = 10^{-\overline{w\Delta Ct}}$$
 
 When there are only two conditions (e.g. Treatment and Control), the average fold change expression of a target gene can be calculated as follows: 
 
-$$Fold Change = 10^{-(\overline{w\Delta Ct}{Tr}-\overline{w\Delta Ct}{Co})}$$
+$$\text{Fold Change} = 10^{-(\overline{w\Delta Ct}{Tr}-\overline{w\Delta Ct}{Co})}$$
 
 if wDCt values are calculated from the E values, these calculations match the formula of Pfaffl while if 2 (complete efficiency) is used instead the result matches the 2^(-ΔΔC_t ) method. Here, a brief methodology is presented but details about the wΔC_t  calculations and statistical analysis are available in (Ganger et al., 2017). What is important here is that although the relative or fold change gene expression follows a lognormal distribution, a normal distribution is expected for the wΔCt or wΔΔCt values making it possible to apply t-test or analysis of variance to them. Following analysis, wΔCt values are statistically compared and standard deviations and confidence intervals are calculated, but the transformation y = 10x is applied in the final step to report the relative expression ratios, errors, and confidence limits.
 

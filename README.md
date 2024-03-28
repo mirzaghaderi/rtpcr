@@ -282,11 +282,11 @@ Genotype Drought SA Rep   EPO  POCt EGAPDH GAPDHCt
        S    0.25 A2   2 1.839 28.60  1.918   28.65
        S    0.25 A2   3 1.839 28.59  1.918   28.37
        S    0.50 A1   1 1.839 29.03  1.918   30.61
-S    0.50 A1   2 1.839 28.73  1.918   30.20
-S    0.50 A1   3 1.839 28.83  1.918   30.49
-S    0.50 A2   1 1.839 28.29  1.918   30.84
-S    0.50 A2   2 1.839 28.53  1.918   30.65
-S    0.50 A2   3 1.839 28.28  1.918   30.74
+       S    0.50 A1   2 1.839 28.73  1.918   30.20
+       S    0.50 A1   3 1.839 28.83  1.918   30.49
+       S    0.50 A2   1 1.839 28.29  1.918   30.84
+       S    0.50 A2   2 1.839 28.53  1.918   30.65
+       S    0.50 A2   3 1.839 28.28  1.918   30.74
 ```
 
 `qpcrANOVA` function performs  ANOVA based on both factorial arrangement and completely randomized design (CRD). For the latter, a column of treatment combinations is made first as a grouping factor followed by ANOVA. You can call the input data set along with the added wCt and treatment combinations by `qpcrANOVA(data_3factor_a)$Final_data`. CRD-based analysis is especially useful when post-hoc tests and mean comparisons/grouping is desired for all treatment combinations. The final results along with the ANOVA tables can be called by `qpcrANOVA(data_3factor_a)`.

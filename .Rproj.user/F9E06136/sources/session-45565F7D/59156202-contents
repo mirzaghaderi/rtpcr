@@ -1,0 +1,5 @@
+library(devtools)
+?github_release
+devtools::install_github("mirzaghaderi/iqpcr")
+devtools::install_github("yanlinlin82/ggvenn")
+

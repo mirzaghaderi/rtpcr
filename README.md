@@ -12,7 +12,7 @@ Among the various approaches developed for data analysis in real-time PCR, the L
 
 $$Fold change = 2^{-ΔΔCt}$$
 
-$$= 2^(-(Ct_target-Ct_ref)_Tr) / 2^(-(Ct_target-Ct_ref)_Co)$$
+$$= 2^(-(Ct_target-Ct_ref)_{Tr}) / 2^(-(Ct_{target}-Ct_{ref})_{Co})$$
 
 $$= 2^{[-(Ct_{target}-Ct_{ref})_Tr - (Ct_{target}-Ct_{ref})_{Co}]}$$
 

@@ -16,7 +16,7 @@ $$Fold change = 2^{-ΔΔCt}$$
 = /frac{2^(-(Ct_target-Ct_ref)_{Tr})}{2^(-(Ct_{target}-Ct_{ref})_{Co})}
 
 
-$$= 2^{(-(Ct_{target}-Ct_{ref})_{Tr} - (Ct_{target}-Ct_{ref})_{Co})}$$
+$$= 2^{-(Ct_{target}-Ct_{ref})_{Tr} - (Ct_{target}-Ct_{ref})_{Co}}$$   
 
 $$= 2^{[-(ΔCt_{Tr} - ΔCt_{Co})]}$$
 

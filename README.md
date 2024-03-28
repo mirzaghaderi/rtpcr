@@ -111,6 +111,7 @@ efficiency(data_efficiency)
 ![alt text](https://raw.githubusercontent.com/mirzaghaderi/iqpcr/721b5879bd0ac967b0666e1b40ff4c5ae23b4a3f/Figure1.png | width=100)
 *Standard curve and the amplification efficiency analysis of target and reference genes.*
 
+<img src="[https://your-image-url.type](https://raw.githubusercontent.com/mirzaghaderi/iqpcr/721b5879bd0ac967b0666e1b40ff4c5ae23b4a3f/Figure1.png)" width="100" height="50">
 
 ```
 ## $Efficiency_Analysis_Results

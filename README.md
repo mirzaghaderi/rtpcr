@@ -13,21 +13,22 @@ Among the various approaches developed for data analysis in real-time PCR, the L
 $$Fold change = 2^{-ΔΔCt}$$
 
 
-$$
-\text{Fold change} = 2^{-\Delta\Delta C_t} \\
-= \frac{2^{-(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{Tr}}}
-{2^{-(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{Co}}} \\ 
-=2^{-[(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{\text{Tr}}-
-{(C_{t_{\text{target}}}-C_{t_{\text{ref}}})}_{\text{Co}}]} \\ 
-& = 2^{-[{(\Delta C_t)_{Tr} - (\Delta C_t)_{Co}}]}
-$$
+
+Fold change = 2^(-ΔΔCt)
+
+= 2^(-(Ct_target-Ct_ref)_Tr) / 2^(-(Ct_target-Ct_ref)_Co)
+
+= 2^[-(Ct_target-Ct_ref)_Tr - (Ct_target-Ct_ref)_Co]
+
+= 2^[-(ΔCt_Tr - ΔCt_Co)]
+
 
 
 where Tr is Treatment and Co is Control conditions, respectively. This method assumes that both the target and reference genes are amplified with efficiencies close to 100%, allowing for the relative quantification of gene expression levels.
 
 On the other hand, the Pfaffl method offers a more flexible approach by accounting for differences in amplification efficiencies between the target and reference genes. This method adjusts the calculated expression ratio by incorporating the specific amplification efficiencies, thus providing a more accurate representation of the relative gene expression levels.
 
-$$Fold change ={E^{-{Ct_{Tr}-Ct_{Co}}_{target}}}/{E^{-{Ct_T{r}-Ct_{Co}}_{ref}}}$$
+Fold change = E^(-(Ct_Tr-Ct_Co)_target) / E^(-(Ct_Tr-Ct_Co)_ref)
 
 # A generalized calculation method
 the iqpcr packager  calculates wDCt values for each experimental condition based on the efficiency and Ct values as described by Ganger et al. (2017).

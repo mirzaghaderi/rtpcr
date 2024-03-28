@@ -109,9 +109,8 @@ efficiency(data_efficiency)
 ```
 
 ![alt text](https://github.com/mirzaghaderi/Bio/Figure1.png)
-<img src="vignette_files/figure-html/unnamed-chunk-5-1.png" alt="Standard curve and the amplification efficiency analysis of target and reference genes."  />
-<p class="caption">Standard curve and the amplification efficiency analysis of target and reference genes.</p>
-</div>
+
+Standard curve and the amplification efficiency analysis of target and reference genes.
 
 ```
 ## $Efficiency_Analysis_Results

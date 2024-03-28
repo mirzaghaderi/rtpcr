@@ -13,14 +13,14 @@ Among the various approaches developed for data analysis in real-time PCR, the L
 $$Fold change = 2^{-ΔΔCt}$$
 
 
-$$\begin{align*}
-\text{Fold change} & = 2^{-\Delta\Delta C_t} \\
-& = \frac{2^{-(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{Tr}}}
+$$
+\text{Fold change} = 2^{-\Delta\Delta C_t} \\
+= \frac{2^{-(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{Tr}}}
 {2^{-(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{Co}}} \\ 
-& =2^{-[(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{\text{Tr}}-
+=2^{-[(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{\text{Tr}}-
 {(C_{t_{\text{target}}}-C_{t_{\text{ref}}})}_{\text{Co}}]} \\ 
 & = 2^{-[{(\Delta C_t)_{Tr} - (\Delta C_t)_{Co}}]}
-\end{align*}$$
+$$
 
 
 where Tr is Treatment and Co is Control conditions, respectively. This method assumes that both the target and reference genes are amplified with efficiencies close to 100%, allowing for the relative quantification of gene expression levels.

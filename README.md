@@ -31,6 +31,7 @@ wΔCt = log_{10}(E_{target}).Ct_{target} - log_{10}(E_{ref}).Ct_{ref}
 if wDCt values are calculated using the efficiencies (E) values, calculations match the formula of Pfaffl. if 2 (100% amplification efficiency) is used, calculations match the formula of Livak. Analysis of variance (ANOVA) and t-test (paired or unpaired) is done on the wDCt values. Subsequently, the mean of wCt over each condition along with the resulting statistics (e.g. confidence limits for the means) is converted by a power of ten conversion for presentation. For example, relative expression is calculated as:
 $$\text{Relative Expression} = 10^{-\overline{w\Delta Ct}}$$
 When there are only two conditions (Tr and Co), fold change can also be calculated:
+
 $$\text{Fold Change}=10^{-(\overline{w\Delta Ct}_{\text{Tr}}-{\overline{w\Delta Ct}_{\text{Co}}})}$$
 
 

@@ -108,9 +108,8 @@ reference gene, and present the related standard curves along with the Slope, Ef
 efficiency(data_efficiency)
 ```
 
-![alt text](https://github.com/mirzaghaderi/iqpcr/Figure1.png?raw=true)
+![alt text]([https://github.com/mirzaghaderi/iqpcr/Figure1.png](https://raw.githubusercontent.com/mirzaghaderi/iqpcr/721b5879bd0ac967b0666e1b40ff4c5ae23b4a3f/Figure1.png)?raw=true "Standard curve and the amplification efficiency analysis of target and reference genes.")
 
-Standard curve and the amplification efficiency analysis of target and reference genes.
 
 ```
 ## $Efficiency_Analysis_Results

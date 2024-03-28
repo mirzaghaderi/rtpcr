@@ -36,7 +36,7 @@ the iqpcr packager  calculates wDCt values for each experimental condition based
 
 $$wΔCt = log_{10}(E_{target}).Ct_{target} - log_{10}(E_{ref}).Ct_{ref}$$
 
-if wDCt values are calculated using the efficiencies (E) values, calculations match the formula of Pfaffl. if 2 (100% amplification efficiency) is used, calculations match the formula of Livak. Analysis of variance (ANOVA) and t-test (paired or unpaired) is done on the wDCt values. Subsequently, the mean of wCt over each condition along with the resulting statistics (e.g. confidence limits for the means) is converted by a power of ten conversion for presentation. For example, relative expression is calculated as:
+if wDCt values are calculated using the efficiencies (E) values, calculations match the formula of Pfaffl. if 2 (100% amplification efficiency) is used, calculations match the formula of Livak. Analysis of variance (ANOVA) and t-test (paired or unpaired) is done on the wDCt values. Subsequently, the mean of wCt over each condition along with the resulting statistics (e.g. confidence limits for the means) is converted by a power of ten-conversion for presentation. For example, relative expression is calculated as:
 $$\text{Relative Expression} = 10^{-\overline{w\Delta Ct}}$$
 When there are only two conditions (Tr and Co), fold change can also be calculated:
 
@@ -64,8 +64,8 @@ library(iqpcr)
 # Amplification efficiency data analysis
 ## Sample data of amplification efficiency
 
-In order to calculate the amplification efficiencies
-of a target and a reference gene, a dataframe should be prepared with 3 columns 
+To calculate the amplification efficiencies
+of a target and a reference gene, a data frame should be prepared with 3 columns 
 of dilutions, target gene Ct values, and reference gene Ct values, respectively, 
 as shown below.
 
@@ -100,8 +100,8 @@ dilutions  C2H2.26    GAPDH
 ```
 
 ## Calculating amplification efficiency
-The following `efficiency` function calculates amplification efficiency of a target and a
-reference gene, and present the related standard curves along with the Slope, Efficiency, and R2 statistics. The function also compares the slopes of the two standard curves. For this, a regression line is fitted using the $\Delta C_t$ values. If $2^{-\Delta\Delta C_t}$ method is intended, the slope should not exceed 0.2!
+The following `efficiency` function calculates the amplification efficiency of a target and a
+reference gene, and presents the related standard curves along with the Slope, Efficiency, and R2 statistics. The function also compares the slopes of the two standard curves. For this, a regression line is fitted using the $\Delta C_t$ values. If $2^{-\Delta\Delta C_t}$ method is intended, the slope should not exceed 0.2!
 
 
 ```r
@@ -129,7 +129,7 @@ efficiency(data_efficiency)
 ## Target genes in two conditions (t-test)
 
 ### Example data
-when a target gene is assessed under two different conditions (for example Control and treatment), it is possible to calculate the average fold change expression i.e. $2^{-\Delta \Delta C_t}$ of the target gene in treatment relative to control conditions. For this, the data should be prepared according to the following dataset consisting of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct value is the mean of technical replicates. Complete amplification efficiencies of 2 have been assumed here for all wells but the calculated efficiencies can be used instead. 
+when a target gene is assessed under two different conditions (for example Control and treatment), it is possible to calculate the average fold change expression i.e. $2^{-\Delta \Delta C_t}$ of the target gene in treatment relative to control conditions. For this, the data should be prepared according to the following dataset consisting of 4 columns belonging to condition levels, E (efficiency), genes, and Ct values, respectively. Each Ct value is the mean of technical replicates. Complete amplification efficiencies of 2 have been assumed here for all wells but the calculated efficiencies can be used instead. 
 
 
 ```r
@@ -165,9 +165,9 @@ treatment 2     ref 28.63
 ```
 
 
-Here, the above data set was used for the Fold Change expression analysis of the target genes using the `qpcrTTEST` function. This function performs a t.test based analysis to any number of genes that 
-have been evaluated under control and treatment conditions. The analysis can be done for unpaired or paired condition. The output is a table of target gene names, fold changes confidence limits and the t.test derived p-values. The `qpcrTTEST` function include the `var.equal` argument. When set to `FALSE`,
-`t.test` is performed under unequal variances hypothesis.
+Here, the above data set was used for the Fold Change expression analysis of the target genes using the `qpcrTTEST` function. This function performs a t-test-based analysis of any number of genes that 
+have been evaluated under control and treatment conditions. The analysis can be done for unpaired or paired conditions. The output is a table of target gene names, fold changes confidence limits and the t.test derived p-values. The `qpcrTTEST` function includes the `var.equal` argument. When set to `FALSE`,
+`t.test` is performed under the unequal variances hypothesis.
 
 
 ```r
@@ -205,7 +205,7 @@ qpcrTTEST(data_ttest, paired = F, var.equal = T)
 
 
 ### Generating plot
-`qpcrTTESTplot` function generates a bar plot of Fold Changes and confidence intervals for the target genes. the `qpcrTTESTplot` function accepts any gene name and any replicates. `qpcrTTESTplot` function automatically put appropriate signs of **, * on top of the plot columns based on the output p-values.
+`qpcrTTESTplot` function generates a bar plot of Fold Changes and confidence intervals for the target genes. the `qpcrTTESTplot` function accepts any gene name and any replicates. `qpcrTTESTplot` function automatically puts appropriate signs of **, * on top of the plot columns based on the output p-values.
 
 
 
@@ -240,7 +240,7 @@ qpcrTTESTplot(data_ttest,
 
 ## A target gene under more than two conditions (ANOVA)
 
-Analysis of variance (ANOVA) of factorial experiments in the frame of a completely randomized design (CRD) can be done by the `qpcrANOVA` function. ANOVA of qPCR data is suitable when there is a factor with more than two levels, or when there are more than a experimental factor. The input data set should be prepared as shown below. Factor columns should be presented first followed by biological replicates and efficiency and Ct values of target and reference genes. The example data set below (`data_3factor_a`) represents amplification efficiency and Ct values for target and reference genes under three grouping factors (two different cultivars, three drought levels and the presence or absence of bacteria). The table can contain any number of factor columns. The factor columns, should be followed by five other columns assigned to biological replicates (r), efficiency of the target gene, Ct values of target gene, efficiency of reference gene, and Ct values of the reference gene, respectively. Here, the efficiency of 2 has been used for all wells, but the calculated efficiencies can be used instead.
+Analysis of variance (ANOVA) of factorial experiments in the frame of a completely randomized design (CRD) can be done by the `qpcrANOVA` function. ANOVA of qPCR data is suitable when there is a factor with more than two levels, or when there is more than one experimental factor. The input data set should be prepared as shown below. Factor columns should be presented first followed by biological replicates and efficiency and Ct values of target and reference genes. The example data set below (`data_3factor_a`) represents amplification efficiency and Ct values for target and reference genes under three grouping factors (two different cultivars, three drought levels, and the presence or absence of bacteria). The table can contain any number of factor columns. The factor columns should be followed by five other columns assigned to biological replicates (r), the efficiency of the target gene, Ct values of the target gene, the efficiency of the reference gene, and Ct values of the reference gene, respectively. Here, the efficiency of 2 has been used for all wells, but the calculated efficiencies can be used instead.
 
 
 
@@ -289,21 +289,21 @@ data_3factor_a
 ## 36        S    0.50 A2   3 1.839 28.28  1.918   30.74
 ```
 
-`qpcrANOVA` function performs  anova based on both factorial arrangement and completely randomized design (CRD). For the latter, a column of treatment combinations is made first as grouping factor followed by ANOVA. You can call the input data set along with the added wCt and treatment combinations by `qpcrANOVA(data_3factor_a)$Final_data`. CRD based analysis is especially useful when post-hoc test and mean comparisons/grouping is desired for all treatment combinations. The final results along with the ANOVA tables can be called by `qpcrANOVA(data_3factor_a)`.
+`qpcrANOVA` function performs  ANOVA based on both factorial arrangement and completely randomized design (CRD). For the latter, a column of treatment combinations is made first as a grouping factor followed by ANOVA. You can call the input data set along with the added wCt and treatment combinations by `qpcrANOVA(data_3factor_a)$Final_data`. CRD-based analysis is especially useful when post-hoc tests and mean comparisons/grouping is desired for all treatment combinations. The final results along with the ANOVA tables can be called by `qpcrANOVA(data_3factor_a)`.
 
 ### Reverse ordering of the grouping letters
 
-One may be interested to present the statistical mean comparison result in the frame of grouping letters. This is rather challenging because in the grouping output of mean comparisons (via `LSD.test` function of agricolae package), means are sorted into descending order so that the largest mean, is the first in the
+One may be interested in presenting the statistical mean comparison result in the frame of grouping letters. This is rather challenging because in the grouping output of mean comparisons (via `LSD.test` function of agricolae package), means are sorted into descending order so that the largest mean, is the first in the
 table and "a" letter is assigned to it. If `LSD.test` is applied to the wCt means,
-the biggest wCt mean receive "a" letter as expected, but this value turns into
+the biggest wCt mean receives "a" letter as expected, but this value turns into
 the smallest mean after its reverse log transformation by  $10^{-(\Delta Ct)}$. to solve
 this issue, I used a function that assigns the grouping letters appropriately.
 
 ### Output table of the analysis
 
 The `qpcrANOVA` function produces the main analysis output 
-including mean wDCt, LCL, UCL, grouping letters and standard deviations. The
-standard deviation for each mean is derived from the back transformed raw wDCt values from biological
+including mean wDCt, LCL, UCL, grouping letters, and standard deviations. The
+standard deviation for each mean is derived from the back-transformed raw wDCt values from biological
 replicates for that mean.
 
 
@@ -626,8 +626,8 @@ threeFACTORplot(res,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-12-4.png" alt="Average relative expression of a target gene under three different conditions with two, two and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package."  />
-<p class="caption">Average relative expression of a target gene under three different conditions with two, two and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package.</p>
+<img src="vignette_files/figure-html/unnamed-chunk-12-4.png" alt="Average relative expression of a target gene under three different conditions with two, two, and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have a significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package."  />
+<p class="caption">Average relative expression of a target gene under three different conditions with two, two, and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package.</p>
 </div>
 
 

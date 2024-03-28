@@ -475,14 +475,12 @@ qpcrANOVA(data_3factor_a, p.adj = "none")
 
 ### Barplot with the (1-alpha)% confidence interval as error bars
 
-
+Although plot of fold changes from a single factor experiment with two levels is done directly from the raw Ct data, before plotting data from two or three factorial experiments, the result table needs to be extracted as below. 
 ```r
-# Before plotting, the result needs to be extracted as below:
 res <- qpcrANOVA(data_2factor)$Result
 res
-```
 
-```
+
 ##                Q75 Genotype Drought   wDCt    LCL    UCL letters    std
 ## R:0     0.55088489        R       0 0.2852 0.4026 0.2020       d 0.0072
 ## R:0.25  0.31758665        R    0.25 0.6271 0.8853 0.4441      bc 0.3508

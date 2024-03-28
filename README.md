@@ -205,15 +205,13 @@ qpcrTTEST(data_ttest, paired = F, var.equal = T)
 
 
 ### Generating plot
-`qpcrTTESTplot` function generates a bar plot of Fold Changes and confidence intervals for the target genes. the `qpcrTTESTplot` function accepts any gene name and any replicates. `qpcrTTESTplot` function automatically puts appropriate signs of **, * on top of the plot columns based on the output p-values.
-
+`qpcrTTESTplot` function generates a bar plot of Fold Changes and confidence intervals for the target genes. the `qpcrTTESTplot` function uses raw Ct data and accepts any gene name and any replicates. `qpcrTTESTplot` function automatically puts appropriate signs of **, * on top of the plot columns based on the output p-values.
 
 
 ```r
 # Producing the plot
 qpcrTTESTplot(data_ttest)
 ```
-
 
 
 ```r
@@ -229,8 +227,6 @@ qpcrTTESTplot(data_ttest,
    ylab = "Average Fold Change",
    xlab = "Gene")
 ```
-
-
 
 
 ## A target gene under more than two conditions (ANOVA)
@@ -475,7 +471,7 @@ qpcrANOVA(data_3factor_a, p.adj = "none")
 
 ### Barplot with the (1-alpha)% confidence interval as error bars
 
-Although plot of fold changes from a single factor experiment with two levels is done directly from the raw Ct data, before plotting data from two or three factorial experiments, the result table needs to be extracted as below. 
+Although the plot of fold changes from a single factor experiment with two levels is done directly from the raw Ct data, before plotting data from two or three factorial experiments, the result table needs to be extracted as below. 
 ```r
 res <- qpcrANOVA(data_2factor)$Result
 res
@@ -608,13 +604,7 @@ threeFACTORplot(res,
 
 # Checking normality of residuals
 
-If the residuals from a `t.test` or a `lm` object are not normaly distributed, the grouping letters (deduced from the `LSD.test`) might be violated. In such cases, one
-could apply another data transformation to the wDCt data for ANOVA and mean comparison purposes or use non-parametric tests such as the Mann-Whitney test (also known as the Wilcoxon rank-sum test), `wilcox.test()`, which is alternative to `t.test`, or the
-`kruskal.test()` test which alternative to one-way analysis of variance, to test
-the difference between medians of the populations using independent samples.
-However, the `t.test` function (along with the `qpcrTTEST` function described
-above) include the `var.equal` argument. When set to `FALSE`, performs
-`t.test` under unequal variances hypothesis.
+If the residuals from a `t.test` or an `lm` object are not normally distributed, the grouping letters (deduced from the `LSD.test`) might be violated. In such cases, one could apply another data transformation to the wDCt data for ANOVA and mean comparison purposes or use non-parametric tests such as the Mann-Whitney test (also known as the Wilcoxon rank-sum test), `wilcox.test()`, which is an alternative to `t.test`, or the `kruskal.test()` test which alternative to one-way analysis of variance, to test the difference between medians of the populations using independent samples. However, the `t.test` function (along with the `qpcrTTEST` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis.
 
 
 ```r
@@ -637,7 +627,7 @@ qqline(residualsCRD, col = "red")
 
 
 # Mean of technical replicates
-Calculating the mean of technical replicates and getting an output table appropriate for subsequent ANOVA analysis can be done using `meanTech` function. For this, the input data set should follow column arrangement of the following example data. Grouping columns needs to be specified under the `groups` argument of the `meanTech` function.
+Calculating the mean of technical replicates and getting an output table appropriate for subsequent ANOVA analysis can be done using the `meanTech` function. For this, the input data set should follow the column arrangement of the following example data. Grouping columns need to be specified under the `groups` argument of the `meanTech` function.
 
 
 ```r
@@ -668,8 +658,8 @@ factor1 factor2 factor3 biolrep techrep Etarget targetCt Eref  refCt
       .       .       .       .       .       .        .           .
 ```
 
+Calculating the mean of technical replicates using the `meanTech` function:
 ```r
-# Calculating mean of technical replicates
 meanTech(data_withTechRep, groups = 1:4)
 ```
 

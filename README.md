@@ -108,7 +108,7 @@ reference gene, and present the related standard curves along with the Slope, Ef
 efficiency(data_efficiency)
 ```
 
-<div class="figure" style="text-align: center">
+![alt text](https://github.com/mirzaghaderi/iqocr/blob/[branch]/image.jpg?raw=true)
 <img src="vignette_files/figure-html/unnamed-chunk-5-1.png" alt="Standard curve and the amplification efficiency analysis of target and reference genes."  />
 <p class="caption">Standard curve and the amplification efficiency analysis of target and reference genes.</p>
 </div>

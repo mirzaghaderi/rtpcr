@@ -1,33 +1,10 @@
----
-title: "iqpcr: a package for statistical analysis of real-time PCR data in R"
-author: Ghader Mirzaghaderi
-output:
-  html_document: 
-    toc: yes
-    keep_md: yes
-    output: rmarkdown::html_vignette
-    df_print: default
-  pdf_document: 
-    toc: yes
-    latex_engine: xelatex
-  word_document:
-    toc: No
-vignette: |
-  %\VignetteIndexEntry{Sending Messages With Gmailr}
-  %\usepackage[utf8]{inputenc}
-  %\VignetteEngine{knitr::knitr}
-editor_options:
-  markdown:
-    wrap: 90
-  chunk_output_type: console
----
+# iqpcr 
 
-
-
+iqpcr is a package for statistical analysis of real-time PCR data in R.
 
 # Overview
 
-iqpcr is a package for statistical analysis and graphical presentation of real-time PCR (quantitative PCR  or qPCR) data. Various analysis methods are employed to real-time PCR data to measure the mRNA levels under different experimental conditions. iqpcr handles amplification efficiency calculation and statistical analysis of real-time PCR data based on one reference gene. By accounting for amplification efficiendcy values, iqpcr was developed using a general calculation method described by <a href="https://doi.org/10.1186/s12859-017-1949-5">Ganger et al. 2017</a>., covering both the Livak and Pfaffl methods. Based on the experimental conditions, the functions of the iqpcr package use t-test (for experiments with a two-level factor) or analysis of variance (for cases where more than two levels or factors exists) to calculate the fold change or relative expression. The functions further provide standard deviations and confidence limits for means, appliy statistical mean comparisons and present letter mean grouping. To facilitate functions application, different dataset have been used in the examples and the outputs are explaines. An outstanding feature of iqpcr package is providing publication-ready bar plots with various controling arguments for experiments with up to three different factors. The iqpcr package is user friendly and easy to work with and provide an applicable resource for analysing real-time PCR data in R.
+iqpcr is a package for statistical analysis and graphical presentation of real-time PCR (quantitative PCR  or qPCR) data. Various analysis methods are employed for real-time PCR data to measure the mRNA levels under different experimental conditions. iqpcr handles amplification efficiency calculation and statistical analysis of real-time PCR data based on one reference gene. By accounting for amplification efficiency values, iqpcr was developed using a general calculation method described by <a href="https://doi.org/10.1186/s12859-017-1949-5">Ganger et al. 2017</a>., covering both the Livak and Pfaffl methods. Based on the experimental conditions, the functions of the iqpcr package use t-test (for experiments with a two-level factor) or analysis of variance (for cases where more than two levels or factors exist) to calculate the fold change or relative expression. The functions further provide standard deviations and confidence limits for means, apply statistical mean comparisons, and present letter mean grouping. To facilitate functions application, different dataset have been used in the examples and the outputs are explained. An outstanding feature of iqpcr package is providing publication-ready bar plots with various controlling arguments for experiments with up to three different factors. The iqpcr package is user-friendly and easy to work with and provides an applicable resource for analyzing real-time PCR data in R.
 
 # Calculation methods
 Among the various approaches developed for data analysis in real-time PCR, the Livak method, also known as the $2^{-\Delta\Delta C_t}$ method, stands out for its simplicity and widespread use. 

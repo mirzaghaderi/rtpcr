@@ -47,9 +47,9 @@ $$Fold Change = 10^{-(\overline{w\Delta Ct}{Tr}-\overline{w\Delta Ct}{Co})}$$
 
 
 
-<`iqpcr` is a CRAN package and can be installed through `install.packages()`.
+<!-- `iqpcr` is a CRAN package and can be installed through `install.packages()`.
 install.packages("iqpcr")
-library(iqpcr)>
+library(iqpcr) -->
 
 The development version of the `iqpcr` package can be obtained through: 
 

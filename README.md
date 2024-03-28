@@ -10,11 +10,11 @@ iqpcr is a package for statistical analysis and graphical presentation of real-t
 Among the various approaches developed for data analysis in real-time PCR, the Livak method, also known as the $2^{-\Delta\Delta C_t}$ method, stands out for its simplicity and widespread use. 
 
 
-$$Fold change = 2^{(-ΔΔCt)}$$
+$$Fold change = 2^{-ΔΔCt}$$
 
 $$= 2^(-(Ct_target-Ct_ref)_Tr) / 2^(-(Ct_target-Ct_ref)_Co)$$
 
-$$= 2^[-(Ct_target-Ct_ref)_Tr - (Ct_target-Ct_ref)_Co]$$
+$$= 2^{[-(Ct_target-Ct_ref)_Tr - (Ct_target-Ct_ref)_Co]}$$
 
 $$= 2^{[-(ΔCt_{Tr} - ΔCt_{Co})]}$$
 

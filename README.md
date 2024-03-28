@@ -509,7 +509,7 @@ twoFACTORplot(res,
 
 <img src="https://raw.githubusercontent.com/mirzaghaderi/iqpcr/38a0bad0c7ae2fd40a9abd44d3b4977923c7a276/Figure2-copy.jpg">
 
-*A) Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests. Error bars represent 95% confidence interval. B-D) Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from the `LSD.test` of agricolae package.*
+*A) Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests via `qpcrTTESTplot` function. Error bars represent 95% confidence interval. B-D) Average relative expression of a target gene under two different or three factors produced by `twoFACTORplot` (C) and `twoFACTORplot` (B and D) functions. Error bars represent standard deviations also they can be set to confidence interval. Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an `LSD.test`.*
 
 
 ```r

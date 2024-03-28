@@ -214,10 +214,7 @@ qpcrTTEST(data_ttest, paired = F, var.equal = T)
 qpcrTTESTplot(data_ttest)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-8-1.png" alt="Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests. Error bars represent 95% confidence interval."  />
-<p class="caption">Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests. Error bars represent 95% confidence interval.</p>
-</div>
+
 
 ```r
 # Producing the plot: specifying gene order
@@ -233,10 +230,8 @@ qpcrTTESTplot(data_ttest,
    xlab = "Gene")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-8-2.png" alt="Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests. Error bars represent 95% confidence interval."  />
-<p class="caption">Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests. Error bars represent 95% confidence interval.</p>
-</div>
+
+
 
 ## A target gene under more than two conditions (ANOVA)
 
@@ -512,10 +507,10 @@ twoFACTORplot(res,
    show.letters = TRUE)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-11-1.png" alt="Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package."  />
-<p class="caption">Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package.</p>
-</div>
+<img src="https://raw.githubusercontent.com/mirzaghaderi/iqpcr/38a0bad0c7ae2fd40a9abd44d3b4977923c7a276/Figure2-copy.jpg">
+
+*A) Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests. Error bars represent 95% confidence interval. B-D) Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from the `LSD.test` of agricolae package.*
+
 
 ```r
 # Plotting the same data with 'Drought' as grouping factor
@@ -566,10 +561,6 @@ threeFACTORplot(res,
     xlab = "condition")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-12-1.png" alt="Average relative expression of a target gene under three different conditions with two, two and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package."  />
-<p class="caption">Average relative expression of a target gene under three different conditions with two, two and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package.</p>
-</div>
 
 ```r
 threeFACTORplot(res,
@@ -602,10 +593,7 @@ threeFACTORplot(res,
    legend.position = c(0.2, 0.8))
 ```
 
-<div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-12-3.png" alt="Average relative expression of a target gene under three different conditions with two, two and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package."  />
-<p class="caption">Average relative expression of a target gene under three different conditions with two, two and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package.</p>
-</div>
+
 
 ```r
 # When using ci as error, increase y.axis.adjust to see the plot correctly!
@@ -661,10 +649,6 @@ qqnorm(residualsCRD)
 qqline(residualsCRD, col = "red")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-13-1.png" alt="QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions."  />
-<p class="caption">QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions.</p>
-</div>
 
 # Mean of technical replicates
 Calculating the mean of technical replicates and getting an output table appropriate for subsequent ANOVA analysis can be done using `meanTech` function. For this, the input data set should follow column arrangement of the following example data. Grouping columns needs to be specified under the `groups` argument of the `meanTech` function.

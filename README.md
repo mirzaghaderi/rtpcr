@@ -27,7 +27,7 @@ where Tr is Treatment and Co is Control conditions, respectively. This method as
 
 On the other hand, the Pfaffl method offers a more flexible approach by accounting for differences in amplification efficiencies between the target and reference genes. This method adjusts the calculated expression ratio by incorporating the specific amplification efficiencies, thus providing a more accurate representation of the relative gene expression levels.
 
-$$Fold change = E^(-(Ct_Tr-Ct_Co)_target) / E^(-(Ct_Tr-Ct_Co)_ref)$$
+$$Fold change = E^{-(Ct_Tr-Ct_Co)_target} / E^{-(Ct_Tr-Ct_Co)_ref}$$
 
 # A generalized calculation method
 the iqpcr packager  calculates wDCt values for each experimental condition based on the efficiency and Ct values as described by Ganger et al. (2017).

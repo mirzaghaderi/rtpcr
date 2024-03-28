@@ -7,7 +7,7 @@ iqpcr is a package for statistical analysis of real-time PCR data in R.
 Real-time polymerase chain reaction (real-time PCR), also known as quantitative PCR (qPCR), is a powerful analytical tool that has revolutionized nucleic acid quantification. The technique’s sensitivity, specificity, and broad quantification range make it the gold standard for the detection and quantification of DNA and RNA sequences. Central to the success of real-time PCR is the application of robust mathematical methodologies that ensure accurate and reproducible results. Among the various approaches developed for data analysis in real-time PCR, the Livak method (Livak and Schmittgen, 2001), also known as the 2^(-ΔΔC_t ) method, stands out for its simplicity and widespread use. This method assumes that both the target and reference genes are amplified with efficiencies close to 100 % the other hand, the Pfaffl method (Pfaffl et al., 2002) offers a more flexible approach by accounting for differences in amplification efficiencies between the target and reference genes. This method adjusts the calculated expression ratio by incorporating the specific amplification efficiencies, thus providing a more accurate representation of the relative gene expression levels (Pfaffl et al., 2002). Both methods have their merits and limitations, and the choice between them depends on the experimental design and the precision required for the study. This paper aims to delve into the mathematical underpinnings of these methodologies, providing a comprehensive understanding of their applications and implications in real-time PCR analysis. Among the various approaches developed for data analysis in real-time PCR, the Livak method, also known as the $2^{-\Delta\Delta C_t}$ method, stands out for its simplicity and widespread use.
 
 
-$$Fold change = 2^{-ΔΔCt}$$
+$$Fold Change = 2^{-ΔΔCt}$$
 
 
 
@@ -24,7 +24,7 @@ Fold change = 2^(-ΔΔCt)
 where Tr is Treatment and Co is Control conditions, respectively. This method assumes that both the target and reference genes are amplified with efficiencies close to 100%, allowing for the relative quantification of gene expression levels (Livak and Schmittgen, 2001). On the other hand, the Pfaffl method offers a more flexible approach by accounting for differences in amplification efficiencies between the target and reference genes. This method adjusts the calculated expression ratio by incorporating the specific amplification efficiencies, thus providing a more accurate representation of the relative gene expression levels (Pfaffl et al., 2002).
 
 
-Fold change = E^(-(Ct_Tr-Ct_Co)_target) / E^(-(Ct_Tr-Ct_Co)_ref)
+Fold Change = E^(-(Ct_Tr-Ct_Co)_target) / E^(-(Ct_Tr-Ct_Co)_ref)
 
 # A generalized calculation method
 

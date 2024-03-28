@@ -566,10 +566,6 @@ threeFACTORplot(res,
    ylab = "Relative Expression")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-12-2.png" alt="Average relative expression of a target gene under three different conditions with two, two and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package."  />
-<p class="caption">Average relative expression of a target gene under three different conditions with two, two and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package.</p>
-</div>
 
 ```r
 # releveling a factor levels first

@@ -76,11 +76,10 @@ qpcrTTEST <- function(x,
     } else {
       a <- (((2 * r) * (length(unique(x$Gene)) - 2)) + 1)
       b <- ((length(unique(x$Gene)) - 1) * 2 * r)
-      mwCT <- (x$wCt[a:b] - x$wCt[(a+(2*r)):(b+(2*r))])/2
+      mwCT <- (x$wCt[a:b] + x$wCt[(a+(2*r)):(b+(2*r))])/2
       x$wCt[a:b] <- mwCT
       x <- x[-((a+(2*r)):(b+(2*r))),]
     }
-
 
 
 

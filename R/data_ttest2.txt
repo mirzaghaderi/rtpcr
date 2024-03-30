@@ -1,0 +1,9 @@
+zz <- read.table(text = "
+condition	rep	etar	tarct	eref1	cref1	eref2	cref2
+control	1	2	31.26	2	28.86970731	2	28.86970731
+control	2	2	31.01	2	28.4218226	2	28.4218226
+control	3	2	30.97	2	28.56492605	2	28.56492605
+treatment	1	2	32.65	2	28.31522559	2	28.31522559
+treatment	2	2	32.03	2	29.13993823	2	29.13993823
+treatment	3	2	32.4	2	28.62970485	2	28.62970485
+", header = TRUE, check.names = FALSE)

@@ -95,18 +95,11 @@ To simplify 'iqpcr, usage, examples for using the functions are presented below.
  |  qpcrANOVA  | Analysis of Variance of the qpcr data  | qpcrANOVA(data_3factor_a, numberOfrefGenes = 1, p.adj = "none")|
  | qpcrTTEST     | Computing the average fold change and related statistics | qpcrTTEST(data_ttest, paired = FALSE, var.equal = TRUE) |
  | qpcrTTESTplot  | Bar plot of the average fold change of the target genes	 | qpcrTTESTplot(data_ttest, order = c("C2H2-01", "C2H2-12", "C2H2-26") |
- |  threeFACTORplot  | Bar plot of the relative gene expression from a three-factor experiment | res <- qpcrANOVA(data_3factor_b)$Result  threeFACTORplot(res, arrangement = c(3, 1, 2), xlab = "condition") |
- | twoFACTORplot   | Bar plot of the relative gene expression from a two-factor experiment | res <- qpcrANOVA(data_2factor)$Result  twoFACTORplot(res, x.axis.factor = Genotype, group.factor = Drought) |
+ |  threeFACTORplot  | Bar plot of the relative gene expression from a three-factor experiment | res <- qpcrANOVA(data_3factor_b)$Result   --> threeFACTORplot(res, arrangement = c(3, 1, 2)) |
+ | twoFACTORplot   | Bar plot of the relative gene expression from a two-factor experiment | res <- qpcrANOVA(data_2factor)$Result  --> twoFACTORplot(res, x.axis.factor = Genotype, group.factor = Drought) |
  
 *see package help for more arguments including the number of reference genes, levels arrangement, blocking, and arguments for adjusting the bar plots.*
  
-
-
-
-
-threeFACTORplot(res,
-   arrangement = c(1, 2, 3),
-   bar.width = 0.5,
    
 
 # Amplification efficiency data analysis

@@ -545,7 +545,7 @@ twoFACTORplot(res,
 
 <img src="https://raw.githubusercontent.com/mirzaghaderi/iqpcr/7ff54cdbd095c731ba12eaa4a6aa474ef2b039eb/Figure%203.jpg">
 
-*Figure 3 - A) Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests via `qpcrTTESTplot` function. Error bars represent 95% confidence interval. B-D) Average relative expression of a target gene under two different or three factors produced by `twoFACTORplot` (C) and `twoFACTORplot` (B and D) functions. Error bars represent standard deviations also they can be set to confidence interval. Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an `LSD.test`.*
+*Figure 3 - A) Plot of Fold change of three genes (differentially arranged by an argument compared to Figure 2a). B-D) Average relative expression (RE) of a target gene under two or three factors produced by ‘twoFACTORplot’ (C) and ‘twoFACTORplot’ (B and D) functions. Error bars represent standard deviations, albeit, error type can be set to confidence interval. Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an ‘LSD.test’.*
 
 
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/qpcrTTESTplot.r
 \name{qpcrTTESTplot}
 \alias{qpcrTTESTplot}
-\title{Plot of the average fold change of the target genes}
+\title{Bar plot of the average fold change of the target genes}
 \usage{
 qpcrTTESTplot(
   x,

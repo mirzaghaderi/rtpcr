@@ -2,7 +2,7 @@
 % Please edit documentation in R/qpcrANOVA.r
 \name{qpcrANOVA}
 \alias{qpcrANOVA}
-\title{qpcr Analysis of Variance}
+\title{qPCR Analysis of Variance}
 \usage{
 qpcrANOVA(
   x,

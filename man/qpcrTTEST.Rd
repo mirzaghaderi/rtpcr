@@ -39,7 +39,8 @@ data_ttest
 # Getting t.test results
 qpcrTTEST(data_ttest,
    paired = FALSE,
-   var.equal = TRUE)
+   var.equal = TRUE,
+   numberOfrefGenes = 1)
 
 
 }

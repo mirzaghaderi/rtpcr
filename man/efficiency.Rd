@@ -16,7 +16,7 @@ A list including standard curves along with the Slope, Efficiency, and R2 statis
 calculation of amplification efficiency and returns standard curves and related statistics.
 }
 \details{
-The efficiency function calculates amplification efficiency of a target and a reference gene, and present the related standard curves along with the Slope, Efficiency, and R2 statistics. The function also compares the slopes of the two standard curves.
+The 'efficiency' function calculates amplification efficiency of a target and a reference gene, and present the related standard curves along with the Slope, Efficiency, and R2 statistics. The function also compares the slopes of the two standard curves.
 }
 \examples{
 

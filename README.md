@@ -88,7 +88,7 @@ To simplify 'iqpcr, usage, examples for using the functions are presented below.
 *Table 1. Functions and examples for using them.*
 | function   |                 Analysis | Example (see package help for the more arguments) |
  |:---------------------|:-----------------------------------|:----------------------------------|
- | 'efficiency'             | Efficiency, standard curves and related statistics | efficiency(data_efficiency) |
+ | efficiency             | Efficiency, standard curves and related statistics | efficiency(data_efficiency) |
  | meanTech      | Calculating the mean of technical replicates | meanTech(data_withTechRep, groups = 1:4) |
  | oneFACTORfcplot      | Bar plot of the average fold change of one target gene with two or more levels | oneFACTORfcplot(data_1factor, levels = c(3, 2, 1), level.names = c("A1", "A2", "A3"), |
  |  oneFACTORplot    | Bar plot of the relative gene expression from a one-factor experiment | out <- qpcrANOVA(data_1factor)$Result  -->   oneFACTORplot(out) |

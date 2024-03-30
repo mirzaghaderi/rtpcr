@@ -81,6 +81,25 @@ To use the functions, input data should be prepared in the right format with app
  |                                       |. . . . . .  biologicalRep techcicalRep Etarget targetCt ref1E ref1Ct ref2E ref2Ct  | |
 
 
+# functions built in 'iqpcr' package
+
+To simplify 'iqpcr, usage, examples for using the functions are presented below.
+
+*Table 1. Functions and examples for using them.*
+| function   |                 Analysis | Example |
+ |:---------------------|:-----------------------------------|:----------------------------------|
+ | 'efficiency'             | Efficiency, standard curves and related statistics | data_efficiency |
+ | meanTech      | Calculating the mean of technical replicates | data_ttest |
+ | oneFACTORfcplot      |Plot of the average fold change of one target gene with two or more levels | data_1factor |
+ |  oneFACTORplot    | Bar plot of the relative gene expression from a one-factor experiment | data_2factor |
+ |  qpcrANOVA  | Analysis of Variance of the qpcr data  | data_3factor_b |
+ | qpcrTTEST     | Computing the average fold change and related statistics | |
+ | qpcrTTESTplot  | Plot of the average fold change of the target genes	 | data_2factorBlock |
+ |  threeFACTORplot  |factor1 factor2 factor3 block rep targetE targetCt refE refCt | |
+ | twoFACTORplot   | Bar plot of the relative gene expression from a two-factor experiment | |
+
+ 
+
 
 # Amplification efficiency data analysis
 ## Sample data of amplification efficiency

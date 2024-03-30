@@ -69,7 +69,7 @@ To use the functions, input data should be prepared in the right format with app
 | Experiment type   |                  Column arrangement |
  |:---------------------|:-----------------------------------------------|
  |Amplification efficiency             |Dilutions - targetCt - refCt |
- |t-test (multi-gene)                  |condition - efficiency - gene - Ct |
+ |t-test (accepts multiple genes)                  |condition - efficiency - gene - Ct |
  |Factorial (Up to three factors)      |factor1 - rep - targetE - targetCt - refE - refCt |
  |                                     |factor1 - factor2 - rep - targetE - targetCt - refE - refCt |
  |                                     |factor1 - factor2 - factor3 - rep - targetE - targetCt - refE - refCt |

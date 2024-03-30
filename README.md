@@ -60,6 +60,8 @@ library(iqpcr)
 
 # Data structure and column arrangement required for ‘iqpcr’ package.
 
+To use the functions, input data should be prepared in the right format with appropriate column arrangement. The correct column arrangement is shown in Table 1.
+
 | Experiment type   |                  Column arrangement |
  |:---------------------|:-----------------------------------------------|
  |Amplification efficiency             |Dilutions targetCt refCt |
@@ -72,7 +74,7 @@ library(iqpcr)
  |                                     |factor1 factor2 factor3 block rep targetE targetCt refE refCt |
  |Two reference genes                  |. . . . . .  rep targetE targetCt ref1E ref1Ct ref2E ref2Ct |
  |calculating biological replicated    |. . . . . .  biologicalRep techcicalRep Etarget targetCt Eref refCt  |
- |                                       |. . . . . .  biologicalRep techcicalRep Etarget targetCt ref1E ref1Ct ref2E re22Ct  |
+ |                                       |. . . . . .  biologicalRep techcicalRep Etarget targetCt ref1E ref1Ct ref2E re22Ct              |
 
 
 

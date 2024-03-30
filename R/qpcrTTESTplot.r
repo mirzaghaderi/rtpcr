@@ -1,4 +1,4 @@
-#' @title Plot of the average fold change of the target genes
+#' @title Bar plot of the average fold change of the target genes
 #' @description Bar plot of the average fold change for target genes along with the 95 percent CI and significance
 #' @details The \code{qpcrTTESTplot} function applies a t.test based analysis to any number of genes along with one reference gene, that have been evaluated under control and treatment conditions, and returns the bar plot of the average fold change for target genes along with the 95\% CI and significance.
 #' @author Ghader Mirzaghaderi

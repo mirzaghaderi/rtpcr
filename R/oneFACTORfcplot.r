@@ -1,4 +1,4 @@
-#' @title Plot of the average fold change of one target gene with two or more levels.
+#' @title Bar plot of the average fold change of one target gene with two or more levels.
 #' @description Bar plot of the relative expression of a gene along with the 95\% confidence interval and significance. There is another function, \code{qpcrTTESTplot}, that is used when the factor has two levels and represents Fold Change. \code{oneFACTORplot} is mainly useful for a one-factor experiment with more than two levels.
 #' @details The \code{oneFACTORfcplot} function applies ANOVA based analysis where one target and one reference gene, that have been evaluated under two or more than two levels of a factor. It returns the bar plot of the average fold change for the target gene along with the 95\% CI and significance.
 #' @author Ghader Mirzaghaderi

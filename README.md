@@ -67,15 +67,15 @@ To use the functions, input data should be prepared in the right format with app
  |:---------------------|:-----------------------------------------------|
  |Amplification efficiency             |Dilutions - targetCt - refCt |
  |t-test (multi-gene)                  |condition - efficiency - gene - Ct |
- |Factorial (Up to three factors)      |factor1 rep targetE targetCt refE refCt |
- |                                     |factor1 factor2 rep targetE targetCt refE refCt |
- |                                     |factor1 factor2 factor3 rep targetE targetCt refE refCt |
- |Factorial with blocking              |factor1 block rep targetE targetCt refE refCt |
- |                                     |factor1 factor2 block rep targetE targetCt refE refCt	 |
- |                                     |factor1 factor2 factor3 block rep targetE targetCt refE refCt |
- |Two reference genes                  |. . . . . .  rep targetE targetCt ref1E ref1Ct ref2E ref2Ct |
- |calculating biological replicated    |. . . . . .  biologicalRep techcicalRep Etarget targetCt Eref refCt  |
- |                                       |. . . . . .  biologicalRep techcicalRep Etarget targetCt ref1E ref1Ct ref2E re22Ct              |
+ |Factorial (Up to three factors)      |factor1 - rep - targetE - targetCt - refE - refCt |
+ |                                     |factor1 - factor2 - rep - targetE - targetCt - refE - refCt |
+ |                                     |factor1 - factor2 - factor3 - rep - targetE - targetCt - refE - refCt |
+ |Factorial with blocking              |factor1 - block - rep - targetE - targetCt - refE - refCt |
+ |                                     |factor1 - factor2 - block - rep - targetE - targetCt - refE - refCt	 |
+ |                                     |factor1 - factor2 - factor3 - block - rep - targetE - targetCt - refE - refCt |
+ |Two reference genes                  |. . . . . .  rep - targetE - targetCt - ref1E - ref1Ct - ref2E - ref2Ct |
+ |calculating biological replicated    |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - Eref - refCt  |
+ |                                       |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - ref1E - ref1Ct - ref2E - re22Ct              |
 
 
 

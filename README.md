@@ -66,7 +66,7 @@ library(iqpcr)
 To use the functions, input data should be prepared in the right format with appropriate column arrangement. The correct column arrangement is shown in Table 1.
 
 *Table 1. Data structure and column arrangement required for ‘iqpcr’ package.*
-| Experiment type   |                  Column arrangement | Example in the package |
+| Experiment type   |                  Column arrangement of the input data | Example in the package |
  |:---------------------|:-----------------------------------|:----------------------------------|
  |Amplification efficiency             |Dilutions targetCt refCt | data_efficiency |
  |t-test (accepts multiple genes)      |condition efficiency gene Ct | data_ttest |
@@ -91,7 +91,7 @@ To simplify 'iqpcr, usage, examples for using the functions are presented below.
  | 'efficiency'             | Efficiency, standard curves and related statistics | efficiency(data_efficiency) |
  | meanTech      | Calculating the mean of technical replicates | meanTech(data_withTechRep, groups = 1:4) |
  | oneFACTORfcplot      | Bar plot of the average fold change of one target gene with two or more levels | oneFACTORfcplot(data_1factor, levels = c(3, 2, 1), level.names = c("A1", "A2", "A3"), |
- |  oneFACTORplot    | Bar plot of the relative gene expression from a one-factor experiment | data_2factor |
+ |  oneFACTORplot    | Bar plot of the relative gene expression from a one-factor experiment | out <- qpcrANOVA(data_1factor)$Result  -->   oneFACTORplot(out) |
  |  qpcrANOVA  | Analysis of Variance of the qpcr data  | data_3factor_b |
  | qpcrTTEST     | Computing the average fold change and related statistics | |
  | qpcrTTESTplot  | Bar plot of the average fold change of the target genes	 | data_2factorBlock |

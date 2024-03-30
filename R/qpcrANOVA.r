@@ -202,7 +202,7 @@ qpcrANOVA <- function(x,
   mean <- LSD.test(lm, "T", group = T, console = F, alpha = 0.05, p.adj = p.adj)$means
 
 
-  # Comparing mean paors that also returns CI
+  # Comparing mean pairs that also returns CI
   # Preparing final result table including letter grouping of the means
   meanPP <- LSD.test(lm, "T", group = F, console = F, alpha = 0.05, p.adj = p.adj)
   meanPairs <- meanPP$comparison

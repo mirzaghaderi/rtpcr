@@ -149,8 +149,7 @@ reference gene, and presents the related standard curves along with the Slope, E
 efficiency(data_efficiency)
 ```
 
-
-<img src="https://raw.githubusercontent.com/mirzaghaderi/iqpcr/7ff54cdbd095c731ba12eaa4a6aa474ef2b039eb/Figure%201.png" width="800" height="350">
+<img src="https://raw.githubusercontent.com/mirzaghaderi/iqpcr/c02e476cf7c69783fa9c65bc625a7ea4a0e3abcf/Figure%201.jpg">
 
 *Figure 1 - Standard curve and the amplification efficiency analysis of target and reference genes.*
 

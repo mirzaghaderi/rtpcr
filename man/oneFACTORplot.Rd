@@ -57,7 +57,16 @@ out <- qpcrANOVA(data_1factor)$Result
 
 # Bar plot
 oneFACTORplot(out,
-   y.axis.by = 0.4)
+         width = 0.2,
+         fill = "skyblue",
+         y.axis.adjust = 0.5,
+         y.axis.by = 0.4,
+         errorbar = "std",
+         show.letters = TRUE,
+         letter.position.adjust = 0.1,
+         ylab = "Relative Expression",
+         xlab = "Factor",
+         fontsize = 12)
 
 
 }

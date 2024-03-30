@@ -12,6 +12,7 @@
 #' @param x a data frame of 4 columns including Conditions, E (efficiency), Gene and Ct values (see example below). Biological replicates needs to be equal for all Genes. Each Ct value is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used instead.
 #' @param paired a logical indicating whether you want a paired t-test.
 #' @param var.equal a logical variable indicating whether to treat the two variances as being equal. If TRUE then the pooled variance is used to estimate the variance otherwise the Welch (or Satterthwaite) approximation to the degrees of freedom is used.
+#' @param NumberOfrefGenes number of reference genes. Up to two reference genes can be handled. 
 #' @return A list of two elements:
 #' \describe{
 #'   \item{Row_data}{The row data including Genes and weighed delta Ct (wDCt) values.}
@@ -47,36 +48,62 @@
 
 
 qpcrTTEST <- function(x,
+                      NumberOfrefGenes = 1,
                       paired = FALSE,
                       var.equal = FALSE) {
-
+  
   colnames(x)[1] <- "Condition"
   colnames(x)[2] <- "E"
   colnames(x)[3] <- "Gene"
   colnames(x)[4] <- "Ct"
-
+  
+  
+  
+  
   r <- nrow(x)/(2 * length(unique(x$Gene)))
-
+  
   if(!all(r %% 1 == 0)) {
     stop("Error: Replicates are not equal for all Genes!")
   } else {
+    
+    
+    
     x <- data.frame(x, wCt = log10(x$E) * x$Ct)
-    levels_to_compare <- unique(x$Gene)[-length(unique(x$Gene))]
+    
+    if(NumberOfrefGenes == 1) {
+      x <- x
+    } else {
+      a <- (((2 * r) * (length(unique(x$Gene)) - 2)) + 1)
+      b <- ((length(unique(x$Gene)) - 1) * 2 * r)
+      mwCT <- (x$wCt[a:b] - x$wCt[(a+(2*r)):(b+(2*r))])/2
+      x$wCt[a:b] <- mwCT
+      x <- x[-((a+(2*r)):(b+(2*r))),]
+    }
+    
+    
+    
+    
+    
+    GENE <- x$Gene
+    
+    
+    levels_to_compare <- unique(GENE)[-length(unique(GENE))]
     res <- matrix(nrow = length(levels_to_compare), ncol=6)
-    colnames(res) <- c("Gene", "dif", "Fold_Change", "Lower.Er", "Upper.Er", "pvalue")
+    colnames(res) <- c("Gene", "dif", "FC", "LCL", "UCL", "pvalue")
     subset <- matrix(NA, nrow = 2 * r, ncol=length(levels_to_compare))
     ttest_result <- vector("list", length(levels_to_compare))
-
-
+    
+    
     for (i in 1:length(levels_to_compare)) {
-      subset[,i] <- x[x$Gene == levels_to_compare[i], "wCt"] - x[x$Gene == utils::tail(unique(x$Gene), 1), "wCt"]
+      subset[,i] <- x[GENE == levels_to_compare[i], "wCt"] - x[GENE == utils::tail(unique(GENE), 1), "wCt"]
       ttest_result[[i]] <- stats::t.test(subset[(r + 1):(2 * r), i], subset[1:r, i], paired = paired, var.equal = var.equal)
       res[i, ] <- c(levels_to_compare[i],
-                    diff = round(mean(subset[(r+1):(2*r),i]) - mean(subset[1:r, i]), 4),
+                    round(mean(subset[(r+1):(2*r),i]) - mean(subset[1:r, i]), 4),
                     round(10^-((mean(subset[(r+1):(2*r), i]) - mean(subset[1:r,i]))), 4),
                     round(10^(-ttest_result[[i]]$conf.int[2]), 4), # Lower error bar point
                     round(10^(-ttest_result[[i]]$conf.int[1]), 4), # Upper error bar point
                     round(ttest_result[[i]]$p.value, 4))
+      
     }
     Raw_df <- melt(subset, value.name = "wDCt")[-1]
     res <- list(Raw_data = Raw_df, Result = data.frame(res))

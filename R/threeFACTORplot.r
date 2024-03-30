@@ -99,15 +99,15 @@ threeFACTORplot <- function(x,
                          show.letters = TRUE){
   
   x <- x[, c(arrangement, 4:ncol(x))]
-  wDCt <- x$wDCt
+  RE <- x$RE
   std <- x$std
   LCL <- x$LCL
   UCL <- x$UCL
   
   
-  pp1 <- ggplot(x, aes(x[,1], y = wDCt, fill = x[,2])) +
+  pp1 <- ggplot(x, aes(x[,1], y = RE, fill = x[,2])) +
     geom_bar(stat = "identity", position = "dodge", width =  bar.width, col = "black") +
-    geom_errorbar(aes(ymax = wDCt + std, ymin = wDCt),
+    geom_errorbar(aes(ymax = RE + std, ymin = RE),
                   position = position_dodge(bar.width), width = 0.15, color = "black") +
     facet_grid( ~ x[,3])+
     xlab(xlab) +
@@ -115,9 +115,9 @@ threeFACTORplot <- function(x,
     theme_bw() +
     theme(legend.position = legend.position) +
     scale_fill_brewer(palette = fill) +
-    scale_y_continuous(breaks = seq(0, max(x$wDCt) + max(x$std) +
+    scale_y_continuous(breaks = seq(0, max(x$RE) + max(x$std) +
                                       y.axis.adjust, by = y.axis.by),
-                       limits = c(0, max(x$wDCt) + max(x$std) + y.axis.adjust),
+                       limits = c(0, max(x$RE) + max(x$std) + y.axis.adjust),
                        expand = c(0, 0)) +
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
@@ -130,15 +130,15 @@ threeFACTORplot <- function(x,
   
   if (show.letters) {
     pp1 <- pp1 + 
-      geom_text(data = x, aes(label=letters, y = wDCt + std + letter.position.adjust), color = "black",
+      geom_text(data = x, aes(label=letters, y = RE + std + letter.position.adjust), color = "black",
                 show.legend = FALSE, position = position_dodge(bar.width))
   }
   
   
   
-  pp2 <- ggplot(x, aes(x[,1], y = wDCt, fill = x[,2])) +
+  pp2 <- ggplot(x, aes(x[,1], y = RE, fill = x[,2])) +
     geom_bar(stat = "identity", position = "dodge", width =  bar.width, col = "black") +
-    geom_errorbar(aes(ymax = wDCt + LCL, ymin = wDCt - UCL),
+    geom_errorbar(aes(ymax = RE + LCL, ymin = RE - UCL),
                   position = position_dodge(bar.width), width = 0.15, color = "black") +
     facet_grid( ~ x[,3])+
     xlab(xlab) +
@@ -146,9 +146,9 @@ threeFACTORplot <- function(x,
     theme_bw() +
     theme(legend.position = legend.position) +
     scale_fill_brewer(palette = fill) +
-    scale_y_continuous(breaks = seq(0, max(x$wDCt) + max(x$LCL) +
+    scale_y_continuous(breaks = seq(0, max(x$RE) + max(x$LCL) +
                                       y.axis.adjust, by = y.axis.by),
-                       limits = c(0, max(x$wDCt) + max(x$LCL) + y.axis.adjust),
+                       limits = c(0, max(x$RE) + max(x$LCL) + y.axis.adjust),
                        expand = c(0, 0)) +
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
@@ -161,7 +161,7 @@ threeFACTORplot <- function(x,
   
   if (show.letters) {
     pp2 <- pp2 +
-      geom_text(data = x, aes(label=letters, y = wDCt + LCL + letter.position.adjust), color = "black",
+      geom_text(data = x, aes(label=letters, y = RE + LCL + letter.position.adjust), color = "black",
                 show.legend = FALSE, position = position_dodge(bar.width))
   }
   

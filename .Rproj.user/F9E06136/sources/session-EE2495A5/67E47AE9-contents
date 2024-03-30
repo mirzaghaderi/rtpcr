@@ -1,0 +1,36 @@
+oneFACTORfcplot(aa,
+                levels = c(2, 1),
+                level.names = c("Control", "t"),
+                width = 0.5,
+                fill = "skyblue",
+                y.axis.adjust = 1,
+                y.axis.by = 1,
+                letter.position.adjust = 0.3,
+                ylab = "Average Fold Change",
+                xlab = "Pairs",
+                fontsize = 12)
+
+aa <- read.table(text = "
+SA Rep EPO  POCt EGAPDH GAPDHCt
+L1   1   2 31.26      2   28.87
+L1   2   2 31.01      2   28.42
+L1   3   2 30.97      2   28.53
+L2   1   2 32.65      2   28.31
+L2   2   2 32.03      2   29.14
+L2   3   2 32.40      2   28.63
+", header = T)
+31.26
+31.01
+30.97
+
+qpcrTTESTplot(data_ttest,
+              order = c("C2H2-01", "C2H2-12", "C2H2-26"),
+              paired = FALSE,
+              var.equal = TRUE,
+              width = 0.5,
+              fill = "skyblue",
+              y.axis.adjust = 0,
+              y.axis.by = 2,
+              letter.position.adjust = 0.3,
+              ylab = "Average Fold Change",
+              xlab = "Gene")

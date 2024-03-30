@@ -6,16 +6,22 @@
 \usage{
 qpcrANOVA(
   x,
+  numberOfrefGenes = 1,
+  block = NULL,
   p.adj = c("none", "holm", "hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")
 )
 }
 \arguments{
 \item{x}{A data frame consisting of condition columns, target gene efficiency (E), target Gene Ct, reference gene efficiency and reference gene Ct values, respectively. Each Ct in the data frame is the mean of technical replicates. Complete amplification efficiencies of 2 was assumed in the example data for all wells but the calculated efficienies can be used instead.}
 
+\item{numberOfrefGenes}{number of reference genes. Up to two reference genes can be handled.}
+
+\item{block}{column name of the blocking factor (for correct column arrangement see example data.)}
+
 \item{p.adj}{Method for adjusting p values (see p.adjust)}
 }
 \value{
-A list with 6 elements:
+A list with 5 elements:
 \describe{
   \item{Final_data}{The final row data including weighed delta Ct (wDCt) values.}
   \item{lm}{The output of linear model analysis including ANOVA tables based on factorial experiment and completely randomized design (CRD).}
@@ -37,7 +43,16 @@ The qpcrANOVA performs ANOVA (analysis of variance) of qPCR data. It is suitable
 # should be calculated first using meanTech function.
 
 # Applying ANOVA analysis
-qpcrANOVA(data_3factor_a, p.adj = "none")
+qpcrANOVA(
+     data_3factor_a,
+     numberOfrefGenes = 1,
+     p.adj = "none")
+
+
+qpcrANOVA(
+    data_2factorBlock,
+    block = "Block",
+    numberOfrefGenes = 1)
 
 
 }

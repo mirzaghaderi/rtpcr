@@ -51,7 +51,7 @@ Bar  plot of the average fold change for target genes along with the significanc
 Bar plot of the average fold change for target genes along with the 95 percent CI and significance
 }
 \details{
-The qpcrTTESTplot function applies a t.test based analysis to any number of genes along with one reference gene, that have been evaluated under control and treatment conditions, and returns the bar plot of the average fold change for target genes along with the 95\% CI and significance.
+The \code{qpcrTTESTplot} function applies a t.test based analysis to any number of genes along with one reference gene, that have been evaluated under control and treatment conditions, and returns the bar plot of the average fold change for target genes along with the 95\% CI and significance.
 }
 \examples{
 

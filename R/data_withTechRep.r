@@ -1,6 +1,6 @@
 #' A sample data with technical replicates
 #'
-#' A sample data with technical replicates for demonstration purposes.
+#' A sample data for calculating biological replicated.
 #'
 #' @format A data frame with 18 observations and 9 variables:
 #' \describe{

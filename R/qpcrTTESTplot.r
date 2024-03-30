@@ -1,6 +1,6 @@
 #' @title Plot of the average fold change of the target genes
 #' @description Bar plot of the average fold change for target genes along with the 95 percent CI and significance
-#' @details The qpcrTTESTplot function applies a t.test based analysis to any number of genes along with one reference gene, that have been evaluated under control and treatment conditions, and returns the bar plot of the average fold change for target genes along with the 95\% CI and significance.
+#' @details The \code{qpcrTTESTplot} function applies a t.test based analysis to any number of genes along with one reference gene, that have been evaluated under control and treatment conditions, and returns the bar plot of the average fold change for target genes along with the 95\% CI and significance.
 #' @author Ghader Mirzaghaderi
 #' @export qpcrTTESTplot
 #' @import tidyr
@@ -80,8 +80,10 @@ qpcrTTESTplot <- function(x,
   }
 
 
+  TTESTRES <- qpcrTTEST(x, paired = paired, var.equal = var.equal)
+  
   # Getting barplot:
-  df2 <- as.data.frame(qpcrTTEST(x, paired = paired, var.equal = var.equal)[[2]])
+  df2 <- as.data.frame(TTESTRES[[2]])
 
   # Convert the column to a factor with specified levels
   df2$Gene <- factor(df2$Gene, levels = order)
@@ -91,9 +93,9 @@ qpcrTTESTplot <- function(x,
 
   Gene <- df2$Gene
   Gene <- factor(Gene, levels = Gene)
-  Fold_Change <- df2$Fold_Change
-  Lower.Er <- df2$Lower.Er
-  Upper.Er <- df2$Upper.Er
+  Fold_Change <- df2$FC
+  Lower.Er <- df2$LCL
+  Upper.Er <- df2$UCL
   pvalue <- df2$pvalue
 
   p <- ggplot(df2, aes(Gene, as.numeric(Fold_Change))) +

@@ -73,17 +73,17 @@ twoFACTORplot <- function(x,
                           xlab = "Gene",
                           legend.position = c(0.09, 0.8),
                           fontsize = 12){
-  wDCt <- x$wDCt
+  RE <- x$RE
   std <- x$std
   LCL <- x$LCL
   UCL <- x$UCL
   
   qq1 <- ggplot(x, aes(factor({{x.axis.factor}}, levels = as.character(unique({{x.axis.factor}}))),
-                       y = wDCt, group = {{ group.factor }}, fill = {{ group.factor }})) +
+                       y = RE, group = {{ group.factor }}, fill = {{ group.factor }})) +
     geom_col(color = "black", position = "dodge", width = width) +
     scale_fill_brewer(palette = fill) +
     #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
-    geom_errorbar(aes(ymin = wDCt, ymax = wDCt + std), width = 0.2, position = position_dodge(width = 0.5)) +
+    geom_errorbar(aes(ymin = RE, ymax = RE + std), width = 0.2, position = position_dodge(width = 0.5)) +
     ylab(ylab) +
     xlab(xlab) +
     theme_bw() +
@@ -91,14 +91,14 @@ twoFACTORplot <- function(x,
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
           axis.title  = element_text(size = fontsize),
           legend.text = element_text(size = fontsize)) +
-    scale_y_continuous(breaks = seq(0, max(wDCt) + max(std) + y.axis.adjust, by = y.axis.by), 
-                       limits = c(0, max(wDCt) + max(std) + y.axis.adjust), expand = c(0, 0)) +
+    scale_y_continuous(breaks = seq(0, max(RE) + max(std) + y.axis.adjust, by = y.axis.by), 
+                       limits = c(0, max(RE) + max(std) + y.axis.adjust), expand = c(0, 0)) +
     theme(legend.position  = legend.position) +
     theme(legend.title = element_text(size = fontsize, color = "black"))
   
   if (show.letters) {
     qq1 <-qq1 + 
-      geom_text(data = x, aes(label = letters, x = {{ x.axis.factor }}, y = wDCt + std + letter.position.adjust), 
+      geom_text(data = x, aes(label = letters, x = {{ x.axis.factor }}, y = RE + std + letter.position.adjust), 
                 vjust = -0.5, size = 4, position = position_dodge(width = 0.5))
   }
   
@@ -106,11 +106,11 @@ twoFACTORplot <- function(x,
   
   
   qq2 <- ggplot(x, aes(factor({{x.axis.factor}}, levels = as.character(unique({{x.axis.factor}}))),
-                       y = wDCt, group = {{ group.factor }}, fill = {{ group.factor }})) +
+                       y = RE, group = {{ group.factor }}, fill = {{ group.factor }})) +
     geom_col(color = "black", position = "dodge", width = width) +
     scale_fill_brewer(palette = fill) +
     #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
-    geom_errorbar(aes(ymin = wDCt - UCL, ymax = wDCt + LCL), width = 0.2, position = position_dodge(width = 0.5)) +
+    geom_errorbar(aes(ymin = RE - UCL, ymax = RE + LCL), width = 0.2, position = position_dodge(width = 0.5)) +
     ylab(ylab) +
     xlab(xlab) +
     theme_bw() +
@@ -118,14 +118,14 @@ twoFACTORplot <- function(x,
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
           axis.title  = element_text(size = fontsize),
           legend.text = element_text(size = fontsize)) +
-    scale_y_continuous(breaks = seq(0, max(wDCt) + max(LCL) + y.axis.adjust, by = y.axis.by), 
-                       limits = c(0, max(wDCt) + max(LCL) + y.axis.adjust), expand = c(0, 0)) +
+    scale_y_continuous(breaks = seq(0, max(RE) + max(LCL) + y.axis.adjust, by = y.axis.by), 
+                       limits = c(0, max(RE) + max(LCL) + y.axis.adjust), expand = c(0, 0)) +
     theme(legend.position  = legend.position) +
     theme(legend.title = element_text(size = fontsize, color = "black"))
   
   if (show.letters) {
     qq2 <- qq2 + 
-      geom_text(data = x, aes(label = letters, x = {{ x.axis.factor }}, y = wDCt + LCL + letter.position.adjust), 
+      geom_text(data = x, aes(label = letters, x = {{ x.axis.factor }}, y = RE + LCL + letter.position.adjust), 
                 vjust = -0.5, size = 4, position = position_dodge(width = 0.5))
   }
   

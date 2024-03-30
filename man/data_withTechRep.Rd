@@ -25,7 +25,7 @@ Where the data comes from (if applicable)
 data(data_withTechRep)
 }
 \description{
-A sample data with technical replicates for demonstration purposes.
+A sample data for calculating biological replicated.
 }
 \examples{
 data(data_withTechRep)

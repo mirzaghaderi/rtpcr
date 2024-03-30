@@ -27,7 +27,7 @@
 #' out <- qpcrANOVA(data_1factor)$Result
 #'
 #' # Bar plot
-#' function(out,
+#' oneFACTORplot(out,
 #'          width = 0.2,
 #'          fill = "skyblue",
 #'          y.axis.adjust = 0.5,
@@ -55,15 +55,15 @@ oneFACTORplot <- function(x,
                           xlab = "Factor",
                           fontsize = 12){
 
-  wDCt <- x$wDCt
+  RE <- x$RE
   std <- x$std
   LCL <- x$LCL
   UCL <- x$UCL
 
-  q1f1 <- ggplot(x, aes(rownames(x), y = wDCt, group = rownames(x))) +
+  q1f1 <- ggplot(x, aes(rownames(x), y = RE, group = rownames(x))) +
     geom_col(color = "black", fill = fill, width = width) +
     #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
-    geom_errorbar(aes(ymin = wDCt, ymax = wDCt + std), width = 0.1) +
+    geom_errorbar(aes(ymin = RE, ymax = RE + std), width = 0.1) +
     ylab(ylab) +
     xlab(xlab) +
     theme_bw() +
@@ -71,22 +71,22 @@ oneFACTORplot <- function(x,
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
           axis.title  = element_text(size = fontsize),
           legend.text = element_text(size = fontsize)) +
-    scale_y_continuous(breaks = seq(0, max(wDCt) + max(std) + y.axis.adjust, by = y.axis.by),
-                       limits = c(0, max(wDCt) + max(std) + y.axis.adjust), expand = c(0, 0))
+    scale_y_continuous(breaks = seq(0, max(RE) + max(std) + y.axis.adjust, by = y.axis.by),
+                       limits = c(0, max(RE) + max(std) + y.axis.adjust), expand = c(0, 0))
 
   if (show.letters) {
     q1f1 <-q1f1 +
-      geom_text(data = x, aes(label = letters, x = rownames(x), y = wDCt + std + letter.position.adjust),
+      geom_text(data = x, aes(label = letters, x = rownames(x), y = RE + std + letter.position.adjust),
                 vjust = -0.5, size = 4)
   }
 
 
 
 
-  q1f2 <- ggplot(x, aes(rownames(x), y = wDCt, group = rownames(x))) +
+  q1f2 <- ggplot(x, aes(rownames(x), y = RE, group = rownames(x))) +
     geom_col(color = "black", fill = fill, width = width) +
     #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
-    geom_errorbar(aes(ymin = wDCt - UCL, ymax = wDCt + LCL), width = 0.1) +
+    geom_errorbar(aes(ymin = RE - UCL, ymax = RE + LCL), width = 0.1) +
     ylab(ylab) +
     xlab(xlab) +
     theme_bw() +
@@ -94,12 +94,12 @@ oneFACTORplot <- function(x,
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
           axis.title  = element_text(size = fontsize),
           legend.text = element_text(size = fontsize)) +
-    scale_y_continuous(breaks = seq(0, max(wDCt) + max(LCL) + y.axis.adjust, by = y.axis.by),
-                       limits = c(0, max(wDCt) + max(LCL) + y.axis.adjust), expand = c(0, 0))
+    scale_y_continuous(breaks = seq(0, max(RE) + max(LCL) + y.axis.adjust, by = y.axis.by),
+                       limits = c(0, max(RE) + max(LCL) + y.axis.adjust), expand = c(0, 0))
 
   if (show.letters) {
     q1f2 <- q1f2 +
-      geom_text(data = x, aes(label = letters, x = rownames(x), y = wDCt + LCL + letter.position.adjust),
+      geom_text(data = x, aes(label = letters, x = rownames(x), y = RE + LCL + letter.position.adjust),
                 vjust = -0.5, size = 4)
   }
 

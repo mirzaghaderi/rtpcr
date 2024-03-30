@@ -538,9 +538,15 @@ twoFACTORplot(res,
    show.letters = TRUE)
 ```
 
-<img src="https://raw.githubusercontent.com/mirzaghaderi/iqpcr/38a0bad0c7ae2fd40a9abd44d3b4977923c7a276/Figure2-copy.jpg">
+<img src="https://raw.githubusercontent.com/mirzaghaderi/iqpcr/7ff54cdbd095c731ba12eaa4a6aa474ef2b039eb/Figure%202.jpg">
 
-*Figure 2 - A) Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests via `qpcrTTESTplot` function. Error bars represent 95% confidence interval. B-D) Average relative expression of a target gene under two different or three factors produced by `twoFACTORplot` (C) and `twoFACTORplot` (B and D) functions. Error bars represent standard deviations also they can be set to confidence interval. Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an `LSD.test`.*
+*Figure 3 - Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests via ‘qpcrTTESTplot’ function (A). Plot of average Fold changes of one gene under a three-level conditions which level1 has been selected as check. Check level can be changed by the user. The plot produced by the ‘oneFACTORfcplot’ function (B). plot of the same data of ‘B’ represented as Relative expression using ‘oneFACTORplot’ function (C). Error bars represent 95% confidence interval.*
+
+
+<img src="https://raw.githubusercontent.com/mirzaghaderi/iqpcr/7ff54cdbd095c731ba12eaa4a6aa474ef2b039eb/Figure%203.jpg">
+
+*Figure 3 - A) Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests via `qpcrTTESTplot` function. Error bars represent 95% confidence interval. B-D) Average relative expression of a target gene under two different or three factors produced by `twoFACTORplot` (C) and `twoFACTORplot` (B and D) functions. Error bars represent standard deviations also they can be set to confidence interval. Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an `LSD.test`.*
+
 
 
 ```r

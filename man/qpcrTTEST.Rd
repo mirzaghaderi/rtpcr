@@ -4,12 +4,12 @@
 \alias{qpcrTTEST}
 \title{qpcrTTEST to compute the average fold change and related statistics}
 \usage{
-qpcrTTEST(x, NumberOfrefGenes = 1, paired = FALSE, var.equal = FALSE)
+qpcrTTEST(x, numberOfrefGenes = 1, paired = FALSE, var.equal = FALSE)
 }
 \arguments{
 \item{x}{a data frame of 4 columns including Conditions, E (efficiency), Gene and Ct values (see example below). Biological replicates needs to be equal for all Genes. Each Ct value is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used instead.}
 
-\item{NumberOfrefGenes}{number of reference genes. Up to two reference genes can be handled.}
+\item{numberOfrefGenes}{number of reference genes. Up to two reference genes can be handled.}
 
 \item{paired}{a logical indicating whether you want a paired t-test.}
 

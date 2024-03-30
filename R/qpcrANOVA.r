@@ -1,4 +1,4 @@
-#' @title qpcr Analysis of Variance
+#' @title qPCR Analysis of Variance
 #' @description Analysis of Variance of qPCR data
 #' @details The qpcrANOVA performs ANOVA (analysis of variance) of qPCR data. It is suitable when there is a factor with more than two levels or when the are more that a condition factor in the experiment or when there is a blocking factor.
 #' @author Ghader Mirzaghaderi

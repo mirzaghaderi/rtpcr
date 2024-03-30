@@ -58,10 +58,11 @@ library(iqpcr)
 ```
 
 
-# Data structure and column arrangement required for ‘iqpcr’ package.
+# Data structure and column arrangement
 
 To use the functions, input data should be prepared in the right format with appropriate column arrangement. The correct column arrangement is shown in Table 1.
 
+*Table 1. Data structure and column arrangement required for ‘iqpcr’ package.*
 | Experiment type   |                  Column arrangement |
  |:---------------------|:-----------------------------------------------|
  |Amplification efficiency             |Dilutions targetCt refCt |

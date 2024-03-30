@@ -86,18 +86,18 @@ To use the functions, input data should be prepared in the right format with app
 To simplify 'iqpcr, usage, examples for using the functions are presented below.
 
 *Table 1. Functions and examples for using them.*
-| function   |                 Analysis | Example (see package help for the arguments) |
+| function   |                 Analysis | Example (see package help for the more arguments) |
  |:---------------------|:-----------------------------------|:----------------------------------|
  | 'efficiency'             | Efficiency, standard curves and related statistics | efficiency(data_efficiency) |
  | meanTech      | Calculating the mean of technical replicates | meanTech(data_withTechRep, groups = 1:4) |
  | oneFACTORfcplot      | Bar plot of the average fold change of one target gene with two or more levels | oneFACTORfcplot(data_1factor, levels = c(3, 2, 1), level.names = c("A1", "A2", "A3"), |
  |  oneFACTORplot    | Bar plot of the relative gene expression from a one-factor experiment | out <- qpcrANOVA(data_1factor)$Result  -->   oneFACTORplot(out) |
- |  qpcrANOVA  | Analysis of Variance of the qpcr data  | data_3factor_b |
- | qpcrTTEST     | Computing the average fold change and related statistics | |
- | qpcrTTESTplot  | Bar plot of the average fold change of the target genes	 | data_2factorBlock |
+ |  qpcrANOVA  | Analysis of Variance of the qpcr data  | qpcrANOVA(data_3factor_a, numberOfrefGenes = 1, p.adj = "none")|
+ | qpcrTTEST     | Computing the average fold change and related statistics | qpcrTTEST(data_ttest, paired = FALSE, var.equal = TRUE) |
+ | qpcrTTESTplot  | Bar plot of the average fold change of the target genes	 | qpcrTTESTplot(data_ttest, order = c("C2H2-01", "C2H2-12", "C2H2-26") |
  |  threeFACTORplot  | Bar plot of the relative gene expression from a three-factor experiment | |
  | twoFACTORplot   | Bar plot of the relative gene expression from a two-factor experiment | |
-
+*see package help for the more arguments including the number if reference genes, blocking, and arguments for adjusting the barplots.*
  
 
 

@@ -213,7 +213,10 @@ have been evaluated under control and treatment conditions. The analysis can be 
 
 
 ```r
-qpcrTTEST(data_ttest, paired = F, var.equal = T)
+qpcrTTEST(data_ttest, 
+          numberOfrefGenes = 1,
+	  paired = F, 
+	  var.equal = T)
 ```
 
 ```
@@ -252,13 +255,14 @@ qpcrTTEST(data_ttest, paired = F, var.equal = T)
 
 ```r
 # Producing the plot
-qpcrTTESTplot(data_ttest)
+qpcrTTESTplot(data_ttest, numberOfrefGenes = 1)
 ```
 
 
 ```r
 # Producing the plot: specifying gene order
 qpcrTTESTplot(data_ttest,
+   numberOfrefGenes = 1,
    order = c("C2H2-01", "C2H2-12", "C2H2-26"),
    paired = FALSE,
    var.equal = TRUE,
@@ -339,7 +343,9 @@ The `qpcrANOVA` function produces the main analysis output including mean wDCt, 
 
 ```r
 # Applying ANOVA analysis
-qpcrANOVA(data_3factor_a, p.adj = "none")
+qpcrANOVA(data_3factor_a, 
+	  numberOfrefGenes = 1,
+	  p.adj = "none")
 ```
 
 ```
@@ -409,7 +415,7 @@ qpcrANOVA(data_3factor_a, p.adj = "none")
 
 Although the plot of fold changes from a single factor experiment with two levels is done directly from the raw Ct data, before plotting data from two or three factorial experiments, the result table needs to be extracted as below. 
 ```r
-res <- qpcrANOVA(data_2factor)$Result
+res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Result
 res
 
 
@@ -465,7 +471,7 @@ twoFACTORplot(res,
 
 ```r
 # Before plotting, the result needs to be extracted as below:
-res <- qpcrANOVA(data_3factor_b)$Result
+res <- qpcrANOVA(data_3factor_b, numberOfrefGenes = 1)$Result
 res
 ```
 
@@ -536,7 +542,7 @@ If the residuals from a `t.test` or an `lm` object are not normally distributed,
 
 
 ```r
-residualsCRD <- qpcrANOVA(data_3factor_b)$lmCRD$residuals
+residualsCRD <- qpcrANOVA(data_3factor_b, numberOfrefGenes = 1)$lmCRD$residuals
 shapiro.test(residualsCRD) 
 ```
 

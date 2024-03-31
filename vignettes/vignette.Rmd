@@ -171,7 +171,10 @@ Here, the above data set was used for the Fold Change expression analysis of the
 have been evaluated under control and treatment conditions. The analysis can be done for unpaired or paired conditions. The output is a table of target gene names, fold changes confidence limits, and the t.test derived p-values. The `qpcrTTEST` function includes the `var.equal` argument. When set to `FALSE`, `t.test` is performed under the unequal variances hypothesis.
 
 ```{r eval= T}
-qpcrTTEST(data_ttest, paired = F, var.equal = T)
+qpcrTTEST(data_ttest, 
+          numberOfrefGenes = 1,
+          paired = F, 
+          var.equal = T)
 ```
 
 
@@ -182,19 +185,21 @@ The `qpcrTTESTplot` function generates a bar plot of Fold Changes and confidence
 ```{r eval= T, fig.height=3, fig.width=5, fig.align='center', fig.cap = "Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests. Error bars represent 95% confidence interval.", warning = F, message = F}
 
 # Producing the plot
-qpcrTTESTplot(data_ttest)
+qpcrTTESTplot(data_ttest,
+              numberOfrefGenes = 1)
 
 # Producing the plot: specifying gene order
 qpcrTTESTplot(data_ttest,
-   order = c("C2H2-01", "C2H2-12", "C2H2-26"),
-   paired = FALSE,
-   var.equal = TRUE,
-   width = 0.5,
-   fill = "skyblue",
-   y.axis.adjust = 0,
-   y.axis.by = 2,
-   ylab = "Average Fold Change",
-   xlab = "Gene")
+              numberOfrefGenes = 1,
+              order = c("C2H2-01", "C2H2-12", "C2H2-26"),
+              paired = FALSE,
+              var.equal = TRUE,
+              width = 0.5,
+              fill = "skyblue",
+              y.axis.adjust = 0,
+              y.axis.by = 2,
+              ylab = "Average Fold Change",
+              xlab = "Gene")
 ```
 
 ## A target gene under more than two conditions (ANOVA)
@@ -222,14 +227,16 @@ The `qpcrANOVA` function produces the main analysis output including mean wDCt, 
 # should be calculated first using meanTech function.
 
 # Applying ANOVA analysis
-qpcrANOVA(data_3factor_a, p.adj = "none")
+qpcrANOVA(data_3factor_a,
+          numberOfrefGenes = 1,
+          p.adj = "none")
 ```
 
 ### Barplot with the (1-alpha)% confidence interval as error bars
 
 ```{r eval= T, fig.height = 4, fig.width = 6, fig.align = 'center', fig.cap = "Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package."}
 # Before plotting, the result needs to be extracted as below:
-res <- qpcrANOVA(data_2factor)$Result
+res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Result
 res
 
 # Plot of the 'res' data with 'Genotype' as grouping factor
@@ -258,7 +265,7 @@ twoFACTORplot(res,
 ### A three-factorial experiment example
 ```{r, fig.height = 5, fig.width = 7, fig.align = 'center', fig.cap = "Average relative expression of a target gene under three different conditions with two, two and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package."}
 # Before plotting, the result needs to be extracted as below:
-res <- qpcrANOVA(data_3factor_b)$Result
+res <- qpcrANOVA(data_3factor_b, numberOfrefGenes = 1)$Result
 res
 
 # Arrange the first three colunms of the result table.
@@ -319,7 +326,7 @@ If the residuals from a `t.test` or a `lm` object are not normally distributed, 
 
 ```{r eval= T, eval= T, , fig.height = 4, fig.width = 5, fig.align = 'center', fig.cap = "QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions."}
 
-residualsCRD <- qpcrANOVA(data_3factor_b)$lmCRD$residuals
+residualsCRD <- qpcrANOVA(data_3factor_b, numberOfrefGenes = 1)$lmCRD$residuals
 shapiro.test(residualsCRD) 
 qqnorm(residualsCRD)
 qqline(residualsCRD, col = "red")

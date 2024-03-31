@@ -49,7 +49,7 @@
 
 
 qpcrTTEST <- function(x,
-                      numberOfrefGenes = 1,
+                      numberOfrefGenes,
                       paired = FALSE,
                       var.equal = FALSE) {
 

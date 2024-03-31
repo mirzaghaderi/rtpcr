@@ -53,7 +53,7 @@ The \code{oneFACTORplot} function generates the bar plot of the average fold cha
 \examples{
 
 # Before plotting, the result needs to be extracted as below:
-out <- qpcrANOVA(data_1factor)$Result
+out <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result
 
 # Bar plot
 oneFACTORplot(out,

@@ -29,21 +29,23 @@
 #' data_ttest
 #'
 #'
-#' qpcrTTESTplot(data_ttest)
+#' qpcrTTESTplot(data_ttest, 
+#'               numberOfrefGenes = 1)
 #'
 #'
 #' # Producing the plot
 #' qpcrTTESTplot(data_ttest,
-#'    order = c("C2H2-01", "C2H2-12", "C2H2-26"),
-#'    paired = FALSE,
-#'    var.equal = TRUE,
-#'    width = 0.5,
-#'    fill = "skyblue",
-#'    y.axis.adjust = 0,
-#'    y.axis.by = 2,
-#'    letter.position.adjust = 0.3,
-#'    ylab = "Average Fold Change",
-#'    xlab = "Gene")
+#'               numberOfrefGenes = 1,
+#'               order = c("C2H2-01", "C2H2-12", "C2H2-26"),
+#'               paired = FALSE,
+#'               var.equal = TRUE,
+#'               width = 0.5,
+#'               fill = "skyblue",
+#'               y.axis.adjust = 0,
+#'               y.axis.by = 2,
+#'               letter.position.adjust = 0.3,
+#'               ylab = "Average Fold Change",
+#'               xlab = "Gene")
 #'
 #'
 

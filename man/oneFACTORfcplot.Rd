@@ -61,7 +61,7 @@ data_1factor
 
 # Producing the plot
 oneFACTORfcplot(data_1factor,
-                numberOfrefGenes,
+                numberOfrefGenes = 1,
                 levels = c(3, 2, 1),
                 level.names = c("A1", "A2", "A3"),
                 width = 0.5,

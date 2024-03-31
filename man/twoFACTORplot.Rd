@@ -62,7 +62,7 @@ The \code{twoFACTORplot} function generates the bar plot of the average fold cha
 \examples{
 
 # Before plotting, the result needs to be extracted as below:
-res <- qpcrANOVA(data_2factor)$Result
+res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Result
 res
 
 # Plot of the 'res' data with 'Genotype' as grouping factor

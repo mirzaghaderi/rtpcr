@@ -30,7 +30,7 @@
 #'
 #' # Producing the plot
 #' oneFACTORfcplot(data_1factor,
-#'                 numberOfrefGenes,
+#'                 numberOfrefGenes = 1,
 #'                 levels = c(3, 2, 1),
 #'                 level.names = c("A1", "A2", "A3"),
 #'                 width = 0.5,
@@ -62,8 +62,8 @@ oneFACTORfcplot <- function(
 
   
   if(numberOfrefGenes == 1) {
-    FINALDATA  <- qpcrANOVA(x)$Final_data
-    POSTHUC <- qpcrANOVA(x)$Post_hoc_Test
+    FINALDATA  <- qpcrANOVA(x, numberOfrefGenes = 1)$Final_data
+    POSTHUC <- qpcrANOVA(x, numberOfrefGenes = 1)$Post_hoc_Test
   } else {
     FINALDATA  <- qpcrANOVA(x, numberOfrefGenes = 2)$Final_data
     POSTHUC <- qpcrANOVA(x, numberOfrefGenes = 2)$Post_hoc_Test

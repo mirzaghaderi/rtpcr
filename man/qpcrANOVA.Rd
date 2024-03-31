@@ -6,7 +6,7 @@
 \usage{
 qpcrANOVA(
   x,
-  numberOfrefGenes = 1,
+  numberOfrefGenes,
   block = NULL,
   p.adj = c("none", "holm", "hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")
 )
@@ -14,7 +14,7 @@ qpcrANOVA(
 \arguments{
 \item{x}{A data frame consisting of condition columns, target gene efficiency (E), target Gene Ct, reference gene efficiency and reference gene Ct values, respectively. Each Ct in the data frame is the mean of technical replicates. Complete amplification efficiencies of 2 was assumed in the example data for all wells but the calculated efficienies can be used instead.}
 
-\item{numberOfrefGenes}{number of reference genes. Up to two reference genes can be handled.}
+\item{numberOfrefGenes}{number of reference genes (1 or 2). Up to two reference genes can be handled.}
 
 \item{block}{column name of the blocking factor (for correct column arrangement see example data.)}
 

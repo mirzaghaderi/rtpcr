@@ -63,6 +63,9 @@ oneFACTORfcplot <- function(
     fontsize = 12){
   
   
+  xfl <- x[,1]
+  levels <- rev(levels)
+  x$SA <- levels[as.factor(xfl)]
   
   if(numberOfrefGenes == 1) {
     FINALDATA  <- qpcrANOVA(x, numberOfrefGenes = 1)$Final_data
@@ -73,10 +76,6 @@ oneFACTORfcplot <- function(
   }
   
   
-  
-  xfl <- x[,1]
-  levels <- rev(levels)
-  x$SA <- levels[as.factor(xfl)]
   Nrows <- length(unique(FINALDATA[,1])[-1])
   withControl  <- POSTHUC[1:Nrows,]
   withControl
@@ -121,5 +120,5 @@ oneFACTORfcplot <- function(
                   Table = tableC)
   return(outlist)
 }
-
-
+                 
+               

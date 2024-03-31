@@ -68,17 +68,17 @@ To use the functions, input data should be prepared in the right format with app
 *Table 1. Data structure and column arrangement required for ‘iqpcr’ package.*
 | Experiment type   |                  Column arrangement of the input data | Example in the package |
  |:---------------------|:-----------------------------------|:----------------------------------|
- |Amplification efficiency             |Dilutions targetCt refCt | data_efficiency |
- |t-test (accepts multiple genes)      |condition efficiency gene Ct (put reference gene(s) in the end.) | data_ttest |
- |Factorial (Up to three factors)      |factor1 rep targetE targetCt refE refCt | data_1factor |
- |                                     |factor1 factor2 rep targetE targetCt refE refCt | data_2factor |
- |                                     |factor1 factor2 factor3 rep targetE targetCt refE refCt | data_3factor_b |
- |Factorial with blocking              |factor1 block rep targetE targetCt refE refCt | |
- |                                     |factor1 factor2 block rep targetE targetCt refE refCt	 | data_2factorBlock |
- |                                     |factor1 factor2 factor3 block rep targetE targetCt refE refCt | |
- |Two reference genes                  |. . . . . .  rep targetE targetCt ref1E ref1Ct ref2E ref2Ct | |
- |calculating biological replicated    |. . . . . .  biologicalRep techcicalRep Etarget targetCt Eref refCt  | data_withTechRep |
- |                                       |. . . . . .  biologicalRep techcicalRep Etarget targetCt ref1E ref1Ct ref2E ref2Ct  | |
+ |Amplification efficiency             |Dilutions - targetCt - refCt | data_efficiency |
+ |t-test (accepts multiple genes)      |condition (put the control level first) - efficiency - gene - Ct (put reference gene(s) in the end.) | data_ttest |
+ |Factorial (Up to three factors)      |factor1 - rep - targetE - targetCt - refE - refCt | data_1factor |
+ |                                     |factor1 - factor2 - rep - targetE - targetCt - refE - refCt | data_2factor |
+ |                                     |factor1 - factor2 - factor3 - rep - targetE - targetCt - refE - refCt | data_3factor_b |
+ |Factorial with blocking              |factor1 - block - rep - targetE - targetCt - refE - refCt | |
+ |                                     |factor1 - factor2 - block - rep - targetE - targetCt - refE - refCt	 | data_2factorBlock |
+ |                                     |factor1 - factor2 - factor3 - block - rep - targetE - targetCt - refE - refCt | |
+ |Two reference genes                  |. . . . . .  rep - targetE - targetCt - ref1E - ref1Ct - ref2E - ref2Ct | |
+ |calculating biological replicated    |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - Eref - refCt  | data_withTechRep |
+ |                                       |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - ref1E - ref1Ct - ref2E - ref2Ct  | |
 
 
 # functions built in 'iqpcr' package

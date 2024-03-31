@@ -103,8 +103,8 @@ oneFACTORfcplot <- function(
                   width=0.1) +
     geom_text(aes(label = significance,
                   x = pairs,
-                  y = FCp + UCLp),
-              vjust = -0.5, size = 4) +
+                  y = FCp + UCLp + letter.position.adjust),
+              vjust = -0.5, size = 8) +
     ylab(ylab) + xlab(xlab) +
     theme_bw()+
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),

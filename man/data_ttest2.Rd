@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_ttest2}
 \alias{data_ttest2}
-\title{A sample data with one target and two reference gens}
+\title{A sample data with one target and two reference genes}
 \format{
 A data frame with 24 observations and 4 variables:
 \describe{
@@ -24,7 +24,7 @@ One target and two reference gens for demonstrating qPCR data analysis.
 }
 \examples{
 data(data_ttest2)
-data_ttest
+data_ttest2
 
 }
 \keyword{datasets}

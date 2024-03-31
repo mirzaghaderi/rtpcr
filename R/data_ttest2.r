@@ -16,12 +16,12 @@
 #'
 #' @examples
 #' data(data_ttest2)
-#' data_ttest
+#' data_ttest2
 #'
 #' @export
 
 data_ttest2 <- read.table(text = "
-condition	E	Gene	Ct 
+Condition	E	Gene	Ct 
 control	2	g	31.26
 control	2	g	31.01
 control	2	g	30.97

@@ -57,7 +57,7 @@ oneFACTORfcplot <- function(
     fill = "skyblue",
     y.axis.adjust = 1,
     y.axis.by = 1,
-    letter.position.adjust = 0.3,
+    letter.position.adjust = 0.1,
     ylab = "Average Fold Change",
     xlab = "Pairs",
     fontsize = 12){
@@ -65,7 +65,7 @@ oneFACTORfcplot <- function(
   
   xfl <- x[,1]
   levels <- rev(levels)
-  condition <- colnames(x)[1]
+  colnames(x)[1] <- "condition"
   x$condition <- levels[as.factor(xfl)]
   
   if(numberOfrefGenes == 1) {

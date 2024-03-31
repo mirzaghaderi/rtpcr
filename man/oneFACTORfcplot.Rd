@@ -14,7 +14,7 @@ oneFACTORfcplot(
   fill = "skyblue",
   y.axis.adjust = 1,
   y.axis.by = 1,
-  letter.position.adjust = 0.3,
+  letter.position.adjust = 0.1,
   ylab = "Average Fold Change",
   xlab = "Pairs",
   fontsize = 12

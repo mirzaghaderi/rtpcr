@@ -81,7 +81,7 @@ To use the functions, input data should be prepared in the right format with app
  |                                       |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - ref1E - ref1Ct - ref2E - ref2Ct  | |
 
 
-# functions built in 'iqpcr' package
+# functions usage
 
 To simplify 'iqpcr, usage, examples for using the functions are presented below.
 

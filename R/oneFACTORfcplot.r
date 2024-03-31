@@ -10,6 +10,7 @@
 #' @import lme4
 #' @import agricolae
 #' @param x a data frame. The data frame consists of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct in the following data frame is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used we well. We use this data set for Fold Change expression analysis of the target genes in treatment condition compared to normal condition.
+#' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.
 #' @param levels a numeric vector with the length equal to the factor levels. First number indicates Control.
 #' @param level.names  level name according to the given level numbers to be presented on the plot.
 #' @param width a positive number determining bar width.
@@ -29,6 +30,7 @@
 #'
 #' # Producing the plot
 #' oneFACTORfcplot(data_1factor,
+#'                 numberOfrefGenes,
 #'                 levels = c(3, 2, 1),
 #'                 level.names = c("A1", "A2", "A3"),
 #'                 width = 0.5,
@@ -43,7 +45,9 @@
 #'
 
 
-oneFACTORfcplot <- function(x,
+oneFACTORfcplot <- function(
+                          x,
+                          numberOfrefGenes,
                           levels,
                           level.names,
                           width = 0.5,
@@ -56,8 +60,17 @@ oneFACTORfcplot <- function(x,
                           fontsize = 12){
 
 
-FINALDATA  <- qpcrANOVA(x)$Final_data
-POSTHUC <- qpcrANOVA(x)$Post_hoc_Test
+  
+  if(numberOfrefGenes == 1) {
+    FINALDATA  <- qpcrANOVA(x)$Final_data
+    POSTHUC <- qpcrANOVA(x)$Post_hoc_Test
+  } else {
+    FINALDATA  <- qpcrANOVA(x, numberOfrefGenes = 2)$Final_data
+    POSTHUC <- qpcrANOVA(x, numberOfrefGenes = 2)$Post_hoc_Test
+  }
+  
+  
+
 xfl <- x[,1]
 levels <- rev(levels)
 x$SA <- levels[as.factor(xfl)]
@@ -95,3 +108,5 @@ outlist <- list(plot = pfc,
                 Table = tableC)
 return(outlist)
 }
+
+

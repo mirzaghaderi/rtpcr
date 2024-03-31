@@ -6,6 +6,7 @@
 \usage{
 oneFACTORfcplot(
   x,
+  numberOfrefGenes,
   levels,
   level.names,
   width = 0.5,
@@ -20,6 +21,8 @@ oneFACTORfcplot(
 }
 \arguments{
 \item{x}{a data frame. The data frame consists of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct in the following data frame is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used we well. We use this data set for Fold Change expression analysis of the target genes in treatment condition compared to normal condition.}
+
+\item{numberOfrefGenes}{number of reference genes. Up to two reference genes can be handled.}
 
 \item{levels}{a numeric vector with the length equal to the factor levels. First number indicates Control.}
 
@@ -58,6 +61,7 @@ data_1factor
 
 # Producing the plot
 oneFACTORfcplot(data_1factor,
+                numberOfrefGenes,
                 levels = c(3, 2, 1),
                 level.names = c("A1", "A2", "A3"),
                 width = 0.5,

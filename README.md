@@ -12,7 +12,7 @@ real-time PCR, also known as quantitative PCR (qPCR), is a powerful analytical t
 
 $$\text{Fold Change} = 2^{-ΔΔCt}$$
 
-= 2^(-(Ct_target-Ct_ref)_Tr) / 2^(-(Ct_target-Ct_ref)_Co)
+$$= 2^(-(Ct_{target}-Ct_{ref})Tr) / 2^(-(Ct_{target}-Ct_{ref})Co)$$
 
 $$= 2^{[-(Ct_{target}-Ct_{ref})Tr - (Ct_{target}-Ct_{ref})Co]}$$
 

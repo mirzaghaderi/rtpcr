@@ -25,7 +25,7 @@ $$= 2^{-ΔΔCt}$$
 where Tr is Treatment and Co is Control conditions, respectively. This method assumes that both the target and reference genes are amplified with efficiencies close to 100%, allowing for the relative quantification of gene expression levels (Livak and Schmittgen, 2001). On the other hand, the Pfaffl method offers a more flexible approach by accounting for differences in amplification efficiencies between the target and reference genes. This method adjusts the calculated expression ratio by incorporating the specific amplification efficiencies, thus providing a more accurate representation of the relative gene expression levels (Pfaffl et al., 2002).
 
 
-$$\text{Fold Change} = E^{-(Ct_{Tr}-Ct_{Co})target} / E^{-(Ct_Tr-Ct_Co)ref}$$
+$$\text{Fold Change} = \frac{E^{-(Ct_{Tr}-Ct_{Co})target}}{E^{-(Ct_Tr-Ct_Co)ref}}$$
 
 # A generalized calculation method
 

@@ -10,6 +10,7 @@
 #' @import lme4
 #' @import agricolae
 #' @param x a data frame. The data frame consists of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct in the following data frame is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used we well. We use this data set for Fold Change expression analysis of the target genes in treatment condition compared to normal condition.
+#' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.
 #' @param order a vector determinig genes order on the output graph.
 #' @param paired  a logical indicating whether you want a paired t-test.
 #' @param var.equal a logical variable indicating whether to treat the two variances as being equal. If TRUE then the pooled variance is used to estimate the variance otherwise the Welch (or Satterthwaite) approximation to the degrees of freedom is used.
@@ -49,6 +50,7 @@
 
 qpcrTTESTplot <- function(x,
                           order = default.order,
+                          numberOfrefGenes,
                           paired = FALSE,
                           var.equal = TRUE,
                           width = 0.5,
@@ -80,7 +82,20 @@ qpcrTTESTplot <- function(x,
   }
 
 
-  TTESTRES <- qpcrTTEST(x, paired = paired, var.equal = var.equal)
+  
+  
+
+  
+  if(numberOfrefGenes == 1) {
+    TTESTRES <- qpcrTTEST(x, numberOfrefGenes = 1, paired = paired, var.equal = var.equal)
+  } else {
+    TTESTRES <- qpcrTTEST(x, numberOfrefGenes = 2, paired = paired, var.equal = var.equal)
+  }
+  
+  
+  
+  
+  
   
   # Getting barplot:
   df2 <- as.data.frame(TTESTRES[[2]])
@@ -118,3 +133,4 @@ qpcrTTESTplot <- function(x,
 
   print(p)
 }
+

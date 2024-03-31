@@ -71,7 +71,7 @@ To use the functions, input data should be prepared in the right format with app
 | Experiment type   |                  Column arrangement of the input data | Example in the package |
  |:---------------------|:-----------------------------------|:----------------------------------|
  |Amplification efficiency             |Dilutions - targetCt - refCt | data_efficiency |
- |t-test (accepts multiple genes)      |condition (put the control level first) - efficiency - gene (put reference gene(s) in the end.) - Ct  | data_ttest |
+ |t-test (accepts multiple genes)      |condition (put the control level first) - efficiency - gene (put reference gene(s) last.) - Ct  | data_ttest |
  |Factorial (Up to three factors)      |factor1 - rep - targetE - targetCt - refE - refCt | data_1factor |
  |                                     |factor1 - factor2 - rep - targetE - targetCt - refE - refCt | data_2factor |
  |                                     |factor1 - factor2 - factor3 - rep - targetE - targetCt - refE - refCt | data_3factor_b |

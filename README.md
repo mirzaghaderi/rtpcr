@@ -16,7 +16,7 @@ $$= 2^{-(Ct_{target}-Ct_{ref})Tr} / 2^{-(Ct_{target}-Ct_{ref})Co}$$
 
 $$= 2^{[-(Ct_{target}-Ct_{ref})Tr - (Ct_{target}-Ct_{ref})Co]}$$
 
-$$= 2^{[-(ΔCt_{Tr} - ΔCt_{Co})]}$$
+$$= 2^{-(ΔCt_{Tr} - ΔCt_{Co})}$$
 
 $$= 2^{-ΔΔCt}$$
 

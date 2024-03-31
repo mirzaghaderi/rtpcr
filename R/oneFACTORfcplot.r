@@ -65,7 +65,8 @@ oneFACTORfcplot <- function(
   
   xfl <- x[,1]
   levels <- rev(levels)
-  x$SA <- levels[as.factor(xfl)]
+  condition <- colnames(x)[1]
+  x$condition <- levels[as.factor(xfl)]
   
   if(numberOfrefGenes == 1) {
     FINALDATA  <- qpcrANOVA(x, numberOfrefGenes = 1)$Final_data

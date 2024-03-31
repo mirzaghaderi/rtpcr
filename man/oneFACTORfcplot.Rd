@@ -8,6 +8,7 @@ oneFACTORfcplot(
   x,
   numberOfrefGenes,
   levels,
+  showCheckLevel = TRUE,
   level.names,
   width = 0.5,
   fill = "skyblue",
@@ -25,6 +26,8 @@ oneFACTORfcplot(
 \item{numberOfrefGenes}{number of reference genes. Up to two reference genes can be handled.}
 
 \item{levels}{a numeric vector with the length equal to the factor levels. First number indicates Control.}
+
+\item{showCheckLevel}{a logical variable determining if the check level column be show in the plot or not.}
 
 \item{level.names}{level name according to the given level numbers to be presented on the plot.}
 
@@ -64,6 +67,7 @@ oneFACTORfcplot(data_1factor,
                 numberOfrefGenes = 1,
                 levels = c(3, 2, 1),
                 level.names = c("A1", "A2", "A3"),
+                showCheckLevel = TRUE,
                 width = 0.5,
                 fill = "skyblue",
                 y.axis.adjust = 1,

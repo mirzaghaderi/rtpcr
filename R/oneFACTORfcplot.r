@@ -13,6 +13,7 @@
 #' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.
 #' @param levels a numeric vector with the length equal to the factor levels. First number indicates Control.
 #' @param level.names  level name according to the given level numbers to be presented on the plot.
+#' @param showCheckLevel a logical variable determining if the check level column be show in the plot or not.
 #' @param width a positive number determining bar width.
 #' @param fill  specify the fill color for the columns of the bar plot.
 #' @param y.axis.adjust  a negative or positive value for reducing or increasing the length of the y axis.
@@ -33,6 +34,7 @@
 #'                 numberOfrefGenes = 1,
 #'                 levels = c(3, 2, 1),
 #'                 level.names = c("A1", "A2", "A3"),
+#'                 showCheckLevel = TRUE,
 #'                 width = 0.5,
 #'                 fill = "skyblue",
 #'                 y.axis.adjust = 1,
@@ -46,20 +48,21 @@
 
 
 oneFACTORfcplot <- function(
-                          x,
-                          numberOfrefGenes,
-                          levels,
-                          level.names,
-                          width = 0.5,
-                          fill = "skyblue",
-                          y.axis.adjust = 1,
-                          y.axis.by = 1,
-                          letter.position.adjust = 0.3,
-                          ylab = "Average Fold Change",
-                          xlab = "Pairs",
-                          fontsize = 12){
-
-
+    x,
+    numberOfrefGenes,
+    levels,
+    showCheckLevel = TRUE,
+    level.names,
+    width = 0.5,
+    fill = "skyblue",
+    y.axis.adjust = 1,
+    y.axis.by = 1,
+    letter.position.adjust = 0.3,
+    ylab = "Average Fold Change",
+    xlab = "Pairs",
+    fontsize = 12){
+  
+  
   
   if(numberOfrefGenes == 1) {
     FINALDATA  <- qpcrANOVA(x, numberOfrefGenes = 1)$Final_data
@@ -70,43 +73,53 @@ oneFACTORfcplot <- function(
   }
   
   
-
-xfl <- x[,1]
-levels <- rev(levels)
-x$SA <- levels[as.factor(xfl)]
-Nrows <- length(unique(FINALDATA[,1])[-1])
-withControl  <- POSTHUC[1:Nrows,]
-withControl
-tableC <- rbind("1 - 1" = data.frame(row.names = "1 - 1", FC = 1, pvalue=1, signif.=" ", LCL=0, UCL=0), withControl)
-UCLp <- tableC$UCL
-LCLp <- tableC$LCL
-FCp <- tableC$FC
-significance <- tableC$signif.
-rownames(tableC) <- level.names
-pairs <- rownames(tableC)
-
-pfc <- ggplot(tableC, aes(factor(pairs, levels = level.names), FCp)) +
-  geom_col(col = "black", fill = fill, width = width) +
-  geom_errorbar(aes(pairs, ymin = FCp - LCLp, ymax =  FCp + UCLp),
-                width=0.1) +
-  geom_text(aes(label = significance,
-                x = pairs,
-                y = FCp + UCLp),
-            vjust = -0.5, size = 4) +
-  ylab(ylab) + xlab(xlab) +
-  theme_bw()+
-  theme(axis.text.x = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
-        axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
-        axis.title  = element_text(size = fontsize)) +
-  scale_y_continuous(breaks=seq(0, max(UCLp) + max(FCp) + y.axis.adjust, by = y.axis.by),
-                     limits = c(0, max(UCLp) + max(FCp) + y.axis.adjust + y.axis.adjust), expand = c(0, 0)) +
-  theme(legend.text = element_text(colour = "black", size = fontsize),
-        legend.background = element_rect(fill = "transparent"))
-
-
-outlist <- list(plot = pfc,
-                Table = tableC)
-return(outlist)
+  
+  xfl <- x[,1]
+  levels <- rev(levels)
+  x$SA <- levels[as.factor(xfl)]
+  Nrows <- length(unique(FINALDATA[,1])[-1])
+  withControl  <- POSTHUC[1:Nrows,]
+  withControl
+  
+  # if check level be shown in the plot or not
+  if(showCheckLevel == TRUE) {
+    tableC <- rbind("1 - 1" = data.frame(row.names = "1 - 1", FC = 1, pvalue=1, signif.=" ", LCL=0, UCL=0), withControl)
+    rownames(tableC) <- level.names 
+  } else {
+    tableC <- withControl
+    rownames(tableC) <- level.names[-1]
+  }
+  
+  
+  pairs <- rownames(tableC)
+  UCLp <- tableC$UCL
+  LCLp <- tableC$LCL
+  FCp <- tableC$FC
+  significance <- tableC$signif.
+  
+  
+  pfc <- ggplot(tableC, aes(factor(pairs, levels = level.names), FCp)) +
+    geom_col(col = "black", fill = fill, width = width) +
+    geom_errorbar(aes(pairs, ymin = FCp - LCLp, ymax =  FCp + UCLp),
+                  width=0.1) +
+    geom_text(aes(label = significance,
+                  x = pairs,
+                  y = FCp + UCLp),
+              vjust = -0.5, size = 4) +
+    ylab(ylab) + xlab(xlab) +
+    theme_bw()+
+    theme(axis.text.x = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
+          axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
+          axis.title  = element_text(size = fontsize)) +
+    scale_y_continuous(breaks=seq(0, max(UCLp) + max(FCp) + y.axis.adjust, by = y.axis.by),
+                       limits = c(0, max(UCLp) + max(FCp) + y.axis.adjust + y.axis.adjust), expand = c(0, 0)) +
+    theme(legend.text = element_text(colour = "black", size = fontsize),
+          legend.background = element_rect(fill = "transparent"))
+  
+  
+  outlist <- list(plot = pfc,
+                  Table = tableC)
+  return(outlist)
 }
 
 

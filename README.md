@@ -67,7 +67,7 @@ library(iqpcr)
 
 To use the functions, input data should be prepared in the right format with appropriate column arrangement. The correct column arrangement is shown in Table 1.
 
-*Table 1. Data structure and column arrangement required for ‘iqpcr’ package.*
+*Table 1. Data structure and column arrangement required for ‘iqpcr’ package.  rep: technical replicate; targetE and refE: amplification efficiency columns for target and reference genes respectively. targetCt and refCt: target and reference Ct columns, respectively. factors (factor1, factor2 and/or factor3): experimental factors.*
 | Experiment type   |                  Column arrangement of the input data | Example in the package |
  |:---------------------|:-----------------------------------|:----------------------------------|
  |Amplification efficiency             |Dilutions - targetCt - refCt | data_efficiency |

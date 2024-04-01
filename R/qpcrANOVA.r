@@ -1,4 +1,4 @@
-#' @title qPCR Analysis of Variance
+#' @title Analysis of Variance of qPCR data
 #' @description Analysis of Variance of qPCR data
 #' @details The qpcrANOVA performs ANOVA (analysis of variance) of qPCR data. It is suitable when there is a factor with more than two levels or when the are more that a condition factor in the experiment or when there is a blocking factor.
 #' @author Ghader Mirzaghaderi
@@ -15,11 +15,11 @@
 #' @param p.adj Method for adjusting p values (see p.adjust)
 #' @return A list with 5 elements:
 #' \describe{
-#'   \item{Final_data}{The final row data including weighed delta Ct (wDCt) values.}
+#'   \item{Final_data}{The row data plus weighed delta Ct (wDCt) values.}
 #'   \item{lm}{The output of linear model analysis including ANOVA tables based on factorial experiment and completely randomized design (CRD).}
 #'   \item{ANOVA_factorial}{ANOVA table based on factorial arrangement}
 #'   \item{ANOVA_CRD}{ANOVA table based on CRD}
-#'   \item{Result}{The main result table including treatments and factors, wDCt, LCL, UCL, letters and standard deviation of average relative expression data.}
+#'   \item{Result}{The result table including treatments and factors, RE (Relative Expression), LCL, UCL, letter grouping and standard deviation of relative expression.}
 #'   \item{Post_hoc_Test}{Post hoc test of FC (Fold Change), pvalue, significance and confidence interval (LCL, UCL).}
 #' }
 #'

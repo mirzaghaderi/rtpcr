@@ -56,7 +56,7 @@ The development version of the `iqpcr` package can be obtained through:
 
 ```r
 # Install from github
-devtools::install_github("mirzaghaderi/iqpcr", build_vignettes = TRUE)
+devtools::install_github("mirzaghaderi/iqpcr")
 
 # Loading the package
 library(iqpcr)

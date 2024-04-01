@@ -48,7 +48,11 @@ oneFACTORfcplot(
 \item{fontsize}{all fonts size of the plot}
 }
 \value{
-Bar plot of the average fold change for target genes along with the significance and the 95 percent CI as error bars.
+A list with 2 elements:
+\describe{
+  \item{Table}{Bar plot of the average fold change for target genes.}
+  \item{plot}{Table of FC values and significance and the 95 percent CI as error bars.}
+}
 }
 \description{
 Bar plot of the relative expression of a gene along with the 95\% confidence interval and significance. There is another function, \code{qpcrTTESTplot}, that is used when the factor has two levels and represents Fold Change. \code{oneFACTORplot} is mainly useful for a one-factor experiment with more than two levels.

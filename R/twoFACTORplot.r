@@ -1,5 +1,5 @@
 #' @title Bar plot of the relative gene expression from a two-factor experiment
-#' @description Bar plot of the relative expression of a gene along with the 95\% confidence interval and significance
+#' @description Bar plot of the relative expression (RE) of a gene along with the 95\% confidence interval and significance
 #' @details The \code{twoFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
 #' @author Ghader Mirzaghaderi
 #' @export twoFACTORplot

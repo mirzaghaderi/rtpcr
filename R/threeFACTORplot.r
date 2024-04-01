@@ -1,5 +1,5 @@
 #' @title Bar plot of the relative gene expression from a three-factor experiment
-#' @description Bar plot of the relative expression of a gene along with the 95\% confidence interval and significance
+#' @description Bar plot of the relative expression (RE) of a gene along with the confidence interval and significance
 #' @details The \code{threeFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
 #' @author Ghader Mirzaghaderi
 #' @export threeFACTORplot
@@ -25,6 +25,9 @@
 #' @param show.letters a logical variable. If TRUE, mean grouping letters are added to the bars. 
 #' @return Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
 #' @examples
+#' 
+#' #' # See a sample data frame
+#' data_3factor_b
 #'
 #' # Before plotting, the result needs to be extracted as below:
 #' res <- qpcrANOVA(data_3factor_b, numberOfrefGenes = 1)$Result

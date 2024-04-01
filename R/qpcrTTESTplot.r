@@ -25,7 +25,7 @@
 #' @return Bar  plot of the average fold change for target genes along with the significance and the 95 percent CI as error bars.
 #' @examples
 #'
-#' # Looking at the data
+#' # See a sample data frame
 #' data_ttest
 #'
 #'

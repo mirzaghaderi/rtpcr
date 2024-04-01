@@ -25,8 +25,11 @@
 #' @param show.letters a logical variable. If TRUE, mean grouping letters are added to the bars. 
 #' @return Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
 #' @examples
+#' 
+#' # See a sample data frame
+#' data_2factor
 #'
-#' # Before plotting, the result needs to be extracted as below:
+#' # Before generating plot, the result table needs to be extracted as below:
 #' res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Result
 #' res
 #'

@@ -9,7 +9,7 @@ oneFACTORfcplot(
   numberOfrefGenes,
   levels,
   showCheckLevel = TRUE,
-  level.names,
+  level.names = "none",
   width = 0.5,
   fill = "skyblue",
   y.axis.adjust = 1,
@@ -29,7 +29,7 @@ oneFACTORfcplot(
 
 \item{showCheckLevel}{a logical variable determining if the check level column be show in the plot or not.}
 
-\item{level.names}{level name according to the given level numbers to be presented on the plot.}
+\item{level.names}{a vector determining level names in the x axis on the plot.}
 
 \item{width}{a positive number determining bar width.}
 
@@ -66,7 +66,7 @@ data_1factor
 oneFACTORfcplot(data_1factor,
                 numberOfrefGenes = 1,
                 levels = c(3, 2, 1),
-                level.names = c("A1", "A2", "A3"),
+                level.names = "none",
                 showCheckLevel = TRUE,
                 width = 0.5,
                 fill = "skyblue",

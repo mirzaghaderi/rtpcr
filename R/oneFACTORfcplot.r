@@ -12,7 +12,7 @@
 #' @param x a data frame. The data frame consists of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct in the following data frame is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used we well. We use this data set for Fold Change expression analysis of the target genes in treatment condition compared to normal condition.
 #' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.
 #' @param levels a numeric vector with the length equal to the factor levels. First number indicates Control.
-#' @param level.names  level name according to the given level numbers to be presented on the plot.
+#' @param level.names  a vector determining level names in the x axis on the plot.
 #' @param showCheckLevel a logical variable determining if the check level column be show in the plot or not.
 #' @param width a positive number determining bar width.
 #' @param fill  specify the fill color for the columns of the bar plot.
@@ -33,7 +33,7 @@
 #' oneFACTORfcplot(data_1factor,
 #'                 numberOfrefGenes = 1,
 #'                 levels = c(3, 2, 1),
-#'                 level.names = c("A1", "A2", "A3"),
+#'                 level.names = "none",
 #'                 showCheckLevel = TRUE,
 #'                 width = 0.5,
 #'                 fill = "skyblue",
@@ -52,7 +52,7 @@ oneFACTORfcplot <- function(
     numberOfrefGenes,
     levels,
     showCheckLevel = TRUE,
-    level.names,
+    level.names = "none",
     width = 0.5,
     fill = "skyblue",
     y.axis.adjust = 1,
@@ -83,11 +83,21 @@ oneFACTORfcplot <- function(
   
   # if check level be shown in the plot or not
   if(showCheckLevel == TRUE) {
-    tableC <- rbind("1 - 1" = data.frame(row.names = "1 - 1", FC = 1, pvalue=1, signif.=" ", LCL=0, UCL=0), withControl)
-    rownames(tableC) <- level.names 
+    tableC <- rbind(data.frame(row.names = "1 - 1", FC = 1, pvalue=1, signif.=" ", LCL=0, UCL=0), withControl)
+    # default level names of add level.names
+    if (any(level.names == "none")) {
+      rownames(tableC) <- rownames(tableC)
+    } else {
+      rownames(tableC) <- level.names
+    }
   } else {
     tableC <- withControl
-    rownames(tableC) <- level.names[-1]
+    # default level names of add level.names
+    if (any(level.names == "none")) {
+      rownames(tableC) <- rownames(tableC)
+    } else {
+      rownames(tableC) <- level.names[-1]
+    }
   }
   
   
@@ -98,7 +108,7 @@ oneFACTORfcplot <- function(
   significance <- tableC$signif.
   
   
-  pfc <- ggplot(tableC, aes(factor(pairs, levels = level.names), FCp)) +
+  pfc <- ggplot(tableC, aes(factor(pairs, levels = rownames(tableC)), FCp)) +
     geom_col(col = "black", fill = fill, width = width) +
     geom_errorbar(aes(pairs, ymin = FCp - LCLp, ymax =  FCp + UCLp),
                   width=0.1) +
@@ -121,5 +131,3 @@ oneFACTORfcplot <- function(
                   Table = tableC)
   return(outlist)
 }
-                 
-               

@@ -20,7 +20,7 @@
 #'   \item{ANOVA_factorial}{ANOVA table based on factorial arrangement}
 #'   \item{ANOVA_CRD}{ANOVA table based on CRD}
 #'   \item{Result}{The main result table including treatments and factors, wDCt, LCL, UCL, letters and standard deviation of average relative expression data.}
-#'   \item{Post_hoc_Test}{Post hoc testing of means along with the significance and confidence interval.}
+#'   \item{Post_hoc_Test}{Post hoc test of FC (Fold Change), pvalue, significance and confidence interval (LCL, UCL).}
 #' }
 #'
 #' @references Livak, Kenneth J, and Thomas D Schmittgen. 2001. Analysis of

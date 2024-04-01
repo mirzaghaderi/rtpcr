@@ -22,7 +22,11 @@
 #' @param xlab  the title of the x axis
 #' @param ylab  the title of the y axis
 #' @param fontsize all fonts size of the plot
-#' @return Bar plot of the average fold change for target genes along with the significance and the 95 percent CI as error bars.
+#' @return A list with 2 elements:
+#' \describe{
+#'   \item{Table}{Bar plot of the average fold change for target genes.}
+#'   \item{plot}{Table of FC values and significance and the 95 percent CI as error bars.}
+#' }
 #' @examples
 #'
 #' # See sample data

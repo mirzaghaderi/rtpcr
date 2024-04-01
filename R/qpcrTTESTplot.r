@@ -44,7 +44,7 @@
 #'               y.axis.adjust = 0,
 #'               y.axis.by = 2,
 #'               letter.position.adjust = 0.3,
-#'               ylab = "Average Fold Change",
+#'               ylab = "Average Fold Change in Treatment vs Control",
 #'               xlab = "Gene")
 #'
 #'

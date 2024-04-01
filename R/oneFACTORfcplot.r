@@ -45,7 +45,7 @@
 #'                 y.axis.by = 1,
 #'                 letter.position.adjust = 0.3,
 #'                 ylab = "Average Fold Change",
-#'                 xlab = "Pairs",
+#'                 xlab = "Treatment level vs Control level",
 #'                 fontsize = 12)
 #'
 #'

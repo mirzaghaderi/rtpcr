@@ -2,7 +2,7 @@
 % Please edit documentation in R/oneFACTORfcplot.r
 \name{oneFACTORfcplot}
 \alias{oneFACTORfcplot}
-\title{Bar plot of the average fold change of one target gene with two or more levels.}
+\title{Bar plot of the average fold change for one target gene with two or more levels.}
 \usage{
 oneFACTORfcplot(
   x,
@@ -78,7 +78,7 @@ oneFACTORfcplot(data_1factor,
                 y.axis.by = 1,
                 letter.position.adjust = 0.3,
                 ylab = "Average Fold Change",
-                xlab = "Pairs",
+                xlab = "Treatment level vs Control level",
                 fontsize = 12)
 
 

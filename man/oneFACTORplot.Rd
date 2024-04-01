@@ -59,13 +59,13 @@ out <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result
 oneFACTORplot(out,
          width = 0.2,
          fill = "skyblue",
-         y.axis.adjust = 0.5,
-         y.axis.by = 0.4,
+         y.axis.adjust = 0,
+         y.axis.by = 0.2,
          errorbar = "std",
          show.letters = TRUE,
-         letter.position.adjust = 0.1,
+         letter.position.adjust = 0.05,
          ylab = "Relative Expression",
-         xlab = "Factor",
+         xlab = "Factor Levels",
          fontsize = 12)
 
 

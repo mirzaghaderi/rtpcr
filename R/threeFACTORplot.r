@@ -47,7 +47,7 @@
 #'
 #'
 #'
-#' # releveling a factor levels first
+#' # Reordering factor levels to a desired order.
 #' res$Conc <- factor(res$Conc, levels = c("L","M","H"))
 #' res$Type <- factor(res$Type, levels = c("S","R"))
 #'
@@ -63,7 +63,8 @@
 #'    legend.position = c(0.2, 0.8))
 #'
 #'
-#' # When using ci as error, increase y.axis.adjust to see the plot correctly!
+#' # When using ci as error, increase the 
+#' # y.axis.adjust value to see the plot correctly!
 #' threeFACTORplot(res,
 #'    arrangement = c(2, 3, 1),
 #'    bar.width = 0.8,

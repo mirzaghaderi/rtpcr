@@ -36,5 +36,5 @@ meanTech <- function(x,
   y <- data_meanBiolRep
   m <- ncol(y)-4
   databiol <- y[,-m]
-  return(databiol)
+  return(as.data.frame(databiol))
 }

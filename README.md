@@ -85,7 +85,7 @@ To use the functions, input data should be prepared in the right format with app
 
 # functions usage
 
-To simplify 'rtpcr, usage, examples for using the functions are presented below.
+To simplify 'rtpcr', usage, examples for using the functions are presented below.
 
 *Table 2. Functions and examples for using them.*
 | function   |                 Analysis | Example (see package help for the more arguments) |

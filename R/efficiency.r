@@ -62,8 +62,8 @@ efficiency <- function(x) {
     geom_smooth(method = "lm", color = "red", fill = "lightyellow") +
     theme(strip.background = element_rect(fill = "#F0FFFF")) +
     geom_text(data = res, aes(x = Inf, y = Inf,
-                              label = paste0("Slope = ", Slope,", ", "E = ", E,", ", " R2 = ", R2, sep = " ")),
-              hjust = 1.1, vjust = 3) +
+                              label = paste0("Slope = ", Slope, "\n", "E = ", E, "\n", " R2 = ", R2)),
+              hjust = 1.0, vjust = 1.0) +
     facet_wrap(~ Gene)
 
   # Comparing slopes. For this, a regression line is fitted using the DeltaCt values. If 2^-DeltaDelta Ct method is intended, the slope should not exceeds 0.2!
@@ -76,8 +76,15 @@ efficiency <- function(x) {
   lm1 <- stats::lm(meandd ~ log10(Dilutions), data = D)
   summary_model <- summary(lm1)
   Slope_of_meand <- summary_model$coefficients[2]
-  print(p)
-  list <- list(Efficiency_Analysis_Results = res, Slope_of_differences = Slope_of_meand)
-  return(list)
+
+  
+  
+  outlist1 <- list(plot = p,
+                  Efficiency_Analysis_Results = res, 
+                  Slope_of_differences = Slope_of_meand)
+  
+  
+  return(outlist1)
+  
   return("\nLow values of Slope_of_differences (e.g. less than 0.2) indicates equal slopes for target and reference genes.")
 }

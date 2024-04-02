@@ -2,7 +2,7 @@
 % Please edit documentation in R/qpcrANOVA.r
 \name{qpcrANOVA}
 \alias{qpcrANOVA}
-\title{qPCR Analysis of Variance}
+\title{Analysis of Variance of qPCR data}
 \usage{
 qpcrANOVA(
   x,
@@ -23,12 +23,12 @@ qpcrANOVA(
 \value{
 A list with 5 elements:
 \describe{
-  \item{Final_data}{The final row data including weighed delta Ct (wDCt) values.}
+  \item{Final_data}{The row data plus weighed delta Ct (wDCt) values.}
   \item{lm}{The output of linear model analysis including ANOVA tables based on factorial experiment and completely randomized design (CRD).}
   \item{ANOVA_factorial}{ANOVA table based on factorial arrangement}
   \item{ANOVA_CRD}{ANOVA table based on CRD}
-  \item{Result}{The main result table including treatments and factors, wDCt, LCL, UCL, letters and standard deviation of average relative expression data.}
-  \item{Post_hoc_Test}{Post hoc testing of means along with the significance and confidence interval.}
+  \item{Result}{The result table including treatments and factors, RE (Relative Expression), LCL, UCL, letter grouping and standard deviation of relative expression.}
+  \item{Post_hoc_Test}{Post hoc test of FC (Fold Change), pvalue, significance and confidence interval (LCL, UCL).}
 }
 }
 \description{

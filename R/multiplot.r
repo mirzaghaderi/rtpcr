@@ -1,30 +1,52 @@
-# Multiple plot function:
-
-# Reference: https://gist.github.com/pedroj/ffe89c67282f82c1813d
-
-#ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
-# - cols:   Number of columns in layout
-# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
-# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
-# then plot 1 will go in the upper left, 2 will go in the upper right, and
-# 3 will go all the way across the bottom.
-
-multiplot <- function(..., plotlist = NULL, file, cols=1, layout = NULL) {
-  library(grid)
+#' @title Multiple plot function
+#' @description Multiple plot function
+#' @details Producing multiple plots plate using ggplot objects
+#' @author gist.github.com/pedroj/ffe89c67282f82c1813d
+#' @export multiplot
+#' @import grid
+#' @param ... ggplot objects can be passed in ... or to plotlist (as a list of ggplot objects)
+#' @param cols Number of columns in the panel
+#' @return A  multiple-plots plate
+#' @examples
+#' 
+#' p1 <- qpcrTTESTplot(data_ttest, 
+#'                     numberOfrefGenes = 1,
+#'                     ylab = "Average Fold Change (FC)",
+#'                     width = 0.3)
+#' 
+#' 
+#' out2 <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result
+#' p2 <- oneFACTORplot(out2,
+#'                     width = 0.2,
+#'                     fill = "skyblue",
+#'                     y.axis.adjust = 0.5,
+#'                     y.axis.by = 1,
+#'                     errorbar = "ci",
+#'                     show.letters = TRUE,
+#'                     letter.position.adjust = 0.1,
+#'                     ylab = "Relative Expression (RE)",
+#'                     xlab = "Factor Levels",
+#'                     fontsize = 12)
+#'                     
+#' multiplot(p1, p2, cols=2)
+#' 
+#' multiplot(p1, p2, cols=1)
+#'
+#'
+#'
+multiplot <- function(...,
+                      cols=1) {
   
-  # Make a list from the ... arguments and plotlist
-  plots <- c(list(...), plotlist)
+  # Make a list from the ... arguments
+  plots <- c(list(...))
   
   numPlots = length(plots)
   
-  # If layout is NULL, then use 'cols' to determine layout
-  if (is.null(layout)) {
     # Make the panel
     # ncol: Number of columns of plots
     # nrow: Number of rows needed, calculated from # of cols
     layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
                      ncol = cols, nrow = ceiling(numPlots/cols), byrow = TRUE)
-  }
   
   if (numPlots == 1) {
     print(plots[[1]])

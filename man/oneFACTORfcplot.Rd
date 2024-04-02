@@ -50,8 +50,8 @@ oneFACTORfcplot(
 \value{
 A list with 2 elements:
 \describe{
-  \item{Table}{Bar plot of the average fold change for target genes.}
-  \item{plot}{Table of FC values and significance and the 95 percent CI as error bars.}
+  \item{plot}{Bar plot of the average fold change for target genes.}
+  \item{Table}{Table of FC values and significance and the 95 percent CI as error bars.}
 }
 }
 \description{

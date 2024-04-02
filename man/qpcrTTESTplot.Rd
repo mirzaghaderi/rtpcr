@@ -58,7 +58,7 @@ The \code{qpcrTTESTplot} function applies a t.test based analysis to any number 
 }
 \examples{
 
-# Looking at the data
+# See a sample data frame
 data_ttest
 
 

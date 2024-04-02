@@ -54,14 +54,17 @@ twoFACTORplot(
 Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
 }
 \description{
-Bar plot of the relative expression of a gene along with the 95\% confidence interval and significance
+Bar plot of the relative expression (RE) of a gene along with the 95\% confidence interval and significance
 }
 \details{
 The \code{twoFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
 }
 \examples{
 
-# Before plotting, the result needs to be extracted as below:
+# See a sample data frame
+data_2factor
+
+# Before generating plot, the result table needs to be extracted as below:
 res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Result
 res
 

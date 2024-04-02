@@ -5,7 +5,7 @@ Version: 1.0.0
 Authors@R: c(person("Ghader", "Mirzaghaderi", role=c("aut", "cre", "cph"), email = "gh.mirzaghaderi@uok.ac.ir"))
 Description: Various methods are employed for statistical analysis and graphical presentation of real-time PCR (quantitative PCR  or qPCR) data. 'iqpcr' handles amplification efficiency calculation and statistical analysis of real-time PCR data based on one reference gene. By accounting for amplification efficiency values, 'iqpcr' was developed using a general calculation method described by Ganger et al. (2017) <doi:10.1186/s12859-017-1949-5>, covering both the Livak and Pfaffl methods. Based on the experimental conditions, the functions of the 'iqpcr' package use t-test (for experiments with a two-level factor) or analysis of variance (for cases where more than two levels or factors exist) to calculate the fold change or relative expression. The functions also provide standard deviations and confidence limits for means, apply statistical mean comparisons, and present letter mean grouping. To facilitate using 'iqpcr', different datasets have been employed in the examples and the outputs are explained. An outstanding feature of 'iqpcr' package is providing publication-ready bar plots with various controlling arguments for experiments with up to three different factors. The 'iqpcr' package is user-friendly and easy to work with and provides an applicable resource for analyzing real-time PCR data.
 License: GPL-3
-Imports: agricolae, ggplot2, lme4, reshape2, tidyr, dplyr
+Imports: agricolae, ggplot2, lme4, reshape2, tidyr, dplyr, grid
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1

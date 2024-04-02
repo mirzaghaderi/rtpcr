@@ -4,10 +4,12 @@
 \alias{multiplot}
 \title{Multiple plot function}
 \usage{
-multiplot(..., plotlist = NULL, file, cols = 1, layout = NULL)
+multiplot(..., cols = 1)
 }
 \arguments{
 \item{...}{ggplot objects can be passed in ... or to plotlist (as a list of ggplot objects)}
+
+\item{cols}{Number of columns in the panel}
 }
 \value{
 A  multiple-plots plate
@@ -47,5 +49,5 @@ multiplot(p1, p2, cols=1)
 
 }
 \author{
-\link{https://gist.github.com/pedroj/ffe89c67282f82c1813d}
+gist.github.com/pedroj/ffe89c67282f82c1813d
 }

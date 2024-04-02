@@ -1,5 +1,5 @@
 ---
-title: "iqpcr: a package for statistical analysis of real-time PCR data in R"
+title: "rtpcr: a package for statistical analysis of real-time PCR data in R"
 author: Ghader Mirzaghaderi
 output:
   html_document: 
@@ -31,7 +31,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Overview
 
 
-Real-time polymerase chain reaction (real-time PCR), is widely used in biological research. Various analysis methods are employed on the real-time PCR data to measure the mRNA levels under different experimental conditions. I developed ‘iqpcr’ package for amplification efficiency calculation and statistical analysis of real-time PCR data in R. By accounting for up to two reference genes and amplification efficiency values, a general calculation method by <a href="https://doi.org/10.1186/s12859-017-1949-5">Ganger et al. 2017</a> covering both the Livak and Pfaffl methods was used. Based on the experimental conditions, the functions of the ‘iqpcr’ package use a t-test (for experiments with a two-level factor) or analysis of variance (for cases where more than two levels or factors exist) to calculate the fold change (FC) or relative expression (RE). The functions further provide standard deviations and confidence limits for means, apply statistical mean comparisons and present letter mean grouping. To facilitate function application, different data sets were used as examples and the outputs were explained. An outstanding feature of ‘iqpcr’ package is providing publication-ready bar plots with various controlling arguments for experiments with up to three different factors. The ‘iqpcr’ package is user-friendly and easy to work with and provides an applicable resource for analyzing real-time PCR data in R. ‘iqpcr’ is a CRAN package although the development version of the package can be obtained through Github.
+Real-time polymerase chain reaction (real-time PCR), is widely used in biological research. Various analysis methods are employed on the real-time PCR data to measure the mRNA levels under different experimental conditions. I developed ‘rtpcr’ package for amplification efficiency calculation and statistical analysis of real-time PCR data in R. By accounting for up to two reference genes and amplification efficiency values, a general calculation method by <a href="https://doi.org/10.1186/s12859-017-1949-5">Ganger et al. 2017</a> covering both the Livak and Pfaffl methods was used. Based on the experimental conditions, the functions of the ‘rtpcr’ package use a t-test (for experiments with a two-level factor) or analysis of variance (for cases where more than two levels or factors exist) to calculate the fold change (FC) or relative expression (RE). The functions further provide standard deviations and confidence limits for means, apply statistical mean comparisons and present letter mean grouping. To facilitate function application, different data sets were used as examples and the outputs were explained. An outstanding feature of ‘rtpcr’ package is providing publication-ready bar plots with various controlling arguments for experiments with up to three different factors. The ‘rtpcr’ package is user-friendly and easy to work with and provides an applicable resource for analyzing real-time PCR data in R. ‘rtpcr’ is a CRAN package although the development version of the package can be obtained through Github.
 
 # Calculation methods
 Among the various approaches developed for data analysis in real-time PCR, the Livak method, also known as the $2^{-\Delta\Delta C_t}$ method, stands out for its simplicity and widespread use. 
@@ -55,7 +55,7 @@ $$\text{Fold change} = \frac{E^{-(C_{t_{\text{Tr}}}-C_{t_{\text{Co}}})_{target}}
 {E^{-(C_{t_{\text{Tr}}}-C_{t_{\text{Co}}})_{ref}}}$$
 
 # A generalized calculation method
-the 'iqpcr' packager calculates wDCt values for each experimental condition based on the efficiency and Ct values as described by Ganger et al. (2017).
+the 'rtpcr' packager calculates wDCt values for each experimental condition based on the efficiency and Ct values as described by Ganger et al. (2017).
 
 
 $$w\Delta Ct =\log_{10}(E_{target}).Ct_{target}-\log_{10}(E_{ref}).Ct_{ref}$$
@@ -69,7 +69,7 @@ $$\text{Fold Change}=10^{-(\overline{w\Delta Ct}_{\text{Tr}}-{\overline{w\Delta 
 # Installing and loading
 
 ```{r eval= T, include= F, message=FALSE, warning = FALSE}
-library(iqpcr)
+library(rtpcr)
 library(agricolae)
 library(dplyr)
 library(reshape2)
@@ -78,16 +78,16 @@ library(lme4)
 library(ggplot2)
 ```
 
-`iqpcr` is a CRAN package and can be installed through `install.packages()`.
+`rtpcr` is a CRAN package and can be installed through `install.packages()`.
 ```{r eval= F, include= T, message=FALSE, warning = FALSE}
-install.packages("iqpcr")
-library(iqpcr)
+install.packages("rtpcr")
+library(rtpcr)
 ```
 
-The development version of the `iqpcr` package can be obtained through: 
+The development version of the `rtpcr` package can be obtained through: 
 ```{r eval= F, include= T, message=FALSE, warning = FALSE}
-# install `iqpcr` from github (under development)
-devtools::install_github("mirzaghaderi/iqpcr", build_vignettes = TRUE)
+# install `rtpcr` from github (under development)
+devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
 ```
 
 
@@ -96,7 +96,7 @@ devtools::install_github("mirzaghaderi/iqpcr", build_vignettes = TRUE)
 
 To use the functions, input data should be prepared in the right format with appropriate column arrangement. The correct column arrangement is shown in Table 1.
 
-*Table 1. Data structure and column arrangement required for ‘iqpcr’ package.*
+*Table 1. Data structure and column arrangement required for ‘rtpcr’ package.*
 
 | Experiment type   |                  Column arrangement of the input data | Example in the package |
  |:---------------------|:-----------------------------------|:----------------------------------|
@@ -113,9 +113,9 @@ To use the functions, input data should be prepared in the right format with app
  |                                       | . . . . . .  biologicalRep techcicalRep Etarget targetCt ref1E ref1Ct ref2E ref2Ct  | . |
 | | |
 
-# functions built in 'iqpcr' package
+# functions built in 'rtpcr' package
 
-To simplify 'iqpcr' usage, examples for using the functions are presented below.
+To simplify 'rtpcr' usage, examples for using the functions are presented below.
 
 *Table 2. Functions and examples for using them.*
 | function   |                 Analysis | Example (see package help for the more arguments) |
@@ -346,7 +346,7 @@ meanTech(data_withTechRep, groups = 1:4)
 
 # Citation
 ```{r eval= F}
-citation("iqpcr")
+citation("rtpcr")
 ```
 
 

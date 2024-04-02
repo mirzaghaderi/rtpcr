@@ -1,8 +1,8 @@
-# iqpcr: a package for statistical analysis of real-time PCR data in R 
+# rtpcr: a package for statistical analysis of real-time PCR data in R 
 
 Real-time polymerase chain reaction (real-time PCR), is widely used in biological research. Various analysis methods are employed on the real-time PCR data to measure the mRNA levels under different experimental conditions. 
-‘iqpcr’ package was developed for amplification efficiency calculation and statistical analysis of real-time PCR data in R. By accounting for up to two reference genes and amplification efficiency values, a general calculation methodology described by <a href="https://doi.org/10.1186/s12859-017-1949-5">Ganger et al. (2017)</a>, matching both <a href="https://doi.org/10.1006/meth.2001.1262">Livak and Schmittgen (2001)</a> and <a href="https://doi.org/10.1093/nar/30.9.e36">Pfaffl et al. (2002) </a> methods was used. Based on the experimental conditions, the functions of the ‘iqpcr’ package use a t-test (for experiments with a two-level factor) or analysis of variance (for cases where more than two levels or factors or a blocking factor exist) to calculate the fold change (FC) or relative expression (RE). The functions further provide standard deviations and confidence limits for means, apply statistical mean comparisons and present letter mean grouping. To facilitate function application, different data sets were used as examples and the outputs were explained. An outstanding feature of ‘iqpcr’ package is providing publication-ready bar plots with various controlling arguments for experiments with up to three different factors. 
-The ‘iqpcr’ package was built based on a general method with various capabilities. It is user-friendly and easy to work with and provides an applicable resource for analyzing real-time PCR data in R. ‘iqpcr’ is a CRAN package although the development version of the package can be obtained through Github.
+‘rtpcr’ package was developed for amplification efficiency calculation and statistical analysis of real-time PCR data in R. By accounting for up to two reference genes and amplification efficiency values, a general calculation methodology described by <a href="https://doi.org/10.1186/s12859-017-1949-5">Ganger et al. (2017)</a>, matching both <a href="https://doi.org/10.1006/meth.2001.1262">Livak and Schmittgen (2001)</a> and <a href="https://doi.org/10.1093/nar/30.9.e36">Pfaffl et al. (2002) </a> methods was used. Based on the experimental conditions, the functions of the ‘rtpcr’ package use a t-test (for experiments with a two-level factor) or analysis of variance (for cases where more than two levels or factors or a blocking factor exist) to calculate the fold change (FC) or relative expression (RE). The functions further provide standard deviations and confidence limits for means, apply statistical mean comparisons and present letter mean grouping. To facilitate function application, different data sets were used as examples and the outputs were explained. An outstanding feature of ‘rtpcr’ package is providing publication-ready bar plots with various controlling arguments for experiments with up to three different factors. 
+The ‘rtpcr’ package was built based on a general method with various capabilities. It is user-friendly and easy to work with and provides an applicable resource for analyzing real-time PCR data in R. ‘rtpcr’ is a CRAN package although the development version of the package can be obtained through Github.
 
 
 # Overview
@@ -29,7 +29,7 @@ $$\text{Fold Change} = \frac{E^{-(Ct_{Tr}-Ct_{Co})target}}{E^{-(Ct_{Tr}-Ct_{Co})
 
 # A generalized calculation method
 
-ΔC_t is the difference between two Ct values (e.g. Cttarget−Ctref). The iqpcr packager functions are mainly based on the calculation of efficiency-weighted ΔC_t (wΔC_t) values from target and reference gene Ct values which are weighted for their amplification efficiencies as below:
+ΔC_t is the difference between two Ct values (e.g. Cttarget−Ctref). The rtpcr packager functions are mainly based on the calculation of efficiency-weighted ΔC_t (wΔC_t) values from target and reference gene Ct values which are weighted for their amplification efficiencies as below:
 
 
 $$wΔCt = log_{10}(E_{target}).Ct_{target} - log_{10}(E_{ref}).Ct_{ref}$$
@@ -48,18 +48,18 @@ if wDCt values are calculated from the E values, these calculations match the fo
 
 
 
-<!-- `iqpcr` is a CRAN package and can be installed through `install.packages()`.
-install.packages("iqpcr")
-library(iqpcr) -->
+<!-- `rtpcr` is a CRAN package and can be installed through `install.packages()`.
+install.packages("rtpcr")
+library(rtpcr) -->
 
-The development version of the `iqpcr` package can be obtained through: 
+The development version of the `rtpcr` package can be obtained through: 
 
 ```r
 # Install from github
-devtools::install_github("mirzaghaderi/iqpcr")
+devtools::install_github("mirzaghaderi/rtpcr")
 
 # Loading the package
-library(iqpcr)
+library(rtpcr)
 ```
 
 
@@ -67,7 +67,7 @@ library(iqpcr)
 
 To use the functions, input data should be prepared in the right format with appropriate column arrangement. The correct column arrangement is shown in Table 1.
 
-*Table 1. Data structure and column arrangement required for ‘iqpcr’ package.  rep: technical replicate; targetE and refE: amplification efficiency columns for target and reference genes respectively. targetCt and refCt: target and reference Ct columns, respectively. factors (factor1, factor2 and/or factor3): experimental factors.*
+*Table 1. Data structure and column arrangement required for ‘rtpcr’ package.  rep: technical replicate; targetE and refE: amplification efficiency columns for target and reference genes respectively. targetCt and refCt: target and reference Ct columns, respectively. factors (factor1, factor2 and/or factor3): experimental factors.*
 | Experiment type   |                  Column arrangement of the input data | Example in the package |
  |:---------------------|:-----------------------------------|:----------------------------------|
  |Amplification efficiency             |Dilutions - targetCt - refCt | data_efficiency |
@@ -85,7 +85,7 @@ To use the functions, input data should be prepared in the right format with app
 
 # functions usage
 
-To simplify 'iqpcr, usage, examples for using the functions are presented below.
+To simplify 'rtpcr, usage, examples for using the functions are presented below.
 
 *Table 2. Functions and examples for using them.*
 | function   |                 Analysis | Example (see package help for the more arguments) |
@@ -151,7 +151,7 @@ reference gene, and presents the related standard curves along with the Slope, E
 efficiency(data_efficiency)
 ```
 
-<img src="https://raw.githubusercontent.com/mirzaghaderi/iqpcr/c02e476cf7c69783fa9c65bc625a7ea4a0e3abcf/Figure%201.jpg">
+<img src="https://raw.githubusercontent.com/mirzaghaderi/rtpcr/c02e476cf7c69783fa9c65bc625a7ea4a0e3abcf/Figure%201.jpg">
 
 *Figure 1 - Standard curve and the amplification efficiency analysis of target and reference genes.*
 
@@ -445,12 +445,12 @@ twoFACTORplot(res,
    show.letters = TRUE)
 ```
 
-<img src="https://raw.githubusercontent.com/mirzaghaderi/iqpcr/7ff54cdbd095c731ba12eaa4a6aa474ef2b039eb/Figure%202.jpg">
+<img src="https://raw.githubusercontent.com/mirzaghaderi/rtpcr/7ff54cdbd095c731ba12eaa4a6aa474ef2b039eb/Figure%202.jpg">
 
 *Figure 2 - Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests via ‘qpcrTTESTplot’ function (A). Plot of average Fold changes of one gene under a three-level conditions which level1 has been selected as check. Check level can be changed by the user. The plot produced by the ‘oneFACTORfcplot’ function (B). plot of the same data of ‘B’ represented as Relative expression using ‘oneFACTORplot’ function (C). Error bars represent 95% confidence interval.*
 
 
-<img src="https://raw.githubusercontent.com/mirzaghaderi/iqpcr/7ff54cdbd095c731ba12eaa4a6aa474ef2b039eb/Figure%203.jpg">
+<img src="https://raw.githubusercontent.com/mirzaghaderi/rtpcr/7ff54cdbd095c731ba12eaa4a6aa474ef2b039eb/Figure%203.jpg">
 
 *Figure 3 - A) Plot of Fold change of three genes (differentially arranged by an argument compared to Figure 2a). B-D) Average relative expression (RE) of a target gene under two or three factors produced by ‘twoFACTORplot’ (C) and ‘twoFACTORplot’ (B and D) functions. Error bars represent standard deviations, albeit, error type can be set to confidence interval. Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an ‘LSD.test’.*
 
@@ -613,7 +613,7 @@ meanTech(data_withTechRep, groups = 1:4)
 # Citation
 
 ```r
-citation("iqpcr")
+citation("rtpcr")
 ```
 
 

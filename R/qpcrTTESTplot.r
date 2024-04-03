@@ -133,6 +133,7 @@ qpcrTTESTplot <- function(x,
     theme(legend.text = element_text(colour = "black", size = fontsize),
           legend.background = element_rect(fill = "transparent"))
 
-  print(p)
+  out <- list(plot = p)
+  return(out)
 }
 

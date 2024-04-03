@@ -134,8 +134,11 @@ twoFACTORplot <- function(x,
   
   
   if(errorbar == "std") {
-    print(qq1)
+    out2 <- list(plot = qq1)
+    
   } else if(errorbar == "ci") {
-    print(qq2)
+    out2 <- list(plot = qq2)
   }
+  
+  return(out2)
 }

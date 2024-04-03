@@ -171,9 +171,11 @@ threeFACTORplot <- function(x,
   
   
   if(errorbar == "std") {
-    print(pp1)
+    out <- list(plot = pp1)
+    
   } else if(errorbar == "ci") {
-    print(pp2)
+    out <- list(plot = pp2)
   }
+  
+  return(out)
 }
-

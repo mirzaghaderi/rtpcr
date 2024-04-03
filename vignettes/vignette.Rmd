@@ -76,6 +76,7 @@ library(reshape2)
 library(tidyr)
 library(lme4)
 library(ggplot2)
+library(grid)
 ```
 
 The rtpcr package and source code are available for download from CRAN website (http://www.r-project.org) under GPL-3 license and can be installed and loaded using:
@@ -152,7 +153,7 @@ data_efficiency
 ## Calculating amplification efficiency
 The following `efficiency` function calculates the amplification efficiency of a target and a reference gene and presents the related standard curves along with the Slope, Efficiency, and R2 statistics. The function also compares the slopes of the two standard curves. For this, a regression line is fitted using the $\Delta C_t$ values. If $2^{-\Delta\Delta C_t}$ method is intended, the slope should not exceed 0.2!
 
-```{r eval = T, fig.height = 3, fig.align = 'center', fig.cap = 'Standard curve and the amplification efficiency analysis of target and reference genes.', warning = FALSE, message = FALSE}
+```{r eval = T, fig.height = 3, fig.align = 'center', fig.cap = 'Standard curve and the amplification efficiency analysis of target and reference genes. A sample data arrangement that is required as input for the calculation of amplification efficiency by the efficiency function.', warning = FALSE, message = FALSE}
 efficiency(data_efficiency)
 ```
 
@@ -184,7 +185,7 @@ qpcrTTEST(data_ttest,
 The `qpcrTTESTplot` function generates a bar plot of Fold Changes and confidence intervals for the target genes. the `qpcrTTESTplot` function accepts any gene name and any replicates. The `qpcrTTESTplot` function automatically puts appropriate signs of **, * on top of the plot columns based on the output p-values.
 
 
-```{r eval= T, fig.height=3, fig.width=8, fig.align='center', fig.cap = "Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests. Error bars represent 95% confidence interval.", warning = F, message = F}
+```{r eval= T, fig.height=3, fig.width=8, fig.align='center', fig.cap = "Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests via ‘qpcrTTESTplot’ function.", warning = F, message = F}
 
 # Producing the plot
 t1 <- qpcrTTESTplot(data_ttest,
@@ -197,13 +198,15 @@ t2 <- qpcrTTESTplot(data_ttest,
               paired = FALSE,
               var.equal = TRUE,
               width = 0.5,
-              fill = "skyblue",
+              fill = "palegreen",
               y.axis.adjust = 0,
               y.axis.by = 2,
-              ylab = "Average Fold Change",
+              ylab = "Average Fold Change (FC)",
               xlab = "Gene")
 
 multiplot(t1, t2, cols = 2)
+grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
+grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ```
 
 ## A target gene under more than two conditions (ANOVA)
@@ -240,7 +243,7 @@ res$Post_hoc_Test
 
 
 
-```{r eval= T, fig.height = 4, fig.width = 9, fig.align = 'center', fig.cap = "XXXXX"}
+```{r eval= T, fig.height = 4, fig.width = 9, fig.align = 'center', fig.cap = "A) A bar plot representing Relative expression of a gene under three levels of a factor generated using ‘oneFACTORplot’ function, B) Plot of average Fold changes produced by the ‘oneFACTORfcplot’ function from the same data as ‘C’ where the level1 has been selected as check. Check level can be changed by user. Error bars represent 95% confidence interval."}
 # Before plotting, the result needs to be extracted as below:
 out2 <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result
 
@@ -271,6 +274,8 @@ f2 <- oneFACTORfcplot(data_1factor,
                       fontsize = 12)
 
 multiplot(f1, f2, cols = 2)
+grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
+grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ```
 
 
@@ -305,6 +310,8 @@ q2 <- twoFACTORplot(res,
    show.letters = FALSE)
 
 multiplot(q1, q2, cols = 2)
+grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
+grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ```
 
 
@@ -312,7 +319,7 @@ multiplot(q1, q2, cols = 2)
 
 
 ### A three-factorial experiment example
-```{r, fig.height = 5, fig.width = 11, fig.align = 'center', fig.cap = "Average relative expression of a target gene under three different conditions with two, two and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package."}
+```{r, fig.height = 5, fig.width = 11, fig.align = 'center', fig.cap = "A and B) Relative expression (RE) of a target gene under two or three factors produced by ‘twoFACTORplot’ and ‘threeFACTORplot’ functions, respectively. Error bars represent standard deviations (can be set to confidence interval). Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an ‘LSD.test’."}
 # Before plotting, the result needs to be extracted as below:
 res <- qpcrANOVA(data_3factor_b, numberOfrefGenes = 1)$Result
 res
@@ -346,6 +353,8 @@ p2 <- threeFACTORplot(res,
    show.letters = TRUE)
 
 multiplot(p1, p2, cols = 2)
+grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
+grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ```
 
 

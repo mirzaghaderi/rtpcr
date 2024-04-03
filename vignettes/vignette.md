@@ -178,8 +178,8 @@ efficiency(data_efficiency)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-4-1.png" alt="Standard curve and the amplification efficiency analysis of target and reference genes."  />
-<p class="caption">Standard curve and the amplification efficiency analysis of target and reference genes.</p>
+<img src="vignette_files/figure-html/unnamed-chunk-4-1.png" alt="Standard curve and the amplification efficiency analysis of target and reference genes. A sample data arrangement that is required as input for the calculation of amplification efficiency by the efficiency function."  />
+<p class="caption">Standard curve and the amplification efficiency analysis of target and reference genes. A sample data arrangement that is required as input for the calculation of amplification efficiency by the efficiency function.</p>
 </div>
 
 ```
@@ -293,25 +293,30 @@ t2 <- qpcrTTESTplot(data_ttest,
               paired = FALSE,
               var.equal = TRUE,
               width = 0.5,
-              fill = "skyblue",
+              fill = "palegreen",
               y.axis.adjust = 0,
               y.axis.by = 2,
-              ylab = "Average Fold Change",
+              ylab = "Average Fold Change (FC)",
               xlab = "Gene")
 
 multiplot(t1, t2, cols = 2)
 ```
-
-<div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-7-1.png" alt="Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests. Error bars represent 95% confidence interval."  />
-<p class="caption">Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests. Error bars represent 95% confidence interval.</p>
-</div>
 
 ```
 ## $plot
 ## 
 ## $plot
 ```
+
+```r
+grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
+grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
+```
+
+<div class="figure" style="text-align: center">
+<img src="vignette_files/figure-html/unnamed-chunk-7-1.png" alt="Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests via ‘qpcrTTESTplot’ function."  />
+<p class="caption">Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests via ‘qpcrTTESTplot’ function.</p>
+</div>
 
 ## A target gene under more than two conditions (ANOVA)
 
@@ -455,11 +460,6 @@ f2 <- oneFACTORfcplot(data_1factor,
 multiplot(f1, f2, cols = 2)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-10-1.png" alt="XXXXX"  />
-<p class="caption">XXXXX</p>
-</div>
-
 ```
 ## $plot
 ## 
@@ -470,6 +470,16 @@ multiplot(f1, f2, cols = 2)
 ## L2 1.5764 0.1223         0.8485 2.9287
 ## L3 3.4661 0.0027      ** 1.8657 6.4395
 ```
+
+```r
+grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
+grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
+```
+
+<div class="figure" style="text-align: center">
+<img src="vignette_files/figure-html/unnamed-chunk-10-1.png" alt="A) A bar plot representing Relative expression of a gene under three levels of a factor generated using ‘oneFACTORplot’ function B) Plot of average Fold changes produced by the ‘oneFACTORfcplot’ function from the same data as ‘C’ where the level1 has been selected as check. Check level can be changed by user. Error bars represent 95% confidence interval."  />
+<p class="caption">A) A bar plot representing Relative expression of a gene under three levels of a factor generated using ‘oneFACTORplot’ function B) Plot of average Fold changes produced by the ‘oneFACTORfcplot’ function from the same data as ‘C’ where the level1 has been selected as check. Check level can be changed by user. Error bars represent 95% confidence interval.</p>
+</div>
 
 
 
@@ -506,16 +516,21 @@ q2 <- twoFACTORplot(res,
 multiplot(q1, q2, cols = 2)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-11-1.png" alt="Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package."  />
-<p class="caption">Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package.</p>
-</div>
-
 ```
 ## $plot
 ## 
 ## $plot
 ```
+
+```r
+grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
+grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
+```
+
+<div class="figure" style="text-align: center">
+<img src="vignette_files/figure-html/unnamed-chunk-11-1.png" alt="Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package."  />
+<p class="caption">Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package.</p>
+</div>
 
 
 
@@ -577,16 +592,21 @@ p2 <- threeFACTORplot(res,
 multiplot(p1, p2, cols = 2)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-12-1.png" alt="Average relative expression of a target gene under three different conditions with two, two and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package."  />
-<p class="caption">Average relative expression of a target gene under three different conditions with two, two and three levels. Error bars can be standard deviation or confidence interval. Means lacking letters in common have significant difference at alpha = 0.05 resulted from the `LSD.test` of agricolae package.</p>
-</div>
-
 ```
 ## $plot
 ## 
 ## $plot
 ```
+
+```r
+grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
+grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
+```
+
+<div class="figure" style="text-align: center">
+<img src="vignette_files/figure-html/unnamed-chunk-12-1.png" alt="A and B) Relative expression (RE) of a target gene under two or three factors produced by ‘twoFACTORplot’ and ‘threeFACTORplot’ functions, respectively. Error bars represent standard deviations (can be set to confidence interval). Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an ‘LSD.test’."  />
+<p class="caption">A and B) Relative expression (RE) of a target gene under two or three factors produced by ‘twoFACTORplot’ and ‘threeFACTORplot’ functions, respectively. Error bars represent standard deviations (can be set to confidence interval). Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an ‘LSD.test’.</p>
+</div>
 
 
 

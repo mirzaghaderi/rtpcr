@@ -98,10 +98,13 @@ library(rtpcr)
 Alternatively, the `rtpcr` with the latest changes can be installed by running the following code in your R software: 
 
 ```{r eval= F, include= T, message=FALSE, warning = FALSE}
+
 # install `rtpcr` from github (under development)
+
 devtools::install_github("mirzaghaderi/rtpcr")
 
-# Or
+# I strongly recommend to install the package with the vignette as it contains information about how to use 'rtpcr' package. Through the following code, Vignette is installed as well.
+
 devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
 ```
 
@@ -125,8 +128,8 @@ To use the functions, input data should be prepared in the right format with app
  |                                     |factor1 - factor2 - factor3 - block - rep - targetE - targetCt - refE - refCt | |
  |Two reference genes                  |. . . . . .  rep - targetE - targetCt - ref1E - ref1Ct - ref2E - ref2Ct | |
  |calculating biological replicated    |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - Eref - refCt  | data_withTechRep |
- |                                       |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - ref1E - ref1Ct - ref2E - ref2Ct  |. |
-| | |
+ |                                       |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - ref1E - ref1Ct - ref2E - ref2Ct  | |
+ 
 
 # functions usage
 
@@ -297,6 +300,7 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ### Barplot with the (1-alpha)% confidence interval as error bars
 
 ```{r eval= T, fig.height = 4, fig.width = 9, fig.align = 'center', fig.cap = "Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package."}
+
 # Before plotting, the result needs to be extracted as below:
 res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Result
 

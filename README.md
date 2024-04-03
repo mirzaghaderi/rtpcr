@@ -59,6 +59,9 @@ Alternatively, the `rtpcr` package with the latest changes can be installed by r
 # Install from github
 devtools::install_github("mirzaghaderi/rtpcr")
 
+# Install from github with vignette
+devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = T)
+
 # Loading the package
 library(rtpcr)
 ```

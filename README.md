@@ -63,6 +63,9 @@ devtools::install_github("mirzaghaderi/rtpcr")
 library(rtpcr)
 ```
 
+The vignette can be accessed online (through CRAN)  
+<a href="https://cran.r-project.org/web/packages/rtpcr/vignettes/vignette.html">here</a>
+
 
 # Data structure and column arrangement
 

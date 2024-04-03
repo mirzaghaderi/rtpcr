@@ -327,10 +327,11 @@ If the residuals from a `t.test` or a `lm` object are not normally distributed, 
 
 ```{r eval= T, eval= T, , fig.height = 4, fig.width = 5, fig.align = 'center', fig.cap = "QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions."}
 
-residualsCRD <- qpcrANOVA(data_3factor_b, numberOfrefGenes = 1)$lmCRD$residuals
-shapiro.test(residualsCRD) 
-qqnorm(residualsCRD)
-qqline(residualsCRD, col = "red")
+residuals <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$lmCRD$residuals
+shapiro.test(residuals) 
+
+qqnorm(residuals)
+qqline(residuals, col = "red")
 ```
 
 # Mean of technical replicates

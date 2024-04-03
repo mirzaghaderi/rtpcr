@@ -103,7 +103,7 @@ Alternatively, the `rtpcr` with the latest changes can be installed by running t
 
 devtools::install_github("mirzaghaderi/rtpcr")
 
-# I strongly recommend to install the package with the vignette as it contains information about how to use 'rtpcr' package. Through the following code, Vignette is installed as well.
+# I strongly recommend to install the package with the vignette as it contains information about how to use the 'rtpcr' package. Through the following code, Vignette is installed as well.
 
 devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
 ```

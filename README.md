@@ -53,14 +53,14 @@ install.packages("rtpcr")
 library(rtpcr)
 ```
 
-Alternatively, the `rtpcr` package with the latest changes can be installed by running the following code in your R software: 
+Alternatively, the `rtpcr` package with the latest changes can be installed by running the following code in your R software. I strongly recommend to install the package with the vignette as it contains information about how to use the 'rtpcr' package. Through the following code, Vignette is installed as well. 
 
 ```r
 # Install from github
 
 devtools::install_github("mirzaghaderi/rtpcr")
 
-# I strongly recommend to install the package with the vignette as it contains information about how to use the 'rtpcr' package. Through the following code, Vignette is installed as well.
+# Or
 
 devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = T)
 

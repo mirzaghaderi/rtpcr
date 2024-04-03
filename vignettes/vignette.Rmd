@@ -78,13 +78,14 @@ library(lme4)
 library(ggplot2)
 ```
 
-`rtpcr` is a CRAN package and can be installed through `install.packages()`.
-```{r eval= F, include= T, message=FALSE, warning = FALSE}
+The rtpcr package and source code are available for download from CRAN website (http://www.r-project.org) under GPL-3 license and can be installed and loaded using:
+```r
 install.packages("rtpcr")
 library(rtpcr)
 ```
 
-The development version of the `rtpcr` package can be obtained through: 
+Alternatively, the `rtpcr` with the latest changes can be installed by running the following code in your R software: 
+
 ```{r eval= F, include= T, message=FALSE, warning = FALSE}
 # install `rtpcr` from github (under development)
 devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)

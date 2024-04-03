@@ -104,10 +104,15 @@ oneFACTORplot <- function(x,
   }
 
 
+  
   if(errorbar == "std") {
-    print(q1f1)
+    out1 <- list(plot = q1f1)
+    
   } else if(errorbar == "ci") {
-    print(q1f2)
+    out1 <- list(plot = q1f2)
   }
+  
+  return(out1)
 }
+
 

@@ -53,7 +53,7 @@ install.packages("rtpcr")
 library(rtpcr)
 ```
 
-Alternatively, the `rtpcr` with the latest changes can be installed by running the following code in your R software: 
+Alternatively, the `rtpcr` package with the latest changes can be installed by running the following code in your R software: 
 
 ```r
 # Install from github
@@ -63,8 +63,7 @@ devtools::install_github("mirzaghaderi/rtpcr")
 library(rtpcr)
 ```
 
-The vignette can be accessed online (through CRAN)  
-<a href="https://cran.r-project.org/web/packages/rtpcr/vignettes/vignette.html">here</a>
+The vignette containing information about how to use 'rtpcr' package can be accessed online (through CRAN) <a href="https://cran.r-project.org/web/packages/rtpcr/vignettes/vignette.html">here</a>
 
 
 # Data structure and column arrangement

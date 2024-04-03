@@ -12,8 +12,10 @@ twoFACTORplot(
   fill = "Blues",
   y.axis.adjust = 0.5,
   y.axis.by = 2,
+  show.errorbars = TRUE,
   errorbar = "std",
   show.letters = TRUE,
+  show.points = FALSE,
   letter.position.adjust = 0.1,
   ylab = "Relative Expression",
   xlab = "Gene",
@@ -22,7 +24,7 @@ twoFACTORplot(
 )
 }
 \arguments{
-\item{x}{a data frame created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x)$Result}.}
+\item{x}{an object created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x)}.}
 
 \item{x.axis.factor}{x-axis factor.}
 
@@ -36,9 +38,13 @@ twoFACTORplot(
 
 \item{y.axis.by}{determines y axis step length.}
 
+\item{show.errorbars}{show errorbars}
+
 \item{errorbar}{Type of error bar, can be \code{std} or \code{ci}.}
 
 \item{show.letters}{a logical variable. If TRUE, mean grouping letters are added to the bars.}
+
+\item{show.points}{show points}
 
 \item{letter.position.adjust}{adjust the distance between the grouping letters to the error bars.}
 
@@ -65,7 +71,7 @@ The \code{twoFACTORplot} function generates the bar plot of the average fold cha
 data_2factor
 
 # Before generating plot, the result table needs to be extracted as below:
-res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Result
+res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)
 res
 
 # Plot of the 'res' data with 'Genotype' as grouping factor
@@ -90,7 +96,9 @@ twoFACTORplot(res,
    xlab = "Genotype",
    fill = "Blues",
    fontsize = 12,
-   show.letters = FALSE)
+   show.letters = FALSE,
+   show.points = TRUE,
+   show.errorbars = FALSE)
 
 
 }

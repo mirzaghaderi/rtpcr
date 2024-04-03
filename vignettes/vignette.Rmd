@@ -302,7 +302,7 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ```{r eval= T, fig.height = 4, fig.width = 9, fig.align = 'center', fig.cap = "Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package."}
 
 # Before plotting, the result needs to be extracted as below:
-res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Result
+res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)
 
 # Plot of the 'res' data with 'Genotype' as grouping factor
 q1 <- twoFACTORplot(res,
@@ -372,6 +372,34 @@ p2 <- threeFACTORplot(res,
 multiplot(p1, p2, cols = 2)
 grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
+```
+
+
+# An example of Showing point on the plot
+```{r, eval=F, include = FALSE}
+
+b <- qpcrANOVA(data_3factor_a, numberOfrefGenes = 1)$Result
+a <- qpcrANOVA(data_3factor_a, numberOfrefGenes = 1)$Final_data
+
+ggplot(b, aes(x = Genotype, y = RE, fill = factor(Drought))) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~ SA) +
+  scale_fill_brewer(palette = "Reds") +
+  xlab("Genotype") +
+  ylab("Relative Expression") +
+  geom_point(data = a, aes(x = Genotype, y = (10^(-wDCt)), fill = factor(Drought)), 
+             position = position_dodge(width = 0.9), color = "black") +
+  ylab("ylab") +
+  xlab("xlab") +
+  theme_bw() +
+  theme(axis.text.x = element_text(size = 12, color = "black", angle = 0, hjust = 0.5),
+        axis.text.y = element_text(size = 12, color = "black", angle = 0, hjust = 0.5),
+        axis.title  = element_text(size = 12),
+        legend.text = element_text(size = 12)) +
+  theme(legend.position  = c(0.2, 0.7)) +
+  theme(legend.title = element_text(size = 12, color = "black")) +
+  scale_y_continuous(breaks = seq(0, max(b$RE) + max(b$std) + 0.1, by = 5), 
+                     limits = c(0, max(b$RE) + max(b$std) + 0.1), expand = c(0, 0)) 
 ```
 
 

@@ -47,7 +47,7 @@
 #'            analysisType = "ancova", 
 #'            main.factor = 2,  
 #'            levels = c(3, 2, 1), 
-#'            showCheckLevel = TRUE)
+#'            showCheckLevel = FALSE)
 #'            
 #'            
 #' 

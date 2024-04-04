@@ -391,6 +391,8 @@ conditions</a></li>
 <li><a href="#generating-plot" id="toc-generating-plot">Generating
 plot</a></li>
 </ul></li>
+<li><a href="#analysis-of-covariance-ancova" id="toc-analysis-of-covariance-ancova">Analysis of covariance
+(ANCOVA)</a></li>
 <li><a href="#a-target-gene-under-more-than-two-conditions-anova" id="toc-a-target-gene-under-more-than-two-conditions-anova">A target
 gene under more than two conditions (ANOVA)</a>
 <ul>
@@ -855,6 +857,107 @@ condition computed by unpaired t-tests via ‘qpcrTTESTplot’ function.
 </p>
 </div>
 </div>
+</div>
+<div id="analysis-of-covariance-ancova" class="section level2">
+<h2>Analysis of covariance (ANCOVA)</h2>
+<p>analysis of covariance (ANCOVA) is a method bansed on both ANOVA and
+linear regression. It is basically suitable when the levels of a factor
+are also affected by an uncontrolled quantitative covariate. For
+example, suppose that wDCt of a target gene in a plant is affected by
+temperature. The gene may also be affected by drought. since we already
+know that temperature affects the target gene, we are interesting now if
+the gene expression is also altered by the drought levels. We can design
+an experiment to understand the gene behavior at both temperature and
+drought levels at the same time. The drought is another factor (the
+covariate) that may affect the expression of our gene under the levels
+of the first factor i.e. temperature. The data of such an experiment can
+be analyzed by ANCOVA or even ANOVA based on a factorial experiment
+using <code>qpcrANCOVA</code> function, if more than a factor exist. Bar
+plot of fold changes (FCs) along with the 95% confidence interval is
+also returned by the <code>qpcrANCOVA</code> function. There is also a
+function called which returns FC values and related plot for a
+one-factor-experiment with more than two levels.</p>
+<pre class="r"><code># See sample data
+data_2factor</code></pre>
+<pre><code>##    Genotype Drought Rep EPO  POCt EGAPDH GAPDHCt
+## 1         R    0.00   1   2 33.30      2   31.53
+## 2         R    0.00   2   2 33.39      2   31.57
+## 3         R    0.00   3   2 33.34      2   31.50
+## 4         R    0.25   1   2 32.73      2   31.30
+## 5         R    0.25   2   2 32.46      2   32.55
+## 6         R    0.25   3   2 32.60      2   31.92
+## 7         R    0.50   1   2 33.48      2   33.30
+## 8         R    0.50   2   2 33.27      2   33.37
+## 9         R    0.50   3   2 33.32      2   33.35
+## 10        S    0.00   1   2 26.85      2   26.94
+## 11        S    0.00   2   2 28.17      2   27.69
+## 12        S    0.00   3   2 27.99      2   27.39
+## 13        S    0.25   1   2 30.41      2   28.70
+## 14        S    0.25   2   2 29.49      2   28.66
+## 15        S    0.25   3   2 29.98      2   28.71
+## 16        S    0.50   1   2 29.03      2   30.61
+## 17        S    0.50   2   2 28.73      2   30.20
+## 18        S    0.50   3   2 28.83      2   30.49</code></pre>
+<pre class="r"><code>qpcrANCOVA(data_2factor, 
+           numberOfrefGenes = 1, 
+           factorial = TRUE, 
+           factorDesired = 2,  
+           levels = c(3, 2, 1), 
+           showCheckLevel = TRUE)</code></pre>
+<pre><code>## $Final_data
+##    Genotype condition rep Etarget Cttarget Eref Ctref       wDCt
+## 1         R         1   1       2    33.30    2 31.53  0.5328231
+## 2         R         1   2       2    33.39    2 31.57  0.5478746
+## 3         R         1   3       2    33.34    2 31.50  0.5538952
+## 4         R         2   1       2    32.73    2 31.30  0.4304729
+## 5         R         2   2       2    32.46    2 32.55 -0.0270927
+## 6         R         2   3       2    32.60    2 31.92  0.2047004
+## 7         R         3   1       2    33.48    2 33.30  0.0541854
+## 8         R         3   2       2    33.27    2 33.37 -0.0301030
+## 9         R         3   3       2    33.32    2 33.35 -0.0090309
+## 10        S         1   1       2    26.85    2 26.94 -0.0270927
+## 11        S         1   2       2    28.17    2 27.69  0.1444944
+## 12        S         1   3       2    27.99    2 27.39  0.1806180
+## 13        S         2   1       2    30.41    2 28.70  0.5147613
+## 14        S         2   2       2    29.49    2 28.66  0.2498549
+## 15        S         2   3       2    29.98    2 28.71  0.3823081
+## 16        S         3   1       2    29.03    2 30.61 -0.4756274
+## 17        S         3   2       2    28.73    2 30.20 -0.4425141
+## 18        S         3   3       2    28.83    2 30.49 -0.4997098
+## 
+## $lm
+## 
+## Call:
+## stats::lm(formula = stats::as.formula(paste(&quot;wDCt ~&quot;, CRDfactors)), 
+##     data = x)
+## 
+## Coefficients:
+##         (Intercept)            GenotypeS            condition  
+##             0.79071             -0.21574             -0.26992  
+## GenotypeS:condition  
+##            -0.01605  
+## 
+## 
+## $ANOVA_factorial
+## Analysis of Variance Table
+## 
+## Response: wDCt
+##                    Df  Sum Sq Mean Sq F value   Pr(&gt;F)   
+## Genotype            1 0.27643 0.27643  4.6740 0.048426 * 
+## condition           1 0.92708 0.92708 15.6757 0.001426 **
+## Genotype:condition  1 0.00077 0.00077  0.0131 0.910587   
+## Residuals          14 0.82798 0.05914                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## $Table
+##           FC pvalue signif.    LCL    UCL
+## 1 - 1 1.0000 1.0000         0.0000 0.0000
+## 1 - 2 0.9341 0.8361         0.4669 1.8687
+## 1 - 3 0.2780 0.0014      ** 0.1390 0.5562
+## 
+## $plot</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 <div id="a-target-gene-under-more-than-two-conditions-anova" class="section level2">
 <h2>A target gene under more than two conditions (ANOVA)</h2>

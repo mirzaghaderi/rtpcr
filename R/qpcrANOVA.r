@@ -1,5 +1,5 @@
-#' @title Analysis of Variance based on completely randomized design (CRD) of qPCR data
-#' @description Analysis of Variance of qPCR data
+#' @title Analysis of Variance of qPCR data based on CRD 
+#' @description Analysis of Variance of qPCR data based on completely randomized design (CRD). Even there are more than a factorial experiment, it is still possible to apply CRD analysis on the factor-level combinations as treatments. Analysis of variance based on factorial design or analysis of covariance can be performed using `qpcrANCOVA` function.  
 #' @details The qpcrANOVA performs ANOVA (analysis of variance) of qPCR data. It is suitable when there is a factor with more than two levels or when the are more that a condition factor in the experiment or when there is a blocking factor.
 #' @author Ghader Mirzaghaderi
 #' @export qpcrANOVA

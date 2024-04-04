@@ -225,6 +225,24 @@ grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ```
 
+## Analysis of covariance (ANCOVA)
+
+analysis of covariance (ANCOVA) is a method bansed on both ANOVA and linear regression. It is basically suitable when the levels of a factor are also affected by an uncontrolled quantitative covariate. 
+For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may also be affected by drought. since we already know that temperature affects the target gene, we are interesting now if the gene expression is also altered by the drought levels. We can design an experiment to understand the gene behavior at both temperature and drought levels at the same time. The drought is another factor (the covariate) that may affect the expression of our gene under the levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA or even ANOVA based on a factorial experiment using `qpcrANCOVA` function, if more than a factor exist. Bar plot of fold changes (FCs) along with the 95\% confidence interval is also returned by the `qpcrANCOVA` function. There is also a function called \code{oneFACTORplot} which returns FC values and related plot for a one-factor-experiment with more than two levels. 
+
+```{r eval = T, fig.height = 3, fig.width = 5, fig.align='center'}
+# See sample data
+data_2factor
+
+qpcrANCOVA(data_2factor, 
+           numberOfrefGenes = 1, 
+           factorial = TRUE, 
+           factorDesired = 2,  
+           levels = c(3, 2, 1), 
+           showCheckLevel = TRUE)
+```
+
+
 ## A target gene under more than two conditions (ANOVA)
 
 Analysis of variance (ANOVA) of factorial experiments in the frame of a completely randomized design (CRD) can be done by the `qpcrANOVA` function. ANOVA of qPCR data is suitable when there is a factor with more than two levels, or when there is more than an experimental factor. The input data set should be prepared as shown below. Factor columns should be presented first followed by biological replicates and efficiency and Ct values of target and reference genes. The example data set below (`data_3factor_a`) represents amplification efficiency and Ct values for target and reference genes under three grouping factors (two different cultivars, three drought levels, and the presence or absence of bacteria). The table can contain any number of factor columns. The factor columns should be followed by five other columns assigned to biological replicates (r), the efficiency of the target gene, Ct values of the target gene, the efficiency of the reference gene, and Ct values of the reference gene, respectively. Here, the efficiency of 2 has been used for all wells, but the calculated efficiencies can be used instead.

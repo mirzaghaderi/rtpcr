@@ -333,6 +333,107 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 <p class="caption">Average Fold changes of three target genes relative to the control condition computed by unpaired t-tests via ‘qpcrTTESTplot’ function.</p>
 </div>
 
+## Analysis of covariance (ANCOVA)
+
+analysis of covariance (ANCOVA) is a method bansed on both ANOVA and linear regression. It is basically suitable when the levels of a factor are also affected by an uncontrolled quantitative covariate. 
+For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may also be affected by drought. since we already know that temperature affects the target gene, we are interesting now if the gene expression is also altered by the drought levels. We can design an experiment to understand the gene behavior at both temperature and drought levels at the same time. The drought is another factor (the covariate) that may affect the expression of our gene under the levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA or even ANOVA based on a factorial experiment using `qpcrANCOVA` function, if more than a factor exist. Bar plot of fold changes (FCs) along with the 95\% confidence interval is also returned by the `qpcrANCOVA` function. There is also a function called \code{oneFACTORplot} which returns FC values and related plot for a one-factor-experiment with more than two levels. 
+
+
+```r
+# See sample data
+data_2factor
+```
+
+```
+##    Genotype Drought Rep EPO  POCt EGAPDH GAPDHCt
+## 1         R    0.00   1   2 33.30      2   31.53
+## 2         R    0.00   2   2 33.39      2   31.57
+## 3         R    0.00   3   2 33.34      2   31.50
+## 4         R    0.25   1   2 32.73      2   31.30
+## 5         R    0.25   2   2 32.46      2   32.55
+## 6         R    0.25   3   2 32.60      2   31.92
+## 7         R    0.50   1   2 33.48      2   33.30
+## 8         R    0.50   2   2 33.27      2   33.37
+## 9         R    0.50   3   2 33.32      2   33.35
+## 10        S    0.00   1   2 26.85      2   26.94
+## 11        S    0.00   2   2 28.17      2   27.69
+## 12        S    0.00   3   2 27.99      2   27.39
+## 13        S    0.25   1   2 30.41      2   28.70
+## 14        S    0.25   2   2 29.49      2   28.66
+## 15        S    0.25   3   2 29.98      2   28.71
+## 16        S    0.50   1   2 29.03      2   30.61
+## 17        S    0.50   2   2 28.73      2   30.20
+## 18        S    0.50   3   2 28.83      2   30.49
+```
+
+```r
+qpcrANCOVA(data_2factor, 
+           numberOfrefGenes = 1, 
+           factorial = TRUE, 
+           factorDesired = 2,  
+           levels = c(3, 2, 1), 
+           showCheckLevel = TRUE)
+```
+
+```
+## $Final_data
+##    Genotype condition rep Etarget Cttarget Eref Ctref       wDCt
+## 1         R         1   1       2    33.30    2 31.53  0.5328231
+## 2         R         1   2       2    33.39    2 31.57  0.5478746
+## 3         R         1   3       2    33.34    2 31.50  0.5538952
+## 4         R         2   1       2    32.73    2 31.30  0.4304729
+## 5         R         2   2       2    32.46    2 32.55 -0.0270927
+## 6         R         2   3       2    32.60    2 31.92  0.2047004
+## 7         R         3   1       2    33.48    2 33.30  0.0541854
+## 8         R         3   2       2    33.27    2 33.37 -0.0301030
+## 9         R         3   3       2    33.32    2 33.35 -0.0090309
+## 10        S         1   1       2    26.85    2 26.94 -0.0270927
+## 11        S         1   2       2    28.17    2 27.69  0.1444944
+## 12        S         1   3       2    27.99    2 27.39  0.1806180
+## 13        S         2   1       2    30.41    2 28.70  0.5147613
+## 14        S         2   2       2    29.49    2 28.66  0.2498549
+## 15        S         2   3       2    29.98    2 28.71  0.3823081
+## 16        S         3   1       2    29.03    2 30.61 -0.4756274
+## 17        S         3   2       2    28.73    2 30.20 -0.4425141
+## 18        S         3   3       2    28.83    2 30.49 -0.4997098
+## 
+## $lm
+## 
+## Call:
+## stats::lm(formula = stats::as.formula(paste("wDCt ~", CRDfactors)), 
+##     data = x)
+## 
+## Coefficients:
+##         (Intercept)            GenotypeS            condition  
+##             0.79071             -0.21574             -0.26992  
+## GenotypeS:condition  
+##            -0.01605  
+## 
+## 
+## $ANOVA_factorial
+## Analysis of Variance Table
+## 
+## Response: wDCt
+##                    Df  Sum Sq Mean Sq F value   Pr(>F)   
+## Genotype            1 0.27643 0.27643  4.6740 0.048426 * 
+## condition           1 0.92708 0.92708 15.6757 0.001426 **
+## Genotype:condition  1 0.00077 0.00077  0.0131 0.910587   
+## Residuals          14 0.82798 0.05914                    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## $Table
+##           FC pvalue signif.    LCL    UCL
+## 1 - 1 1.0000 1.0000         0.0000 0.0000
+## 1 - 2 0.9341 0.8361         0.4669 1.8687
+## 1 - 3 0.2780 0.0014      ** 0.1390 0.5562
+## 
+## $plot
+```
+
+![](vignette_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+
+
 ## A target gene under more than two conditions (ANOVA)
 
 Analysis of variance (ANOVA) of factorial experiments in the frame of a completely randomized design (CRD) can be done by the `qpcrANOVA` function. ANOVA of qPCR data is suitable when there is a factor with more than two levels, or when there is more than an experimental factor. The input data set should be prepared as shown below. Factor columns should be presented first followed by biological replicates and efficiency and Ct values of target and reference genes. The example data set below (`data_3factor_a`) represents amplification efficiency and Ct values for target and reference genes under three grouping factors (two different cultivars, three drought levels, and the presence or absence of bacteria). The table can contain any number of factor columns. The factor columns should be followed by five other columns assigned to biological replicates (r), the efficiency of the target gene, Ct values of the target gene, the efficiency of the reference gene, and Ct values of the reference gene, respectively. Here, the efficiency of 2 has been used for all wells, but the calculated efficiencies can be used instead.
@@ -492,7 +593,7 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ```
 
 <div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-10-1.png" alt="A) A bar plot representing Relative expression of a gene under three levels of a factor generated using ‘oneFACTORplot’ function, B) Plot of average Fold changes produced by the ‘oneFACTORfcplot’ function from the same data as ‘C’ where the level1 has been selected as check. Check level can be changed by user. Error bars represent 95% confidence interval."  />
+<img src="vignette_files/figure-html/unnamed-chunk-11-1.png" alt="A) A bar plot representing Relative expression of a gene under three levels of a factor generated using ‘oneFACTORplot’ function, B) Plot of average Fold changes produced by the ‘oneFACTORfcplot’ function from the same data as ‘C’ where the level1 has been selected as check. Check level can be changed by user. Error bars represent 95% confidence interval."  />
 <p class="caption">A) A bar plot representing Relative expression of a gene under three levels of a factor generated using ‘oneFACTORplot’ function, B) Plot of average Fold changes produced by the ‘oneFACTORfcplot’ function from the same data as ‘C’ where the level1 has been selected as check. Check level can be changed by user. Error bars represent 95% confidence interval.</p>
 </div>
 
@@ -545,7 +646,7 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ```
 
 <div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-11-1.png" alt="Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package."  />
+<img src="vignette_files/figure-html/unnamed-chunk-12-1.png" alt="Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package."  />
 <p class="caption">Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package.</p>
 </div>
 
@@ -621,7 +722,7 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ```
 
 <div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-12-1.png" alt="A and B) Relative expression (RE) of a target gene under two or three factors produced by ‘twoFACTORplot’ and ‘threeFACTORplot’ functions, respectively. Error bars represent standard deviations (can be set to confidence interval). Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an ‘LSD.test’."  />
+<img src="vignette_files/figure-html/unnamed-chunk-13-1.png" alt="A and B) Relative expression (RE) of a target gene under two or three factors produced by ‘twoFACTORplot’ and ‘threeFACTORplot’ functions, respectively. Error bars represent standard deviations (can be set to confidence interval). Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an ‘LSD.test’."  />
 <p class="caption">A and B) Relative expression (RE) of a target gene under two or three factors produced by ‘twoFACTORplot’ and ‘threeFACTORplot’ functions, respectively. Error bars represent standard deviations (can be set to confidence interval). Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an ‘LSD.test’.</p>
 </div>
 
@@ -679,7 +780,7 @@ qqline(residuals, col = "red")
 ```
 
 <div class="figure" style="text-align: center">
-<img src="vignette_files/figure-html/unnamed-chunk-14-1.png" alt="QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions."  />
+<img src="vignette_files/figure-html/unnamed-chunk-15-1.png" alt="QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions."  />
 <p class="caption">QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions.</p>
 </div>
 

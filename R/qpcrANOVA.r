@@ -1,4 +1,4 @@
-#' @title Analysis of Variance of qPCR data
+#' @title Analysis of Variance based on completely randomized design (CRD) of qPCR data
 #' @description Analysis of Variance of qPCR data
 #' @details The qpcrANOVA performs ANOVA (analysis of variance) of qPCR data. It is suitable when there is a factor with more than two levels or when the are more that a condition factor in the experiment or when there is a blocking factor.
 #' @author Ghader Mirzaghaderi
@@ -132,25 +132,13 @@ qpcrANOVA <- function(x,
 
   # Check if there is block
   if (is.null(block)) {
-
-    # If ANOVA based on factorial design was desired:
-    lm0 <- stats::lm(stats::as.formula(paste("wDCt ~", CRDfactors)), x)
-    factorialANOVA <- stats::anova(lm0)
-
-
     # Concatenate the columns using paste0
     x$T <- do.call(paste, c(x[1:(ncol(x)-6)], sep = ":"))
     x
     lm <- stats::lm(wDCt ~ T, x)
     anovaCRD <- stats::anova(lm)
 
-
   } else {
-    # If ANOVA based on factorial design was desired with blocking factor:
-    lm0 <- stats::lm(stats::as.formula(paste("wDCt ~",  "block +", CRDfactors)), x)
-    factorialANOVA <- stats::anova(lm0)
-
-
     # Concatenate the columns using paste0
     x$T <- do.call(paste, c(x[1:(ncol(x)-7)], sep = ":"))
     x
@@ -258,10 +246,8 @@ qpcrANOVA <- function(x,
   
   outlist <- list(Final_data = xx,
                   lmCRD = lm,
-                  ANOVA_factorial = factorialANOVA,
                   ANOVA_CRD = anovaCRD,
                   Result = Results,
-                  Post_hoc_Test = Post_hoc_Testing,
                   Post_hoc_Test = Post_hoc_Testing)
   
   

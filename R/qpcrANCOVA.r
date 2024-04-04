@@ -286,10 +286,8 @@ qpcrANCOVA <- function(x,
   
   
   
-  
-  
-  
   outlist2 <- list(Final_data = x,
+                   lm = lmf,
                    ANOVA_factorial = factorialANOVA,
                    Table = tableC,
                    plot = pfc2)

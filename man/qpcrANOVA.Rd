@@ -2,7 +2,7 @@
 % Please edit documentation in R/qpcrANOVA.r
 \name{qpcrANOVA}
 \alias{qpcrANOVA}
-\title{Analysis of Variance of qPCR data}
+\title{Analysis of Variance based on completely randomized design (CRD) of qPCR data}
 \usage{
 qpcrANOVA(
   x,

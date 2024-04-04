@@ -11,8 +11,8 @@
 #' @import agricolae
 #' @param x a data frame. The data frame consists of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct in the following data frame is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used we well. We use this data set for Fold Change expression analysis of the target genes in treatment condition compared to normal condition.
 #' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.
-#' @param factorial a logical variable showing if the data is analysed based on factorial arrangement. 
-#' @param factorDesired the factor for which the FC is calculated for its level pairs.
+#' @param analysisType should be one of "ancova" or "anova".
+#' @param main.factor the factor for which the levels FC is compared.
 #' @param levels a numeric vector with the length equal to the factor levels. First number indicates Control.
 #' @param level.names  a vector determining level names in the x axis on the plot.
 #' @param showCheckLevel a logical variable determining if the check level column be show in the plot or not.
@@ -28,8 +28,13 @@
 #' @param p.adj Method for adjusting p values (see p.adjust)
 #' @return A list with 2 elements:
 #' \describe{
-#'   \item{plot}{Bar plot of the average fold change for desired factor levels.}
+#'   \item{Final_data}{}
+#'   \item{lmf}{lm of factorial analysis-tyle}
+#'   \item{lmc}{lm of ANCOVA analysis-type}
+#'   \item{ANOVA_table}{ANOVA table}
+#'   \item{ANCOVA_table}{ANCOVA table}
 #'   \item{Table}{Table of FC values and significance and the 95 percent CI as error bars.}
+#'   \item{plot}{Bar plot of the average fold change for desired factor levels.}
 #' }
 #' @examples
 #'
@@ -39,8 +44,8 @@
 #'
 #' qpcrANCOVA(data_2factor, 
 #'            numberOfrefGenes = 1, 
-#'            factorial = TRUE, 
-#'            factorDesired = 2,  
+#'            analysisType = "ancova", 
+#'            main.factor = 2,  
 #'            levels = c(3, 2, 1), 
 #'            showCheckLevel = TRUE)
 #'            
@@ -48,28 +53,29 @@
 #' 
 
 qpcrANCOVA <- function(x,
-                      numberOfrefGenes,
-                      block = NULL,
-                      factorial = TRUE,
-                      factorDesired = 1,
-                      levels,
-                      showCheckLevel = TRUE,
-                      level.names = "none",
-                      width = 0.5,
-                      fill = "skyblue",
-                      y.axis.adjust = 1,
-                      y.axis.by = 1,
-                      letter.position.adjust = 0.1,
-                      ylab = "Average Fold Change",
-                      xlab = "Pairs",
-                      fontsize = 12,
-                      p.adj = c("none","holm","hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")){
+                       numberOfrefGenes,
+                       block = NULL,
+                       analysisType,
+                       main.factor,
+                       levels,
+                       showCheckLevel = TRUE,
+                       level.names = "none",
+                       width = 0.5,
+                       fill = "skyblue",
+                       y.axis.adjust = 1,
+                       y.axis.by = 1,
+                       letter.position.adjust = 0.1,
+                       ylab = "Average Fold Change",
+                       xlab = "Pairs",
+                       fontsize = 12,
+                       p.adj = c("none","holm","hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")){
   
   
-  
-  xfl <- x[,factorDesired]
+  x <- x[, c(main.factor, (1:ncol(x))[-main.factor])]      
+  x <- x[order(x[,1]),]
+  xfl <- x[,1]
   levels <- rev(levels)
-  colnames(x)[factorDesired] <- "condition"
+  colnames(x)[1] <- "condition"
   x$condition <- levels[as.factor(xfl)]
   
   
@@ -81,7 +87,6 @@ qpcrANCOVA <- function(x,
     if(numberOfrefGenes == 1) {
       
       factors <- colnames(x)[1:(ncol(x)-5)]
-      CRDfactors <- paste(factors, collapse = "*")
       colnames(x)[ncol(x)-4] <- "rep"
       colnames(x)[ncol(x)-3] <- "Etarget"
       colnames(x)[ncol(x)-2] <- "Cttarget"
@@ -93,7 +98,6 @@ qpcrANCOVA <- function(x,
     } else if(numberOfrefGenes == 2) {
       
       factors <- colnames(x)[1:(ncol(x)-7)]
-      CRDfactors <- paste(factors, collapse = "*")
       colnames(x)[ncol(x)-6] <- "rep"
       colnames(x)[ncol(x)-5] <- "Etarget"
       colnames(x)[ncol(x)-4] <- "Cttarget"
@@ -110,7 +114,6 @@ qpcrANCOVA <- function(x,
     if(numberOfrefGenes == 1) {
       
       factors <- colnames(x)[1:(ncol(x)-6)]
-      CRDfactors <- paste(factors, collapse = "*")
       colnames(x)[ncol(x)-5] <- "block"
       colnames(x)[ncol(x)-4] <- "rep"
       colnames(x)[ncol(x)-3] <- "Etarget"
@@ -123,7 +126,6 @@ qpcrANCOVA <- function(x,
     } else if(numberOfrefGenes == 2) {
       
       factors <- colnames(x)[1:(ncol(x)-8)]
-      CRDfactors <- paste(factors, collapse = "*")
       colnames(x)[ncol(x)-7] <- "block"
       colnames(x)[ncol(x)-6] <- "rep"
       colnames(x)[ncol(x)-5] <- "Etarget"
@@ -141,18 +143,25 @@ qpcrANCOVA <- function(x,
   
   
   
-  
   # Check if there is block
   if (is.null(block)) {
     
-    # If ANOVA based on factorial design was desired:
-    lm0 <- stats::lm(stats::as.formula(paste("wDCt ~", CRDfactors)), x)
-    factorialANOVA <- stats::anova(lm0)
-
+    # ANOVA based on factorial design
+    formula_ANOVA <- paste("wDCt ~", paste("as.factor(", factors, ")", collapse = " * "))
+    lmf <- lm(formula_ANOVA, data = x)
+    ANOVA <- stats::anova(lmf)
+    formula_ANCOVA <- paste("wDCt ~", paste("as.factor(", rev(factors), ")", collapse = " + "))
+    lmc <- lm(formula_ANCOVA, data = x)
+    ANCOVA <- stats::anova(lmc)
+    
   } else {
     # If ANOVA based on factorial design was desired with blocking factor:
-    lm0 <- stats::lm(stats::as.formula(paste("wDCt ~",  "block +", CRDfactors)), x)
-    factorialANOVA <- stats::anova(lm0)
+    formula_ANOVA <- paste("wDCt ~", "block +", paste("as.factor(", factors, ")", collapse = " * "))
+    lmf <- lm(formula_ANOVA, data = x)
+    ANOVA <- stats::anova(lmf)
+    formula_ANCOVA <- paste("wDCt ~", "block +", paste("as.factor(", factors, ")", collapse = " + "))
+    lmc <- lm(formula_ANCOVA, data = x)
+    ANCOVA <- stats::anova(lmc)
   }
   
   
@@ -194,22 +203,29 @@ qpcrANCOVA <- function(x,
   
   
   
-  # If the analysis and post-hoc testing is based on factorial
-  lmf <- lm0
-
-  FACTOR <- base::attr(stats::terms(lmf), "term.labels")[factorDesired]
-
+  # Type of analysis: ancova or anova
+  if(analysisType == "ancova") {
+    FACTOR <- rev(base::attr(stats::terms(lmc), "term.labels"))[1]
+    lm <- lmc
+  } 
+  else{
+    FACTOR <- base::attr(stats::terms(lmf), "term.labels")[1]
+    lm <- lmf
+  }
+  
+  
+  
   
   # Preparing final result table including letter grouping of the means
-  g <-  LSD.test(lmf, FACTOR, group = T, console = F, alpha = 0.05, p.adj = p.adj)$groups
+  g <-  LSD.test(lm, FACTOR, group = T, console = F, alpha = 0.05, p.adj = p.adj)$groups
   g <- g[rev(rownames(g)),] #order the result the way you want
   g$groups <- invOrder(as.character(g$groups))
-  mean <- LSD.test(lmf, FACTOR, group = T, console = F, alpha = 0.05, p.adj = p.adj)$means
+  mean <- LSD.test(lm, FACTOR, group = T, console = F, alpha = 0.05, p.adj = p.adj)$means
   
   
   # Comparing mean pairs that also returns CI
   # Preparing final result table including letter grouping of the means
-  meanPP <- LSD.test(lmf, FACTOR, group = F, console = F, alpha = 0.05, p.adj = p.adj)
+  meanPP <- LSD.test(lm, FACTOR, group = F, console = F, alpha = 0.05, p.adj = p.adj)
   meanPairs <- meanPP$comparison
   ROWS <- rownames(meanPairs)
   diffs <- meanPairs$difference
@@ -227,19 +243,19 @@ qpcrANCOVA <- function(x,
   
   
   
-
+  
   
   FINALDATA <- x
   POSTHUC <- Post_hoc_Testing
   
-  Nrows <- length(unique(FINALDATA[,factorDesired])[-1])
+  Nrows <- length(unique(FINALDATA[,1])[-1])
   withControl  <- POSTHUC[1:Nrows,]
   withControl
   
   
   # if check level be shown in the plot or not
   if(showCheckLevel == TRUE) {
-    tableC <- rbind(data.frame(row.names = "1 - 1", FC = 1, pvalue=1, signif.=" ", LCL=0, UCL=0), withControl)
+    tableC <- rbind(data.frame(row.names = "1 - 1", FC = 1, pvalue = 1, signif.=" ", LCL = 0, UCL=0), withControl)
     # default level names of add level.names
     if (any(level.names == "none")) {
       rownames(tableC) <- rownames(tableC)
@@ -287,8 +303,10 @@ qpcrANCOVA <- function(x,
   
   
   outlist2 <- list(Final_data = x,
-                   lm = lmf,
-                   ANOVA_factorial = factorialANOVA,
+                   lmf = lmf,
+                   lmc = lmc,
+                   ANOVA_table = ANOVA,
+                   ANCOVA_table = ANCOVA,
                    Table = tableC,
                    plot = pfc2)
   
@@ -296,4 +314,3 @@ qpcrANCOVA <- function(x,
   
   return(outlist2)
 }
-

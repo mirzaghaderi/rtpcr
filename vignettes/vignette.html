@@ -900,64 +900,99 @@ data_2factor</code></pre>
 ## 18        S    0.50   3   2 28.83      2   30.49</code></pre>
 <pre class="r"><code>qpcrANCOVA(data_2factor, 
            numberOfrefGenes = 1, 
-           factorial = TRUE, 
-           factorDesired = 2,  
+           analysisType = &quot;ancova&quot;, 
+           main.factor = 2,  
            levels = c(3, 2, 1), 
-           showCheckLevel = TRUE)</code></pre>
+           showCheckLevel = FALSE,
+           y.axis.adjust = 0.3)</code></pre>
 <pre><code>## $Final_data
-##    Genotype condition rep Etarget Cttarget Eref Ctref       wDCt
-## 1         R         1   1       2    33.30    2 31.53  0.5328231
-## 2         R         1   2       2    33.39    2 31.57  0.5478746
-## 3         R         1   3       2    33.34    2 31.50  0.5538952
-## 4         R         2   1       2    32.73    2 31.30  0.4304729
-## 5         R         2   2       2    32.46    2 32.55 -0.0270927
-## 6         R         2   3       2    32.60    2 31.92  0.2047004
-## 7         R         3   1       2    33.48    2 33.30  0.0541854
-## 8         R         3   2       2    33.27    2 33.37 -0.0301030
-## 9         R         3   3       2    33.32    2 33.35 -0.0090309
-## 10        S         1   1       2    26.85    2 26.94 -0.0270927
-## 11        S         1   2       2    28.17    2 27.69  0.1444944
-## 12        S         1   3       2    27.99    2 27.39  0.1806180
-## 13        S         2   1       2    30.41    2 28.70  0.5147613
-## 14        S         2   2       2    29.49    2 28.66  0.2498549
-## 15        S         2   3       2    29.98    2 28.71  0.3823081
-## 16        S         3   1       2    29.03    2 30.61 -0.4756274
-## 17        S         3   2       2    28.73    2 30.20 -0.4425141
-## 18        S         3   3       2    28.83    2 30.49 -0.4997098
+##    condition Genotype rep Etarget Cttarget Eref Ctref       wDCt
+## 1          1        R   1       2    33.30    2 31.53  0.5328231
+## 2          1        R   2       2    33.39    2 31.57  0.5478746
+## 3          1        R   3       2    33.34    2 31.50  0.5538952
+## 10         1        S   1       2    26.85    2 26.94 -0.0270927
+## 11         1        S   2       2    28.17    2 27.69  0.1444944
+## 12         1        S   3       2    27.99    2 27.39  0.1806180
+## 4          2        R   1       2    32.73    2 31.30  0.4304729
+## 5          2        R   2       2    32.46    2 32.55 -0.0270927
+## 6          2        R   3       2    32.60    2 31.92  0.2047004
+## 13         2        S   1       2    30.41    2 28.70  0.5147613
+## 14         2        S   2       2    29.49    2 28.66  0.2498549
+## 15         2        S   3       2    29.98    2 28.71  0.3823081
+## 7          3        R   1       2    33.48    2 33.30  0.0541854
+## 8          3        R   2       2    33.27    2 33.37 -0.0301030
+## 9          3        R   3       2    33.32    2 33.35 -0.0090309
+## 16         3        S   1       2    29.03    2 30.61 -0.4756274
+## 17         3        S   2       2    28.73    2 30.20 -0.4425141
+## 18         3        S   3       2    28.83    2 30.49 -0.4997098
 ## 
-## $lm
+## $lmf
 ## 
 ## Call:
-## stats::lm(formula = stats::as.formula(paste(&quot;wDCt ~&quot;, CRDfactors)), 
-##     data = x)
+## lm(formula = formula_ANOVA, data = x)
 ## 
 ## Coefficients:
-##         (Intercept)            GenotypeS            condition  
-##             0.79071             -0.21574             -0.26992  
-## GenotypeS:condition  
-##            -0.01605  
+##                                (Intercept)  
+##                                    0.54486  
+##                      as.factor(condition)2  
+##                                   -0.34217  
+##                      as.factor(condition)3  
+##                                   -0.53985  
+##                       as.factor(Genotype)S  
+##                                   -0.44552  
+## as.factor(condition)2:as.factor(Genotype)S  
+##                                    0.62514  
+## as.factor(condition)3:as.factor(Genotype)S  
+##                                   -0.03211  
 ## 
 ## 
-## $ANOVA_factorial
+## $lmc
+## 
+## Call:
+## lm(formula = formula_ANCOVA, data = x)
+## 
+## Coefficients:
+##           (Intercept)   as.factor(Genotype)S  as.factor(condition)2  
+##                0.4460                -0.2478                -0.0296  
+## as.factor(condition)3  
+##               -0.5559  
+## 
+## 
+## $ANOVA_table
 ## Analysis of Variance Table
 ## 
 ## Response: wDCt
-##                    Df  Sum Sq Mean Sq F value   Pr(&gt;F)   
-## Genotype            1 0.27643 0.27643  4.6740 0.048426 * 
-## condition           1 0.92708 0.92708 15.6757 0.001426 **
-## Genotype:condition  1 0.00077 0.00077  0.0131 0.910587   
-## Residuals          14 0.82798 0.05914                    
+##                                          Df  Sum Sq Mean Sq F value    Pr(&gt;F)
+## as.factor(condition)                      2 1.17379 0.58690  41.394 4.117e-06
+## as.factor(Genotype)                       1 0.27643 0.27643  19.497 0.0008422
+## as.factor(condition):as.factor(Genotype)  2 0.41190 0.20595  14.526 0.0006239
+## Residuals                                12 0.17014 0.01418                  
+##                                             
+## as.factor(condition)                     ***
+## as.factor(Genotype)                      ***
+## as.factor(condition):as.factor(Genotype) ***
+## Residuals                                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## $ANCOVA_table
+## Analysis of Variance Table
+## 
+## Response: wDCt
+##                      Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## as.factor(Genotype)   1 0.27643 0.27643   6.649 0.0218703 *  
+## as.factor(condition)  2 1.17379 0.58690  14.117 0.0004398 ***
+## Residuals            14 0.58204 0.04157                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## $Table
 ##           FC pvalue signif.    LCL    UCL
-## 1 - 1 1.0000 1.0000         0.0000 0.0000
-## 1 - 2 0.9341 0.8361         0.4669 1.8687
-## 1 - 3 0.2780 0.0014      ** 0.1390 0.5562
+## 1 - 2 0.9341 0.8051         0.5223 1.6706
+## 1 - 3 0.2780 0.0003     *** 0.1555 0.4973
 ## 
 ## $plot</code></pre>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
 </div>
 <div id="a-target-gene-under-more-than-two-conditions-anova" class="section level2">
 <h2>A target gene under more than two conditions (ANOVA)</h2>

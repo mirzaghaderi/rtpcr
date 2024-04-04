@@ -369,69 +369,104 @@ data_2factor
 ```r
 qpcrANCOVA(data_2factor, 
            numberOfrefGenes = 1, 
-           factorial = TRUE, 
-           factorDesired = 2,  
+           analysisType = "ancova", 
+           main.factor = 2,  
            levels = c(3, 2, 1), 
-           showCheckLevel = TRUE)
+           showCheckLevel = FALSE,
+           y.axis.adjust = 0.3)
 ```
 
 ```
 ## $Final_data
-##    Genotype condition rep Etarget Cttarget Eref Ctref       wDCt
-## 1         R         1   1       2    33.30    2 31.53  0.5328231
-## 2         R         1   2       2    33.39    2 31.57  0.5478746
-## 3         R         1   3       2    33.34    2 31.50  0.5538952
-## 4         R         2   1       2    32.73    2 31.30  0.4304729
-## 5         R         2   2       2    32.46    2 32.55 -0.0270927
-## 6         R         2   3       2    32.60    2 31.92  0.2047004
-## 7         R         3   1       2    33.48    2 33.30  0.0541854
-## 8         R         3   2       2    33.27    2 33.37 -0.0301030
-## 9         R         3   3       2    33.32    2 33.35 -0.0090309
-## 10        S         1   1       2    26.85    2 26.94 -0.0270927
-## 11        S         1   2       2    28.17    2 27.69  0.1444944
-## 12        S         1   3       2    27.99    2 27.39  0.1806180
-## 13        S         2   1       2    30.41    2 28.70  0.5147613
-## 14        S         2   2       2    29.49    2 28.66  0.2498549
-## 15        S         2   3       2    29.98    2 28.71  0.3823081
-## 16        S         3   1       2    29.03    2 30.61 -0.4756274
-## 17        S         3   2       2    28.73    2 30.20 -0.4425141
-## 18        S         3   3       2    28.83    2 30.49 -0.4997098
+##    condition Genotype rep Etarget Cttarget Eref Ctref       wDCt
+## 1          1        R   1       2    33.30    2 31.53  0.5328231
+## 2          1        R   2       2    33.39    2 31.57  0.5478746
+## 3          1        R   3       2    33.34    2 31.50  0.5538952
+## 10         1        S   1       2    26.85    2 26.94 -0.0270927
+## 11         1        S   2       2    28.17    2 27.69  0.1444944
+## 12         1        S   3       2    27.99    2 27.39  0.1806180
+## 4          2        R   1       2    32.73    2 31.30  0.4304729
+## 5          2        R   2       2    32.46    2 32.55 -0.0270927
+## 6          2        R   3       2    32.60    2 31.92  0.2047004
+## 13         2        S   1       2    30.41    2 28.70  0.5147613
+## 14         2        S   2       2    29.49    2 28.66  0.2498549
+## 15         2        S   3       2    29.98    2 28.71  0.3823081
+## 7          3        R   1       2    33.48    2 33.30  0.0541854
+## 8          3        R   2       2    33.27    2 33.37 -0.0301030
+## 9          3        R   3       2    33.32    2 33.35 -0.0090309
+## 16         3        S   1       2    29.03    2 30.61 -0.4756274
+## 17         3        S   2       2    28.73    2 30.20 -0.4425141
+## 18         3        S   3       2    28.83    2 30.49 -0.4997098
 ## 
-## $lm
+## $lmf
 ## 
 ## Call:
-## stats::lm(formula = stats::as.formula(paste("wDCt ~", CRDfactors)), 
-##     data = x)
+## lm(formula = formula_ANOVA, data = x)
 ## 
 ## Coefficients:
-##         (Intercept)            GenotypeS            condition  
-##             0.79071             -0.21574             -0.26992  
-## GenotypeS:condition  
-##            -0.01605  
+##                                (Intercept)  
+##                                    0.54486  
+##                      as.factor(condition)2  
+##                                   -0.34217  
+##                      as.factor(condition)3  
+##                                   -0.53985  
+##                       as.factor(Genotype)S  
+##                                   -0.44552  
+## as.factor(condition)2:as.factor(Genotype)S  
+##                                    0.62514  
+## as.factor(condition)3:as.factor(Genotype)S  
+##                                   -0.03211  
 ## 
 ## 
-## $ANOVA_factorial
+## $lmc
+## 
+## Call:
+## lm(formula = formula_ANCOVA, data = x)
+## 
+## Coefficients:
+##           (Intercept)   as.factor(Genotype)S  as.factor(condition)2  
+##                0.4460                -0.2478                -0.0296  
+## as.factor(condition)3  
+##               -0.5559  
+## 
+## 
+## $ANOVA_table
 ## Analysis of Variance Table
 ## 
 ## Response: wDCt
-##                    Df  Sum Sq Mean Sq F value   Pr(>F)   
-## Genotype            1 0.27643 0.27643  4.6740 0.048426 * 
-## condition           1 0.92708 0.92708 15.6757 0.001426 **
-## Genotype:condition  1 0.00077 0.00077  0.0131 0.910587   
-## Residuals          14 0.82798 0.05914                    
+##                                          Df  Sum Sq Mean Sq F value    Pr(>F)
+## as.factor(condition)                      2 1.17379 0.58690  41.394 4.117e-06
+## as.factor(Genotype)                       1 0.27643 0.27643  19.497 0.0008422
+## as.factor(condition):as.factor(Genotype)  2 0.41190 0.20595  14.526 0.0006239
+## Residuals                                12 0.17014 0.01418                  
+##                                             
+## as.factor(condition)                     ***
+## as.factor(Genotype)                      ***
+## as.factor(condition):as.factor(Genotype) ***
+## Residuals                                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## $ANCOVA_table
+## Analysis of Variance Table
+## 
+## Response: wDCt
+##                      Df  Sum Sq Mean Sq F value    Pr(>F)    
+## as.factor(Genotype)   1 0.27643 0.27643   6.649 0.0218703 *  
+## as.factor(condition)  2 1.17379 0.58690  14.117 0.0004398 ***
+## Residuals            14 0.58204 0.04157                      
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## $Table
 ##           FC pvalue signif.    LCL    UCL
-## 1 - 1 1.0000 1.0000         0.0000 0.0000
-## 1 - 2 0.9341 0.8361         0.4669 1.8687
-## 1 - 3 0.2780 0.0014      ** 0.1390 0.5562
+## 1 - 2 0.9341 0.8051         0.5223 1.6706
+## 1 - 3 0.2780 0.0003     *** 0.1555 0.4973
 ## 
 ## $plot
 ```
 
-![](vignette_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+<img src="vignette_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
 
 
 ## A target gene under more than two conditions (ANOVA)

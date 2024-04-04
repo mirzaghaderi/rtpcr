@@ -236,10 +236,11 @@ data_2factor
 
 qpcrANCOVA(data_2factor, 
            numberOfrefGenes = 1, 
-           factorial = TRUE, 
-           factorDesired = 2,  
+           analysisType = "ancova", 
+           main.factor = 2,  
            levels = c(3, 2, 1), 
-           showCheckLevel = TRUE)
+           showCheckLevel = FALSE,
+           y.axis.adjust = 0.3)
 ```
 
 

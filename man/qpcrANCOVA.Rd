@@ -2,14 +2,14 @@
 % Please edit documentation in R/qpcrANCOVA.r
 \name{qpcrANCOVA}
 \alias{qpcrANCOVA}
-\title{Bar plot of the average fold change for one target gene with two or more levels.}
+\title{ANOVA based on a factorial design or analysis of covariance plus bar plot of FC}
 \usage{
 qpcrANCOVA(
   x,
   numberOfrefGenes,
   block = NULL,
-  factorial = TRUE,
-  factorDesired = 1,
+  analysisType,
+  main.factor,
   levels,
   showCheckLevel = TRUE,
   level.names = "none",
@@ -31,9 +31,9 @@ qpcrANCOVA(
 
 \item{block}{column name of the blocking factor (for correct column arrangement see example data.)}
 
-\item{factorial}{a logical variable showing if the data is analysed based on factorial arrangement.}
+\item{analysisType}{should be one of "ancova" or "anova".}
 
-\item{factorDesired}{the factor for which the FC is calculated for its level pairs.}
+\item{main.factor}{the factor for which the levels FC is compared.}
 
 \item{levels}{a numeric vector with the length equal to the factor levels. First number indicates Control.}
 
@@ -62,12 +62,17 @@ qpcrANCOVA(
 \value{
 A list with 2 elements:
 \describe{
-  \item{plot}{Bar plot of the average fold change for desired factor levels.}
+  \item{Final_data}{}
+  \item{lmf}{lm of factorial analysis-tyle}
+  \item{lmc}{lm of ANCOVA analysis-type}
+  \item{ANOVA_table}{ANOVA table}
+  \item{ANCOVA_table}{ANCOVA table}
   \item{Table}{Table of FC values and significance and the 95 percent CI as error bars.}
+  \item{plot}{Bar plot of the average fold change for desired factor levels.}
 }
 }
 \description{
-Bar plot of the relative expression of a gene along with the 95\% confidence interval and significance. There is another function, \code{qpcrTTESTplot}, that is used when the factor has two levels and represents Fold Change. \code{oneFACTORplot} is mainly useful for a one-factor experiment with more than two levels.
+Analysis of variance of a factorial design or analysis of covariance can be performed using `qpcrANCOVA` function, if more than a factor exist. Bar plot of fold changes (FCs) along with the 95\% confidence interval is also returned by the `qpcrANCOVA` function. There is also a function called \code{oneFACTORplot} which returns FC values and related plot for a one-factor-experiment with more than two levels.
 }
 \details{
 The \code{qpcrANCOVA} function applies ANOVA based analysis where one target and one reference gene, that have been evaluated under two or more than two levels of a factor. It returns the bar plot of the average fold change for the target gene along with the 95\% CI and significance.
@@ -80,8 +85,8 @@ data_2factor
 
 qpcrANCOVA(data_2factor, 
            numberOfrefGenes = 1, 
-           factorial = TRUE, 
-           factorDesired = 2,  
+           analysisType = "ancova", 
+           main.factor = 2,  
            levels = c(3, 2, 1), 
            showCheckLevel = TRUE)
            

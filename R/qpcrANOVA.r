@@ -69,7 +69,6 @@ qpcrANOVA <- function(x,
     if(numberOfrefGenes == 1) {
 
       factors <- colnames(x)[1:(ncol(x)-5)]
-      CRDfactors <- paste(factors, collapse = "*")
       colnames(x)[ncol(x)-4] <- "rep"
       colnames(x)[ncol(x)-3] <- "Etarget"
       colnames(x)[ncol(x)-2] <- "Cttarget"
@@ -81,7 +80,6 @@ qpcrANOVA <- function(x,
     } else if(numberOfrefGenes == 2) {
 
       factors <- colnames(x)[1:(ncol(x)-7)]
-      CRDfactors <- paste(factors, collapse = "*")
       colnames(x)[ncol(x)-6] <- "rep"
       colnames(x)[ncol(x)-5] <- "Etarget"
       colnames(x)[ncol(x)-4] <- "Cttarget"
@@ -98,7 +96,6 @@ qpcrANOVA <- function(x,
     if(numberOfrefGenes == 1) {
 
       factors <- colnames(x)[1:(ncol(x)-6)]
-      CRDfactors <- paste(factors, collapse = "*")
       colnames(x)[ncol(x)-5] <- "block"
       colnames(x)[ncol(x)-4] <- "rep"
       colnames(x)[ncol(x)-3] <- "Etarget"
@@ -109,9 +106,7 @@ qpcrANOVA <- function(x,
       x <- data.frame(x, wDCt = (log10(x$Etarget)*x$Cttarget)-(log10(x$Eref)*x$Ctref))
 
     } else if(numberOfrefGenes == 2) {
-
       factors <- colnames(x)[1:(ncol(x)-8)]
-      CRDfactors <- paste(factors, collapse = "*")
       colnames(x)[ncol(x)-7] <- "block"
       colnames(x)[ncol(x)-6] <- "rep"
       colnames(x)[ncol(x)-5] <- "Etarget"

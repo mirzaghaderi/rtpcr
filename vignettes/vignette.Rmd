@@ -299,7 +299,7 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 
 ### Barplot with the (1-alpha)% confidence interval as error bars
 
-```{r eval= T, fig.height = 4, fig.width = 9, fig.align = 'center', fig.cap = "Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package."}
+```{r eval= T, include = T, fig.height = 4, fig.width = 9, fig.align = 'center', fig.cap = "Average relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard deviations. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from the `LSD.test` of agricolae package."}
 
 # Before plotting, the result needs to be extracted as below:
 res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)
@@ -324,7 +324,9 @@ q2 <- twoFACTORplot(res,
    xlab = "Genotype",
    fill = "Blues",
    legend.position = c(0.15, 0.8),
-   show.letters = FALSE)
+   show.letters = FALSE,
+   show.errorbars = F,
+   show.points = T)
 
 multiplot(q1, q2, cols = 2)
 grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))

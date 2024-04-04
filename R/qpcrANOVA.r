@@ -195,14 +195,14 @@ qpcrANOVA <- function(x,
   }
 
 
-  # Preparing final result table including letter grouping of the means
+  # Preparing final result table including letter grouping of the means for T
   g <- LSD.test(lm, "T", group = T, console = F, alpha = 0.05, p.adj = p.adj)$groups
   g <- g[rev(rownames(g)),] #order the result the way you want
   g$groups <- invOrder(as.character(g$groups))
   mean <- LSD.test(lm, "T", group = T, console = F, alpha = 0.05, p.adj = p.adj)$means
 
 
-  # Comparing mean pairs that also returns CI
+  # Comparing mean pairs that also returns CI for T
   # Preparing final result table including letter grouping of the means
   meanPP <- LSD.test(lm, "T", group = F, console = F, alpha = 0.05, p.adj = p.adj)
   meanPairs <- meanPP$comparison
@@ -250,16 +250,20 @@ qpcrANOVA <- function(x,
   } else if(length(factors) == 3) {
     Results <- Results
   }
-
-
+  
+  
+  
   xx <- x[, -(ncol(x))] # Removing the last column of T
-
-
+  
+  
   outlist <- list(Final_data = xx,
                   lmCRD = lm,
                   ANOVA_factorial = factorialANOVA,
                   ANOVA_CRD = anovaCRD,
                   Result = Results,
+                  Post_hoc_Test = Post_hoc_Testing,
                   Post_hoc_Test = Post_hoc_Testing)
+  
+  
   return(outlist)
 }

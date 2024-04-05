@@ -8,7 +8,7 @@ qpcrANOVA(
   x,
   numberOfrefGenes,
   block = NULL,
-  p.adj = c("none", "holm", "hochberg", "bonferroni", "BH")
+  p.adj = c("none", "holm", "hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")
 )
 }
 \arguments{

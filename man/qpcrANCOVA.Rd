@@ -88,7 +88,16 @@ qpcrANCOVA(data_2factor,
            analysisType = "ancova", 
            main.factor = 2,  
            levels = c(3, 2, 1), 
-           showCheckLevel = TRUE)
+           showCheckLevel = FALSE)
+           
+
+qpcrANCOVA(data_2factorBlock, 
+           numberOfrefGenes = 1,
+           block = "block",  
+           analysisType = "ancova", 
+           main.factor = 2, 
+           levels = c(3, 2, 1), 
+           showCheckLevel = FALSE)
            
            
 

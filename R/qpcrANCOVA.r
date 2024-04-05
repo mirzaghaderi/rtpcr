@@ -49,6 +49,15 @@
 #'            levels = c(3, 2, 1), 
 #'            showCheckLevel = FALSE)
 #'            
+#'
+#' qpcrANCOVA(data_2factorBlock, 
+#'            numberOfrefGenes = 1,
+#'            block = "block",  
+#'            analysisType = "ancova", 
+#'            main.factor = 2, 
+#'            levels = c(3, 2, 1), 
+#'            showCheckLevel = FALSE)
+#'            
 #'            
 #' 
 
@@ -156,10 +165,10 @@ qpcrANCOVA <- function(x,
     
   } else {
     # If ANOVA based on factorial design was desired with blocking factor:
-    formula_ANOVA <- paste("wDCt ~", "block +", paste("as.factor(", factors, ")", collapse = " * "))
+    formula_ANOVA <- formula_ANOVA <- paste("wDCt ~", paste("as.factor(", "block",") +"), paste("as.factor(", factors, ")", collapse = " * "))
     lmf <- lm(formula_ANOVA, data = x)
     ANOVA <- stats::anova(lmf)
-    formula_ANCOVA <- paste("wDCt ~", "block +", paste("as.factor(", factors, ")", collapse = " + "))
+    formula_ANCOVA <- paste("wDCt ~", "block +", paste("as.factor(", rev(factors), ")", collapse = " + "))
     lmc <- lm(formula_ANCOVA, data = x)
     ANCOVA <- stats::anova(lmc)
   }
@@ -209,7 +218,7 @@ qpcrANCOVA <- function(x,
     lm <- lmc
   } 
   else{
-    FACTOR <- base::attr(stats::terms(lmf), "term.labels")[1]
+    FACTOR <- base::attr(stats::terms(lmf), "term.labels")[2]
     lm <- lmf
   }
   

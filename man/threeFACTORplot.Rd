@@ -2,7 +2,7 @@
 % Please edit documentation in R/threeFACTORplot.r
 \name{threeFACTORplot}
 \alias{threeFACTORplot}
-\title{Bar plot of the relative gene expression from a three-factor experiment}
+\title{Bar plot of the relative gene expression (RE) from a three-factor experiment}
 \usage{
 threeFACTORplot(
   x,

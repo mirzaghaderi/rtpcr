@@ -2,13 +2,13 @@
 % Please edit documentation in R/qpcrANOVA.r
 \name{qpcrANOVA}
 \alias{qpcrANOVA}
-\title{Analysis of Variance of qPCR data based on CRD}
+\title{Analysis of Variance of RE values based on CRD}
 \usage{
 qpcrANOVA(
   x,
   numberOfrefGenes,
   block = NULL,
-  p.adj = c("none", "holm", "hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")
+  p.adj = c("none", "holm", "hochberg", "bonferroni", "BH")
 )
 }
 \arguments{
@@ -32,10 +32,15 @@ A list with 5 elements:
 }
 }
 \description{
-Analysis of Variance of qPCR data based on completely randomized design (CRD). Even there are more than a factorial experiment, it is still possible to apply CRD analysis on the factor-level combinations as treatments. Analysis of variance based on factorial design or analysis of covariance can be performed using `qpcrANCOVA` function.
+Analysis of Variance relative efficiency (RE) values based on a completely randomized design (CRD). Even there are more than a factor in the experiment, it is still possible to apply CRD analysis on the factor-level combinations as treatments. Analysis of variance based on factorial design or analysis of covariance can be performed using \code{qpcrANCOVA} function.
 }
 \details{
-The qpcrANOVA performs ANOVA (analysis of variance) of qPCR data. It is suitable when there is a factor with more than two levels or when the are more that a condition factor in the experiment or when there is a blocking factor.
+The \code{qpcrANOVA} function performs ANOVA (analysis of variance) based on a completely randomized design (CRD). 
+It is suitable when relative expression (RE) analysis between different treatment combinations 
+(in a Uni- or multi-factorial experiment) is desired. If there are more than a factor in the experiment, 
+it is still possible to apply CRD analysis on the factor-level combinations as treatments. 
+For this, a column of treatment combinations is made first as a grouping factor Fold change analysis based 
+on factorial design or analysis of covariance for the can be performed using \link{qpcrANCOVA}.
 }
 \examples{
 

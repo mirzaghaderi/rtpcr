@@ -2,7 +2,7 @@
 % Please edit documentation in R/twoFACTORplot.r
 \name{twoFACTORplot}
 \alias{twoFACTORplot}
-\title{Bar plot of the relative gene expression from a two-factor experiment}
+\title{Bar plot of the relative gene expression (RE) from a two-factor experiment}
 \usage{
 twoFACTORplot(
   x,

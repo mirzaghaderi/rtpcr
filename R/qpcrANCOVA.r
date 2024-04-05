@@ -1,6 +1,7 @@
-#' @title ANCOVA and ANOVA based on a factorial design plus bar plot of FC
-#' @description ANCOVA (analysis of covariance) and ANOVA (analysis of variance) can be performed using `qpcrANCOVA` function, if more than a factor exist. This works even if there is one factor in the exoeriment. Bar plot of fold changes (FCs) along with the 95\% confidence interval is also returned by the `qpcrANCOVA` function. There is also a function called \code{oneFACTORplot} which returns FC values and related plot for a one-factor-experiment with more than two levels. 
-#' @details The \code{qpcrANCOVA} function applies ANOVA based analysis where one target and one reference gene, that have been evaluated under two or more than two levels of a factor. It returns the bar plot of the average fold change for the target gene along with the 95\% CI and significance.
+#' @title ANCOVA and ANOVA on a factorial design plus bar plot of FC
+#' @description ANCOVA (analysis of covariance) and ANOVA (analysis of variance) can be performed using \code{qpcrANCOVA} function, if more than a factor exist. This works even if there is one factor in the exoeriment. Bar plot of fold changes (FCs) along with the 95\% confidence interval is also returned by the \code{qpcrANCOVA} function. There is also a function called \code{oneFACTORplot} which returns FC values and related plot for a one-factor-experiment with more than two levels. 
+#' @details The \code{qpcrANCOVA} function applies both ANCOVA and ANOVA analysis to the data. analysis of covariance (ANCOVA) is a method bansed on both ANOVA and linear regression. It is basically suitable when the levels of a factor are also affected by an uncontrolled quantitative covariate. 
+#' For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may also be affected by drought. since we already know that temperature affects the target gene, we are interesting now if the gene expression is also altered by the drought levels. We can design an experiment to understand the gene behavior at both temperature and drought levels at the same time. The drought is another factor (the covariate) that may affect the expression of our gene under the levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA or even ANOVA based on a factorial experiment using \code{qpcrANCOVA} function, if more than a factor exist. Bar plot of fold changes (FCs) along with the 95\% confidence interval is also returned by the `qpcrANCOVA` function. There is also a function called \code{oneFACTORplot} which returns FC values and related plot for a one-factor-experiment with more than two levels
 #' @author Ghader Mirzaghaderi
 #' @export qpcrANCOVA
 #' @import tidyr
@@ -9,12 +10,12 @@
 #' @import ggplot2
 #' @import lme4
 #' @import agricolae
-#' @param x a data frame. The data frame consists of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct in the following data frame is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used we well. We use this data set for Fold Change expression analysis of the target genes in treatment condition compared to normal condition.
+#' @param x a data frame of condition (or conditions) levels, E (efficiency), genes and Ct values. Each Ct value in the data frame is the mean of technical replicates. Please refer to the vignette for preparing your data frame correctly.
 #' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.
 #' @param analysisType should be one of "ancova" or "anova".
 #' @param main.factor main factor (not covariate) for which the levels FC is compared.
 #' @param level.names  a vector determining level names in the x axis on the plot.
-#' @param levels a numeric vector with the length equal to the main factor levels. First number indicates Control.
+#' @param levels a numeric vector corresponding to the main factor levels. First number indicates Control level to which the other levels are compared.
 #' @param width a positive number determining bar width.
 #' @param fill  specify the fill color for the columns of the bar plot.
 #' @param y.axis.adjust  a negative or positive value for reducing or increasing the length of the y axis.

@@ -46,7 +46,7 @@ if wDCt values are calculated from the E values, these calculations match the fo
 
 # Installing and loading
 
-Currently, only the source type of the latest version of rtpcr package is available in CRAN which can be installed by intering the following code in R:
+Currently, only the source type of the latest version of `rtpcr` package is available in CRAN which can be installed by intering the following code in R:
 
 ```r
 # Install from CRAN

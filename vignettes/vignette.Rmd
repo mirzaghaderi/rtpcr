@@ -140,7 +140,7 @@ To simplify 'rtpcr' usage, examples for using the functions are presented below.
  |:---------------------|:-----------------------------------|:----------------------------------|
  | efficiency             | Efficiency, standard curves and related statistics | efficiency(data_efficiency) |
  | meanTech      | Calculating the mean of technical replicates | meanTech(data_withTechRep, groups = 1:4) |
- | qrtpcrANCOVA      | FC and bar plot of the target gene (one or multi-factorial experiments) | qpcrANCOVA(data_1factor, numberOfrefGenes = 1, analysisType = "ancova", main.factor = 1, levels = c(1, 2, 3)) |
+ | qrtpcrANCOVA      | FC and bar plot of the target gene (one or multi-factorial experiments) | qpcrANCOVA(data_1factor, numberOfrefGenes = 1, analysisType = "ancova", main.factor = 1) |
  |  oneFACTORplot    | Bar plot of the relative gene expression from a one-factor experiment | out <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result;   oneFACTORplot(out) |
  |  qpcrANOVA  | Analysis of Variance of the qpcr data  | qpcrANOVA(data_3factor_a, numberOfrefGenes = 1, p.adj = "none")|
  | qpcrTTEST     | Computing the average fold change and related statistics | qpcrTTEST(data_ttest,  numberOfrefGenes = 1, paired = FALSE, var.equal = TRUE) |
@@ -237,8 +237,7 @@ data_2factor
 qpcrANCOVA(data_2factor, 
            numberOfrefGenes = 1, 
            analysisType = "ancova", 
-           main.factor = 2,  
-           levels = c(3, 2, 1), 
+           main.factor = 2, 
            y.axis.adjust = 0.3)
 ```
 
@@ -296,8 +295,7 @@ f1 <- oneFACTORplot(out2,
 f2 <- qpcrANCOVA(data_1factor, 
            numberOfrefGenes = 1,
            analysisType = "ancova", 
-           main.factor = 1,  
-           levels = c(1, 2, 3))
+           main.factor = 1)
 
 multiplot(f1, f2, cols = 2)
 grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))

@@ -239,7 +239,6 @@ qpcrANCOVA(data_2factor,
            analysisType = "ancova", 
            main.factor = 2,  
            levels = c(3, 2, 1), 
-           showCheckLevel = FALSE,
            y.axis.adjust = 0.3)
 ```
 

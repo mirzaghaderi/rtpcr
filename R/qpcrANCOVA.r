@@ -12,10 +12,9 @@
 #' @param x a data frame. The data frame consists of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct in the following data frame is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used we well. We use this data set for Fold Change expression analysis of the target genes in treatment condition compared to normal condition.
 #' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.
 #' @param analysisType should be one of "ancova" or "anova".
-#' @param main.factor the factor for which the levels FC is compared.
+#' @param main.factor main factor (not covariate) for which the levels FC is compared.
 #' @param levels a numeric vector with the length equal to the factor levels. First number indicates Control.
 #' @param level.names  a vector determining level names in the x axis on the plot.
-#' @param showCheckLevel a logical variable determining if the check level column be show in the plot or not.
 #' @param width a positive number determining bar width.
 #' @param fill  specify the fill color for the columns of the bar plot.
 #' @param y.axis.adjust  a negative or positive value for reducing or increasing the length of the y axis.
@@ -46,8 +45,7 @@
 #'            numberOfrefGenes = 1, 
 #'            analysisType = "ancova", 
 #'            main.factor = 2,  
-#'            levels = c(3, 2, 1), 
-#'            showCheckLevel = FALSE)
+#'            levels = c(3, 2, 1))
 #'            
 #'
 #' qpcrANCOVA(data_2factorBlock, 
@@ -55,8 +53,7 @@
 #'            block = "block",  
 #'            analysisType = "ancova", 
 #'            main.factor = 2, 
-#'            levels = c(3, 2, 1), 
-#'            showCheckLevel = FALSE)
+#'            levels = c(3, 2, 1))
 #'            
 #'            
 #' 
@@ -67,7 +64,6 @@ qpcrANCOVA <- function(x,
                        analysisType = "ancova",
                        main.factor,
                        levels,
-                       showCheckLevel = TRUE,
                        level.names = "none",
                        width = 0.5,
                        fill = "skyblue",
@@ -86,7 +82,6 @@ qpcrANCOVA <- function(x,
   levels <- rev(levels)
   colnames(x)[1] <- "condition"
   x$condition <- levels[as.factor(xfl)]
-  
   
   
   # Check if there is block
@@ -165,13 +160,16 @@ qpcrANCOVA <- function(x,
     
   } else {
     # If ANOVA based on factorial design was desired with blocking factor:
-    formula_ANOVA <- formula_ANOVA <- paste("wDCt ~", paste("as.factor(", "block",") +"), paste("as.factor(", factors, ")", collapse = " * "))
+    formula_ANOVA <- paste("wDCt ~", paste("as.factor(", "block",") +"), paste("as.factor(", factors, ")", collapse = " * "))
     lmf <- lm(formula_ANOVA, data = x)
     ANOVA <- stats::anova(lmf)
-    formula_ANCOVA <- paste("wDCt ~", "block +", paste("as.factor(", rev(factors), ")", collapse = " + "))
+    formula_ANCOVA <- paste("wDCt ~", paste("as.factor(", "block",") +"), paste("as.factor(", rev(factors), ")", collapse = " + "))
     lmc <- lm(formula_ANCOVA, data = x)
     ANCOVA <- stats::anova(lmc)
   }
+  
+  
+  
   
   
   
@@ -257,28 +255,18 @@ qpcrANCOVA <- function(x,
   FINALDATA <- x
   POSTHUC <- Post_hoc_Testing
   
-  Nrows <- length(unique(FINALDATA[,1])[-1])
-  withControl  <- POSTHUC[1:Nrows,]
-  withControl
+  #Nrows <- length(unique(FINALDATA[,1])[-1])
+  #withControl  <- POSTHUC[1:Nrows,]
+  #withControl
   
   
-  # if check level be shown in the plot or not
-  if(showCheckLevel == TRUE) {
-    tableC <- rbind(data.frame(row.names = "1 - 1", FC = 1, pvalue = 1, signif.=" ", LCL = 0, UCL=0), withControl)
-    # default level names of add level.names
-    if (any(level.names == "none")) {
-      rownames(tableC) <- rownames(tableC)
-    } else {
-      rownames(tableC) <- level.names
-    }
+  
+  tableC <- POSTHUC
+  # default level names of add level.names
+  if (any(level.names == "none")) {
+    rownames(tableC) <- rownames(tableC)
   } else {
-    tableC <- withControl
-    # default level names of add level.names
-    if (any(level.names == "none")) {
-      rownames(tableC) <- rownames(tableC)
-    } else {
-      rownames(tableC) <- level.names[-1]
-    }
+    rownames(tableC) <- level.names
   }
   
   

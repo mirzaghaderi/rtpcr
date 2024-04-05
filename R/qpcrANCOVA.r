@@ -60,7 +60,7 @@
 #'            numberOfrefGenes = 1,
 #'            analysisType = "ancova", 
 #'            main.factor = 1,
-#'            levels = c(2, 1))
+#'            levels = 3:1)
 #'            
 #'            
 #' 

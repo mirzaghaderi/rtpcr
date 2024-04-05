@@ -1,6 +1,6 @@
 #' @title efficiency, standard curves and related statistics
-#' @description calculation of amplification efficiency and returns standard curves and related statistics.
-#' @details The 'efficiency' function calculates amplification efficiency of a target and a reference gene, and present the related standard curves along with the Slope, Efficiency, and R2 statistics. The function also compares the slopes of the two standard curves.
+#' @description The \code{efficiency} function calculates amplification efficiency and returns standard curves and related statistics.
+#' @details The \code{efficiency} function calculates amplification efficiency of a target and a reference gene, and present the related standard curves along with the Slope, Efficiency, and R2 statistics. The function also compares the slopes of the two standard curves.
 #' @author Ghader Mirzaghaderi
 #' @export efficiency
 #' @import tidyr

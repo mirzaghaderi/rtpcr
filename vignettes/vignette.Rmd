@@ -89,7 +89,7 @@ library(ggplot2)
 library(grid)
 ```
 
-The rtpcr package and source code are available for download from CRAN website (http://www.r-project.org) under GPL-3 license and can be installed and loaded using:
+The rtpcr package and source code are available for download from CRAN website under GPL-3 license and can be installed and loaded using:
 ```r
 install.packages("rtpcr")
 library(rtpcr)

@@ -1,4 +1,4 @@
-#' @title qpcrTTEST to compute the average fold change and related statistics
+#' @title Analysis of the fold change (FC) of target genes assessed under two conditions.
 #' @description t.test based analysis to any number of Genes to calculate the average fold change for target Genes along with the 95 percent confidence interval and significance
 #' @details The \code{qpcrTTEST} function applies a t.test based analysis to any number of Genes along with one reference Gene, that have been evaluated under control and treatment conditions. When a series of target Genes is assessed under only two conditions, the average fold change expression can be calculated for each Gene.
 #' @author Ghader Mirzaghaderi

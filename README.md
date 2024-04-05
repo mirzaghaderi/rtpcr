@@ -47,12 +47,6 @@ if wDCt values are calculated from the E values, these calculations match the fo
 # Installing and loading
 
 
-The rtpcr package and source code are available for download from CRAN website (http://www.r-project.org) under GPL-3 license and can be installed and loaded using:
-```r
-install.packages("rtpcr")
-library(rtpcr)
-```
-
 Alternatively, the `rtpcr` package with the latest changes can be installed by running the following code in your R software. I strongly recommend to install the package with the vignette as it contains information about how to use the 'rtpcr' package.  
 
 ```r
@@ -66,6 +60,14 @@ devtools::install_github("mirzaghaderi/rtpcr")
 devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = T)
 
 # Loading the package
+library(rtpcr)
+```
+
+
+
+The rtpcr package and source code are available for download from CRAN website (http://www.r-project.org) under GPL-3 license and can be installed and loaded using:
+```r
+install.packages("rtpcr")
 library(rtpcr)
 ```
 

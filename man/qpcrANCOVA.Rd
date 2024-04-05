@@ -10,6 +10,7 @@ qpcrANCOVA(
   block = NULL,
   analysisType = "ancova",
   main.factor,
+  levels,
   level.names = "none",
   width = 0.5,
   fill = "skyblue",
@@ -32,6 +33,8 @@ qpcrANCOVA(
 \item{analysisType}{should be one of "ancova" or "anova".}
 
 \item{main.factor}{main factor (not covariate) for which the levels FC is compared.}
+
+\item{levels}{a numeric vector with the length equal to the main factor levels. First number indicates Control.}
 
 \item{level.names}{a vector determining level names in the x axis on the plot.}
 
@@ -80,20 +83,23 @@ data_2factor
 qpcrANCOVA(data_2factor, 
            numberOfrefGenes = 1, 
            analysisType = "ancova", 
-           main.factor = 1)
+           main.factor = 1,
+           levels = c(1, 2))
            
 
 qpcrANCOVA(data_2factorBlock, 
            numberOfrefGenes = 1,
            block = "block",  
            analysisType = "ancova", 
-           main.factor = 2)
+           main.factor = 2,
+           levels = c(3, 2, 1))
            
            
  qpcrANCOVA(data_1factor, 
            numberOfrefGenes = 1,
            analysisType = "ancova", 
-           main.factor = 1)
+           main.factor = 1,
+           levels = c(2, 1))
            
            
 

@@ -14,6 +14,7 @@
 #' @param analysisType should be one of "ancova" or "anova".
 #' @param main.factor main factor (not covariate) for which the levels FC is compared.
 #' @param level.names  a vector determining level names in the x axis on the plot.
+#' @param levels a numeric vector with the length equal to the main factor levels. First number indicates Control.
 #' @param width a positive number determining bar width.
 #' @param fill  specify the fill color for the columns of the bar plot.
 #' @param y.axis.adjust  a negative or positive value for reducing or increasing the length of the y axis.
@@ -43,20 +44,23 @@
 #' qpcrANCOVA(data_2factor, 
 #'            numberOfrefGenes = 1, 
 #'            analysisType = "ancova", 
-#'            main.factor = 1)
+#'            main.factor = 1,
+#'            levels = c(1, 2))
 #'            
 #'
 #' qpcrANCOVA(data_2factorBlock, 
 #'            numberOfrefGenes = 1,
 #'            block = "block",  
 #'            analysisType = "ancova", 
-#'            main.factor = 2)
+#'            main.factor = 2,
+#'            levels = c(3, 2, 1))
 #'            
 #'            
 #'  qpcrANCOVA(data_1factor, 
 #'            numberOfrefGenes = 1,
 #'            analysisType = "ancova", 
-#'            main.factor = 1)
+#'            main.factor = 1,
+#'            levels = c(2, 1))
 #'            
 #'            
 #' 
@@ -66,6 +70,7 @@ qpcrANCOVA <- function(x,
                        block = NULL,
                        analysisType = "ancova",
                        main.factor,
+                       levels,
                        level.names = "none",
                        width = 0.5,
                        fill = "skyblue",
@@ -81,9 +86,9 @@ qpcrANCOVA <- function(x,
   x <- x[, c(main.factor, (1:ncol(x))[-main.factor])]      
   x <- x[order(x[,1]),]
   xfl <- x[,1]
-  #levels <- rev(levels)
+  levels <- rev(levels)
   colnames(x)[1] <- "condition"
-  x$condition <- as.factor(x$condition)
+  x$condition <- levels[as.factor(xfl)]
   
   
   # Check if there is block

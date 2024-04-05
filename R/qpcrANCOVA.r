@@ -1,4 +1,4 @@
-#' @title ANOVA based on a factorial design or analysis of covariance plus bar plot of FC
+#' @title ANCOVA and ANOVA based on a factorial design or analysis of covariance plus bar plot of FC
 #' @description Analysis of variance of a factorial design or analysis of covariance can be performed using `qpcrANCOVA` function, if more than a factor exist. Bar plot of fold changes (FCs) along with the 95\% confidence interval is also returned by the `qpcrANCOVA` function. There is also a function called \code{oneFACTORplot} which returns FC values and related plot for a one-factor-experiment with more than two levels. 
 #' @details The \code{qpcrANCOVA} function applies ANOVA based analysis where one target and one reference gene, that have been evaluated under two or more than two levels of a factor. It returns the bar plot of the average fold change for the target gene along with the 95\% CI and significance.
 #' @author Ghader Mirzaghaderi
@@ -34,7 +34,7 @@
 #'   \item{ANOVA_table}{ANOVA table}
 #'   \item{ANCOVA_table}{ANCOVA table}
 #'   \item{Table}{Table of FC values and significance and the 95 percent CI as error bars.}
-#'   \item{plot}{Bar plot of the average fold change for desired factor levels.}
+#'   \item{plot}{Bar plot of the average fold change for the main factor levels.}
 #' }
 #' @examples
 #'
@@ -64,7 +64,7 @@
 qpcrANCOVA <- function(x,
                        numberOfrefGenes,
                        block = NULL,
-                       analysisType,
+                       analysisType = "ancova",
                        main.factor,
                        levels,
                        showCheckLevel = TRUE,

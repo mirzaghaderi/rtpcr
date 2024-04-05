@@ -2,13 +2,13 @@
 % Please edit documentation in R/qpcrANCOVA.r
 \name{qpcrANCOVA}
 \alias{qpcrANCOVA}
-\title{ANOVA based on a factorial design or analysis of covariance plus bar plot of FC}
+\title{ANCOVA and ANOVA based on a factorial design or analysis of covariance plus bar plot of FC}
 \usage{
 qpcrANCOVA(
   x,
   numberOfrefGenes,
   block = NULL,
-  analysisType,
+  analysisType = "ancova",
   main.factor,
   levels,
   showCheckLevel = TRUE,
@@ -68,7 +68,7 @@ A list with 2 elements:
   \item{ANOVA_table}{ANOVA table}
   \item{ANCOVA_table}{ANCOVA table}
   \item{Table}{Table of FC values and significance and the 95 percent CI as error bars.}
-  \item{plot}{Bar plot of the average fold change for desired factor levels.}
+  \item{plot}{Bar plot of the average fold change for the main factor levels.}
 }
 }
 \description{

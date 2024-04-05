@@ -87,8 +87,8 @@ qpcrANCOVA <- function(x,
   x <- x[order(x[,1]),]
   xfl <- x[,1]
   levels <- rev(levels)
-  colnames(x)[1] <- "condition"
-  x$condition <- levels[as.factor(xfl)]
+  #colnames(x)[1] <- "condition"
+  x[,1] <- levels[as.factor(xfl)]
   
   
   # Check if there is block

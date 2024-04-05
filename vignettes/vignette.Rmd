@@ -278,6 +278,7 @@ res$Post_hoc_Test
 
 
 ```{r eval= T, fig.height = 4, fig.width = 9, fig.align = 'center', fig.cap = "A) A bar plot representing Relative expression of a gene under three levels of a factor generated using ‘oneFACTORplot’ function, B) Plot of average Fold changes produced by the ‘qpcrANCOVA’ function from the same data as ‘C’. Check level can be changed by user. Error bars represent 95% confidence interval."}
+
 # Before plotting, the result needs to be extracted as below:
 out2 <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result
 

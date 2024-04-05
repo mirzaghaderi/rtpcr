@@ -2,7 +2,7 @@
 % Please edit documentation in R/qpcrANCOVA.r
 \name{qpcrANCOVA}
 \alias{qpcrANCOVA}
-\title{ANCOVA and ANOVA based on a factorial design or analysis of covariance plus bar plot of FC}
+\title{ANCOVA and ANOVA based on a factorial design plus bar plot of FC}
 \usage{
 qpcrANCOVA(
   x,
@@ -69,7 +69,7 @@ A list with 2 elements:
 }
 }
 \description{
-Analysis of variance of a factorial design or analysis of covariance can be performed using `qpcrANCOVA` function, if more than a factor exist. Bar plot of fold changes (FCs) along with the 95\% confidence interval is also returned by the `qpcrANCOVA` function. There is also a function called \code{oneFACTORplot} which returns FC values and related plot for a one-factor-experiment with more than two levels.
+ANCOVA (analysis of covariance) and ANOVA (analysis of variance) can be performed using `qpcrANCOVA` function, if more than a factor exist. This works even if there is one factor in the exoeriment. Bar plot of fold changes (FCs) along with the 95\% confidence interval is also returned by the `qpcrANCOVA` function. There is also a function called \code{oneFACTORplot} which returns FC values and related plot for a one-factor-experiment with more than two levels.
 }
 \details{
 The \code{qpcrANCOVA} function applies ANOVA based analysis where one target and one reference gene, that have been evaluated under two or more than two levels of a factor. It returns the bar plot of the average fold change for the target gene along with the 95\% CI and significance.

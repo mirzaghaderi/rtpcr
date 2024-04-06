@@ -71,7 +71,7 @@
 #' 
 #' @examples
 #'
-#' # See sample data
+#' # See a sample data
 #' data_2factor
 #'
 #'

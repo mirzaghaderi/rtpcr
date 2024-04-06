@@ -25,6 +25,7 @@
 #' @param ylab  the title of the y axis
 #' @param fontsize font size of the plot
 #' @param fontsizePvalue font size of the pvalue labels
+#' @param axis.text.x.angle angle of x axis text
 #' @param block column name of the blocking factor (for correct column arrangement see example data.)
 #' @param p.adj method for adjusting p values (see \code{p.adjust})
 #' @return A list with 2 elements:
@@ -83,6 +84,7 @@ qpcrANCOVA <- function(x,
                        xlab = "Pairs",
                        fontsize = 12,
                        fontsizePvalue = 7,
+                       axis.text.x.angle = 0,
                        p.adj = c("none","holm","hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")){
   
   
@@ -297,7 +299,7 @@ qpcrANCOVA <- function(x,
               vjust = -0.5, size = fontsizePvalue) +
     ylab(ylab) + xlab(xlab) +
     theme_bw()+
-    theme(axis.text.x = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
+    theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = 0.5),
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
           axis.title  = element_text(size = fontsize)) +
     scale_y_continuous(breaks=seq(0, max(UCLp) + max(FCp) + y.axis.adjust, by = y.axis.by),

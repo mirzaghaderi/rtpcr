@@ -226,7 +226,7 @@ qpcrANCOVA <- function(x,
     lm <- lmc
   } 
   else{
-    FACTOR <- base::attr(stats::terms(lmf), "term.labels")[2]
+    FACTOR <- base::attr(stats::terms(lmf), "term.labels")[1]
     lm <- lmf
   }
   

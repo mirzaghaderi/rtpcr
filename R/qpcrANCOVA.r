@@ -67,7 +67,6 @@
 #' qpcrANCOVA(data_2factorBlock, 
 #'            numberOfrefGenes = 1,
 #'            block = "block",  
-#'            analysisType = "ancova", 
 #'            main.factor.column = 2,
 #'            levels = c(3, 2, 1))
 #'            

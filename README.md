@@ -1,4 +1,4 @@
-https://cranlogs.r-pkg.org/badges/rtpcr
+[![](https://cranlogs.r-pkg.org/badges/rtpcr)](https://cran.rstudio.com/web/packages/rtpcr/index.html)
 
 # rtpcr: a package for statistical analysis of real-time PCR data in R 
 

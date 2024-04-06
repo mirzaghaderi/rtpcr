@@ -44,7 +44,7 @@
 #' @param fontsizePvalue font size of the pvalue labels
 #' @param axis.text.x.angle angle of x axis text
 #' @param axis.text.x.hjust horizontal justification of x axis text
-#' @param block column name of the blocking factor (for correct column arrangement see example data.)
+#' @param block column name of the block if there is a blocking factor (for correct column arrangement see example data.)
 #' @param p.adj method for adjusting p values (see \code{p.adjust})
 #' @return A list with 2 elements:
 #' \describe{

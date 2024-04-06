@@ -318,7 +318,7 @@ qpcrANCOVA <- function(x,
                    Plot = pfc2)
   
   names(outlist2)[6] <- "Fold change statistics for the main factor:"
-  names(outlist2)[7] <- "Bar plot of the fold change for the main factor levels:"
+  names(outlist2)[7] <- "Bar plot of the fold change values for the main factor levels:"
   
   return(outlist2)
 }

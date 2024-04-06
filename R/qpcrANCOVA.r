@@ -23,7 +23,8 @@
 #' @param y.axis.by determines y axis step length
 #' @param xlab  the title of the x axis
 #' @param ylab  the title of the y axis
-#' @param fontsize all fonts size of the plot
+#' @param fontsize font size of the plot
+#' @param fontsizePvalue font size of the pvalue labels
 #' @param block column name of the blocking factor (for correct column arrangement see example data.)
 #' @param p.adj method for adjusting p values (see \code{p.adjust})
 #' @return A list with 2 elements:
@@ -81,6 +82,7 @@ qpcrANCOVA <- function(x,
                        ylab = "Average Fold Change",
                        xlab = "Pairs",
                        fontsize = 12,
+                       fontsizePvalue = 7,
                        p.adj = c("none","holm","hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")){
   
   
@@ -292,7 +294,7 @@ qpcrANCOVA <- function(x,
     geom_text(aes(label = significance,
                   x = pairs,
                   y = FCp + UCLp + letter.position.adjust),
-              vjust = -0.5, size = 8) +
+              vjust = -0.5, size = fontsizePvalue) +
     ylab(ylab) + xlab(xlab) +
     theme_bw()+
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),

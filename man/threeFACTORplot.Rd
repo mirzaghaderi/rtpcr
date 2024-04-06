@@ -18,6 +18,7 @@ threeFACTORplot(
   legend.title = "Legend Title",
   legend.position = c(0.4, 0.8),
   fontsize = 12,
+  fontsizePvalue = 7,
   show.letters = TRUE
 )
 }
@@ -47,6 +48,8 @@ threeFACTORplot(
 \item{legend.position}{a two digit vector specifying the legend position.}
 
 \item{fontsize}{all fonts size of the plot}
+
+\item{fontsizePvalue}{font size of the pvalue labels}
 
 \item{show.letters}{a logical variable. If TRUE, mean grouping letters are added to the bars.}
 }

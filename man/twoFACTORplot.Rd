@@ -20,7 +20,8 @@ twoFACTORplot(
   ylab = "Relative Expression",
   xlab = "Gene",
   legend.position = c(0.09, 0.8),
-  fontsize = 12
+  fontsize = 12,
+  fontsizePvalue = 7
 )
 }
 \arguments{
@@ -55,6 +56,8 @@ twoFACTORplot(
 \item{legend.position}{a two digit vector specifying the legend position.}
 
 \item{fontsize}{size of all fonts  of the plot.}
+
+\item{fontsizePvalue}{font size of the pvalue labels}
 }
 \value{
 Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.

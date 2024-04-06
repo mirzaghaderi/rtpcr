@@ -19,6 +19,7 @@
 #' @param xlab  the title of the x axis.
 #' @param ylab  the title of the y axis.
 #' @param fontsize size of all fonts  of the plot.
+#' @param fontsizePvalue font size of the pvalue labels
 #' @param show.letters a logical variable. If TRUE, mean grouping letters are added to the bars.
 #' @return Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
 #' @examples
@@ -53,7 +54,8 @@ oneFACTORplot <- function(x,
                           letter.position.adjust = 0.1,
                           ylab = "Relative Expression",
                           xlab = "Factor",
-                          fontsize = 12){
+                          fontsize = 12,
+                          fontsizePvalue = 7){
 
   RE <- x$RE
   std <- x$std
@@ -77,7 +79,7 @@ oneFACTORplot <- function(x,
   if (show.letters) {
     q1f1 <-q1f1 +
       geom_text(data = x, aes(label = letters, x = rownames(x), y = RE + std + letter.position.adjust),
-                vjust = -0.5, size = 4)
+                vjust = -0.5, size = fontsizePvalue)
   }
 
 
@@ -100,7 +102,7 @@ oneFACTORplot <- function(x,
   if (show.letters) {
     q1f2 <- q1f2 +
       geom_text(data = x, aes(label = letters, x = rownames(x), y = RE + LCL + letter.position.adjust),
-                vjust = -0.5, size = 4)
+                vjust = -0.5, size = fontsizePvalue)
   }
 
 

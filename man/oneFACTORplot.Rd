@@ -15,7 +15,8 @@ oneFACTORplot(
   letter.position.adjust = 0.1,
   ylab = "Relative Expression",
   xlab = "Factor",
-  fontsize = 12
+  fontsize = 12,
+  fontsizePvalue = 7
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ oneFACTORplot(
 \item{xlab}{the title of the x axis.}
 
 \item{fontsize}{size of all fonts  of the plot.}
+
+\item{fontsizePvalue}{font size of the pvalue labels}
 }
 \value{
 Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.

@@ -20,6 +20,7 @@ qpcrANCOVA(
   ylab = "Average Fold Change",
   xlab = "Pairs",
   fontsize = 12,
+  fontsizePvalue = 7,
   p.adj = c("none", "holm", "hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")
 )
 }
@@ -52,7 +53,9 @@ qpcrANCOVA(
 
 \item{xlab}{the title of the x axis}
 
-\item{fontsize}{all fonts size of the plot}
+\item{fontsize}{font size of the plot}
+
+\item{fontsizePvalue}{font size of the pvalue labels}
 
 \item{p.adj}{method for adjusting p values (see \code{p.adjust})}
 }

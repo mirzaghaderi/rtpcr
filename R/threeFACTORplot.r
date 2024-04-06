@@ -21,6 +21,7 @@
 #' @param letter.position.adjust adjust the distance between the grouping letters to the error bars
 #' @param legend.title legend title
 #' @param fontsize all fonts size of the plot
+#' @param fontsizePvalue font size of the pvalue labels
 #' @param legend.position a two digit vector specifying the legend position.
 #' @param show.letters a logical variable. If TRUE, mean grouping letters are added to the bars. 
 #' @return Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
@@ -100,6 +101,7 @@ threeFACTORplot <- function(x,
                          legend.title = "Legend Title",
                          legend.position = c(0.4, 0.8),
                          fontsize = 12,
+                         fontsizePvalue = 7,
                          show.letters = TRUE){
   
   x <- x[, c(arrangement, 4:ncol(x))]
@@ -135,7 +137,7 @@ threeFACTORplot <- function(x,
   if (show.letters) {
     pp1 <- pp1 + 
       geom_text(data = x, aes(label=letters, y = RE + std + letter.position.adjust), color = "black",
-                show.legend = FALSE, position = position_dodge(bar.width))
+                show.legend = FALSE, position = position_dodge(bar.width), size = fontsizePvalue)
   }
   
   
@@ -166,7 +168,7 @@ threeFACTORplot <- function(x,
   if (show.letters) {
     pp2 <- pp2 +
       geom_text(data = x, aes(label=letters, y = RE + LCL + letter.position.adjust), color = "black",
-                show.legend = FALSE, position = position_dodge(bar.width))
+                show.legend = FALSE, position = position_dodge(bar.width), size = fontsizePvalue)
   }
   
   

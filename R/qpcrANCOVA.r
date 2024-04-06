@@ -13,7 +13,7 @@
 #' @param x a data frame of condition (or conditions) levels, E (efficiency), genes and Ct values. Each Ct value in the data frame is the mean of technical replicates. Please refer to the vignette for preparing your data frame correctly.
 #' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.
 #' @param analysisType should be one of "ancova" or "anova".
-#' @param main.factor.column main factor (not covariate) for which the levels FC is compared.
+#' @param main.factor.column main factor for which the levels FC is compared. The remaining factors are considered as covariate.
 #' @param level.names  a vector determining level names in the x axis on the plot.
 #' @param levels a numeric vector corresponding to the main factor levels. First number indicates Control level to which the other levels are compared.
 #' @param width a positive number determining bar width.

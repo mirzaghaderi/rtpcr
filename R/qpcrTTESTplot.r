@@ -21,7 +21,8 @@
 #' @param y.axis.by determines y axis step length
 #' @param xlab  the title of the x axis
 #' @param ylab  the title of the y axis
-#' @param fontsize all fonts size of the plot
+#' @param fontsize fonts size of the plot
+#' @param fontsizePvalue font size of the pvalue labels
 #' @return Bar  plot of the average fold change for target genes along with the significance and the 95 percent CI as error bars.
 #' @examples
 #'
@@ -62,7 +63,8 @@ qpcrTTESTplot <- function(x,
                           letter.position.adjust = 0.3,
                           ylab = "Average Fold Change",
                           xlab = "Gene",
-                          fontsize = 12){
+                          fontsize = 12,
+                          fontsizePvalue = 7){
 
   default.order <- unique(x[,3])[-length(unique(x[,3]))]
 
@@ -122,7 +124,7 @@ qpcrTTESTplot <- function(x,
     geom_text(aes(label = convert_to_character(pvalue),
                   x = Gene,
                   y = as.numeric(Upper.Er)),
-              vjust = -0.5, size = 4) +
+              vjust = -0.5, size = fontsizePvalue) +
     ylab(ylab) + xlab(xlab) +
     theme_bw()+
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),

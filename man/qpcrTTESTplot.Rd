@@ -17,7 +17,8 @@ qpcrTTESTplot(
   letter.position.adjust = 0.3,
   ylab = "Average Fold Change",
   xlab = "Gene",
-  fontsize = 12
+  fontsize = 12,
+  fontsizePvalue = 7
 )
 }
 \arguments{
@@ -45,7 +46,9 @@ qpcrTTESTplot(
 
 \item{xlab}{the title of the x axis}
 
-\item{fontsize}{all fonts size of the plot}
+\item{fontsize}{fonts size of the plot}
+
+\item{fontsizePvalue}{font size of the pvalue labels}
 }
 \value{
 Bar  plot of the average fold change for target genes along with the significance and the 95 percent CI as error bars.

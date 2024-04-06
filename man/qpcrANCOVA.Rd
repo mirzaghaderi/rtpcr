@@ -35,7 +35,7 @@ qpcrANCOVA(
 
 \item{analysisType}{should be one of "ancova" or "anova".}
 
-\item{main.factor.column}{main factor (not covariate) for which the levels FC is compared.}
+\item{main.factor.column}{main factor for which the levels FC is compared. The remaining factors are considered as covariates.}
 
 \item{levels}{a numeric vector corresponding to the main factor levels. First number indicates Control level to which the other levels are compared.}
 

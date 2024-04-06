@@ -15,7 +15,7 @@
 #' @param analysisType should be one of "ancova" or "anova".
 #' @param main.factor.column main factor for which the levels FC is compared. The remaining factors are considered as covariates.
 #' @param level.names  a vector determining level names in the x axis on the plot.
-#' @param levels a numeric vector corresponding to the main factor levels. First number indicates Control level to which the other levels are compared.
+#' @param levels a numeric vector corresponding to the main factor levels. The first number is used as control level in computing the FC value of the other levels.
 #' @param width a positive number determining bar width.
 #' @param fill  specify the fill color for the columns of the bar plot.
 #' @param y.axis.adjust  a negative or positive value for reducing or increasing the length of the y axis.
@@ -32,12 +32,12 @@
 #' @return A list with 2 elements:
 #' \describe{
 #'   \item{Final_data}{}
-#'   \item{lmf}{lm of factorial analysis-tyle}
-#'   \item{lmc}{lm of ANCOVA analysis-type}
+#'   \item{lm_ANOVA}{lm of factorial analysis-tyle}
+#'   \item{lm_ANCOVA}{lm of ANCOVA analysis-type}
 #'   \item{ANOVA_table}{ANOVA table}
 #'   \item{ANCOVA_table}{ANCOVA table}
-#'   \item{Table}{Table of FC values, significance and confidence limits for the main factor levels.}
-#'   \item{plot}{Bar plot of the fold change for the main factor levels.}
+#'   \item{FC Table}{Table of FC values, significance and confidence limits for the main factor levels.}
+#'   \item{Bar plot of FC values}{Bar plot of the fold change values for the main factor levels.}
 #' }
 #' @examples
 #'

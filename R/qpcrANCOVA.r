@@ -14,7 +14,7 @@
 #' or even ANOVA based on a factorial experiment using \code{qpcrANCOVA} function. Bar plot of fold changes (FC) values along with the 95\% confidence interval is also returned by the 
 #' \code{qpcrANCOVA} function. There is also a function called \code{oneFACTORplot} which returns RE values 
 #' and related plot for a one-factor-experiment with more than two levels.
-#' 
+#' Along with the ANCOVA, the \code{qpcrANCOVA} also performs a full model factorial analysis of variance. 
 #' If there is covariate variable(s), before ANCOVA analysis, it is better to run ANOVA based on a 
 #' factorial design to see if the main factor and covariate(s) interaction is significant or not. 
 #' If the pvalue of the interation effect is smaller than 0.05, then the interaction between the main factor and covariate 

@@ -13,7 +13,7 @@
 #' @param x a data frame of condition (or conditions) levels, E (efficiency), genes and Ct values. Each Ct value in the data frame is the mean of technical replicates. Please refer to the vignette for preparing your data frame correctly.
 #' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.
 #' @param analysisType should be one of "ancova" or "anova".
-#' @param main.factor main factor (not covariate) for which the levels FC is compared.
+#' @param main.factor.column main factor (not covariate) for which the levels FC is compared.
 #' @param level.names  a vector determining level names in the x axis on the plot.
 #' @param levels a numeric vector corresponding to the main factor levels. First number indicates Control level to which the other levels are compared.
 #' @param width a positive number determining bar width.
@@ -48,7 +48,7 @@
 #' qpcrANCOVA(data_2factor, 
 #'            numberOfrefGenes = 1, 
 #'            analysisType = "ancova", 
-#'            main.factor = 1,
+#'            main.factor.column = 1,
 #'            levels = c(1, 2))
 #'            
 #'
@@ -56,14 +56,14 @@
 #'            numberOfrefGenes = 1,
 #'            block = "block",  
 #'            analysisType = "ancova", 
-#'            main.factor = 2,
+#'            main.factor.column = 2,
 #'            levels = c(3, 2, 1))
 #'            
 #'            
 #'  qpcrANCOVA(data_1factor, 
 #'            numberOfrefGenes = 1,
 #'            analysisType = "ancova", 
-#'            main.factor = 1,
+#'            main.factor.column = 1,
 #'            levels = 3:1)
 #'            
 #'            
@@ -73,7 +73,7 @@ qpcrANCOVA <- function(x,
                        numberOfrefGenes,
                        block = NULL,
                        analysisType = "ancova",
-                       main.factor,
+                       main.factor.column,
                        levels,
                        level.names = "none",
                        width = 0.5,
@@ -90,7 +90,7 @@ qpcrANCOVA <- function(x,
                        p.adj = c("none","holm","hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")){
   
   
-  x <- x[, c(main.factor, (1:ncol(x))[-main.factor])]      
+  x <- x[, c(main.factor.column, (1:ncol(x))[-main.factor.column])]      
   x <- x[order(x[,1]),]
   xfl <- x[,1]
   levels <- rev(levels)

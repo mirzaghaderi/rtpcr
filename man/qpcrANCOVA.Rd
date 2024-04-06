@@ -21,6 +21,8 @@ qpcrANCOVA(
   xlab = "Pairs",
   fontsize = 12,
   fontsizePvalue = 7,
+  axis.text.x.angle = 0,
+  axis.text.x.hjust = 0.5,
   p.adj = c("none", "holm", "hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")
 )
 }
@@ -56,6 +58,10 @@ qpcrANCOVA(
 \item{fontsize}{font size of the plot}
 
 \item{fontsizePvalue}{font size of the pvalue labels}
+
+\item{axis.text.x.angle}{angle of x axis text}
+
+\item{axis.text.x.hjust}{horizontal justification of x axis text}
 
 \item{p.adj}{method for adjusting p values (see \code{p.adjust})}
 }

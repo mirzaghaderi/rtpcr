@@ -1,6 +1,6 @@
 [![](https://cranlogs.r-pkg.org/badges/grand-total/rtpcr)](https://cran.rstudio.com/web/packages/rtpcr/index.html)
 [![CRAN
-version](http://www.r-pkg.org/badges/version/rtpcr)](https://www.r-pkg.org/pkg/rtpcr)
+version](http://www.r-pkg.org/badges/version/rtpcr)](https://cran.r-project.org/web/packages/rtpcr/index.html)
 
 
 # rtpcr: a package for statistical analysis of real-time PCR data in R 

@@ -9,7 +9,7 @@ qpcrANCOVA(
   numberOfrefGenes,
   block = NULL,
   analysisType = "ancova",
-  main.factor,
+  main.factor.column,
   levels,
   level.names = "none",
   width = 0.5,
@@ -35,7 +35,7 @@ qpcrANCOVA(
 
 \item{analysisType}{should be one of "ancova" or "anova".}
 
-\item{main.factor}{main factor (not covariate) for which the levels FC is compared.}
+\item{main.factor.column}{main factor (not covariate) for which the levels FC is compared.}
 
 \item{levels}{a numeric vector corresponding to the main factor levels. First number indicates Control level to which the other levels are compared.}
 
@@ -93,7 +93,7 @@ data_2factor
 qpcrANCOVA(data_2factor, 
            numberOfrefGenes = 1, 
            analysisType = "ancova", 
-           main.factor = 1,
+           main.factor.column = 1,
            levels = c(1, 2))
            
 
@@ -101,14 +101,14 @@ qpcrANCOVA(data_2factorBlock,
            numberOfrefGenes = 1,
            block = "block",  
            analysisType = "ancova", 
-           main.factor = 2,
+           main.factor.column = 2,
            levels = c(3, 2, 1))
            
            
  qpcrANCOVA(data_1factor, 
            numberOfrefGenes = 1,
            analysisType = "ancova", 
-           main.factor = 1,
+           main.factor.column = 1,
            levels = 3:1)
            
            

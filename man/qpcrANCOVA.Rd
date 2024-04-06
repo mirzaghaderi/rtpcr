@@ -37,7 +37,7 @@ qpcrANCOVA(
 
 \item{main.factor.column}{main factor for which the levels FC is compared. The remaining factors are considered as covariates.}
 
-\item{levels}{a numeric vector corresponding to the main factor levels. First number indicates Control level to which the other levels are compared.}
+\item{levels}{a numeric vector corresponding to the main factor levels. The first number is used as control level in computing the FC value of the other levels.}
 
 \item{level.names}{a vector determining level names in the x axis on the plot.}
 
@@ -69,20 +69,32 @@ qpcrANCOVA(
 A list with 2 elements:
 \describe{
   \item{Final_data}{}
-  \item{lmf}{lm of factorial analysis-tyle}
-  \item{lmc}{lm of ANCOVA analysis-type}
+  \item{lm_ANOVA}{lm of factorial analysis-tyle}
+  \item{lm_ANCOVA}{lm of ANCOVA analysis-type}
   \item{ANOVA_table}{ANOVA table}
   \item{ANCOVA_table}{ANCOVA table}
-  \item{Table}{Table of FC values, significance and confidence limits for the main factor levels.}
-  \item{plot}{Bar plot of the fold change for the main factor levels.}
+  \item{FC Table}{Table of FC values, significance and confidence limits for the main factor levels.}
+  \item{Bar plot of FC values}{Bar plot of the fold change values for the main factor levels.}
 }
 }
 \description{
-ANCOVA (analysis of covariance) and ANOVA (analysis of variance) can be performed using \code{qpcrANCOVA} function, if more than a factor exist. This works even if there is one factor in the experiment. Bar plot of fold changes (FCs) along with the 95\% confidence interval is also returned by the \code{qpcrANCOVA} function. There is also a function called \code{oneFACTORplot} which returns FC values and related plot for a one-factor-experiment with more than two levels.
+ANCOVA (analysis of covariance) and ANOVA (analysis of variance) can be performed using 
+\code{qpcrANCOVA} function, for uni- or multi-factorial experiment data. Bar plot of the fold changes (FC) 
+values along with the 95\% confidence interval is also returned by the \code{qpcrANCOVA} function.
 }
 \details{
-The \code{qpcrANCOVA} function applies both ANCOVA and ANOVA analysis to the data. ANCOVA is a method based on both ANOVA and linear regression. It is basically suitable when the levels of a factor are also affected by an uncontrolled quantitative covariate. 
-For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may also be affected by drought. since we already know that temperature affects the target gene, we are interesting now if the gene expression is also altered by the drought levels. We can design an experiment to understand the gene behavior at both temperature and drought levels at the same time. The drought is another factor (the covariate) that may affect the expression of our gene under the levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA or even ANOVA based on a factorial experiment using \code{qpcrANCOVA} function, if more than a factor exist. Bar plot of fold changes (FCs) along with the 95\% confidence interval is also returned by the \code{qpcrANCOVA} function. There is also a function called \code{oneFACTORplot} which returns FC values and related plot for a one-factor-experiment with more than two levels
+The \code{qpcrANCOVA} function applies both ANCOVA and ANOVA analysis to the data of a uni- or 
+multi-factorial experiment. ANCOVA is basically suitable when the levels of a factor are 
+also affected by uncontrolled quantitative covariate(s). 
+For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may 
+also be affected by drought. Since we already know that temperature affects the target gene, we are 
+interested to now if the gene expression is also altered by the drought levels. We can design an 
+experiment to understand the gene behavior at both temperature and drought levels at the same time. 
+The drought is another factor (the covariate) that may affect the expression of our gene under the 
+levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA 
+or even ANOVA based on a factorial experiment using \code{qpcrANCOVA} function. Bar plot of fold changes (FC) values along with the 95\% confidence interval is also returned by the 
+\code{qpcrANCOVA} function. There is also a function called \code{oneFACTORplot} which returns RE values 
+and related plot for a one-factor-experiment with more than two levels.
 }
 \examples{
 
@@ -100,7 +112,6 @@ qpcrANCOVA(data_2factor,
 qpcrANCOVA(data_2factorBlock, 
            numberOfrefGenes = 1,
            block = "block",  
-           analysisType = "ancova", 
            main.factor.column = 2,
            levels = c(3, 2, 1))
            

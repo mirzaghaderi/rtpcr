@@ -14,6 +14,11 @@
 #' or even ANOVA based on a factorial experiment using \code{qpcrANCOVA} function. Bar plot of fold changes (FC) values along with the 95\% confidence interval is also returned by the 
 #' \code{qpcrANCOVA} function. There is also a function called \code{oneFACTORplot} which returns RE values 
 #' and related plot for a one-factor-experiment with more than two levels.
+#' 
+#' If there is covariate variable(s), before ANCOVA analysis, it is better to run ANOVA based on a 
+#' factorial design to see if the main factor and covariate(s) interaction is significant or not. 
+#' If the pvalue of the interation effect is smaller than 0.05, then the interaction between the main factor and covariate 
+#' is significant, suggesting that ANCOVA is not appropriate in this case.
 #' @author Ghader Mirzaghaderi
 #' @export qpcrANCOVA
 #' @import tidyr
@@ -51,6 +56,19 @@
 #'   \item{FC Table}{Table of FC values, significance and confidence limits for the main factor levels.}
 #'   \item{Bar plot of FC values}{Bar plot of the fold change values for the main factor levels.}
 #' }
+#' 
+#' @references Livak, Kenneth J, and Thomas D Schmittgen. 2001. Analysis of
+#' Relative Gene Expression Data Using Real-Time Quantitative PCR and the
+#' Double Delta CT Method. Methods 25 (4). doi:10.1006/meth.2001.1262.
+#'
+#' Ganger, MT, Dietz GD, and Ewing SJ. 2017. A common base method for analysis of qPCR data
+#' and the application of simple blocking in qPCR experiments. BMC bioinformatics 18, 1-11.
+#'
+#' Yuan, Joshua S, Ann Reed, Feng Chen, and Neal Stewart. 2006.
+#' Statistical Analysis of Real-Time PCR Data. BMC Bioinformatics 7 (85). doi:10.1186/1471-2105-7-85.
+#' 
+#' 
+#' 
 #' @examples
 #'
 #' # See sample data

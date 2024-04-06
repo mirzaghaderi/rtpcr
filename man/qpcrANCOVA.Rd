@@ -67,8 +67,8 @@ A list with 2 elements:
   \item{lmc}{lm of ANCOVA analysis-type}
   \item{ANOVA_table}{ANOVA table}
   \item{ANCOVA_table}{ANCOVA table}
-  \item{Table}{Table of FC values and significance and the 95 percent CI as error bars.}
-  \item{plot}{Bar plot of the average fold change for the main factor levels.}
+  \item{Table}{Table of FC values, significance and confidence limits for the main factor levels.}
+  \item{plot}{Bar plot of the fold change for the main factor levels.}
 }
 }
 \description{

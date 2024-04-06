@@ -34,8 +34,8 @@
 #'   \item{lmc}{lm of ANCOVA analysis-type}
 #'   \item{ANOVA_table}{ANOVA table}
 #'   \item{ANCOVA_table}{ANCOVA table}
-#'   \item{Table}{Table of FC values and significance and the 95 percent CI as error bars.}
-#'   \item{plot}{Bar plot of the average fold change for the main factor levels.}
+#'   \item{Table}{Table of FC values, significance and confidence limits for the main factor levels.}
+#'   \item{plot}{Bar plot of the fold change for the main factor levels.}
 #' }
 #' @examples
 #'
@@ -310,14 +310,15 @@ qpcrANCOVA <- function(x,
   
   
   outlist2 <- list(Final_data = x,
-                   lmf = lmf,
-                   lmc = lmc,
+                   lm_ANOVA = lmf,
+                   lm_ANCOVA = lmc,
                    ANOVA_table = ANOVA,
                    ANCOVA_table = ANCOVA,
-                   Table = tableC,
-                   plot = pfc2)
+                   Table  = tableC,
+                   Plot = pfc2)
   
-  
+  names(outlist2)[6] <- "Fold change statistics of the main factor:"
+  names(outlist2)[7] <- "Bar plot of the fold change for the main factor levels:"
   
   return(outlist2)
 }

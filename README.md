@@ -1,3 +1,5 @@
+https://cranlogs.r-pkg.org/badges/rtpcr
+
 # rtpcr: a package for statistical analysis of real-time PCR data in R 
 
 Real-time polymerase chain reaction (real-time PCR), is widely used in biological research. Various analysis methods are employed on the real-time PCR data to measure the mRNA levels under different experimental conditions. 

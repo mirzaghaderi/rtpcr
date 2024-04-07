@@ -2,7 +2,7 @@
 % Please edit documentation in R/qpcrTTEST.r
 \name{qpcrTTEST}
 \alias{qpcrTTEST}
-\title{Analysis of the fold change (FC) of target genes assessed under two conditions.}
+\title{Analysis of the fold change (FC) of target genes using t-test.}
 \usage{
 qpcrTTEST(x, numberOfrefGenes, paired = FALSE, var.equal = FALSE)
 }
@@ -26,11 +26,11 @@ refer \code{\link[stats]{t.test}}, and \code{\link[stats]{lm}}.
 If the residuals of the model do not follow normal distribution and variances between the two groups are not homoGene, \code{\link[stats]{wilcox.test}} procedure may be concidered
 }
 \description{
-t.test based analysis to any number of Genes to calculate the average fold change for target Genes along with the 95 percent confidence interval and significance
+t.test based analysis of the fold change expression for any number of target genes.
 }
 \details{
-The \code{qpcrTTEST} function applies a t.test based analysis to calcylate fold change (FC) expression and related statistics of any number of target genes along with one or two 
-reference Gene(s), that have been evaluated under control and treatment conditions. Sampling may be paired or 
+The \code{qpcrTTEST} function applies a t.test based analysis to calculate fold change (FC) expression and returns related statistics for any number of target genes along with one or two 
+reference gene(s), that have been evaluated under control and treatment conditions. Sampling may be paired or 
 unpaired. Paired samples in quantitative PCR refer to two sample data that are collected from one set of individuals 
 at two different conditions, for example before and after a treatment or at two different time points. While 
 for unpaired samples, two sets of individuals are used: one under untreated and the other set under treated 

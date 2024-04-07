@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_2factor}
 \alias{data_2factor}
-\title{A sample two factor qPCR dataset}
+\title{Sample data (two factor)}
 \format{
 A data frame with 18 observations and 7 variables:
 \describe{

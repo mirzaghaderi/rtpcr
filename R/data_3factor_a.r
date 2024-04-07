@@ -1,4 +1,4 @@
-#' A sample multi-factorial qPCR dataset
+#' Sample data (three factor)
 #'
 #' A sample dataset for demonstration purposes.
 #'

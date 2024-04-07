@@ -1,4 +1,4 @@
-#' A sample data with one target and two reference genes
+#' Sample data with (one target, two reference)
 #'
 #' One target and two reference gens for demonstrating qPCR data analysis.
 #'

@@ -1,4 +1,4 @@
-#' A sample two conditional qPCR data
+#' Sample data (one factor-two level qPCR)
 #'
 #' A sample data for demonstrating qPCR data analysis.
 #'

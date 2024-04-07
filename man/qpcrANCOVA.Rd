@@ -79,14 +79,15 @@ A list with 2 elements:
 }
 \description{
 ANCOVA (analysis of covariance) and ANOVA (analysis of variance) can be performed using 
-\code{qpcrANCOVA} function, for multi- or even uni- factorial experiment data, although for the data with 
-only one factor, the analysis turns to ANOVA of a CRD design. Bar plot of the fold changes (FC) 
+\code{qpcrANCOVA} function, for uni- or multi-factorial experiment data. This function performs FC analysis even
+there is only one factor (without covariate or factor  variable), although for the data with 
+only one factor, the analysis turns to ANOVA. Bar plot of the fold changes (FC) 
 values along with the 95\% confidence interval is also returned by the \code{qpcrANCOVA} function.
 }
 \details{
 The \code{qpcrANCOVA} function applies both ANCOVA and ANOVA analysis to the data of a uni- or 
 multi-factorial experiment, although for the data with 
-only one factor, the analysis turns to ANOVA of a CRD design. ANCOVA is basically appropriate when the 
+only one factor, the analysis turns to ANOVA. ANCOVA is basically appropriate when the 
 levels of a factor are 
 also affected by uncontrolled quantitative covariate(s). 
 For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may 
@@ -95,7 +96,9 @@ interested to now if the gene expression is also altered by the drought levels. 
 experiment to understand the gene behavior at both temperature and drought levels at the same time. 
 The drought is another factor (the covariate) that may affect the expression of our gene under the 
 levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA 
-or even ANOVA based on a factorial experiment using \code{qpcrANCOVA} function. Bar plot of fold changes (FC) values along with the 95\% confidence interval is also returned by the 
+or even ANOVA based on a factorial experiment using \code{qpcrANCOVA}. This function performs FC 
+analysis even there is only one factor (without covariate or factor  variable). Bar plot of fold changes 
+(FC) values along with the 95\% confidence interval is also returned by the 
 \code{qpcrANCOVA} function. There is also a function called \code{oneFACTORplot} which returns RE values 
 and related plot for a one-factor-experiment with more than two levels.
 Along with the ANCOVA, the \code{qpcrANCOVA} also performs a full model factorial analysis of variance. 

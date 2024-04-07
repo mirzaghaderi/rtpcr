@@ -1,4 +1,4 @@
-#' A three-factorial sample qPCR data
+#' Sample data (three factor)
 #'
 #' A sample real time PCR data for demonstration purposes.
 #'

@@ -1,4 +1,4 @@
-#' A sample data with technical replicates
+#' Sample data (with technical replicates)
 #'
 #' A sample data for calculating biological replicated.
 #'

@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_ttest}
 \alias{data_ttest}
-\title{A sample two conditional qPCR data}
+\title{Sample data (one factor-two level qPCR)}
 \format{
 A data frame with 24 observations and 4 variables:
 \describe{

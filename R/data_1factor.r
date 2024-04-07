@@ -1,4 +1,4 @@
-#' A sample one factor qPCR dataset
+#' Sample data (one factor three levels)
 #'
 #' A sample dataset for demonstration purposes.
 #'

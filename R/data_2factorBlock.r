@@ -1,4 +1,4 @@
-#' A sample two factor qPCR data set with blocking factor
+#' Sample data (two factor with blocking factor)
 #'
 #' A sample qPCR data set with blocking factor.
 #'

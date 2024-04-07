@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_3factor_b}
 \alias{data_3factor_b}
-\title{A three-factorial sample qPCR data}
+\title{Sample data (three factor)}
 \format{
 A data frame with 36 observations and 8 variables:
 \describe{

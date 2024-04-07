@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_1factor}
 \alias{data_1factor}
-\title{A sample one factor qPCR dataset}
+\title{Sample data (one factor three levels)}
 \format{
 A data frame with 9 observations and 6 variables:
 \describe{

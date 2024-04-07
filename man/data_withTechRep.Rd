@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_withTechRep}
 \alias{data_withTechRep}
-\title{A sample data with technical replicates}
+\title{Sample data (with technical replicates)}
 \format{
 A data frame with 18 observations and 9 variables:
 \describe{

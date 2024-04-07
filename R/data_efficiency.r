@@ -1,4 +1,4 @@
-#' A sample dataset of amplification efficiency qPCR data.
+#' Sample data (amplification efficiency)
 #'
 #' A sample qPCR dataset for demonstrating efficiency calculation.
 #'

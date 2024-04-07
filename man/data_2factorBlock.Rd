@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_2factorBlock}
 \alias{data_2factorBlock}
-\title{A sample two factor qPCR data set with blocking factor}
+\title{Sample data (two factor with blocking factor)}
 \format{
 A data frame with 18 observations and 8 variables:
 \describe{

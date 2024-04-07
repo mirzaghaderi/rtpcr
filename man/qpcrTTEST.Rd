@@ -29,7 +29,13 @@ If the residuals of the model do not follow normal distribution and variances be
 t.test based analysis to any number of Genes to calculate the average fold change for target Genes along with the 95 percent confidence interval and significance
 }
 \details{
-The \code{qpcrTTEST} function applies a t.test based analysis to any number of Genes along with one reference Gene, that have been evaluated under control and treatment conditions. When a series of target Genes is assessed under only two conditions, the average fold change expression can be calculated for each Gene.
+The \code{qpcrTTEST} function applies a t.test based analysis to calcylate fold change (FC) expression and related statistics of any number of target genes along with one or two 
+reference Gene(s), that have been evaluated under control and treatment conditions. Sampling may be paired or 
+unpaired. Paired samples in quantitative PCR refer to two sample data that are collected from one set of individuals 
+at two different conditions, for example before and after a treatment or at two different time points. While 
+for unpaired samples, two sets of individuals are used: one under untreated and the other set under treated 
+condition.  Paired samples allow to compare gene expression changes within the same individual, reducing 
+inter-individual variability. Unpaired and paired samples are commonly analyzed using unpaired and paired t-test, respectively.
 }
 \examples{
 

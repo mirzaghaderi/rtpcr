@@ -1,6 +1,7 @@
 #' @title Calculating mean of technical replicates
 #' @description Calculating of technical replicates in and output table appropriate for subsequent ANOVA analysis
-#' @details The meanTech calculates mean of technical replicates.
+#' @details The meanTech calculates mean of technical replicates. Arithmetic mean of technical replicates can be calculated in order to 
+#' simplify the statistical comparison between sample groups.
 #' @author Ghader Mirzaghaderi
 #' @export meanTech
 #' @import tidyr

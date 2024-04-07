@@ -1,4 +1,4 @@
-#' @title Bar plot of the average fold change of the target genes
+#' @title Bar plot of the average fold change (FC) of the target genes
 #' @description Bar plot of the average fold change (FC) values for the target genes along with the 95 percent CI and significance in a two-level conditional experimental (e.g. control and treatment).
 #' @details The \code{qpcrTTESTplot} function applies a t.test based analysis to any number of target genes along with one or two reference gene(s), that have been evaluated under control and treatment conditions. It returns the bar plot of the fold change (FC) values for target genes along with the 95\% CI and significance.
 #' @author Ghader Mirzaghaderi

@@ -1,6 +1,6 @@
 #' @title Bar plot of the average fold change of the target genes
-#' @description Bar plot of the average fold change (FC) of the target genes along with the 95 percent CI and significance in a two-level experimental condition.
-#' @details The \code{qpcrTTESTplot} function applies a t.test based analysis to any number of genes along with one reference gene, that have been evaluated under control and treatment conditions, and returns the bar plot of the average fold change for target genes along with the 95\% CI and significance.
+#' @description Bar plot of the average fold change (FC) values for the target genes along with the 95 percent CI and significance in a two-level conditional experimental (e.g. control and treatment).
+#' @details The \code{qpcrTTESTplot} function applies a t.test based analysis to any number of target genes along with one or two reference gene(s), that have been evaluated under control and treatment conditions. It returns the bar plot of the fold change (FC) values for target genes along with the 95\% CI and significance.
 #' @author Ghader Mirzaghaderi
 #' @export qpcrTTESTplot
 #' @import tidyr
@@ -11,7 +11,7 @@
 #' @import agricolae
 #' @param x a data frame. The data frame consists of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct in the following data frame is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used we well. We use this data set for Fold Change expression analysis of the target genes in treatment condition compared to normal condition.
 #' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.
-#' @param order a vector determinig genes order on the output graph.
+#' @param order a vector determining genes order on the output graph.
 #' @param paired  a logical indicating whether you want a paired t-test.
 #' @param var.equal a logical variable indicating whether to treat the two variances as being equal. If TRUE then the pooled variance is used to estimate the variance otherwise the Welch (or Satterthwaite) approximation to the degrees of freedom is used.
 #' @param width a positive number determining bar width.
@@ -23,6 +23,8 @@
 #' @param ylab  the title of the y axis
 #' @param fontsize fonts size of the plot
 #' @param fontsizePvalue font size of the pvalue labels
+#' @param axis.text.x.angle angle of x axis text
+#' @param axis.text.x.hjust horizontal justification of x axis text
 #' @return Bar  plot of the average fold change for target genes along with the significance and the 95 percent CI as error bars.
 #' @examples
 #'
@@ -45,7 +47,7 @@
 #'               y.axis.adjust = 0,
 #'               y.axis.by = 2,
 #'               letter.position.adjust = 0.3,
-#'               ylab = "Average Fold Change in Treatment vs Control",
+#'               ylab = "Fold Change in Treatment vs Control",
 #'               xlab = "Gene")
 #'
 #'
@@ -64,7 +66,9 @@ qpcrTTESTplot <- function(x,
                           ylab = "Average Fold Change",
                           xlab = "Gene",
                           fontsize = 12,
-                          fontsizePvalue = 7){
+                          fontsizePvalue = 7,
+                          axis.text.x.angle = 0,
+                          axis.text.x.hjust = 0.5){
 
   default.order <- unique(x[,3])[-length(unique(x[,3]))]
 
@@ -127,7 +131,7 @@ qpcrTTESTplot <- function(x,
               vjust = -0.5, size = fontsizePvalue) +
     ylab(ylab) + xlab(xlab) +
     theme_bw()+
-    theme(axis.text.x = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
+    theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
           axis.title  = element_text(size = fontsize)) +
     scale_y_continuous(breaks=seq(0, max(as.numeric(Upper.Er) + y.axis.adjust) + 2, by = y.axis.by),

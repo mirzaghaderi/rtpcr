@@ -21,7 +21,9 @@ twoFACTORplot(
   xlab = "Gene",
   legend.position = c(0.09, 0.8),
   fontsize = 12,
-  fontsizePvalue = 7
+  fontsizePvalue = 7,
+  axis.text.x.angle = 0,
+  axis.text.x.hjust = 0.5
 )
 }
 \arguments{
@@ -58,6 +60,10 @@ twoFACTORplot(
 \item{fontsize}{size of all fonts  of the plot.}
 
 \item{fontsizePvalue}{font size of the pvalue labels}
+
+\item{axis.text.x.angle}{angle of x axis text}
+
+\item{axis.text.x.hjust}{horizontal justification of x axis text}
 }
 \value{
 Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.

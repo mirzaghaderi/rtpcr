@@ -2,7 +2,7 @@
 % Please edit documentation in R/oneFACTORplot.r
 \name{oneFACTORplot}
 \alias{oneFACTORplot}
-\title{Bar plot of the relative gene expression from a one-factor experiment}
+\title{Bar plot of the relative gene expression (RE) from a one-factor experiment}
 \usage{
 oneFACTORplot(
   x,
@@ -16,7 +16,9 @@ oneFACTORplot(
   ylab = "Relative Expression",
   xlab = "Factor",
   fontsize = 12,
-  fontsizePvalue = 7
+  fontsizePvalue = 7,
+  axis.text.x.angle = 0,
+  axis.text.x.hjust = 0.5
 )
 }
 \arguments{
@@ -43,6 +45,10 @@ oneFACTORplot(
 \item{fontsize}{size of all fonts  of the plot.}
 
 \item{fontsizePvalue}{font size of the pvalue labels}
+
+\item{axis.text.x.angle}{angle of x axis text}
+
+\item{axis.text.x.hjust}{horizontal justification of x axis text}
 }
 \value{
 Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.

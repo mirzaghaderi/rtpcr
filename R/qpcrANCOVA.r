@@ -260,6 +260,7 @@ qpcrANCOVA <- function(x,
   
   
   # Type of analysis: ancova or anova
+  if (is.null(block)) {
   if(analysisType == "ancova") {
     FACTOR <- rev(base::attr(stats::terms(lmc), "term.labels"))[1]
     lm <- lmc
@@ -268,7 +269,16 @@ qpcrANCOVA <- function(x,
     FACTOR <- base::attr(stats::terms(lmf), "term.labels")[1]
     lm <- lmf
   }
-  
+  } else {
+    if(analysisType == "ancova") {
+      FACTOR <- rev(base::attr(stats::terms(lmc), "term.labels"))[1]
+      lm <- lmc
+    } 
+    else{
+      FACTOR <- base::attr(stats::terms(lmf), "term.labels")[2]
+      lm <- lmf
+    } 
+  }
   
   
   

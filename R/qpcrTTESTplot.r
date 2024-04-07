@@ -77,7 +77,7 @@ qpcrTTESTplot <- function(x,
                           axis.text.x.angle = 0,
                           axis.text.x.hjust = 0.5){
 
-  default.order <- unique(x[,3])[-length(unique(x[,3]))]
+  default.order <- unique(x[,2])[-length(unique(x[,2]))]
 
   # convert_to_character function
   convert_to_character <- function(numbers) {

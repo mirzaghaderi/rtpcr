@@ -60,8 +60,8 @@ qpcrTTEST <- function(x,
                       var.equal = FALSE) {
 
   colnames(x)[1] <- "Condition"
-  colnames(x)[2] <- "E"
-  colnames(x)[3] <- "Gene"
+  colnames(x)[2] <- "Gene"
+  colnames(x)[3] <- "E"
   colnames(x)[4] <- "Ct"
 
 

@@ -8,8 +8,8 @@
 A data frame with 24 observations and 4 variables:
 \describe{
   \item{Condition}{Experimental conditions}
-  \item{E}{Amplification efficiency}
   \item{Gene}{Genes}
+  \item{E}{Amplification efficiency}
   \item{Ct}{Ct values}
 }
 }

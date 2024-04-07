@@ -1,12 +1,12 @@
-#' Sample data with (one target, two reference)
+#' Sample data (one target, two reference)
 #'
 #' One target and two reference gens for demonstrating qPCR data analysis.
 #'
-#' @format A data frame with 24 observations and 4 variables:
+#' @format A data frame with 18 observations and 4 variables:
 #' \describe{
 #'   \item{Condition}{Experimental conditions}
-#'   \item{E}{Amplification efficiency}
 #'   \item{Gene}{Genes}
+#'   \item{E}{Amplification efficiency}
 #'   \item{Ct}{Ct values}
 #' }
 #'
@@ -21,23 +21,23 @@
 #' @export
 
 data_ttest2 <- read.table(text = "
-Condition	E	Gene	Ct 
-control	2	g	31.26
-control	2	g	31.01
-control	2	g	30.97
-treatment	2	g	32.65
-treatment	2	g	32.03
-treatment	2	g	32.4
-control	2	ref1	28.86
-control	2	ref1	28.42
-control	2	ref1	28.56
-treatment	2	ref1	28.31
-treatment	2	ref1	29.13
-treatment	2	ref1	28.62
-control	2	ref2	28.43
-control	2	ref2	28.90
-control	2	ref2	28.17
-treatment	2	ref2	28.64
-treatment	2	ref2	29.12
-treatment	2	ref2	28.95
+Condition	Gene	E	Ct 
+control	g	2	31.26
+control	g	2	31.01
+control	g	2	30.97
+treatment	g	2	32.65
+treatment	g	2	32.03
+treatment	g	2	32.4
+control	ref1	2	28.86
+control	ref1	2	28.42
+control	ref1	2	28.56
+treatment	ref1	2	28.31
+treatment	ref1	2	29.13
+treatment	ref1	2	28.62
+control	ref2	2	28.43
+control	ref2	2	28.9
+control	ref2	2	28.17
+treatment	ref2	2	28.64
+treatment	ref2	2	29.12
+treatment	ref2	2	28.95
 ", header = TRUE, check.names = FALSE)

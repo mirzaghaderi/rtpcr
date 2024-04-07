@@ -3,13 +3,13 @@
 \docType{data}
 \name{data_ttest2}
 \alias{data_ttest2}
-\title{Sample data with (one target, two reference)}
+\title{Sample data (one target, two reference)}
 \format{
-A data frame with 24 observations and 4 variables:
+A data frame with 18 observations and 4 variables:
 \describe{
   \item{Condition}{Experimental conditions}
-  \item{E}{Amplification efficiency}
   \item{Gene}{Genes}
+  \item{E}{Amplification efficiency}
   \item{Ct}{Ct values}
 }
 }

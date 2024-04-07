@@ -5,8 +5,8 @@
 #' @format A data frame with 24 observations and 4 variables:
 #' \describe{
 #'   \item{Condition}{Experimental conditions}
-#'   \item{E}{Amplification efficiency}
 #'   \item{Gene}{Genes}
+#'   \item{E}{Amplification efficiency}
 #'   \item{Ct}{Ct values}
 #' }
 #'
@@ -20,29 +20,29 @@
 #'
 #' @export
 data_ttest <- read.table(text = "
-Condition	E	Gene	Ct
-control	2	C2H2-26	31.26
-control	2	C2H2-26	31.01
-control	2	C2H2-26	30.97
-treatment	2	C2H2-26	32.65
-treatment	2	C2H2-26	32.03
-treatment	2	C2H2-26	32.4
-control	2	C2H2-01	31.06
-control	2	C2H2-01	30.41
-control	2	C2H2-01	30.97
-treatment	2	C2H2-01	28.85
-treatment	2	C2H2-01	28.93
-treatment	2	C2H2-01	28.9
-control	2	C2H2-12	28.5
-control	2	C2H2-12	28.4
-control	2	C2H2-12	28.8
-treatment	2	C2H2-12	27.9
-treatment	2	C2H2-12	28
-treatment	2	C2H2-12	27.9
-control	2	ref	28.87
-control	2	ref	28.42
-control	2	ref	28.53
-treatment	2	ref	28.31
-treatment	2	ref	29.14
-treatment	2	ref	28.63
+Condition	Gene	E	Ct
+control	C2H2-26	2	31.26
+control	C2H2-26	2	31.01
+control	C2H2-26	2	30.97
+treatment	C2H2-26	2	32.65
+treatment	C2H2-26	2	32.03
+treatment	C2H2-26	2	32.4
+control	C2H2-01	2	31.06
+control	C2H2-01	2	30.41
+control	C2H2-01	2	30.97
+treatment	C2H2-01	2	28.85
+treatment	C2H2-01	2	28.93
+treatment	C2H2-01	2	28.9
+control	C2H2-12	2	28.5
+control	C2H2-12	2	28.4
+control	C2H2-12	2	28.8
+treatment	C2H2-12	2	27.9
+treatment	C2H2-12	2	28
+treatment	C2H2-12	2	27.9
+control	ref	2	28.87
+control	ref	2	28.42
+control	ref	2	28.53
+treatment	ref	2	28.31
+treatment	ref	2	29.14
+treatment	ref	2	28.63
 ", header = T)

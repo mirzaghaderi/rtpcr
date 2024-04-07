@@ -16,7 +16,7 @@ qpcrANOVA(
 
 \item{numberOfrefGenes}{number of reference genes (1 or 2). Up to two reference genes can be handled.}
 
-\item{block}{column name of the blocking factor (for correct column arrangement see example data.)}
+\item{block}{column name of the blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.}
 
 \item{p.adj}{Method for adjusting p values (see p.adjust)}
 }

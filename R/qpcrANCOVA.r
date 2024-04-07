@@ -81,11 +81,11 @@
 #' data_2factor
 #'
 #'
-#' qpcrANCOVA(data_2factor, 
+#' qpcrANCOVA(data_3factor_b, 
 #'            numberOfrefGenes = 1, 
 #'            analysisType = "ancova", 
-#'            main.factor.column = 1,
-#'            levels = c(1, 2))
+#'            main.factor.column = 3,
+#'            levels = c(1, 2, 3))
 #'            
 #'
 #' qpcrANCOVA(data_2factorBlock, 

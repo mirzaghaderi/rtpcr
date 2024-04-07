@@ -60,10 +60,17 @@ qpcrTTESTplot(
 Bar  plot of the average fold change for target genes along with the significance and the 95 percent CI as error bars.
 }
 \description{
-Bar plot of the average fold change (FC) values for the target genes along with the 95 percent CI and significance in a two-level conditional experimental (e.g. control and treatment).
+Bar plot of the average fold change (FC) values for for any number of target genes under a two-level conditional experimental (e.g. control and treatment).
 }
 \details{
-The \code{qpcrTTESTplot} function applies a t.test based analysis to any number of target genes along with one or two reference gene(s), that have been evaluated under control and treatment conditions. It returns the bar plot of the fold change (FC) values for target genes along with the 95\% CI and significance.
+The \code{qpcrTTESTplot} function applies a t.test based analysis to any number of target genes 
+along with one or two reference gene(s), that have been evaluated under control and treatment conditions. 
+It returns the bar plot of the fold change (FC) values for target genes along with the 95\% CI and significance. Sampling may be paired or 
+unpaired. Paired samples in quantitative PCR refer to two sample data that are collected from one set of individuals 
+at two different conditions, for example before and after a treatment or at two different time points. While 
+for unpaired samples, two sets of individuals are used: one under untreated and the other set under treated 
+condition. Paired samples allow to compare gene expression changes within the same individual, reducing 
+inter-individual variability. Unpaired and paired samples are commonly analyzed using unpaired and paired t-test, respectively.
 }
 \examples{
 

@@ -1,10 +1,17 @@
 #' @title Fold change (FC) analysis using ANCOVA and ANOVA on a uni- or multi-factorial design.
 #' @description ANCOVA (analysis of covariance) and ANOVA (analysis of variance) can be performed using 
+<<<<<<< HEAD
 #' \code{qpcrANCOVA} function, for uni- or multi-factorial experiment data. This function performs FC analysis even
 #' there is only one factor (without covariate or factor  variable). Bar plot of the fold changes (FC) 
+=======
+#' \code{qpcrANCOVA} function, for multi- or even uni- factorial experiment data, although for the data with 
+#' only one factor, the analysis turns to ANOVA of a CRD design. Bar plot of the fold changes (FC) 
+>>>>>>> 7ae32c36427cf127c6715cda97cbee639344bf85
 #' values along with the 95\% confidence interval is also returned by the \code{qpcrANCOVA} function. 
 #' @details The \code{qpcrANCOVA} function applies both ANCOVA and ANOVA analysis to the data of a uni- or 
-#' multi-factorial experiment. ANCOVA is basically suitable when the levels of a factor are 
+#' multi-factorial experiment, although for the data with 
+#' only one factor, the analysis turns to ANOVA of a CRD design. ANCOVA is basically appropriate when the 
+#' levels of a factor are 
 #' also affected by uncontrolled quantitative covariate(s). 
 #' For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may 
 #' also be affected by drought. Since we already know that temperature affects the target gene, we are 

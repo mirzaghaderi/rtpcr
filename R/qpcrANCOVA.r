@@ -78,7 +78,7 @@
 #' @examples
 #'
 #' # See a sample data
-#' data_2factor
+#' data_3factor_b
 #'
 #'
 #' qpcrANCOVA(data_3factor_b, 

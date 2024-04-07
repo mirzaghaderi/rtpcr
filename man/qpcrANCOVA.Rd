@@ -110,14 +110,14 @@ is significant, suggesting that ANCOVA is not appropriate in this case.
 \examples{
 
 # See a sample data
-data_2factor
+data_3factor_b
 
 
 qpcrANCOVA(data_3factor_b, 
            numberOfrefGenes = 1, 
            analysisType = "ancova", 
            main.factor.column = 3,
-           levels = c(1, 2, 3))
+           levels = c(1, 2))
            
 
 qpcrANCOVA(data_2factorBlock, 

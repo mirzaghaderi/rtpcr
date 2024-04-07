@@ -1,5 +1,5 @@
-#' @title Analysis of the fold change (FC) of target genes assessed under two conditions.
-#' @description t.test based analysis to any number of Genes to calculate the average fold change for target Genes along with the 95 percent confidence interval and significance
+#' @title Analysis of the fold change (FC) of target genes using t-test.
+#' @description t.test based analysis of the fold change expression for any number of target genes.
 #' @details The \code{qpcrTTEST} function applies a t.test based analysis to calcylate fold change (FC) expression and related statistics of any number of target genes along with one or two 
 #' reference Gene(s), that have been evaluated under control and treatment conditions. Sampling may be paired or 
 #' unpaired. Paired samples in quantitative PCR refer to two sample data that are collected from one set of individuals 

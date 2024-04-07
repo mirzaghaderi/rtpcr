@@ -2,7 +2,7 @@
 % Please edit documentation in R/qpcrTTESTplot.r
 \name{qpcrTTESTplot}
 \alias{qpcrTTESTplot}
-\title{Bar plot of the average fold change of the target genes}
+\title{Bar plot of the average fold change (FC) of the target genes}
 \usage{
 qpcrTTESTplot(
   x,
@@ -18,13 +18,15 @@ qpcrTTESTplot(
   ylab = "Average Fold Change",
   xlab = "Gene",
   fontsize = 12,
-  fontsizePvalue = 7
+  fontsizePvalue = 7,
+  axis.text.x.angle = 0,
+  axis.text.x.hjust = 0.5
 )
 }
 \arguments{
 \item{x}{a data frame. The data frame consists of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct in the following data frame is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used we well. We use this data set for Fold Change expression analysis of the target genes in treatment condition compared to normal condition.}
 
-\item{order}{a vector determinig genes order on the output graph.}
+\item{order}{a vector determining genes order on the output graph.}
 
 \item{numberOfrefGenes}{number of reference genes. Up to two reference genes can be handled.}
 
@@ -49,15 +51,19 @@ qpcrTTESTplot(
 \item{fontsize}{fonts size of the plot}
 
 \item{fontsizePvalue}{font size of the pvalue labels}
+
+\item{axis.text.x.angle}{angle of x axis text}
+
+\item{axis.text.x.hjust}{horizontal justification of x axis text}
 }
 \value{
 Bar  plot of the average fold change for target genes along with the significance and the 95 percent CI as error bars.
 }
 \description{
-Bar plot of the average fold change (FC) of the target genes along with the 95 percent CI and significance in a two-level experimental condition.
+Bar plot of the average fold change (FC) values for the target genes along with the 95 percent CI and significance in a two-level conditional experimental (e.g. control and treatment).
 }
 \details{
-The \code{qpcrTTESTplot} function applies a t.test based analysis to any number of genes along with one reference gene, that have been evaluated under control and treatment conditions, and returns the bar plot of the average fold change for target genes along with the 95\% CI and significance.
+The \code{qpcrTTESTplot} function applies a t.test based analysis to any number of target genes along with one or two reference gene(s), that have been evaluated under control and treatment conditions. It returns the bar plot of the fold change (FC) values for target genes along with the 95\% CI and significance.
 }
 \examples{
 
@@ -80,7 +86,7 @@ qpcrTTESTplot(data_ttest,
               y.axis.adjust = 0,
               y.axis.by = 2,
               letter.position.adjust = 0.3,
-              ylab = "Average Fold Change in Treatment vs Control",
+              ylab = "Fold Change in Treatment vs Control",
               xlab = "Gene")
 
 

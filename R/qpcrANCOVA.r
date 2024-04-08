@@ -1,4 +1,4 @@
-#' @title Fold change (FC) analysis using ANCOVA and ANOVA on a uni- or multi-factorial design.
+#' @title Fold change (FC) analysis using ANCOVA
 #' @description ANCOVA (analysis of covariance) and ANOVA (analysis of variance) can be performed using 
 #' \code{qpcrANCOVA} function, for uni- or multi-factorial experiment data. This function performs FC analysis even
 #' there is only one factor (without covariate or factor  variable), although for the data with 

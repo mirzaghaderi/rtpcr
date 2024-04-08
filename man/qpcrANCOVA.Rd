@@ -2,7 +2,7 @@
 % Please edit documentation in R/qpcrANCOVA.r
 \name{qpcrANCOVA}
 \alias{qpcrANCOVA}
-\title{Fold change (FC) analysis using ANCOVA and ANOVA on a uni- or multi-factorial design.}
+\title{Fold change (FC) analysis using ANCOVA}
 \usage{
 qpcrANCOVA(
   x,

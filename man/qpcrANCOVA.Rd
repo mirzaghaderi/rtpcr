@@ -11,13 +11,14 @@ qpcrANCOVA(
   analysisType = "ancova",
   main.factor.column,
   levels,
+  control.level = NULL,
   level.names = "none",
   width = 0.5,
   fill = "skyblue",
   y.axis.adjust = 1,
   y.axis.by = 1,
   letter.position.adjust = 0.1,
-  ylab = "Average Fold Change",
+  ylab = "Fold Change",
   xlab = "Pairs",
   fontsize = 12,
   fontsizePvalue = 7,
@@ -39,7 +40,9 @@ qpcrANCOVA(
 
 \item{levels}{a numeric vector corresponding to the main factor levels. The first number is used as control level in computing the FC value of the other levels.}
 
-\item{level.names}{a vector determining level names in the x axis on the plot.}
+\item{control.level}{if equals to 1, FC of the other levels (of the main factor) to the control level is calculated and presented.}
+
+\item{level.names}{a vector determining level names in the x axis on the plot. if you have control level, the length of levels names should be equal to the length of 'levels - 1'.}
 
 \item{width}{a positive number determining bar width.}
 
@@ -132,6 +135,21 @@ qpcrANCOVA(data_2factorBlock,
            analysisType = "ancova", 
            main.factor.column = 1,
            levels = 3:1)
+           
+           
+qpcrANCOVA(data_2factorBlock,
+           numberOfrefGenes = 1,
+           block = "block",
+           level.names = c("2 vs 1", "3 vs 1", "3 vs 2"),
+           main.factor.column = 2,
+           levels = 1:3)
+
+qpcrANCOVA(data_2factor,
+           numberOfrefGenes = 1,
+           level.names = c("2 vs 1", "3 vs 1"),
+           main.factor.column = 2,
+           control.level = 1,
+           levels = 1:3)
            
            
 

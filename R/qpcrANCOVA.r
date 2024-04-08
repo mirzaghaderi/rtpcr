@@ -37,8 +37,9 @@
 #' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.
 #' @param analysisType should be one of "ancova" or "anova".
 #' @param main.factor.column main factor for which the levels FC is compared. The remaining factors are considered as covariates.
-#' @param level.names  a vector determining level names in the x axis on the plot.
 #' @param levels a numeric vector corresponding to the main factor levels. The first number is used as control level in computing the FC value of the other levels.
+#' @param control.level if equals to 1, FC of the other levels (of the main factor) to the control level is calculated and presented.
+#' @param level.names  a vector determining level names in the x axis on the plot. if you have control level, the length of levels names should be equal to the length of 'levels - 1'.
 #' @param width a positive number determining bar width.
 #' @param fill  specify the fill color for the columns of the bar plot.
 #' @param y.axis.adjust  a negative or positive value for reducing or increasing the length of the y axis.
@@ -102,6 +103,21 @@
 #'            levels = 3:1)
 #'            
 #'            
+#' qpcrANCOVA(data_2factorBlock,
+#'            numberOfrefGenes = 1,
+#'            block = "block",
+#'            level.names = c("2 vs 1", "3 vs 1", "3 vs 2"),
+#'            main.factor.column = 2,
+#'            levels = 1:3)
+#'
+#' qpcrANCOVA(data_2factor,
+#'            numberOfrefGenes = 1,
+#'            level.names = c("2 vs 1", "3 vs 1"),
+#'            main.factor.column = 2,
+#'            control.level = 1,
+#'            levels = 1:3)
+#'            
+#'            
 #' 
 
 qpcrANCOVA <- function(x,
@@ -110,13 +126,14 @@ qpcrANCOVA <- function(x,
                        analysisType = "ancova",
                        main.factor.column,
                        levels,
+                       control.level = NULL,
                        level.names = "none",
                        width = 0.5,
                        fill = "skyblue",
                        y.axis.adjust = 1,
                        y.axis.by = 1,
                        letter.position.adjust = 0.1,
-                       ylab = "Average Fold Change",
+                       ylab = "Fold Change",
                        xlab = "Pairs",
                        fontsize = 12,
                        fontsizePvalue = 7,
@@ -133,69 +150,12 @@ qpcrANCOVA <- function(x,
   x[,1] <- levels[as.factor(xfl)]
   
   
-  # Check if there is block
-  if (is.null(block)) {
-    
-    
-    if(numberOfrefGenes == 1) {
-      
-      factors <- colnames(x)[1:(ncol(x)-5)]
-      colnames(x)[ncol(x)-4] <- "rep"
-      colnames(x)[ncol(x)-3] <- "Etarget"
-      colnames(x)[ncol(x)-2] <- "Cttarget"
-      colnames(x)[ncol(x)-1] <- "Eref"
-      colnames(x)[ncol(x)] <- "Ctref"
-      
-      x <- data.frame(x, wDCt = (log10(x$Etarget)*x$Cttarget)-(log10(x$Eref)*x$Ctref))
-      
-    } else if(numberOfrefGenes == 2) {
-      
-      factors <- colnames(x)[1:(ncol(x)-7)]
-      colnames(x)[ncol(x)-6] <- "rep"
-      colnames(x)[ncol(x)-5] <- "Etarget"
-      colnames(x)[ncol(x)-4] <- "Cttarget"
-      colnames(x)[ncol(x)-3] <- "Eref"
-      colnames(x)[ncol(x)-2] <- "Ctref"
-      colnames(x)[ncol(x)-1] <- "Eref2"
-      colnames(x)[ncol(x)] <- "Ctref2"
-      
-      x <- data.frame(x[1:(ncol(x)-2)], wDCt = (log10(x$Etarget)*x$Cttarget)-
-                        ((log10(x$Eref)*x$Ctref) + (log10(x$Eref2)*x$Ctref2))/2)
-    }
-    
-  } else {    # if there is Block
-    if(numberOfrefGenes == 1) {
-      
-      factors <- colnames(x)[1:(ncol(x)-6)]
-      colnames(x)[ncol(x)-5] <- "block"
-      colnames(x)[ncol(x)-4] <- "rep"
-      colnames(x)[ncol(x)-3] <- "Etarget"
-      colnames(x)[ncol(x)-2] <- "Cttarget"
-      colnames(x)[ncol(x)-1] <- "Eref"
-      colnames(x)[ncol(x)] <- "Ctref"
-      
-      x <- data.frame(x, wDCt = (log10(x$Etarget)*x$Cttarget)-(log10(x$Eref)*x$Ctref))
-      
-    } else if(numberOfrefGenes == 2) {
-      
-      factors <- colnames(x)[1:(ncol(x)-8)]
-      colnames(x)[ncol(x)-7] <- "block"
-      colnames(x)[ncol(x)-6] <- "rep"
-      colnames(x)[ncol(x)-5] <- "Etarget"
-      colnames(x)[ncol(x)-4] <- "Cttarget"
-      colnames(x)[ncol(x)-3] <- "Eref"
-      colnames(x)[ncol(x)-2] <- "Ctref"
-      colnames(x)[ncol(x)-1] <- "Eref2"
-      colnames(x)[ncol(x)] <- "Ctref2"
-      
-      x <- data.frame(x[1:(ncol(x)-2)], wDCt = (log10(x$Etarget)*x$Cttarget)-
-                        ((log10(x$Eref)*x$Ctref) + (log10(x$Eref2)*x$Ctref2))/2)
-    }
-  }
   
   
   
-  
+  resultx <- .addwDCt(x)
+  x<- resultx$x
+  factors <- resultx$factors
   # Check if there is block
   if (is.null(block)) {
     
@@ -203,9 +163,11 @@ qpcrANCOVA <- function(x,
     formula_ANOVA <- paste("wDCt ~", paste("as.factor(", factors, ")", collapse = " * "))
     lmf <- lm(formula_ANOVA, data = x)
     ANOVA <- stats::anova(lmf)
+    
     formula_ANCOVA <- paste("wDCt ~", paste("as.factor(", rev(factors), ")", collapse = " + "))
     lmc <- lm(formula_ANCOVA, data = x)
     ANCOVA <- stats::anova(lmc)
+    #rownames(ANCOVA) <- as.vector(cat(paste0('"', rev(factors), '"'), '"Residuals"'))
     
   } else {
     # If ANOVA based on factorial design was desired with blocking factor:
@@ -222,53 +184,22 @@ qpcrANCOVA <- function(x,
   
   
   
-  # Reverse ordering of the grouping letters
-  invOrder <- function(invg){
-    collapsed <- paste(invg,sep="", collapse = "")
-    u <- unique(strsplit(collapsed, "")[[1]])
-    if(length(u) < 2){
-      return( invg)
-    }
-    u <- u[order(u)]
-    m <- matrix(nrow = NROW(invg), ncol=length(u))
-    m[] <-F
-    for(i in 1:length( invg)){
-      s <- strsplit( invg[i],"")[[1]]
-      index <- match(s, u)
-      m[i, index] <- T
-    }
-    for(i in 1:(length(u) - 1)){
-      firstColT <- match(T, m[, i])[1]
-      firstT <- match(T, rowSums(m[, i:length(u)] > 0))[1]
-      if(firstT < firstColT){
-        colT <- match(T, m[firstT, i:length(u)])[1]
-        colT <- colT + i - 1
-        tmp <- m[, colT]
-        m[, colT] <- m[,i]
-        m[, i] <- tmp
-      }
-    }
-    res <- vector(mode = "character", length = length("trt"))
-    for(i in 1:length(invg)){
-      l <- u[m[i, ]]
-      res[i] <- paste(l, sep = "",collapse = "")
-    }
-    return(res)
-  }
+  
+  
   
   
   
   
   # Type of analysis: ancova or anova
   if (is.null(block)) {
-  if(analysisType == "ancova") {
-    FACTOR <- rev(base::attr(stats::terms(lmc), "term.labels"))[1]
-    lm <- lmc
-  } 
-  else{
-    FACTOR <- base::attr(stats::terms(lmf), "term.labels")[1]
-    lm <- lmf
-  }
+    if(analysisType == "ancova") {
+      FACTOR <- rev(base::attr(stats::terms(lmc), "term.labels"))[1]
+      lm <- lmc
+    } 
+    else{
+      FACTOR <- base::attr(stats::terms(lmf), "term.labels")[1]
+      lm <- lmf
+    }
   } else {
     if(analysisType == "ancova") {
       FACTOR <- rev(base::attr(stats::terms(lmc), "term.labels"))[1]
@@ -282,15 +213,8 @@ qpcrANCOVA <- function(x,
   
   
   
-  # Preparing final result table including letter grouping of the means
-  g <-  LSD.test(lm, FACTOR, group = T, console = F, alpha = 0.05, p.adj = p.adj)$groups
-  g <- g[rev(rownames(g)),] #order the result the way you want
-  g$groups <- invOrder(as.character(g$groups))
-  mean <- LSD.test(lm, FACTOR, group = T, console = F, alpha = 0.05, p.adj = p.adj)$means
   
-  
-  # Comparing mean pairs that also returns CI
-  # Preparing final result table including letter grouping of the means
+  # Comparing mean pairs (DDCt) that also returns CI
   meanPP <- LSD.test(lm, FACTOR, group = F, console = F, alpha = 0.05, p.adj = p.adj)
   meanPairs <- meanPP$comparison
   ROWS <- rownames(meanPairs)
@@ -299,7 +223,7 @@ qpcrANCOVA <- function(x,
   signif <- meanPairs$signif.
   ucl <- meanPairs$UCL
   lcl <- meanPairs$LCL
-  Post_hoc_Testing <- data.frame(row.names = ROWS,
+  Post_hoc_Testing0 <- data.frame(row.names = ROWS,
                                  FC = round(10^(-diffs), 4),
                                  pvalue = pval,
                                  signif. = signif,
@@ -307,8 +231,16 @@ qpcrANCOVA <- function(x,
                                  UCL = round(10^(-lcl), 4))
   
   
+  Post_hoc_Testing <- Post_hoc_Testing0[rev(row.names(Post_hoc_Testing0)), ]
+  rownames(Post_hoc_Testing) <- c(2:(nrow(Post_hoc_Testing0) + 1))
   
   
+  # If only remaining levels is compared with the control level
+  if (is.null(control.level)) {
+    Post_hoc_Testing 
+  }else{
+    Post_hoc_Testing <- Post_hoc_Testing[1:(length(levels) - 1), ]
+  }
   
   
   FINALDATA <- x

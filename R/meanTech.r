@@ -23,7 +23,7 @@
 #'
 
 meanTech <- function(x,
-                     groups = c(1:4)){
+                     groups){
 
   g <- colnames(x)[groups]
 

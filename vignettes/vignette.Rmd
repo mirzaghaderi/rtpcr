@@ -2,16 +2,16 @@
 title: "rtpcr: a package for statistical analysis of real-time PCR data in R"
 author: Ghader Mirzaghaderi
 output:
-  pdf_document: 
-    toc: yes
-    latex_engine: xelatex
+  word_document:
+    toc: No
   html_document: 
     toc: yes
     keep_md: yes
     output: rmarkdown::html_vignette
     df_print: default
-  word_document:
-    toc: No
+  pdf_document: 
+    toc: yes
+    latex_engine: xelatex
 vignette: |
   %\VignetteIndexEntry{Sending Messages With Gmailr}
   %\usepackage[utf8]{inputenc}

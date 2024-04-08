@@ -13,11 +13,13 @@
 #' @return A list including standard curves along with the Slope, Efficiency, and R2 statistics
 #' @examples
 #'
-#' # Looking at the example data
-#' data_efficiency
+#' 
+#' # locate and read the sample data
+#' df <- system.file('extdata', 'data_efficiency.csv', package = 'rtpcr')
+#' df <- read.csv(df)
 #'
 #' # Applying the efficiency function
-#' efficiency(data_efficiency)
+#' efficiency(df)
 #'
 #'
 

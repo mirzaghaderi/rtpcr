@@ -20,11 +20,13 @@ The \code{efficiency} function calculates amplification efficiency of a target a
 }
 \examples{
 
-# Looking at the example data
-data_efficiency
+
+# locate and read the sample data
+df <- system.file('extdata', 'data_efficiency.csv', package = 'rtpcr')
+df <- read.csv(df)
 
 # Applying the efficiency function
-efficiency(data_efficiency)
+efficiency(df)
 
 
 }

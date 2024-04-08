@@ -38,7 +38,7 @@
 #' @param analysisType should be one of "ancova" or "anova".
 #' @param main.factor.column main factor for which the levels FC is compared. The remaining factors are considered as covariates.
 #' @param levels a numeric vector corresponding to the main factor levels. The first number is used as control level in computing the FC value of the other levels.
-#' @param control.level if equals to 1, FC of the other levels (of the main factor) to the control level is calculated and presented.
+#' @param control.level if TRUE, FC of the other levels (of the main factor) is compare to the control level.
 #' @param level.names  a vector determining level names in the x axis on the plot. if you have control level, the length of levels names should be equal to the length of 'levels - 1'.
 #' @param width a positive number determining bar width.
 #' @param fill  specify the fill color for the columns of the bar plot.
@@ -114,7 +114,7 @@
 #'            numberOfrefGenes = 1,
 #'            level.names = c("2 vs 1", "3 vs 1"),
 #'            main.factor.column = 2,
-#'            control.level = 1,
+#'            control.level = TRUE,
 #'            levels = 1:3)
 #'            
 #'            
@@ -126,7 +126,7 @@ qpcrANCOVA <- function(x,
                        analysisType = "ancova",
                        main.factor.column,
                        levels,
-                       control.level = NULL,
+                       control.level = FALSE,
                        level.names = "none",
                        width = 0.5,
                        fill = "skyblue",
@@ -236,8 +236,9 @@ qpcrANCOVA <- function(x,
   
   
   # If only remaining levels is compared with the control level
-  if (is.null(control.level)) {
-    Post_hoc_Testing 
+  if (control.level == FALSE) {
+    Post_hoc_Testing
+    
   }else{
     Post_hoc_Testing <- Post_hoc_Testing[1:(length(levels) - 1), ]
   }

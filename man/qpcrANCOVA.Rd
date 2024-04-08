@@ -11,7 +11,7 @@ qpcrANCOVA(
   analysisType = "ancova",
   main.factor.column,
   levels,
-  control.level = NULL,
+  control.level = FALSE,
   level.names = "none",
   width = 0.5,
   fill = "skyblue",
@@ -40,7 +40,7 @@ qpcrANCOVA(
 
 \item{levels}{a numeric vector corresponding to the main factor levels. The first number is used as control level in computing the FC value of the other levels.}
 
-\item{control.level}{if equals to 1, FC of the other levels (of the main factor) to the control level is calculated and presented.}
+\item{control.level}{if TRUE, FC of the other levels (of the main factor) is compare to the control level.}
 
 \item{level.names}{a vector determining level names in the x axis on the plot. if you have control level, the length of levels names should be equal to the length of 'levels - 1'.}
 
@@ -148,7 +148,7 @@ qpcrANCOVA(data_2factor,
            numberOfrefGenes = 1,
            level.names = c("2 vs 1", "3 vs 1"),
            main.factor.column = 2,
-           control.level = 1,
+           control.level = TRUE,
            levels = 1:3)
            
            

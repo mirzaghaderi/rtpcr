@@ -64,8 +64,8 @@ qpcrANOVA <- function(x,
                       block = NULL,
                       p.adj = c("none","holm","hommel", 
                                 "hochberg", "bonferroni", "BH", "BY", "fdr")){
-
-
+  
+  
   resultx <- .addwDCt(x)
   x<- resultx$x
   factors <- resultx$factors
@@ -76,7 +76,7 @@ qpcrANOVA <- function(x,
     x
     lm <- stats::lm(wDCt ~ T, x)
     anovaCRD <- stats::anova(lm)
-
+    
   } else {
     # Concatenate the columns using paste0
     x$T <- do.call(paste, c(x[1:(ncol(x)-7)], sep = ":"))
@@ -84,16 +84,16 @@ qpcrANOVA <- function(x,
     lm <- stats::lm(wDCt ~ block + T, x)
     anovaCRD <- stats::anova(lm)
   }
-
-
-
+  
+  
+  
   # Preparing final result table including letter grouping of the means for T
   g <- LSD.test(lm, "T", group = T, console = F, alpha = 0.05, p.adj = p.adj)$groups
   g <- g[rev(rownames(g)),] #order the result the way you want
   g$groups <- .invOrder(as.character(g$groups))
   mean <- LSD.test(lm, "T", group = T, console = F, alpha = 0.05, p.adj = p.adj)$means
-
-
+  
+  
   # Comparing mean pairs that also returns CI for T
   # Preparing final result table including letter grouping of the means
   meanPP <- LSD.test(lm, "T", group = F, console = F, alpha = 0.05, p.adj = p.adj)
@@ -110,35 +110,35 @@ qpcrANOVA <- function(x,
                                  signif. = signif,
                                  LCL = round(10^(-ucl), 4),
                                  UCL = round(10^(-lcl), 4))
-
-
+  
+  
   RowNames <- rownames(mean)
   mean$RowNames <- RowNames
   mean <- separate(mean, RowNames, into = factors, sep = ":", remove = T)
   mean <- mean[order(rownames(mean)),]
   g <- g[order(rownames(g)),]
-
+  
   bwDCt <- 10^(-x$wDCt)
   sdRow <- summarise(
     group_by(data.frame(T = x$T, bwDCt = bwDCt), T),
     sd = sd(bwDCt, na.rm = TRUE))
   sd <- sdRow[order(sdRow$T),]
-
+  
   Results <- data.frame(mean[,(ncol(mean)-2):ncol(mean)],
                         RE = round(10^(-mean$wDCt), 4),
                         LCL = round(10^(-mean$LCL), 4),
                         UCL = round(10^(-mean$UCL), 4),
                         letters = g$groups,
                         std = round(sd$sd, 4))
-
-
+  
+  
   # removing additional columns!
   if(length(factors) == 1) {
     Results <- Results[, -(1:2)]
-
+    
   } else if(length(factors) == 2) {
     Results <- Results[, -1]
-
+    
   } else if(length(factors) == 3) {
     Results <- Results
   }

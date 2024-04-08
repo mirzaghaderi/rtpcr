@@ -38,7 +38,7 @@
 #' @param analysisType should be one of "ancova" or "anova".
 #' @param main.factor.column main factor for which the levels FC is compared. The remaining factors are considered as covariates.
 #' @param levels a numeric vector corresponding to the main factor levels. The first number is used as control level in computing the FC value of the other levels.
-#' @param control.level if TRUE, FC of the other levels (of the main factor) is compare to the control level.
+#' @param reference.level if TRUE, FC of the other levels (of the main factor) is compare to the control level.
 #' @param level.names  a vector determining level names in the x axis on the plot. if you have control level, the length of levels names should be equal to the length of 'levels - 1'.
 #' @param width a positive number determining bar width.
 #' @param fill  specify the fill color for the columns of the bar plot.
@@ -51,6 +51,7 @@
 #' @param fontsizePvalue font size of the pvalue labels
 #' @param axis.text.x.angle angle of x axis text
 #' @param axis.text.x.hjust horizontal justification of x axis text
+#' @param errorbar error bar of the FC
 #' @param block column name of the block if there is a blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.
 #' @param p.adj method for adjusting p values (see \code{p.adjust})
 #' @return A list with 2 elements:
@@ -78,15 +79,19 @@
 #' 
 #' @examples
 #'
-#' # See a sample data
-#' data_3factor_b
-#'
-#'
-#' qpcrANCOVA(data_3factor_b, 
+#' # Data from Lee et al., 2020 
+#' df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
+#' 
+#' qpcrANCOVA(df, 
 #'            numberOfrefGenes = 1, 
 #'            analysisType = "ancova", 
-#'            main.factor.column = 3,
-#'            levels = c(1, 2))
+#'            main.factor.column = 2,
+#'            reference.level = TRUE,
+#'            levels = c(4,1,2,3),
+#'            errorbar = "se",
+#'            level.names = c("D12 vs D7", "D15 vs D7", "D18 vs D7"),
+#'            y.axis.adjust = 0.05)
+#'            
 #'            
 #'
 #' qpcrANCOVA(data_2factorBlock, 
@@ -114,7 +119,7 @@
 #'            numberOfrefGenes = 1,
 #'            level.names = c("2 vs 1", "3 vs 1"),
 #'            main.factor.column = 2,
-#'            control.level = TRUE,
+#'            reference.level = TRUE,
 #'            levels = 1:3)
 #'            
 #'            
@@ -126,7 +131,7 @@ qpcrANCOVA <- function(x,
                        analysisType = "ancova",
                        main.factor.column,
                        levels,
-                       control.level = FALSE,
+                       reference.level = FALSE,
                        level.names = "none",
                        width = 0.5,
                        fill = "skyblue",
@@ -139,6 +144,7 @@ qpcrANCOVA <- function(x,
                        fontsizePvalue = 7,
                        axis.text.x.angle = 0,
                        axis.text.x.hjust = 0.5,
+                       errorbar = "se",
                        p.adj = c("none","holm","hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")){
   
   
@@ -223,12 +229,17 @@ qpcrANCOVA <- function(x,
   signif <- meanPairs$signif.
   ucl <- meanPairs$UCL
   lcl <- meanPairs$LCL
+  
+  
+  se = ((10^(-meanPairs$LCL)) - (10^(-meanPairs$UCL)))/(2*2.5)
+  
   Post_hoc_Testing0 <- data.frame(row.names = ROWS,
                                  FC = round(10^(-diffs), 4),
                                  pvalue = pval,
                                  signif. = signif,
                                  LCL = round(10^(-ucl), 4),
-                                 UCL = round(10^(-lcl), 4))
+                                 UCL = round(10^(-lcl), 4),
+                                 se = se)
   
   
   Post_hoc_Testing <- Post_hoc_Testing0[rev(row.names(Post_hoc_Testing0)), ]
@@ -236,7 +247,7 @@ qpcrANCOVA <- function(x,
   
   
   # If only remaining levels is compared with the control level
-  if (control.level == FALSE) {
+  if (reference.level == FALSE) {
     Post_hoc_Testing
     
   }else{
@@ -267,9 +278,32 @@ qpcrANCOVA <- function(x,
   LCLp <- tableC$LCL
   FCp <- tableC$FC
   significance <- tableC$signif.
+  sep <- tableC$se
+  
+  pfc2se <- ggplot(tableC, aes(factor(pairs, levels = rownames(tableC)), FCp)) +
+    geom_col(col = "black", fill = fill, width = width) +
+    geom_errorbar(aes(pairs, ymin = FCp, ymax =  FCp + sep),
+                  width=0.1) +
+    geom_text(aes(label = significance,
+                  x = pairs,
+                  y = FCp + sep + letter.position.adjust),
+              vjust = -0.5, size = fontsizePvalue) +
+    ylab(ylab) + xlab(xlab) +
+    theme_bw()+
+    theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
+          axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
+          axis.title  = element_text(size = fontsize)) +
+    scale_y_continuous(breaks=seq(0, max(sep) + max(FCp) + y.axis.adjust, by = y.axis.by),
+                       limits = c(0, max(sep) + max(FCp) + y.axis.adjust + y.axis.adjust), expand = c(0, 0)) +
+    theme(legend.text = element_text(colour = "black", size = fontsize),
+          legend.background = element_rect(fill = "transparent"))
   
   
-  pfc2 <- ggplot(tableC, aes(factor(pairs, levels = rownames(tableC)), FCp)) +
+  
+  
+  
+  
+  pfc2ci <- ggplot(tableC, aes(factor(pairs, levels = rownames(tableC)), FCp)) +
     geom_col(col = "black", fill = fill, width = width) +
     geom_errorbar(aes(pairs, ymin = FCp - LCLp, ymax =  FCp + UCLp),
                   width=0.1) +
@@ -290,6 +324,14 @@ qpcrANCOVA <- function(x,
   
   
   
+  if(errorbar == "se") {
+    out2 <- list(plot = pfc2se)
+    
+  } else if(errorbar == "ci") {
+    out2 <- list(plot = pfc2ci)
+  }
+  
+  
   
   outlist2 <- list(Final_data = x,
                    lm_ANOVA = lmf,
@@ -297,7 +339,7 @@ qpcrANCOVA <- function(x,
                    ANOVA_table = ANOVA,
                    ANCOVA_table = ANCOVA,
                    Table  = tableC,
-                   Plot = pfc2)
+                   Plot = out2)
   
   names(outlist2)[6] <- "Fold change statistics for the main factor:"
   names(outlist2)[7] <- "Bar plot of the fold change values for the main factor levels:"

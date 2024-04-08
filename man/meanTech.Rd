@@ -4,7 +4,7 @@
 \alias{meanTech}
 \title{Calculating mean of technical replicates}
 \usage{
-meanTech(x, groups = c(1:4))
+meanTech(x, groups)
 }
 \arguments{
 \item{x}{A raw data frame including technical replicates.}
@@ -29,6 +29,9 @@ data_withTechRep
 
 # Calculating mean of technical replicates
 meanTech(data_withTechRep, groups = 1:4)
+
+# Calculating mean of technical replicates
+meanTech(Lee_etal2020qPCR, groups = 1:3)
 
 
 }

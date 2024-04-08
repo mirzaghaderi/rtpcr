@@ -11,7 +11,7 @@ qpcrANCOVA(
   analysisType = "ancova",
   main.factor.column,
   levels,
-  control.level = FALSE,
+  reference.level = FALSE,
   level.names = "none",
   width = 0.5,
   fill = "skyblue",
@@ -24,6 +24,7 @@ qpcrANCOVA(
   fontsizePvalue = 7,
   axis.text.x.angle = 0,
   axis.text.x.hjust = 0.5,
+  errorbar = "se",
   p.adj = c("none", "holm", "hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")
 )
 }
@@ -40,7 +41,7 @@ qpcrANCOVA(
 
 \item{levels}{a numeric vector corresponding to the main factor levels. The first number is used as control level in computing the FC value of the other levels.}
 
-\item{control.level}{if TRUE, FC of the other levels (of the main factor) is compare to the control level.}
+\item{reference.level}{if TRUE, FC of the other levels (of the main factor) is compare to the control level.}
 
 \item{level.names}{a vector determining level names in the x axis on the plot. if you have control level, the length of levels names should be equal to the length of 'levels - 1'.}
 
@@ -66,6 +67,8 @@ qpcrANCOVA(
 
 \item{axis.text.x.hjust}{horizontal justification of x axis text}
 
+\item{errorbar}{error bar of the FC}
+
 \item{p.adj}{method for adjusting p values (see \code{p.adjust})}
 }
 \value{
@@ -83,8 +86,8 @@ A list with 2 elements:
 \description{
 ANCOVA (analysis of covariance) and ANOVA (analysis of variance) can be performed using 
 \code{qpcrANCOVA} function, for uni- or multi-factorial experiment data. This function performs FC analysis even
-there is only one factor (without covariate or factor  variable), although for the data with 
-only one factor, the analysis turns to ANOVA. Bar plot of the fold changes (FC) 
+if there is only one factor (without covariate variable), although, for the data with 
+only one factor, the analysis turns into ANOVA. The bar plot of the fold changes (FC) 
 values along with the 95\% confidence interval is also returned by the \code{qpcrANCOVA} function.
 }
 \details{
@@ -107,20 +110,24 @@ and related plot for a one-factor-experiment with more than two levels.
 Along with the ANCOVA, the \code{qpcrANCOVA} also performs a full model factorial analysis of variance. 
 If there is covariate variable(s), before ANCOVA analysis, it is better to run ANOVA based on a 
 factorial design to see if the main factor and covariate(s) interaction is significant or not. 
-If the pvalue of the interation effect is smaller than 0.05, then the interaction between the main factor and covariate 
+If the pvalue of the interaction effect is smaller than 0.05, then the interaction between the main factor and covariate 
 is significant, suggesting that ANCOVA is not appropriate in this case.
 }
 \examples{
 
-# See a sample data
-data_3factor_b
+# Data from Lee et al., 2020 
+df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
 
-
-qpcrANCOVA(data_3factor_b, 
+qpcrANCOVA(df, 
            numberOfrefGenes = 1, 
            analysisType = "ancova", 
-           main.factor.column = 3,
-           levels = c(1, 2))
+           main.factor.column = 2,
+           reference.level = TRUE,
+           levels = c(4,1,2,3),
+           errorbar = "se",
+           level.names = c("D12 vs D7", "D15 vs D7", "D18 vs D7"),
+           y.axis.adjust = 0.05)
+           
            
 
 qpcrANCOVA(data_2factorBlock, 
@@ -148,7 +155,7 @@ qpcrANCOVA(data_2factor,
            numberOfrefGenes = 1,
            level.names = c("2 vs 1", "3 vs 1"),
            main.factor.column = 2,
-           control.level = TRUE,
+           reference.level = TRUE,
            levels = 1:3)
            
            

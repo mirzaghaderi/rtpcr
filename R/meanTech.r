@@ -19,6 +19,9 @@
 #'
 #' # Calculating mean of technical replicates
 #' meanTech(data_withTechRep, groups = 1:4)
+#' 
+#' # Calculating mean of technical replicates
+#' meanTech(Lee_etal2020qPCR, groups = 1:3)
 #'
 #'
 

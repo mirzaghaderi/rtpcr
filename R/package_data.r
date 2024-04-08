@@ -145,11 +145,31 @@
 #'   \item{factor3}{experimental factor}
 #'   \item{biolrep}{biological replicate}
 #'   \item{techrep}{technical replicates}
-#'   \item{Eref}{Amplification efficiency of reference gene}
-#'   \item{refCt}{Ct of refence gene}
 #'   \item{Etarget}{Amplification efficiency of target gene}
 #'   \item{targetCt}{Ct of target gene}
-#' }
+#'   \item{Eref}{Amplification efficiency of reference gene}
+#'   \item{refCt}{Ct of reference gene}
+#' } 
 #'
 #' @source Not applicable
 "data_withTechRep"
+
+
+#' Sample data (with technical replicates)
+#'
+#' A sample data for calculating biological replicated.
+#'
+#' @format A data frame with 72 observations and 8 variables:
+#' \describe{
+#'   \item{factor1}{experimental factor}
+#'   \item{DS}{DS}
+#'   \item{biolRep}{biological replicate}
+#'   \item{techRep}{technical replicates}
+#'   \item{APOE_efficiency}{Amplification efficiency of APOE gene}
+#'   \item{APOE_Ct}{Ct of APOE gene}
+#'   \item{GAPDH_efficiency}{Amplification efficiency of GAPDH gene}
+#'   \item{GAPDH_Ct}{Ct of GAPDH gene}
+#' }
+#'
+#' @source Lee et al, (2020) <doi:10.12688/f1000research.23580.2>
+"Lee_etal2020qPCR"

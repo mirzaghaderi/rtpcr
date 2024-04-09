@@ -39,7 +39,7 @@ qpcrANCOVA(
 
 \item{width}{a positive number determining bar width.}
 
-\item{fill}{specify the fill color for the columns of the bar plot.}
+\item{fill}{specify the fill color for the columns in the bar plot. If a vector of two colors is specified, the reference level is differentialy colored.}
 
 \item{y.axis.adjust}{a negative or positive value for reducing or increasing the length of the y axis.}
 

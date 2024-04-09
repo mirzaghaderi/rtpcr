@@ -39,7 +39,7 @@
 #' @param mainFactor.column main factor for which the levels FC is compared. The remaining factors are considered as covariates.
 #' @param mainFactor.level.order  a vector of main factor level names. The first level in the vector is used as reference.
 #' @param width a positive number determining bar width.
-#' @param fill  specify the fill color for the columns of the bar plot.
+#' @param fill  specify the fill color for the columns in the bar plot. If a vector of two colors is specified, the reference level is differentialy colored.
 #' @param y.axis.adjust  a negative or positive value for reducing or increasing the length of the y axis.
 #' @param letter.position.adjust adjust the distance between the signs and the error bars.
 #' @param y.axis.by determines y axis step length

@@ -3,7 +3,7 @@
 #' \code{qpcrANCOVA} function, for uni- or multi-factorial experiment data. This function performs FC analysis even
 #' if there is only one factor (without covariate variable), although, for the data with 
 #' only one factor, the analysis turns into ANOVA. The bar plot of the fold changes (FC) 
-#' values along with the 95\% confidence interval is also returned by the \code{qpcrANCOVA} function. 
+#' values along with the confidence interval is also returned by the \code{qpcrANCOVA} function. 
 #' @details The \code{qpcrANCOVA} function applies both ANCOVA and ANOVA analysis to the data of a uni- or 
 #' multi-factorial experiment, although for the data with 
 #' only one factor, the analysis turns to ANOVA. ANCOVA is basically appropriate when the 
@@ -17,7 +17,7 @@
 #' levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA 
 #' or even ANOVA based on a factorial experiment using \code{qpcrANCOVA}. This function performs FC 
 #' analysis even there is only one factor (without covariate or factor  variable). Bar plot of fold changes 
-#' (FC) values along with the 95\% confidence interval is also returned by the 
+#' (FC) values along with the confidence interval is also returned by the 
 #' \code{qpcrANCOVA} function. There is also a function called \code{oneFACTORplot} which returns RE values 
 #' and related plot for a one-factor-experiment with more than two levels.
 #' Along with the ANCOVA, the \code{qpcrANCOVA} also performs a full model factorial analysis of variance. 
@@ -36,8 +36,9 @@
 #' @param x a data frame of condition (or conditions) levels, E (efficiency), genes and Ct values. Each Ct value in the data frame is the mean of technical replicates. Please refer to the vignette for preparing your data frame correctly.
 #' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.
 #' @param analysisType should be one of "ancova" or "anova".
-#' @param main.factor.column main factor for which the levels FC is compared. The remaining factors are considered as covariates.
+#' @param mainFactor.column main factor for which the levels FC is compared. The remaining factors are considered as covariates.
 #' @param mainFactor.level.order  a vector of main factor level names. The first level in the vector is used as reference.
+#' @param mainFactor.level.edit a vector of names replacing the column names of the output plot.
 #' @param width a positive number determining bar width.
 #' @param fill  specify the fill color for the columns of the bar plot.
 #' @param y.axis.adjust  a negative or positive value for reducing or increasing the length of the y axis.
@@ -50,7 +51,6 @@
 #' @param axis.text.x.angle angle of x axis text
 #' @param axis.text.x.hjust horizontal justification of x axis text
 #' @param block column name of the block if there is a blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.
-#' @param p.adj method for adjusting p values (see \code{p.adjust})
 #' @return A list with 2 elements:
 #' \describe{
 #'   \item{Final_data}{}
@@ -83,15 +83,16 @@
 #'qpcrANCOVA(df, 
 #'            numberOfrefGenes = 1, 
 #'            analysisType = "ancova", 
-#'            main.factor.column = 2,
+#'            mainFactor.column = 2,
 #'            mainFactor.level.order = c("D7", "D12", "D15","D18"),
+#'            fill = "#BFEFFF",
 #'            y.axis.adjust = 0.05)
 #' 
 #'
 #' df <- meanTech(Lee_etal2020qPCR, groups = 1:3) 
 #' df2 <- df[df$factor1 == "DSWi",][-1]
 #' qpcrANCOVA(df2, 
-#'           main.factor.column = 1,
+#'           mainFactor.column = 1,
 #'           mainFactor.level.order = c("D7", "D12", "D15","D18"),
 #'           numberOfrefGenes = 1,
 #'           analysisType = "ancova",
@@ -102,12 +103,13 @@
 
 qpcrANCOVA <- function(x,
                        numberOfrefGenes,
-                       block = NULL,
                        analysisType = "ancova",
-                       main.factor.column,
+                       mainFactor.column,
                        mainFactor.level.order,
+                       mainFactor.level.edit = "none",
+                       block = NULL,
                        width = 0.5,
-                       fill = "skyblue",
+                       fill = "#BFEFFF",
                        y.axis.adjust = 1,
                        y.axis.by = 1,
                        letter.position.adjust = 0.1,
@@ -116,18 +118,22 @@ qpcrANCOVA <- function(x,
                        fontsize = 12,
                        fontsizePvalue = 7,
                        axis.text.x.angle = 0,
-                       axis.text.x.hjust = 0.5,
-                       p.adj = c("none","holm","hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")){
+                       axis.text.x.hjust = 0.5){
+
+
   
-  
-  x <- x[, c(main.factor.column, (1:ncol(x))[-main.factor.column])] 
+  x <- x[, c(mainFactor.column, (1:ncol(x))[-mainFactor.column])] 
   x <- x[order(match(x[,1], mainFactor.level.order)), ]
   x[,1] <- factor(x[,1], levels = mainFactor.level.order)
+  
   
   
   resultx <- .addwDCt(x)
   x <- resultx$x
   factors <- resultx$factors
+  
+  
+  
   # Check if there is block
   if (is.null(block)) {
     
@@ -135,7 +141,7 @@ qpcrANCOVA <- function(x,
     formula_ANOVA <- paste("wDCt ~", paste("as.factor(", factors, ")", collapse = " * "))
     lmf <- lm(formula_ANOVA, data = x)
     ANOVA <- stats::anova(lmf)
-    
+    # ANCOVA 
     formula_ANCOVA <- paste("wDCt ~", paste("as.factor(", rev(factors), ")", collapse = " + "))
     lmc <- lm(formula_ANCOVA, data = x)
     ANCOVA <- stats::anova(lmc)
@@ -146,6 +152,7 @@ qpcrANCOVA <- function(x,
     formula_ANOVA <- paste("wDCt ~", paste("as.factor(", "block",") +"), paste("as.factor(", factors, ")", collapse = " * "))
     lmf <- lm(formula_ANOVA, data = x)
     ANOVA <- stats::anova(lmf)
+    # ANCOVA 
     formula_ANCOVA <- paste("wDCt ~", paste("as.factor(", "block",") +"), paste("as.factor(", rev(factors), ")", collapse = " + "))
     lmc <- lm(formula_ANCOVA, data = x)
     ANCOVA <- stats::anova(lmc)
@@ -179,6 +186,7 @@ qpcrANCOVA <- function(x,
   pp <- pp[1:length(mainFactor.level.order)-1,]
   
   
+  
   resid <- lm$residuals
   x <- data.frame(x, resid = resid)
   # calculatinf sd for pairs
@@ -194,27 +202,7 @@ qpcrANCOVA <- function(x,
   sd <- unlist(meanVar)
   
   
-  
-  # convert_to_character function
-  convert_to_character <- function(numbers) {
-    characters <- character(length(numbers))  # Initialize a character vector to store the results
-    
-    for (i in seq_along(numbers)) {
-      if (numbers[i] < 0.001) {
-        characters[i] <- "***"
-      } else if (numbers[i] < 0.01) {
-        characters[i] <- "**"
-      } else if (numbers[i] < 0.05) {
-        characters[i] <- "*"
-      } else {
-        characters[i] <- "ns"
-      }
-    }
-    
-    return(characters)
-  }
-  sig <- convert_to_character(pp$p.value)
-  
+  sig <- .convert_to_character(pp$p.value)
   
   
   pp <- data.frame(pp, sd = sd[-1])
@@ -245,6 +233,17 @@ qpcrANCOVA <- function(x,
   significance <- tableC$sig
   
   
+  if (mainFactor.level.edit == "none") {
+    tableC <- tableC
+  } else {
+    colnames(tableC) <- mainFactor.level.edit
+  }
+  
+  
+  
+  
+  
+  
   pfc2 <- ggplot(tableC, aes(factor(pairs, levels = contrast), FCp)) +
     geom_col(col = "black", fill = fill, width = width) +
     geom_errorbar(aes(pairs, ymin = FCp, ymax =  FCp + sd),
@@ -263,7 +262,7 @@ qpcrANCOVA <- function(x,
     theme(legend.text = element_text(colour = "black", size = fontsize),
           legend.background = element_rect(fill = "transparent"))
   
-  
+
   
   
   
@@ -272,11 +271,8 @@ qpcrANCOVA <- function(x,
                    lm_ANCOVA = lmc,
                    ANOVA_table = ANOVA,
                    ANCOVA_table = ANCOVA,
-                   Table  = tableC,
-                   Plot = pfc2)
-  
-  names(outlist2)[6] <- "Fold change statistics for the main factor:"
-  names(outlist2)[7] <- "Bar plot of the fold change values for the main factor levels:"
-  
+                   FC_statistics_of_the_main_factor  = tableC,
+                   FC_Plot_of_the_main_factor_levels = pfc2)
+
   return(outlist2)
 }

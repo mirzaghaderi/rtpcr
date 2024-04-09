@@ -115,19 +115,19 @@ qpcrANCOVA(df,
            analysisType = "ancova", 
            mainFactor.column = 2,
            mainFactor.level.order = c("D7", "D12", "D15","D18"),
-           fill = "#BFEFFF",
+           fill = c("skyblue", "#BFEFFF"),
            y.axis.adjust = 0.05)
 
 
 df <- meanTech(Lee_etal2020qPCR, groups = 1:3) 
-df2 <- df[df$factor1 == "DSWi",][-1]
+df2 <- df[df$factor1 == "DSWHi",][-1]
 qpcrANCOVA(df2, 
           mainFactor.column = 1,
           mainFactor.level.order = c("D7", "D12", "D15","D18"),
           numberOfrefGenes = 1,
           analysisType = "ancova",
           fontsizePvalue = 5,
-          y.axis.adjust = 1.5)
+          y.axis.adjust = 0)
 
 
 }

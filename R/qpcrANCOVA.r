@@ -85,19 +85,19 @@
 #'            analysisType = "ancova", 
 #'            mainFactor.column = 2,
 #'            mainFactor.level.order = c("D7", "D12", "D15","D18"),
-#'            fill = "#BFEFFF",
+#'            fill = c("skyblue", "#BFEFFF"),
 #'            y.axis.adjust = 0.05)
 #' 
 #'
 #' df <- meanTech(Lee_etal2020qPCR, groups = 1:3) 
-#' df2 <- df[df$factor1 == "DSWi",][-1]
+#' df2 <- df[df$factor1 == "DSWHi",][-1]
 #' qpcrANCOVA(df2, 
 #'           mainFactor.column = 1,
 #'           mainFactor.level.order = c("D7", "D12", "D15","D18"),
 #'           numberOfrefGenes = 1,
 #'           analysisType = "ancova",
 #'           fontsizePvalue = 5,
-#'           y.axis.adjust = 1.5)
+#'           y.axis.adjust = 0)
 #'
 #'
 
@@ -244,8 +244,8 @@ qpcrANCOVA <- function(x,
   
   
   
-  pfc2 <- ggplot(tableC, aes(factor(pairs, levels = contrast), FCp)) +
-    geom_col(col = "black", fill = fill, width = width) +
+  pfc2 <- ggplot(tableC, aes(factor(pairs, levels = contrast), FCp, fill = pairs)) +
+    geom_col(col = "black", width = width) +
     geom_errorbar(aes(pairs, ymin = FCp, ymax =  FCp + sd),
                   width=0.1) +
     geom_text(aes(label = significance,
@@ -267,10 +267,12 @@ qpcrANCOVA <- function(x,
   if(length(fill) == 2) {
     pfc2 <- pfc2 +
              scale_fill_manual(values = c(fill[1], rep(fill[2], nrow(tableC)-1)))
-  } else {
-    pfc2
+  } 
+  if (length(fill) == 1) {
+    pfc2 <- pfc2 +
+      scale_fill_manual(values = rep(fill, nrow(tableC)))
   }
-  
+  pfc2 <- pfc2 + guides(fill = FALSE) 
   
   
   outlist2 <- list(Final_data = x,

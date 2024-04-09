@@ -10,7 +10,6 @@ qpcrANCOVA(
   analysisType = "ancova",
   mainFactor.column,
   mainFactor.level.order,
-  mainFactor.level.edit = "none",
   block = NULL,
   width = 0.5,
   fill = "#BFEFFF",
@@ -35,8 +34,6 @@ qpcrANCOVA(
 \item{mainFactor.column}{main factor for which the levels FC is compared. The remaining factors are considered as covariates.}
 
 \item{mainFactor.level.order}{a vector of main factor level names. The first level in the vector is used as reference.}
-
-\item{mainFactor.level.edit}{a vector of names replacing the column names of the output plot.}
 
 \item{block}{column name of the block if there is a blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.}
 
@@ -95,7 +92,7 @@ The drought is another factor (the covariate) that may affect the expression of 
 levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA 
 or even ANOVA based on a factorial experiment using \code{qpcrANCOVA}. This function performs FC 
 analysis even there is only one factor (without covariate or factor  variable). Bar plot of fold changes 
-(FC) values along with the confidence interval is also returned by the 
+(FC) values along with the pair-wise errors (square roots of pooled variances of each pair of samples) are also returned by the 
 \code{qpcrANCOVA} function. There is also a function called \code{oneFACTORplot} which returns RE values 
 and related plot for a one-factor-experiment with more than two levels.
 Along with the ANCOVA, the \code{qpcrANCOVA} also performs a full model factorial analysis of variance. 

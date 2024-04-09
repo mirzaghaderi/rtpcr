@@ -264,6 +264,13 @@ qpcrANCOVA <- function(x,
   
 
   
+  if(length(fill) == 2) {
+    pfc2 <- pfc2 +
+             scale_fill_manual(values = c(fill[1], rep(fill[2], nrow(tableC)-1)))
+  } else {
+    pfc2
+  }
+  
   
   
   outlist2 <- list(Final_data = x,

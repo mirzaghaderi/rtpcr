@@ -10,9 +10,7 @@ qpcrANCOVA(
   block = NULL,
   analysisType = "ancova",
   main.factor.column,
-  levels,
-  reference.level = FALSE,
-  level.names = "none",
+  mainFactor.level.order,
   width = 0.5,
   fill = "skyblue",
   y.axis.adjust = 1,
@@ -24,7 +22,6 @@ qpcrANCOVA(
   fontsizePvalue = 7,
   axis.text.x.angle = 0,
   axis.text.x.hjust = 0.5,
-  errorbar = "se",
   p.adj = c("none", "holm", "hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")
 )
 }
@@ -39,11 +36,7 @@ qpcrANCOVA(
 
 \item{main.factor.column}{main factor for which the levels FC is compared. The remaining factors are considered as covariates.}
 
-\item{levels}{a numeric vector corresponding to the main factor levels. The first number is used as control level in computing the FC value of the other levels.}
-
-\item{reference.level}{if TRUE, FC of the other levels (of the main factor) is compare to the control level.}
-
-\item{level.names}{a vector determining level names in the x axis on the plot. if you have control level, the length of levels names should be equal to the length of 'levels - 1'.}
+\item{mainFactor.level.order}{a vector of main factor level names. The first level in the vector is used as reference.}
 
 \item{width}{a positive number determining bar width.}
 
@@ -66,8 +59,6 @@ qpcrANCOVA(
 \item{axis.text.x.angle}{angle of x axis text}
 
 \item{axis.text.x.hjust}{horizontal justification of x axis text}
-
-\item{errorbar}{error bar of the FC}
 
 \item{p.adj}{method for adjusting p values (see \code{p.adjust})}
 }
@@ -116,49 +107,27 @@ is significant, suggesting that ANCOVA is not appropriate in this case.
 \examples{
 
 # Data from Lee et al., 2020 
-df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
 
+df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
+order2 <- unique(df$DS)
 qpcrANCOVA(df, 
            numberOfrefGenes = 1, 
            analysisType = "ancova", 
            main.factor.column = 2,
-           reference.level = TRUE,
-           levels = c(4,1,2,3),
-           errorbar = "se",
-           level.names = c("D12 vs D7", "D15 vs D7", "D18 vs D7"),
+           mainFactor.level.order = c("D7", "D12", "D15","D18"),
            y.axis.adjust = 0.05)
-           
-           
 
-qpcrANCOVA(data_2factorBlock, 
-           numberOfrefGenes = 1,
-           block = "block",  
-           main.factor.column = 2,
-           levels = c(3, 2, 1))
-           
-           
- qpcrANCOVA(data_1factor, 
-           numberOfrefGenes = 1,
-           analysisType = "ancova", 
-           main.factor.column = 1,
-           levels = 3:1)
-           
-           
-qpcrANCOVA(data_2factorBlock,
-           numberOfrefGenes = 1,
-           block = "block",
-           level.names = c("2 vs 1", "3 vs 1", "3 vs 2"),
-           main.factor.column = 2,
-           levels = 1:3)
 
-qpcrANCOVA(data_2factor,
-           numberOfrefGenes = 1,
-           level.names = c("2 vs 1", "3 vs 1"),
-           main.factor.column = 2,
-           reference.level = TRUE,
-           levels = 1:3)
-           
-           
+df <- meanTech(Lee_etal2020qPCR, groups = 1:3) 
+df2 <- df[df$factor1 == "DSWi",][-1]
+qpcrANCOVA(df2, 
+          main.factor.column = 1,
+          mainFactor.level.order = c("D7", "D12", "D15","D18"),
+          numberOfrefGenes = 1,
+          analysisType = "ancova",
+          fontsizePvalue = 5,
+          y.axis.adjust = 1.5)
+
 
 }
 \references{

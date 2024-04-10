@@ -97,7 +97,7 @@
 #'           numberOfrefGenes = 1,
 #'           analysisType = "ancova",
 #'           fontsizePvalue = 5,
-#'           y.axis.adjust = 0)
+#'           y.axis.adjust = 0.1)
 #'
 #'
 
@@ -181,44 +181,55 @@ qpcrANCOVA <- function(x,
   
   
   
-  pp1 <- emmeans(lm, colnames(x)[1], data = x)
+  pp1 <- emmeans(lm, colnames(x)[1], data = x, adjust = p.adj)
   pp <- as.data.frame(pairs(pp1), adjust = p.adj)
   pp <- pp[1:length(mainFactor.level.order)-1,]
   
   
+  # Preparing t-test results
+  t_test_results <- list()
   
-  resid <- lm$residuals
-  x <- data.frame(x, resid = resid)
-  # calculating sd for pairs
-  wDCt <- x$wDCt
-  result <- x %>%
-    group_by(x[,1]) %>%
-    summarize(variance = stats::var(wDCt))
-  
-  sddiff = c()
-  for(i in 1:nrow(result)){
-    r = max(unique(x$rep))
-    sddiff[i] = sqrt(((result[1,2] + result[i,2])/2)*(2/r))
+  # t-tests for each level compared to the first level
+  for (i in 2:length(mainFactor.level.order)) {
+    level_data <- subset(x, x[,1] == mainFactor.level.order[i])$wDCt
+    t_test_result <- stats::t.test(level_data, subset(x, x[,1] == mainFactor.level.order[1])$wDCt)
+    t_test_results[[paste("t_test_result_", mainFactor.level.order[i], "_vs_", mainFactor.level.order[1])]] <- t_test_result
   }
-  sd <- unlist(sddiff)
+  
+  # Extract the 95 percent confidence interval of each t-test
+  confidence_intervals <- data.frame(
+    Comparison = sapply(names(t_test_results), function(x) gsub("t_test_result_", "", x)),
+    CI_lower = sapply(t_test_results, function(x) x$conf.int[1]),
+    CI_upper = sapply(t_test_results, function(x) x$conf.int[2]),
+    df = sapply(t_test_results, function(x) x$parameter))
+  
+  CI <- data.frame(Comparison = confidence_intervals$Comparison,
+                   CI_lower = 10^-confidence_intervals$CI_upper,
+                   CI_upper = 10^-confidence_intervals$CI_lower,
+                   df = confidence_intervals$df)
+  CI <- data.frame(CI, sddiff = (CI$CI_upper - CI$CI_lower)/(2*stats::qt(0.975, CI$df)))
   
   
   sig <- .convert_to_character(pp$p.value)
   
   
-  pp <- data.frame(pp, sd = sd[-1])
+  
   contrast <- pp[,1]
   post_hoc_test <- data.frame(contrast, 
-                              FC = 1/(10^-(pp$estimate)),
-                              sd = 10^-(sd[-1]),
-                              pvalue = pp$p.value,
-                              sig = sig)
+                              FC = round(1/(10^-(pp$estimate)), 4),
+                              pvalue = round(pp$p.value, 4),
+                              sig = sig,
+                              CI_lower = CI$CI_lower,
+                              CI_upper = CI$CI_upper,
+                              sddiff = CI$sddiff)
   
   reference <- data.frame(contrast = mainFactor.level.order[1],
                           FC = "1",
-                          sd = 10^-(sd[1]), 
                           pvalue = 1, 
-                          sig = " ")
+                          sig = " ",
+                          CI_lower = 0,
+                          CI_upper = 0,
+                          sddiff = 0)
   
   post_hoc_test <- rbind(reference, post_hoc_test)
   
@@ -229,31 +240,30 @@ qpcrANCOVA <- function(x,
   
   
   pairs <- tableC$contrast
-  sd <- tableC$sd
+  CI_lower <- tableC$CI_lower
+  CI_upper <- tableC$CI_upper
   FCp <- as.numeric(tableC$FC)
   significance <- tableC$sig
-  
-  
-  
+  sddiff <- tableC$sddiff
   
   
   
   
   pfc2 <- ggplot(tableC, aes(factor(pairs, levels = contrast), FCp, fill = pairs)) +
     geom_col(col = "black", width = width) +
-    geom_errorbar(aes(pairs, ymin = FCp, ymax =  FCp + sd),
+    geom_errorbar(aes(pairs, ymin = FCp, ymax =  FCp + sddiff),
                   width=0.1) +
     geom_text(aes(label = significance,
                   x = pairs,
-                  y = FCp + sd + letter.position.adjust),
+                  y = FCp + sddiff + letter.position.adjust),
               vjust = -0.5, size = fontsizePvalue) +
     ylab(ylab) + xlab(xlab) +
     theme_bw()+
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
           axis.title  = element_text(size = fontsize)) +
-    scale_y_continuous(breaks=seq(0, max(sd) + max(FCp) + y.axis.adjust, by = y.axis.by),
-                       limits = c(0, max(sd) + max(FCp) + y.axis.adjust + y.axis.adjust), expand = c(0, 0)) +
+    scale_y_continuous(breaks=seq(0, max(FCp) + max(sddiff)  + y.axis.adjust, by = y.axis.by),
+                       limits = c(0, max(FCp) + max(sddiff) + y.axis.adjust), expand = c(0, 0)) +
     theme(legend.text = element_text(colour = "black", size = fontsize),
           legend.background = element_rect(fill = "transparent"))
   
@@ -267,7 +277,7 @@ qpcrANCOVA <- function(x,
     pfc2 <- pfc2 +
       scale_fill_manual(values = rep(fill, nrow(tableC)))
   }
-  pfc2 <- pfc2 + guides(fill = FALSE) 
+  pfc2 <- pfc2 + guides(fill = "none") 
   
   
   outlist2 <- list(Final_data = x,

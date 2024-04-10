@@ -127,7 +127,7 @@ qpcrANCOVA(df2,
           numberOfrefGenes = 1,
           analysisType = "ancova",
           fontsizePvalue = 5,
-          y.axis.adjust = 0)
+          y.axis.adjust = 0.1)
 
 
 }

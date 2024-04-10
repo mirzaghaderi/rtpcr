@@ -9,6 +9,8 @@
       characters[i] <- "**"
     } else if (numbers[i] < 0.05) {
       characters[i] <- "*"
+    } else if (numbers[i] < 0.1) {
+      characters[i] <- "."
     } else {
       characters[i] <- "ns"
     }

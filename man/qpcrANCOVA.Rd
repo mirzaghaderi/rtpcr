@@ -21,7 +21,8 @@ qpcrANCOVA(
   fontsize = 12,
   fontsizePvalue = 7,
   axis.text.x.angle = 0,
-  axis.text.x.hjust = 0.5
+  axis.text.x.hjust = 0.5,
+  p.adj = "none"
 )
 }
 \arguments{
@@ -58,6 +59,8 @@ qpcrANCOVA(
 \item{axis.text.x.angle}{angle of x axis text}
 
 \item{axis.text.x.hjust}{horizontal justification of x axis text}
+
+\item{p.adj}{Method for adjusting p values}
 }
 \value{
 A list with 2 elements:

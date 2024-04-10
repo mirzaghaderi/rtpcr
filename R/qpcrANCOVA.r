@@ -50,6 +50,7 @@
 #' @param axis.text.x.angle angle of x axis text
 #' @param axis.text.x.hjust horizontal justification of x axis text
 #' @param block column name of the block if there is a blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.
+#' @param p.adj Method for adjusting p values
 #' @return A list with 2 elements:
 #' \describe{
 #'   \item{Final_data}{}
@@ -116,7 +117,8 @@ qpcrANCOVA <- function(x,
                        fontsize = 12,
                        fontsizePvalue = 7,
                        axis.text.x.angle = 0,
-                       axis.text.x.hjust = 0.5){
+                       axis.text.x.hjust = 0.5,
+                       p.adj = "none"){
 
 
   
@@ -180,24 +182,25 @@ qpcrANCOVA <- function(x,
   
   
   pp1 <- emmeans(lm, colnames(x)[1], data = x)
-  pp <- as.data.frame(pairs(pp1))
+  pp <- as.data.frame(pairs(pp1), adjust = p.adj)
   pp <- pp[1:length(mainFactor.level.order)-1,]
   
   
   
   resid <- lm$residuals
   x <- data.frame(x, resid = resid)
-  # calculatinf sd for pairs
+  # calculating sd for pairs
   wDCt <- x$wDCt
   result <- x %>%
     group_by(x[,1]) %>%
     summarize(variance = stats::var(wDCt))
   
-  meanVar = c()
+  sddiff = c()
   for(i in 1:nrow(result)){
-    meanVar[i] = sqrt((result[1,2] + result[i,2])/2)
+    r = max(unique(x$rep))
+    sddiff[i] = sqrt(((result[1,2] + result[i,2])/2)*(2/r))
   }
-  sd <- unlist(meanVar)
+  sd <- unlist(sddiff)
   
   
   sig <- .convert_to_character(pp$p.value)
@@ -213,7 +216,7 @@ qpcrANCOVA <- function(x,
   
   reference <- data.frame(contrast = mainFactor.level.order[1],
                           FC = "1",
-                          sd = sd[1], 
+                          sd = 10^-(sd[1]), 
                           pvalue = 1, 
                           sig = " ")
   

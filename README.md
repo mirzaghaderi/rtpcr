@@ -5,9 +5,9 @@ version](http://www.r-pkg.org/badges/version/rtpcr)](https://cran.r-project.org/
 
 # rtpcr: a package for statistical analysis of real-time PCR data in R 
 
-<img src="https://raw.githubusercontent.com/mirzaghaderi/rtpcr/c02e476cf7c69783fa9c65bc625a7ea4a0e3abcf/Figure%201.jpg">
+<img src="https://github.com/mirzaghaderi/rtpcr/blob/main/Figure%201.jpg?raw=true">
 
-*Figure 1 - Standard curve and the amplification efficiency analysis of target and reference genes.*
+*Figure 1 - Graphical summary of the rtpcr package functionality.*
 
 Real-time polymerase chain reaction (real-time PCR), is widely used in biological research. Various analysis methods are employed on the real-time PCR data to measure the mRNA levels under different experimental conditions. 
 ‘rtpcr’ package was developed for amplification efficiency calculation and statistical analysis of real-time PCR data in R. By accounting for up to two reference genes and amplification efficiency values, a general calculation methodology described by <a href="https://doi.org/10.1186/s12859-017-1949-5">Ganger et al. (2017)</a>, matching both <a href="https://doi.org/10.1006/meth.2001.1262">Livak and Schmittgen (2001)</a> and <a href="https://doi.org/10.1093/nar/30.9.e36">Pfaffl et al. (2002) </a> methods was used. Based on the experimental conditions, the functions of the ‘rtpcr’ package use a t-test (for experiments with a two-level factor) or analysis of variance (for cases where more than two levels or factors or a blocking factor exist) to calculate the fold change (FC) or relative expression (RE). The functions further provide standard deviations and confidence limits for means, apply statistical mean comparisons and present letter mean grouping. To facilitate function application, different data sets were used as examples and the outputs were explained. An outstanding feature of ‘rtpcr’ package is providing publication-ready bar plots with various controlling arguments for experiments with up to three different factors. 

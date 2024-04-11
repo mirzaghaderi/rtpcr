@@ -74,7 +74,7 @@ The \code{threeFACTORplot} function generates the bar plot of the average fold c
 data_3factor_b
 
 # Before plotting, the result needs to be extracted as below:
-res <- qpcrANOVA(data_3factor_b, numberOfrefGenes = 1)$Result
+res <- qpcrANOVA(data_3factor_b, numberOfrefGenes = 1)
 res
 
 # Arrange the first three colunms of the result table.

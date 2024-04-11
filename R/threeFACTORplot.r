@@ -33,7 +33,7 @@
 #' data_3factor_b
 #'
 #' # Before plotting, the result needs to be extracted as below:
-#' res <- qpcrANOVA(data_3factor_b, numberOfrefGenes = 1)$Result
+#' res <- qpcrANOVA(data_3factor_b, numberOfrefGenes = 1)
 #' res
 #'
 #' # Arrange the first three colunms of the result table.
@@ -108,6 +108,7 @@ threeFACTORplot <- function(x,
                          axis.text.x.angle = 0,
                          axis.text.x.hjust = 0.5){
   
+  x <- x$Result
   x <- x[, c(arrangement, 4:ncol(x))]
   RE <- x$RE
   std <- x$std

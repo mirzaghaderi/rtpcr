@@ -49,6 +49,7 @@
 #' @param fontsizePvalue font size of the pvalue labels
 #' @param axis.text.x.angle angle of x axis text
 #' @param axis.text.x.hjust horizontal justification of x axis text
+#' @param axis.labels.rename a vector replacing the x axis labels in the bar plot
 #' @param block column name of the block if there is a blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.
 #' @param p.adj Method for adjusting p values
 #' @return A list with 2 elements:
@@ -79,12 +80,12 @@
 #' # Data from Lee et al., 2020 
 #'
 #'df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
-#'order2 <- unique(df$DS)
+#'order <- unique(df$DS)
 #'qpcrANCOVA(df, 
 #'            numberOfrefGenes = 1, 
 #'            analysisType = "ancova", 
 #'            mainFactor.column = 2,
-#'            mainFactor.level.order = c("D7", "D12", "D15","D18"),
+#'            mainFactor.level.order = order,
 #'            fill = c("skyblue", "#BFEFFF"),
 #'            y.axis.adjust = 0.05)
 #' 
@@ -118,6 +119,7 @@ qpcrANCOVA <- function(x,
                        fontsizePvalue = 7,
                        axis.text.x.angle = 0,
                        axis.text.x.hjust = 0.5,
+                       axis.labels.rename = "none",
                        p.adj = "none"){
 
 
@@ -237,6 +239,13 @@ qpcrANCOVA <- function(x,
   
   FINALDATA <- x
   tableC <- post_hoc_test
+  
+  
+  if(any(axis.labels.rename == "none")){
+    tableC
+  }else{
+    tableC$contrast <- axis.labels.rename
+  }
   
   
   pairs <- tableC$contrast

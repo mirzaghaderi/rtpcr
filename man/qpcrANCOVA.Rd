@@ -22,6 +22,7 @@ qpcrANCOVA(
   fontsizePvalue = 7,
   axis.text.x.angle = 0,
   axis.text.x.hjust = 0.5,
+  axis.labels.rename = "none",
   p.adj = "none"
 )
 }
@@ -59,6 +60,8 @@ qpcrANCOVA(
 \item{axis.text.x.angle}{angle of x axis text}
 
 \item{axis.text.x.hjust}{horizontal justification of x axis text}
+
+\item{axis.labels.rename}{a vector replacing the x axis labels in the bar plot}
 
 \item{p.adj}{Method for adjusting p values}
 }
@@ -109,12 +112,12 @@ is significant, suggesting that ANCOVA is not appropriate in this case.
 # Data from Lee et al., 2020 
 
 df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
-order2 <- unique(df$DS)
+order <- unique(df$DS)
 qpcrANCOVA(df, 
            numberOfrefGenes = 1, 
            analysisType = "ancova", 
            mainFactor.column = 2,
-           mainFactor.level.order = c("D7", "D12", "D15","D18"),
+           mainFactor.level.order = order,
            fill = c("skyblue", "#BFEFFF"),
            y.axis.adjust = 0.05)
 

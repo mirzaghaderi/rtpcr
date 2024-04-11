@@ -111,7 +111,8 @@ twoFACTORplot <- function(x,
     scale_y_continuous(breaks = seq(0, max(RE) + max(std) + y.axis.adjust, by = y.axis.by), 
                        limits = c(0, max(RE) + max(std) + y.axis.adjust), expand = c(0, 0)) +
     theme(legend.position  = legend.position) +
-    theme(legend.title = element_text(size = fontsize, color = "black")) 
+    theme(legend.title = element_text(size = fontsize, color = "black"),
+          legend.background = element_rect(fill = "transparent")) 
   
   
   if (show.errorbars) {

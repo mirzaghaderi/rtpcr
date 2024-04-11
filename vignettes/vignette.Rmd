@@ -244,7 +244,8 @@ qpcrANCOVA(data_2factor,
            analysisType = "ancova",
            mainFactor.column = 2,
            mainFactor.level.order = order,
-           fontsizePvalue = 4)
+           fontsizePvalue = 4,
+           x.axis.labels.rename = c("D1",  "D2", "D3"))
 ```
 
 

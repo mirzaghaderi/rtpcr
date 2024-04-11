@@ -49,7 +49,7 @@
 #' @param fontsizePvalue font size of the pvalue labels
 #' @param axis.text.x.angle angle of x axis text
 #' @param axis.text.x.hjust horizontal justification of x axis text
-#' @param axis.labels.rename a vector replacing the x axis labels in the bar plot
+#' @param x.axis.labels.rename a vector replacing the x axis labels in the bar plot
 #' @param block column name of the block if there is a blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.
 #' @param p.adj Method for adjusting p values
 #' @return A list with 2 elements:
@@ -80,7 +80,7 @@
 #' # Data from Lee et al., 2020 
 #'
 #'df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
-#'order <- unique(df$DS)
+#'order <- rev(unique(df$DS))
 #'qpcrANCOVA(df, 
 #'            numberOfrefGenes = 1, 
 #'            analysisType = "ancova", 
@@ -101,6 +101,27 @@
 #'           y.axis.adjust = 0.1)
 #'
 #'
+#'
+#' addline_format <- function(x,...){gsub('\\s','\n',x)}
+#' order <- unique(data_2factor$Drought)
+#' qpcrANCOVA(data_1factor,
+#'    numberOfrefGenes = 1,
+#'    mainFactor.column = 1,
+#'    mainFactor.level.order = c("L1","L2","L3"),
+#'    width = 0.5,
+#'    fill = c("skyblue","#79CDCD"),
+#'    y.axis.by = 1,
+#'    letter.position.adjust = 0,
+#'    y.axis.adjust = 1,
+#'    ylab = "Fold Change",
+#'    fontsize = 12,
+#'    x.axis.labels.rename = addline_format(c("Control", 
+#'                                          "Treatment_1 vs Control", 
+#'                                          "Treatment_2 vs Control")))
+#'                                                        
+#'                                                        
+
+
 
 qpcrANCOVA <- function(x,
                        numberOfrefGenes,
@@ -114,12 +135,12 @@ qpcrANCOVA <- function(x,
                        y.axis.by = 1,
                        letter.position.adjust = 0.1,
                        ylab = "Fold Change",
-                       xlab = "Pairs",
+                       xlab = "none",
                        fontsize = 12,
                        fontsizePvalue = 7,
                        axis.text.x.angle = 0,
                        axis.text.x.hjust = 0.5,
-                       axis.labels.rename = "none",
+                       x.axis.labels.rename = "none",
                        p.adj = "none"){
 
 
@@ -241,10 +262,10 @@ qpcrANCOVA <- function(x,
   tableC <- post_hoc_test
   
   
-  if(any(axis.labels.rename == "none")){
+  if(any(x.axis.labels.rename == "none")){
     tableC
   }else{
-    tableC$contrast <- axis.labels.rename
+    tableC$contrast <- x.axis.labels.rename
   }
   
   
@@ -257,6 +278,7 @@ qpcrANCOVA <- function(x,
   
   
   
+
   
   pfc2 <- ggplot(tableC, aes(factor(pairs, levels = contrast), FCp, fill = pairs)) +
     geom_col(col = "black", width = width) +
@@ -266,7 +288,7 @@ qpcrANCOVA <- function(x,
                   x = pairs,
                   y = FCp + sddiff + letter.position.adjust),
               vjust = -0.5, size = fontsizePvalue) +
-    ylab(ylab) + xlab(xlab) +
+    ylab(ylab) +
     theme_bw()+
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
@@ -287,6 +309,15 @@ qpcrANCOVA <- function(x,
       scale_fill_manual(values = rep(fill, nrow(tableC)))
   }
   pfc2 <- pfc2 + guides(fill = "none") 
+  
+  
+  if(xlab == "none"){
+    pfc2 <- pfc2 + 
+      labs(x = NULL)
+  }else{
+    pfc2 <- pfc2 +
+    xlab(xlab)
+  }
   
   
   outlist2 <- list(Final_data = x,

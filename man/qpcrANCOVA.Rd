@@ -17,12 +17,12 @@ qpcrANCOVA(
   y.axis.by = 1,
   letter.position.adjust = 0.1,
   ylab = "Fold Change",
-  xlab = "Pairs",
+  xlab = "none",
   fontsize = 12,
   fontsizePvalue = 7,
   axis.text.x.angle = 0,
   axis.text.x.hjust = 0.5,
-  axis.labels.rename = "none",
+  x.axis.labels.rename = "none",
   p.adj = "none"
 )
 }
@@ -61,7 +61,7 @@ qpcrANCOVA(
 
 \item{axis.text.x.hjust}{horizontal justification of x axis text}
 
-\item{axis.labels.rename}{a vector replacing the x axis labels in the bar plot}
+\item{x.axis.labels.rename}{a vector replacing the x axis labels in the bar plot}
 
 \item{p.adj}{Method for adjusting p values}
 }
@@ -112,7 +112,7 @@ is significant, suggesting that ANCOVA is not appropriate in this case.
 # Data from Lee et al., 2020 
 
 df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
-order <- unique(df$DS)
+order <- rev(unique(df$DS))
 qpcrANCOVA(df, 
            numberOfrefGenes = 1, 
            analysisType = "ancova", 
@@ -133,6 +133,25 @@ qpcrANCOVA(df2,
           y.axis.adjust = 0.1)
 
 
+
+addline_format <- function(x,...){gsub('\\\\s','\n',x)}
+order <- unique(data_2factor$Drought)
+qpcrANCOVA(data_1factor,
+   numberOfrefGenes = 1,
+   mainFactor.column = 1,
+   mainFactor.level.order = c("L1","L2","L3"),
+   width = 0.5,
+   fill = c("skyblue","#79CDCD"),
+   y.axis.by = 1,
+   letter.position.adjust = 0,
+   y.axis.adjust = 1,
+   ylab = "Fold Change",
+   fontsize = 12,
+   x.axis.labels.rename = addline_format(c("Control", 
+                                         "Treatment_1 vs Control", 
+                                         "Treatment_2 vs Control")))
+                                                       
+                                                       
 }
 \references{
 Livak, Kenneth J, and Thomas D Schmittgen. 2001. Analysis of

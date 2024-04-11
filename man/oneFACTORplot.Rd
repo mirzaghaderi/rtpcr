@@ -14,7 +14,7 @@ oneFACTORplot(
   show.letters = TRUE,
   letter.position.adjust = 0.1,
   ylab = "Relative Expression",
-  xlab = "Factor",
+  xlab = "none",
   fontsize = 12,
   fontsizePvalue = 7,
   axis.text.x.angle = 0,

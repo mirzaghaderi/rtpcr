@@ -16,7 +16,7 @@ qpcrTTESTplot(
   y.axis.by = 2,
   letter.position.adjust = 0.3,
   ylab = "Average Fold Change",
-  xlab = "Gene",
+  xlab = "none",
   fontsize = 12,
   fontsizePvalue = 7,
   axis.text.x.angle = 0,

@@ -55,7 +55,7 @@ oneFACTORplot <- function(x,
                           show.letters = TRUE,
                           letter.position.adjust = 0.1,
                           ylab = "Relative Expression",
-                          xlab = "Factor",
+                          xlab = "none",
                           fontsize = 12,
                           fontsizePvalue = 7,
                           axis.text.x.angle = 0,
@@ -85,7 +85,14 @@ oneFACTORplot <- function(x,
       geom_text(data = x, aes(label = letters, x = rownames(x), y = RE + std + letter.position.adjust),
                 vjust = -0.5, size = fontsizePvalue)
   }
-
+  
+  if(xlab == "none"){
+    q1f1 <- q1f1 + 
+      labs(x = NULL)
+  }else{
+    q1f1 <- q1f1 +
+      xlab(xlab)
+  }
 
 
 
@@ -94,7 +101,6 @@ oneFACTORplot <- function(x,
     #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
     geom_errorbar(aes(ymin = RE - UCL, ymax = RE + LCL), width = 0.1) +
     ylab(ylab) +
-    xlab(xlab) +
     theme_bw() +
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
@@ -109,6 +115,14 @@ oneFACTORplot <- function(x,
                 vjust = -0.5, size = fontsizePvalue)
   }
 
+  if(xlab == "none"){
+    q1f2 <- q1f2 + 
+      labs(x = NULL)
+  }else{
+    q1f2 <- q1f2 +
+      xlab(xlab)
+  }
+  
 
   
   if(errorbar == "std") {
@@ -117,6 +131,9 @@ oneFACTORplot <- function(x,
   } else if(errorbar == "ci") {
     out1 <- list(plot = q1f2)
   }
+  
+  
+
   
   return(out1)
 }

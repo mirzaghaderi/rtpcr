@@ -18,7 +18,7 @@ twoFACTORplot(
   show.points = FALSE,
   letter.position.adjust = 0.1,
   ylab = "Relative Expression",
-  xlab = "Gene",
+  xlab = "none",
   legend.position = c(0.09, 0.8),
   fontsize = 12,
   fontsizePvalue = 7,

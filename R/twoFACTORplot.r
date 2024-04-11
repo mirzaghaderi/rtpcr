@@ -82,7 +82,7 @@ twoFACTORplot <- function(x,
                           show.points = FALSE,
                           letter.position.adjust = 0.1,
                           ylab = "Relative Expression",
-                          xlab = "Gene",
+                          xlab = "none",
                           legend.position = c(0.09, 0.8),
                           fontsize = 12,
                           fontsizePvalue = 7,
@@ -102,7 +102,6 @@ twoFACTORplot <- function(x,
     scale_fill_brewer(palette = fill) +
     #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE)  +
     ylab(ylab) +
-    xlab(xlab) +
     theme_bw() +
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
@@ -133,7 +132,13 @@ twoFACTORplot <- function(x,
                 vjust = -0.5, size = fontsizePvalue, position = position_dodge(width = 0.5))
   }
   
-  
+  if(xlab == "none"){
+    qq1 <- qq1 + 
+      labs(x = NULL)
+  }else{
+    qq1 <- qq1 +
+      xlab(xlab)
+  }
   
   
   qq2 <- ggplot(b, aes(factor({{x.axis.factor}}, levels = as.character(unique({{x.axis.factor}}))),
@@ -142,7 +147,6 @@ twoFACTORplot <- function(x,
     scale_fill_brewer(palette = fill) +
     #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
     ylab(ylab) +
-    xlab(xlab) +
     theme_bw() +
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
@@ -169,6 +173,14 @@ twoFACTORplot <- function(x,
     qq2 <- qq2 + 
       geom_text(data = b, aes(label = letters, x = {{ x.axis.factor }}, y = RE + LCL + letter.position.adjust), 
                 vjust = -0.5, size = fontsizePvalue, position = position_dodge(width = 0.5))
+  }
+  
+  if(xlab == "none"){
+    qq2 <- qq2 + 
+      labs(x = NULL)
+  }else{
+    qq2 <- qq2 +
+      xlab(xlab)
   }
   
   

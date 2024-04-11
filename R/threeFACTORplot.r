@@ -94,7 +94,7 @@ threeFACTORplot <- function(x,
                          arrangement = c(1, 2, 3),
                          bar.width = 0.5,
                          fill = "Reds",
-                         xlab = "Gene",
+                         xlab = "none",
                          ylab = "Relative Expression",
                          errorbar = "std",
                          y.axis.adjust = 0.5,
@@ -121,7 +121,6 @@ threeFACTORplot <- function(x,
     geom_errorbar(aes(ymax = RE + std, ymin = RE),
                   position = position_dodge(bar.width), width = 0.15, color = "black") +
     facet_grid( ~ x[,3])+
-    xlab(xlab) +
     ylab(ylab) +
     theme_bw() +
     theme(legend.position = legend.position) +
@@ -145,6 +144,14 @@ threeFACTORplot <- function(x,
                 show.legend = FALSE, position = position_dodge(bar.width), size = fontsizePvalue)
   }
   
+  if(xlab == "none"){
+    pp1 <- pp1 + 
+      labs(x = NULL)
+  }else{
+    pp1 <- pp1 +
+      xlab(xlab)
+  }
+  
   
   
   pp2 <- ggplot(x, aes(x[,1], y = RE, fill = x[,2])) +
@@ -152,7 +159,6 @@ threeFACTORplot <- function(x,
     geom_errorbar(aes(ymax = RE + LCL, ymin = RE - UCL),
                   position = position_dodge(bar.width), width = 0.15, color = "black") +
     facet_grid( ~ x[,3])+
-    xlab(xlab) +
     ylab(ylab) +
     theme_bw() +
     theme(legend.position = legend.position) +
@@ -176,6 +182,14 @@ threeFACTORplot <- function(x,
                 show.legend = FALSE, position = position_dodge(bar.width), size = fontsizePvalue)
   }
   
+  if(xlab == "none"){
+    pp2 <- pp2 + 
+      labs(x = NULL)
+  }else{
+    pp2 <- pp2 +
+      xlab(xlab)
+  }
+  
   
   if(errorbar == "std") {
     out <- list(plot = pp1)
@@ -183,6 +197,8 @@ threeFACTORplot <- function(x,
   } else if(errorbar == "ci") {
     out <- list(plot = pp2)
   }
+  
+
   
   return(out)
 }

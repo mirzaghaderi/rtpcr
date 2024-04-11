@@ -295,18 +295,31 @@ f1 <- oneFACTORplot(out2,
               errorbar = "ci",
               show.letters = TRUE,
               letter.position.adjust = 0.1,
-              ylab = "Relative Expression (RE)",
+              ylab = "Relative Expression",
               xlab = "Factor Levels",
               fontsize = 12,
               fontsizePvalue = 4)
 
+
+addline_format <- function(x,...){
+    gsub('\\s','\n',x)
+}
 order <- unique(data_2factor$Drought)
-f2 <- qpcrANCOVA(data_2factor, 
-           numberOfrefGenes = 1, 
-           analysisType = "ancova",
-           mainFactor.column = 2,
-           mainFactor.level.order = order,
-           fontsizePvalue = 4)
+f2 <- qpcrANCOVA(data_1factor,
+                 numberOfrefGenes = 1,
+                 mainFactor.column = 1,
+                 mainFactor.level.order = c("L1","L2","L3"),
+                 width = 0.5,
+                 fill = c("skyblue","#79CDCD"),
+                 y.axis.by = 1,
+                 letter.position.adjust = 0,
+                 y.axis.adjust = 1,
+                 ylab = "Fold Change",
+                 fontsize = 12,
+                 x.axis.labels.rename = addline_format(c("Control", 
+                                                       "Treatment_1 vs Control", 
+                                                       "Treatment_2 vs Control")))
+
 
 multiplot(f1, f2, cols = 2)
 grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))

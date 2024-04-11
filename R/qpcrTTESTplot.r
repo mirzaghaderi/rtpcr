@@ -71,7 +71,7 @@ qpcrTTESTplot <- function(x,
                           y.axis.by = 2,
                           letter.position.adjust = 0.3,
                           ylab = "Average Fold Change",
-                          xlab = "Gene",
+                          xlab = "none",
                           fontsize = 12,
                           fontsizePvalue = 7,
                           axis.text.x.angle = 0,
@@ -136,7 +136,7 @@ qpcrTTESTplot <- function(x,
                   x = Gene,
                   y = as.numeric(Upper.Er)),
               vjust = -0.5, size = fontsizePvalue) +
-    ylab(ylab) + xlab(xlab) +
+    ylab(ylab) + 
     theme_bw()+
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
@@ -145,6 +145,14 @@ qpcrTTESTplot <- function(x,
                        limits = c(0, max(as.numeric(Upper.Er) + y.axis.adjust) + 2), expand = c(0, 0)) +
     theme(legend.text = element_text(colour = "black", size = fontsize),
           legend.background = element_rect(fill = "transparent"))
+  
+  if(xlab == "none"){
+    p <- p + 
+      labs(x = NULL)
+  }else{
+    p <- p +
+      xlab(xlab)
+  }
 
   out <- list(plot = p)
   return(out)

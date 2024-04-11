@@ -9,7 +9,7 @@ threeFACTORplot(
   arrangement = c(1, 2, 3),
   bar.width = 0.5,
   fill = "Reds",
-  xlab = "Gene",
+  xlab = "none",
   ylab = "Relative Expression",
   errorbar = "std",
   y.axis.adjust = 0.5,

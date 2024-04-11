@@ -55,22 +55,26 @@ if wDCt values are calculated from the E values, these calculations match the fo
 
 # Installing and loading
 
-Currently, only the source type of the latest version of `rtpcr` package is available in CRAN which can be installed by intering the following code in R:
+The rtpcr package and source code are available for download from CRAN website (https://www.r-project.org) under GPL-3 license. The `rtpcr` package can be installed by running the following code in R:
 
 ```r
-# Install from CRAN
+# Install the latest version from CRAN
 
-install.packages("https://cran.r-project.org/src/contrib/rtpcr_1.0.1.tar.gz", type = "source", repos = NULL)
+install.packages("rtpcr")
 
 # Loading the package
 library(rtpcr)
 ```
 
 
-Alternatively, the `rtpcr` package with the latest changes can be installed by running the following code in your R software. I strongly recommend to install the package with the vignette as it contains information about how to use the 'rtpcr' package.  
+Alternatively, the latest version of the `rtpcr` package with the latest changes can be installed by running the following code in your R software. I strongly recommend to install the package with the vignette as it contains information about how to use the 'rtpcr' package.  
 
 ```r
 # Install from github
+
+devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = T)
+
+# If failed to build the vignette, just run the following code:
 
 devtools::install_github("mirzaghaderi/rtpcr")
 
@@ -81,19 +85,9 @@ library(rtpcr)
 
 
 
-The rtpcr package and source code are available for download from CRAN website (http://www.r-project.org) under GPL-3 license and can be installed and loaded using:
-```r
-install.packages("rtpcr")
-library(rtpcr)
-```
-
-The vignette containing information about how to use 'rtpcr' package can be accessed online (through CRAN) <a href="https://cran.r-project.org/web/packages/rtpcr/vignettes/vignette.html">here</a>
-
-
-
 
 # Contact 
-Email: gh.mirzaghaderi@uok.ac.ir
+Email: gh.mirzaghaderi at uok.ac.ir
 
 
 # References

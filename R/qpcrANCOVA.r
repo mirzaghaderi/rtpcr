@@ -259,7 +259,7 @@ qpcrANCOVA <- function(x,
   FINALDATA <- x
   tableC <- post_hoc_test
   
-  df$a <- sapply(strsplit(df$a, " - "), function(x) paste(rev(x), collapse = " vs "))
+  tableC$contrast <- sapply(strsplit(tableC$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))
   
   if(any(x.axis.labels.rename == "none")){
     tableC

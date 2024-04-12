@@ -122,7 +122,7 @@ To use the functions, input data should be prepared in the right format with app
  |t-test (accepts multiple genes)      |condition (put the control level first) - gene (put reference gene(s) last.)- efficiency - Ct  | data_ttest |
  |Factorial (Up to three factors)      |factor1 - rep - targetE - targetCt - refE - refCt | data_1factor |
  |                                     |factor1 - factor2 - rep - targetE - targetCt - refE - refCt | data_2factor |
- |                                     |factor1 - factor2 - factor3 - rep - targetE - targetCt - refE - refCt | data_3factor_b |
+ |                                     |factor1 - factor2 - factor3 - rep - targetE - targetCt - refE - refCt | data_3factor |
  |Factorial with blocking              |factor1 - block - rep - targetE - targetCt - refE - refCt | |
  |                                     |factor1 - factor2 - block - rep - targetE - targetCt - refE - refCt	 | data_2factorBlock |
  |                                     |factor1 - factor2 - factor3 - block - rep - targetE - targetCt - refE - refCt | |
@@ -144,10 +144,10 @@ To simplify 'rtpcr' usage, examples for using the functions are presented below.
  | meanTech      | Calculating the mean of technical replicates | meanTech(data_withTechRep, groups = 1:4) |
  | qpcrANCOVA      | FC and bar plot of the target gene (one or multi-factorial experiments) | qpcrANCOVA(data_1factor, numberOfrefGenes = 1, mainFactor.column = 1, mainFactor.level.order = c("L1", "L2", "L3") |
  |  oneFACTORplot    | Bar plot of the relative gene expression from a one-factor experiment | out <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result;   oneFACTORplot(out) |
- |  qpcrANOVA  | Analysis of Variance of the qpcr data  | qpcrANOVA(data_3factor_a, numberOfrefGenes = 1, p.adj = "none")|
+ |  qpcrANOVA  | Analysis of Variance of the qpcr data  | qpcrANOVA(data_3factor, numberOfrefGenes = 1, p.adj = "none")|
  | qpcrTTEST     | Computing the average fold change and related statistics | qpcrTTEST(data_ttest,  numberOfrefGenes = 1, paired = FALSE, var.equal = TRUE) |
  | qpcrTTESTplot  | Bar plot of the average fold change of the target genes	 | qpcrTTESTplot(data_ttest,  numberOfrefGenes = 1, order = c("C2H2-01", "C2H2-12", "C2H2-26")) |
- |  threeFACTORplot  | Bar plot of the relative gene expression from a three-factor experiment | res <- qpcrANOVA(data_3factor_b,  numberOfrefGenes = 1)$Result; threeFACTORplot(res, arrangement = c(3, 1, 2)) |
+ |  threeFACTORplot  | Bar plot of the relative gene expression from a three-factor experiment | res <- qpcrANOVA(data_3factor,  numberOfrefGenes = 1)$Result; threeFACTORplot(res, arrangement = c(3, 1, 2)) |
  | twoFACTORplot   | Bar plot of the relative gene expression from a two-factor experiment | res <- qpcrANOVA(data_2factor,  numberOfrefGenes = 1)$Result; twoFACTORplot(res, x.axis.factor = Genotype, group.factor = Drought) |
 
  
@@ -221,7 +221,7 @@ t2 <- qpcrTTESTplot(data_ttest,
               y.axis.adjust = 0,
               y.axis.by = 2,
               ylab = "Average Fold Change (FC)",
-              xlab = "Gene",
+              xlab = "none",
               fontsizePvalue = 4)
 
 multiplot(t1, t2, cols = 2)
@@ -245,18 +245,18 @@ qpcrANCOVA(data_2factor,
            mainFactor.column = 2,
            mainFactor.level.order = order,
            fontsizePvalue = 4,
-           x.axis.labels.rename = c("D1",  "D2", "D3"))
+           x.axis.labels.rename = "none")
 ```
 
 
 ## A target gene under more than two conditions (ANOVA)
 
-Analysis of variance (ANOVA) of factorial experiments in the frame of a completely randomized design (CRD) can be done by the `qpcrANOVA` function. ANOVA of qPCR data is suitable when there is a factor with more than two levels, or when there is more than an experimental factor. The input data set should be prepared as shown below. Factor columns should be presented first followed by biological replicates and efficiency and Ct values of target and reference genes. The example data set below (`data_3factor_a`) represents amplification efficiency and Ct values for target and reference genes under three grouping factors (two different cultivars, three drought levels, and the presence or absence of bacteria). The table can contain any number of factor columns. The factor columns should be followed by five other columns assigned to biological replicates (r), the efficiency of the target gene, Ct values of the target gene, the efficiency of the reference gene, and Ct values of the reference gene, respectively. Here, the efficiency of 2 has been used for all wells, but the calculated efficiencies can be used instead.
+Analysis of variance (ANOVA) of factorial experiments in the frame of a completely randomized design (CRD) can be done by the `qpcrANOVA` function. ANOVA of qPCR data is suitable when there is a factor with more than two levels, or when there is more than an experimental factor. The input data set should be prepared as shown below. Factor columns should be presented first followed by biological replicates and efficiency and Ct values of target and reference genes. The example data set below (`data_3factor`) represents amplification efficiency and Ct values for target and reference genes under three grouping factors (two different cultivars, three drought levels, and the presence or absence of bacteria). The table can contain any number of factor columns. The factor columns should be followed by five other columns assigned to biological replicates (r), the efficiency of the target gene, Ct values of the target gene, the efficiency of the reference gene, and Ct values of the reference gene, respectively. Here, the efficiency of 2 has been used for all wells, but the calculated efficiencies can be used instead.
 
 
 ```{r eval= T}
 # See a sample dataset
-data_3factor_a
+data_3factor
 ```
 
 The `qpcrANOVA` function performs ANOVA based on both factorial arrangement and completely randomized design (CRD). For the latter, a column of treatment combinations is made first as a grouping factor followed by ANOVA. You can call the input data set along with the added wCt and treatment combinations by `qpcrANOVA`. CRD-based analysis is especially useful when post-hoc tests and mean comparisons/grouping are desired for all treatment combinations. The final results along with the ANOVA tables can be called by `qpcrANOVA`.
@@ -375,7 +375,7 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ### A three-factorial experiment example
 ```{r, fig.height = 5, fig.width = 11, fig.align = 'center', fig.cap = "A and B) Relative expression (RE) of a target gene under two or three factors produced by ‘twoFACTORplot’ and ‘threeFACTORplot’ functions, respectively. Error bars represent standard deviations (can be set to confidence interval). Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an ‘LSD.test’."}
 # Before plotting, the result needs to be extracted as below:
-res <- qpcrANOVA(data_3factor_b, numberOfrefGenes = 1)
+res <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)
 res
 
 # releveling a factor levels first
@@ -417,8 +417,8 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 # An example of Showing point on the plot
 ```{r, eval=F, include = T}
 
-b <- qpcrANOVA(data_3factor_a, numberOfrefGenes = 1)$Result
-a <- qpcrANOVA(data_3factor_a, numberOfrefGenes = 1)$Final_data
+b <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)$Result
+a <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)$Final_data
 
 ggplot(b, aes(x = Genotype, y = RE, fill = factor(Drought))) +
   geom_bar(stat = "identity", position = "dodge") +

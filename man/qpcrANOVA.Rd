@@ -49,7 +49,7 @@ on factorial design or analysis of covariance for the can be performed using \li
 
 # Applying ANOVA analysis
 qpcrANOVA(
-     data_3factor_a,
+     data_3factor,
      numberOfrefGenes = 1,
      p.adj = "none")
 

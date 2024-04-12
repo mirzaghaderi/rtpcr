@@ -42,7 +42,7 @@
 #'   \item{POCt}{Ct values of PO gene. Each is the mean of technical replicates}
 #'   \item{EGAPDH}{Mean amplification efficiency of GAPDH gene}
 #'   \item{GAPDHCt}{Ct values of GAPDH gene. Each is the mean of technical replicates}
-#' }
+#' } 
 #'
 #' @source Not applicable
 "data_2factor"
@@ -72,28 +72,9 @@
 #'
 #' @format A data frame with 36 observations and 8 variables:
 #' \describe{
-#'   \item{Genotype}{First experimental factor}
-#'   \item{Drought}{Second experimental factor}
+#'   \item{Type}{First experimental factor}
+#'   \item{Conc}{Second experimental factor}
 #'   \item{SA}{Third experimental factor}
-#'   \item{Rep}{Biological replicates}
-#'   \item{EPO}{Mean amplification efficiency of PO gene}
-#'   \item{POCt}{Ct values of PO gene. Each is the mean of technical replicates}
-#'   \item{EGAPDH}{Mean amplification efficiency of GAPDH gene}
-#'   \item{GAPDHCt}{Ct values of GAPDH gene. Each is the mean of technical replicates}
-#' }
-#'
-#' @source Not applicable
-"data_3factor_a"
-
-#' Sample data (three factor)
-#'
-#' A sample real time PCR data for demonstration purposes.
-#'
-#' @format A data frame with 36 observations and 8 variables:
-#' \describe{
-#'   \item{Type}{The first experimental factor}
-#'   \item{Conc}{The second experimental factor}
-#'   \item{SA}{The third experimental factor}
 #'   \item{Replicate}{Biological replicates}
 #'   \item{EPO}{Mean amplification efficiency of PO gene}
 #'   \item{POCt}{Ct values of PO gene. Each is the mean of technical replicates}
@@ -101,8 +82,9 @@
 #'   \item{GAPDHCt}{Ct values of GAPDH gene. Each is the mean of technical replicates}
 #' }
 #'
-#' @source University of Kurdistan
-"data_3factor_b"
+#' @source Not applicable
+"data_3factor"
+
 
 #' Sample data (one factor-two level qPCR)
 #'

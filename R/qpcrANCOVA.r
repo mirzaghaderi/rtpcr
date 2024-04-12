@@ -212,15 +212,13 @@ qpcrANCOVA <- function(x,
   # Preparing t-test results
   t_test_results <- list()
   
-  # t-tests for each level compared to the first level
   for (i in 2:length(mainFactor.level.order)) {
     level_data <- subset(x, x[,1] == mainFactor.level.order[i])$wDCt
     t_test_result <- stats::t.test(level_data, subset(x, x[,1] == mainFactor.level.order[1])$wDCt)
     t_test_results[[paste("t_test_result_", mainFactor.level.order[i], "_vs_", mainFactor.level.order[1])]] <- t_test_result
   }
   
-  # Extract the 95 percent confidence interval of each t-test
-  confidence_intervals <- data.frame(
+   confidence_intervals <- data.frame(
     Comparison = sapply(names(t_test_results), function(x) gsub("t_test_result_", "", x)),
     CI_lower = sapply(t_test_results, function(x) x$conf.int[1]),
     CI_upper = sapply(t_test_results, function(x) x$conf.int[2]),
@@ -261,6 +259,7 @@ qpcrANCOVA <- function(x,
   FINALDATA <- x
   tableC <- post_hoc_test
   
+  df$a <- sapply(strsplit(df$a, " - "), function(x) paste(rev(x), collapse = " vs "))
   
   if(any(x.axis.labels.rename == "none")){
     tableC

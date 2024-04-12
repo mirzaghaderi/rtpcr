@@ -11,7 +11,7 @@
 #' also affected by uncontrolled quantitative covariate(s). 
 #' For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may 
 #' also be affected by drought. Since we already know that temperature affects the target gene, we are 
-#' interested to now if the gene expression is also altered by the drought levels. We can design an 
+#' interested to know if the gene expression is also altered by the drought levels. We can design an 
 #' experiment to understand the gene behavior at both temperature and drought levels at the same time. 
 #' The drought is another factor (the covariate) that may affect the expression of our gene under the 
 #' levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA 

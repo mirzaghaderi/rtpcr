@@ -417,16 +417,17 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 # An example of Showing point on the plot
 ```{r, eval=F, include = T}
 
+library(ggplot2)
 b <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)$Result
 a <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)$Final_data
 
-ggplot(b, aes(x = Genotype, y = RE, fill = factor(Drought))) +
+ggplot(b, aes(x = Type, y = RE, fill = factor(Conc))) +
   geom_bar(stat = "identity", position = "dodge") +
   facet_wrap(~ SA) +
   scale_fill_brewer(palette = "Reds") +
-  xlab("Genotype") +
+  xlab("Type") +
   ylab("Relative Expression") +
-  geom_point(data = a, aes(x = Genotype, y = (10^(-wDCt)), fill = factor(Drought)), 
+  geom_point(data = a, aes(x = Type, y = (10^(-wDCt)), fill = factor(Conc)), 
              position = position_dodge(width = 0.9), color = "black") +
   ylab("ylab") +
   xlab("xlab") +

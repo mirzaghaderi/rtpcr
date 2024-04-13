@@ -269,7 +269,10 @@ qpcrANCOVA <- function(x,
   }
   
   
-  pairs <- tableC$contrast
+  
+  
+  tableC$contrast <- factor(tableC$contrast, levels = unique(tableC$contrast))
+  contrast <- tableC$contrast
   CI_lower <- tableC$CI_lower
   CI_upper <- tableC$CI_upper
   FCp <- as.numeric(tableC$FC)
@@ -280,12 +283,12 @@ qpcrANCOVA <- function(x,
   
 
   
-  pfc2 <- ggplot(tableC, aes(factor(pairs, levels = contrast), FCp, fill = pairs)) +
+  pfc2 <- ggplot(tableC, aes(contrast, FCp, fill = contrast)) +
     geom_col(col = "black", width = width) +
-    geom_errorbar(aes(pairs, ymin = FCp, ymax =  FCp + sddiff),
+    geom_errorbar(aes(contrast, ymin = FCp, ymax =  FCp + sddiff),
                   width=0.1) +
     geom_text(aes(label = significance,
-                  x = pairs,
+                  x = contrast,
                   y = FCp + sddiff + letter.position.adjust),
               vjust = -0.5, size = fontsizePvalue) +
     ylab(ylab) +
@@ -298,7 +301,6 @@ qpcrANCOVA <- function(x,
     theme(legend.text = element_text(colour = "black", size = fontsize),
           legend.background = element_rect(fill = "transparent"))
   
-
   
   if(length(fill) == 2) {
     pfc2 <- pfc2 +
@@ -308,6 +310,7 @@ qpcrANCOVA <- function(x,
     pfc2 <- pfc2 +
       scale_fill_manual(values = rep(fill, nrow(tableC)))
   }
+  
   pfc2 <- pfc2 + guides(fill = "none") 
   
   

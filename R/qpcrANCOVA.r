@@ -33,7 +33,7 @@
 #' @import ggplot2
 #' @import lme4
 #' @import emmeans
-#' @param x a data frame of condition (or conditions) levels, E (efficiency), genes and Ct values. Each Ct value in the data frame is the mean of technical replicates. Please refer to the vignette for preparing your data frame correctly.
+#' @param x a data frame of condition(s), biological replicates, efficiency (E) and Ct values of target and reference genes. Each Ct value in the data frame is the mean of technical replicates. Please refer to the vignette for preparing your data frame correctly.
 #' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.
 #' @param analysisType should be one of "ancova" or "anova".
 #' @param mainFactor.column main factor for which the levels FC is compared. The remaining factors are considered as covariates.

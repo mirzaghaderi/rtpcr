@@ -184,6 +184,7 @@ qpcrANCOVA <- function(x,
   
   
   
+  
   # Type of analysis: ancova or anova
   if (is.null(block)) {
     if(analysisType == "ancova") {
@@ -317,6 +318,24 @@ qpcrANCOVA <- function(x,
     pfc2 <- pfc2 +
     xlab(xlab)
   }
+  
+  
+  
+  #changing as.factor(x) to x
+  lmf$coefficients <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", lmf$coefficients)
+  lmf$coefficients <- gsub(":as factor", ":", lmf$coefficients)
+  
+  rownames(ANOVA) <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", rownames(ANOVA))
+  rownames(ANOVA) <- gsub(":as factor", ":", rownames(ANOVA))
+  
+  lmc$coefficients <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", lmc$coefficients)
+  lmc$coefficients <- gsub(":as factor", ":", lmc$coefficients)
+  
+  rownames(ANCOVA) <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", rownames(ANCOVA))
+  rownames(ANCOVA) <- gsub(":as factor", ":", rownames(ANCOVA))
+  
+  
+  
   
   
   outlist2 <- list(Final_data = x,

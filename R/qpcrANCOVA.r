@@ -52,9 +52,9 @@
 #' @param x.axis.labels.rename a vector replacing the x axis labels in the bar plot
 #' @param block column name of the block if there is a blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.
 #' @param p.adj Method for adjusting p values
-#' @return A list with 2 elements:
+#' @return A list with 7 elements:
 #' \describe{
-#'   \item{Final_data}{}
+#'   \item{Final_data}{Input data frame plus the weighted Delat Ct values (wDCt)}
 #'   \item{lm_ANOVA}{lm of factorial analysis-tyle}
 #'   \item{lm_ANCOVA}{lm of ANCOVA analysis-type}
 #'   \item{ANOVA_table}{ANOVA table}

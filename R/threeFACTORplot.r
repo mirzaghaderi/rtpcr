@@ -10,7 +10,7 @@
 #' @import lme4
 #' @import agricolae
 #' @param x a data frame created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x)$Result} on a three factorial data such as \code{datathreegr} example data.
-#' @param arrangement arrangement of the grouping columns in the output graph, for example c(2,3,1) or c(1,3,2). This affects grapg output.
+#' @param arrangement order based on the columns in the output table (e.g. c(2,3,1) or c(1,3,2)) affecting factor arrangement of the output graph.
 #' @param bar.width a positive number determining bar width.
 #' @param fill  a color vector specifying the fill color for the columns of the bar plot. One of the palettes in \code{\link[RColorBrewer]{display.brewer.all}} (e.g. "Reds" or "Blues", ...) can be applied.
 #' @param xlab  the title of the x axis

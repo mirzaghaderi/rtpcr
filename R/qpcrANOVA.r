@@ -146,7 +146,7 @@ qpcrANOVA <- function(x,
   
   
   xx <- x[, -(ncol(x))] # Removing the last column of T
-  rownames(Results) <- NULL # Removing rownames 
+  # rownames(Results) <- NULL # Removing rownames 
   
   outlist <- list(Final_data = xx,
                   lmCRD = lm,

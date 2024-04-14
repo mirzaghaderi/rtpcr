@@ -146,13 +146,12 @@ qpcrANOVA <- function(x,
   
   
   xx <- x[, -(ncol(x))] # Removing the last column of T
-  
+  rownames(Results) <- NULL # Removing rownames 
   
   outlist <- list(Final_data = xx,
                   lmCRD = lm,
                   ANOVA_CRD = anovaCRD,
-                  Result = Results,
-                  Post_hoc_Test = Post_hoc_Testing)
+                  Result = Results)  # Post_hoc_Test = Post_hoc_Testing
   
   
   return(outlist)

@@ -67,13 +67,13 @@ qpcrANOVA <- function(x,
   
   
   resultx <- .addwDCt(x)
-  x<- resultx$x
+  x <- resultx$x
   factors <- resultx$factors
   # Check if there is block
   if (is.null(block)) {
     # Concatenate the columns using paste0
     x$T <- do.call(paste, c(x[1:(ncol(x)-6)], sep = ":"))
-    x
+
     lm <- stats::lm(wDCt ~ T, x)
     anovaCRD <- stats::anova(lm)
     
@@ -114,7 +114,13 @@ qpcrANOVA <- function(x,
   
   RowNames <- rownames(mean)
   mean$RowNames <- RowNames
-  mean <- separate(mean, RowNames, into = factors, sep = ":", remove = T)
+  
+  if (is.null(block)) {
+    mean <- separate(mean, RowNames, into = factors, sep = ":", remove = T)
+  } else {
+    mean <- separate(mean, RowNames, into = factors[-length(factors)], sep = ":", remove = T) 
+  }
+  
   mean <- mean[order(rownames(mean)),]
   g <- g[order(rownames(g)),]
   

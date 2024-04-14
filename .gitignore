@@ -4,3 +4,5 @@
 .gitattributes
 .Rbuildignore
 .Rbuildignore
+/doc/
+/Meta/

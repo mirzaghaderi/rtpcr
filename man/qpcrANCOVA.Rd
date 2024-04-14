@@ -27,7 +27,7 @@ qpcrANCOVA(
 )
 }
 \arguments{
-\item{x}{a data frame of condition (or conditions) levels, E (efficiency), genes and Ct values. Each Ct value in the data frame is the mean of technical replicates. Please refer to the vignette for preparing your data frame correctly.}
+\item{x}{a data frame of condition(s), biological replicates, efficiency (E) and Ct values of target and reference genes. Each Ct value in the data frame is the mean of technical replicates. Please refer to the vignette for preparing your data frame correctly.}
 
 \item{numberOfrefGenes}{number of reference genes. Up to two reference genes can be handled.}
 
@@ -66,9 +66,9 @@ qpcrANCOVA(
 \item{p.adj}{Method for adjusting p values}
 }
 \value{
-A list with 2 elements:
+A list with 7 elements:
 \describe{
-  \item{Final_data}{}
+  \item{Final_data}{Input data frame plus the weighted Delat Ct values (wDCt)}
   \item{lm_ANOVA}{lm of factorial analysis-tyle}
   \item{lm_ANCOVA}{lm of ANCOVA analysis-type}
   \item{ANOVA_table}{ANOVA table}
@@ -109,8 +109,29 @@ is significant, suggesting that ANCOVA is not appropriate in this case.
 }
 \examples{
 
-# Data from Lee et al., 2020 
 
+ qpcrANCOVA(data_1factor, 
+            numberOfrefGenes = 1,
+            mainFactor.column = 1,
+            mainFactor.level.order = c("L1", "L2", "L3"),
+            fill = c("#CDC673", "#EEDD82"),
+            analysisType = "ancova",
+            fontsizePvalue = 5,
+            y.axis.adjust = 0.1)
+
+qpcrANCOVA(data_2factor, 
+           numberOfrefGenes = 1,
+           mainFactor.column = 2,
+           mainFactor.level.order = c("D0", "D1", "D2"),
+           fill = c("#79CDCD", "#B4EEB4"),
+           analysisType = "ancova",
+           fontsizePvalue = 5,
+           y.axis.adjust = 0.4)
+
+
+# Data from Lee et al., 2020 
+# Here, the data set contains technical replicates so 
+# we get mean of technical reps first:
 df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
 order <- rev(unique(df$DS))
 qpcrANCOVA(df, 

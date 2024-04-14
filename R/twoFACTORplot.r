@@ -9,7 +9,7 @@
 #' @import ggplot2
 #' @import lme4
 #' @import agricolae
-#' @param x an object created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x) on a two factor data such as \code{data_2factor}}.
+#' @param x an object created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x)} on a two factor data such as \code{data_2factor}.
 #' @param x.axis.factor x-axis factor.
 #' @param group.factor grouping factor.
 #' @param width a positive number determining bar width.

@@ -125,11 +125,11 @@ qpcrANOVA <- function(x,
   sd <- sdRow[order(sdRow$T),]
   
   Results <- data.frame(mean[,(ncol(mean)-2):ncol(mean)],
-                        RE = round(10^(-mean$wDCt), 4),
-                        LCL = round(10^(-mean$LCL), 4),
-                        UCL = round(10^(-mean$UCL), 4),
+                        RE = round(10^(-mean$wDCt), 5),
+                        LCL = round(10^(-mean$LCL), 5),
+                        UCL = round(10^(-mean$UCL), 5),
                         letters = g$groups,
-                        std = round(sd$sd, 4))
+                        std = round(sd$sd, 5))
   
   
   # removing additional columns!

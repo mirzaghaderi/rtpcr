@@ -9,7 +9,7 @@
 #' @import ggplot2
 #' @import lme4
 #' @import agricolae
-#' @param x an object created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x) on a one factor data such as \code{data_1factor}}.
+#' @param x a data frame created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x)$Result} on a one factor data such as \code{data_1factor}.
 #' @param width a positive number determining bar width.
 #' @param fill  specify a fill color.
 #' @param y.axis.adjust  a negative or positive number for reducing or increasing the length of the y axis.
@@ -61,6 +61,7 @@ oneFACTORplot <- function(x,
                           axis.text.x.angle = 0,
                           axis.text.x.hjust = 0.5){
 
+  
   RE <- x$RE
   std <- x$std
   LCL <- x$LCL

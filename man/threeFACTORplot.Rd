@@ -25,9 +25,9 @@ threeFACTORplot(
 )
 }
 \arguments{
-\item{x}{a data frame created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x)$Result} on a three factorial data such as \code{datathreegr} example data.}
+\item{x}{an object created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x)} on a three factorial data such as \code{data_3factor} example data frame.}
 
-\item{arrangement}{arrangement of the grouping columns in the output graph, for example c(2,3,1) or c(1,3,2). This affects grapg output.}
+\item{arrangement}{order based on the columns in the output table (e.g. c(2,3,1) or c(1,3,2)) affecting factor arrangement of the output graph.}
 
 \item{bar.width}{a positive number determining bar width.}
 

@@ -77,11 +77,32 @@
 #' 
 #' @examples
 #'
-#' # Data from Lee et al., 2020 
 #'
-#'df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
-#'order <- rev(unique(df$DS))
-#'qpcrANCOVA(df, 
+#'  qpcrANCOVA(data_1factor, 
+#'             numberOfrefGenes = 1,
+#'             mainFactor.column = 1,
+#'             mainFactor.level.order = c("L1", "L2", "L3"),
+#'             fill = c("#CDC673", "#EEDD82"),
+#'             analysisType = "ancova",
+#'             fontsizePvalue = 5,
+#'             y.axis.adjust = 0.1)
+#'
+#' qpcrANCOVA(data_2factor, 
+#'            numberOfrefGenes = 1,
+#'            mainFactor.column = 2,
+#'            mainFactor.level.order = c("D0", "D1", "D2"),
+#'            fill = c("#79CDCD", "#B4EEB4"),
+#'            analysisType = "ancova",
+#'            fontsizePvalue = 5,
+#'            y.axis.adjust = 0.4)
+#'
+#'
+#' # Data from Lee et al., 2020 
+#' # Here, the data set contains technical replicates so 
+#' # we get mean of technical reps first:
+#' df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
+#' order <- rev(unique(df$DS))
+#' qpcrANCOVA(df, 
 #'            numberOfrefGenes = 1, 
 #'            analysisType = "ancova", 
 #'            mainFactor.column = 2,

@@ -46,7 +46,7 @@
 
 
 
-oneFACTORplot <- function(x,
+oneFACTORplot <- function(res,
                           width = 0.2,
                           fill = "skyblue",
                           y.axis.adjust = 0.5,
@@ -61,11 +61,11 @@ oneFACTORplot <- function(x,
                           axis.text.x.angle = 0,
                           axis.text.x.hjust = 0.5){
 
-  
+  x <- res$Result
   RE <- x$RE
-  std <- x$std
   LCL <- x$LCL
   UCL <- x$UCL
+  std <- x$std
 
   q1f1 <- ggplot(x, aes(rownames(x), y = RE, group = rownames(x))) +
     geom_col(color = "black", fill = fill, width = width) +

@@ -2,10 +2,10 @@
 % Please edit documentation in R/oneFACTORplot.r
 \name{oneFACTORplot}
 \alias{oneFACTORplot}
-\title{Bar plot of the relative gene expression (RE) from a one-factor experiment}
+\title{Bar plot of the relative gene expression (RE) from the \code{qpcrANOVA} output of a one-factor experiment data}
 \usage{
 oneFACTORplot(
-  x,
+  res,
   width = 0.2,
   fill = "skyblue",
   y.axis.adjust = 0.5,
@@ -22,8 +22,6 @@ oneFACTORplot(
 )
 }
 \arguments{
-\item{x}{a data frame created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x)$Result} on a one factor data such as \code{data_1factor}.}
-
 \item{width}{a positive number determining bar width.}
 
 \item{fill}{specify a fill color.}
@@ -49,12 +47,14 @@ oneFACTORplot(
 \item{axis.text.x.angle}{angle of x axis text}
 
 \item{axis.text.x.hjust}{horizontal justification of x axis text}
+
+\item{x}{a data frame created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x)$Result} on a one factor data such as \code{data_1factor}.}
 }
 \value{
 Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
 }
 \description{
-Bar plot of the relative expression of a gene along with the 95\% confidence interval and significance. There is another function, \code{qpcrTTESTplot}, that is used when the factor has two levels and represents Fold Change. \code{oneFACTORplot} is mainly useful for a one-factor experiment with more than two levels.
+Bar plot of the relative expression of a gene along with the standard deviation, 95\% confidence interval and significance. \code{oneFACTORplot} is mainly useful for a one-factor experiment with more than two levels.
 }
 \details{
 The \code{oneFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.

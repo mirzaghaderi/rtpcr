@@ -9,7 +9,7 @@
 #' @import ggplot2
 #' @import lme4
 #' @import agricolae
-#' @param x an object created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x)} on a three factorial data such as \code{data_3factor} example data frame.
+#' @param res an object created by \code{qpcrANOVA(x)} function on a three factorial data such as \code{data_3factor} example data frame.
 #' @param arrangement order based on the columns in the output table (e.g. c(2,3,1) or c(1,3,2)) affecting factor arrangement of the output graph.
 #' @param bar.width a positive number determining bar width.
 #' @param fill  a color vector specifying the fill color for the columns of the bar plot. One of the palettes in \code{\link[RColorBrewer]{display.brewer.all}} (e.g. "Reds" or "Blues", ...) can be applied.
@@ -90,7 +90,7 @@
 #'
 
 
-threeFACTORplot <- function(x,
+threeFACTORplot <- function(res,
                          arrangement = c(1, 2, 3),
                          bar.width = 0.5,
                          fill = "Reds",
@@ -108,7 +108,7 @@ threeFACTORplot <- function(x,
                          axis.text.x.angle = 0,
                          axis.text.x.hjust = 0.5){
   
-  x <- x$Result
+  x <- res$Result
   x <- x[, c(arrangement, 4:ncol(x))]
   RE <- x$RE
   std <- x$std

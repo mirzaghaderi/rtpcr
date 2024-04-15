@@ -9,7 +9,7 @@
 #' @import ggplot2
 #' @import lme4
 #' @import agricolae
-#' @param x an object created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x)} on a two factor data such as \code{data_2factor}.
+#' @param res an object created by \code{qpcrANOVA(x)} function on a two factor data such as \code{data_2factor}.
 #' @param x.axis.factor x-axis factor.
 #' @param group.factor grouping factor.
 #' @param width a positive number determining bar width.
@@ -69,7 +69,7 @@
 
 
 
-twoFACTORplot <- function(x,
+twoFACTORplot <- function(res,
                           x.axis.factor,
                           group.factor,
                           width = 0.5,
@@ -88,8 +88,8 @@ twoFACTORplot <- function(x,
                           fontsizePvalue = 7,
                           axis.text.x.angle = 0,
                           axis.text.x.hjust = 0.5){
-  b <- x$Result
-  a <- x$Final_data
+  b <- res$Result
+  a <- res$Final_data
   RE <- b$RE
   std <- b$std
   LCL <- b$LCL

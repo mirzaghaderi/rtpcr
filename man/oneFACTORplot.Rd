@@ -22,6 +22,8 @@ oneFACTORplot(
 )
 }
 \arguments{
+\item{res}{an object created by \link{qpcrANOVA(x)} function on a one factor data such as \code{data_1factor}.}
+
 \item{width}{a positive number determining bar width.}
 
 \item{fill}{specify a fill color.}
@@ -47,8 +49,6 @@ oneFACTORplot(
 \item{axis.text.x.angle}{angle of x axis text}
 
 \item{axis.text.x.hjust}{horizontal justification of x axis text}
-
-\item{x}{a data frame created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x)$Result} on a one factor data such as \code{data_1factor}.}
 }
 \value{
 Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
@@ -62,10 +62,10 @@ The \code{oneFACTORplot} function generates the bar plot of the average fold cha
 \examples{
 
 # Before plotting, the result needs to be extracted as below:
-out <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result
+res <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)
 
 # Bar plot
-oneFACTORplot(out,
+oneFACTORplot(res,
          width = 0.2,
          fill = "skyblue",
          y.axis.adjust = 0,

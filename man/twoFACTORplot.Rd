@@ -5,7 +5,7 @@
 \title{Bar plot of the relative gene expression (RE) from the \code{qpcrANOVA} output of a two-factorial experiment data}
 \usage{
 twoFACTORplot(
-  x,
+  res,
   x.axis.factor,
   group.factor,
   width = 0.5,
@@ -27,7 +27,7 @@ twoFACTORplot(
 )
 }
 \arguments{
-\item{x}{an object created by \link{qpcrANOVA} function via running \code{res <- qpcrANOVA(x)} on a two factor data such as \code{data_2factor}.}
+\item{res}{an object created by \link{qpcrANOVA(x)} function on a two factor data such as \code{data_2factor}.}
 
 \item{x.axis.factor}{x-axis factor.}
 

@@ -249,10 +249,10 @@ qpcrANCOVA <- function(x,
     df = sapply(t_test_results, function(x) x$parameter))
   
   CI <- data.frame(Comparison = confidence_intervals$Comparison,
-                   CI_lower = 10^-confidence_intervals$CI_upper,
-                   CI_upper = 10^-confidence_intervals$CI_lower,
+                   LCL = 10^-confidence_intervals$CI_upper,
+                   UCL = 10^-confidence_intervals$CI_lower,
                    df = confidence_intervals$df)
-  CI <- data.frame(CI, sddiff = (CI$CI_upper - CI$CI_lower)/(2*stats::qt(0.975, CI$df)))
+  CI <- data.frame(CI, sddiff = (CI$UCL - CI$LCL)/(2*stats::qt(0.975, CI$df)))
   
   
   sig <- .convert_to_character(pp$p.value)
@@ -264,15 +264,15 @@ qpcrANCOVA <- function(x,
                               FC = round(1/(10^-(pp$estimate)), 4),
                               pvalue = round(pp$p.value, 4),
                               sig = sig,
-                              CI_lower = CI$CI_lower,
-                              CI_upper = CI$CI_upper,
+                              LCL = CI$LCL,
+                              UCL = CI$UCL,
                               sddiff = CI$sddiff)
   
   reference <- data.frame(contrast = mainFactor.level.order[1],
                           FC = "1",
                           pvalue = 1, 
                           sig = " ",
-                          CI_lower = 0,
+                          LCL = 0,
                           CI_upper = 0,
                           sddiff = 0)
   
@@ -296,8 +296,8 @@ qpcrANCOVA <- function(x,
   
   tableC$contrast <- factor(tableC$contrast, levels = unique(tableC$contrast))
   contrast <- tableC$contrast
-  CI_lower <- tableC$CI_lower
-  CI_upper <- tableC$CI_upper
+  LCL <- tableC$LCL
+  UCL <- tableC$UCL
   FCp <- as.numeric(tableC$FC)
   significance <- tableC$sig
   sddiff <- tableC$sddiff

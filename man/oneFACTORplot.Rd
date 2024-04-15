@@ -22,7 +22,7 @@ oneFACTORplot(
 )
 }
 \arguments{
-\item{res}{an object created by \link{qpcrANOVA(x)} function on a one factor data such as \code{data_1factor}.}
+\item{res}{an object created by \code{qpcrANOVA(x)} function on a one factor data such as \code{data_1factor}.}
 
 \item{width}{a positive number determining bar width.}
 

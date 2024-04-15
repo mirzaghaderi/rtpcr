@@ -27,7 +27,7 @@ twoFACTORplot(
 )
 }
 \arguments{
-\item{res}{an object created by \link{qpcrANOVA(x)} function on a two factor data such as \code{data_2factor}.}
+\item{res}{an object created by \code{qpcrANOVA(x)} function on a two factor data such as \code{data_2factor}.}
 
 \item{x.axis.factor}{x-axis factor.}
 

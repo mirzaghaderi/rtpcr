@@ -9,7 +9,7 @@
 #' @import ggplot2
 #' @import lme4
 #' @import agricolae
-#' @param res an object created by \code{qpcrANOVA(x) function on a one factor data such as \code{data_1factor}.
+#' @param res an object created by \code{qpcrANOVA(x)} function on a one factor data such as \code{data_1factor}.
 #' @param width a positive number determining bar width.
 #' @param fill  specify a fill color.
 #' @param y.axis.adjust  a negative or positive number for reducing or increasing the length of the y axis.

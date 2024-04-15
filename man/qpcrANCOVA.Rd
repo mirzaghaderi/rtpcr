@@ -29,13 +29,15 @@ qpcrANCOVA(
 \arguments{
 \item{x}{a data frame of condition(s), biological replicates, efficiency (E) and Ct values of target and reference genes. Each Ct value in the data frame is the mean of technical replicates. Please refer to the vignette for preparing your data frame correctly.}
 
-\item{numberOfrefGenes}{number of reference genes. Up to two reference genes can be handled.}
+\item{numberOfrefGenes}{number of reference genes which is 1 or 2 (Up to two reference genes can be handled).}
 
 \item{analysisType}{should be one of "ancova" or "anova".}
 
-\item{mainFactor.column}{main factor for which the levels FC is compared. The remaining factors are considered as covariates.}
+\item{mainFactor.column}{the factor for which FC is calculated for its levels. The remaining factors (if any) are considered as covariate(s).}
 
-\item{mainFactor.level.order}{a vector of main factor level names. The first level in the vector is used as reference.}
+\item{mainFactor.level.order}{a vector of main factor level names. The first level in the vector is used 
+as reference or calibrator which is the reference level or sample that all others are compared to. Examples are untreated 
+of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.}
 
 \item{block}{column name of the block if there is a blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.}
 

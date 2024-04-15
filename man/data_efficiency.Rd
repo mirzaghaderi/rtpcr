@@ -21,4 +21,4 @@ data_efficiency
 \description{
 A sample qPCR dataset for demonstrating efficiency calculation.
 }
-\keyword{datasets}
+\keyword{internal}

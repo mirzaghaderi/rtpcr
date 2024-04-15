@@ -2,7 +2,7 @@
 % Please edit documentation in R/qpcrTTEST.r
 \name{qpcrTTEST}
 \alias{qpcrTTEST}
-\title{Analysis of the fold change (FC) of target genes using t-test.}
+\title{fold change (FC) analysis of target genes using t-test}
 \usage{
 qpcrTTEST(x, numberOfrefGenes, paired = FALSE, var.equal = FALSE)
 }

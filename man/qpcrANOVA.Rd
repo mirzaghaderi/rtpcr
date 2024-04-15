@@ -2,7 +2,7 @@
 % Please edit documentation in R/qpcrANOVA.r
 \name{qpcrANOVA}
 \alias{qpcrANOVA}
-\title{ANOVA of RE values based on CRD}
+\title{Relative efficiency (RE) analysis using ANOVA}
 \usage{
 qpcrANOVA(
   x,

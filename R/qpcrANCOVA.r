@@ -273,7 +273,7 @@ qpcrANCOVA <- function(x,
                           pvalue = 1, 
                           sig = " ",
                           LCL = 0,
-                          CI_upper = 0,
+                          UCL = 0,
                           sddiff = 0)
   
   post_hoc_test <- rbind(reference, post_hoc_test)

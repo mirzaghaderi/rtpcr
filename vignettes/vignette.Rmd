@@ -2,14 +2,14 @@
 title: "rtpcr: a package for statistical analysis of real-time PCR data in R"
 author: Ghader Mirzaghaderi
 output:
-  pdf_document: 
-    toc: yes
-    latex_engine: lualatex
   html_document: 
     toc: yes
     keep_md: yes
     output: rmarkdown::html_vignette
     df_print: default
+  pdf_document: 
+    toc: yes
+    latex_engine: lualatex
   word_document:
     toc: No
 vignette: |

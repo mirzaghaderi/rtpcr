@@ -61,7 +61,7 @@
 
 
 qpcrTTESTplot <- function(x,
-                          order = default.order,
+                          order = "none",
                           numberOfrefGenes,
                           paired = FALSE,
                           var.equal = TRUE,
@@ -116,7 +116,12 @@ qpcrTTESTplot <- function(x,
   df2 <- as.data.frame(TTESTRES[[2]])
 
   # Convert the column to a factor with specified levels
-  df2$Gene <- factor(df2$Gene, levels = order)
+  if(any(order == "none")){
+    df2$Gene <- factor(df2$Gene, levels = default.order)
+  } else {
+    df2$Gene <- factor(df2$Gene, levels = order)
+  }
+ 
 
   # Order the data frame based on the specified column
   df2 <- df2[order(df2$Gene), ]

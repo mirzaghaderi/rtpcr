@@ -6,7 +6,7 @@
 \usage{
 qpcrTTESTplot(
   x,
-  order = default.order,
+  order = "none",
   numberOfrefGenes,
   paired = FALSE,
   var.equal = TRUE,

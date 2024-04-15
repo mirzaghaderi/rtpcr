@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiency.r
 \name{efficiency}
 \alias{efficiency}
-\title{efficiency, standard curves and related statistics}
+\title{Efficiency, standard curves and related statistics}
 \usage{
 efficiency(x)
 }

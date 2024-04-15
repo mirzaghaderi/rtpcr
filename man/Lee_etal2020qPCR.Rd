@@ -26,4 +26,4 @@ Lee_etal2020qPCR
 \description{
 A sample data for calculating biological replicated.
 }
-\keyword{datasets}
+\keyword{internal}

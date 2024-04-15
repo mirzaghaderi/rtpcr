@@ -10,6 +10,7 @@
 #' }
 #'
 #' @source Where the data comes from (if applicable)
+#' @keywords internal
 "data_efficiency"
 
 #' Sample data (one factor three levels)
@@ -27,6 +28,7 @@
 #' }
 #'
 #' @source Not applicable
+#' @keywords internal
 "data_1factor"
 
 #' Sample data (two factor)
@@ -45,6 +47,7 @@
 #' } 
 #'
 #' @source Not applicable
+#' @keywords internal
 "data_2factor"
 
 #' Sample data (two factor with blocking factor)
@@ -64,6 +67,7 @@
 #' }
 #'
 #' @source Not applicable
+#' @keywords internal
 "data_2factorBlock"
 
 #' Sample data (three factor)
@@ -83,6 +87,7 @@
 #' }
 #'
 #' @source Not applicable
+#' @keywords internal
 "data_3factor"
 
 
@@ -99,6 +104,7 @@
 #' }
 #'
 #' @source University of Kurdistan
+#' @keywords internal
 "data_ttest"
 
 #' Sample data (one target, two reference)
@@ -114,6 +120,7 @@
 #' }
 #'
 #' @source Not applicable
+#' @keywords internal
 "data_ttest2"
 
 #' Sample data (with technical replicates)
@@ -134,6 +141,7 @@
 #' } 
 #'
 #' @source Not applicable
+#' @keywords internal
 "data_withTechRep"
 
 
@@ -154,4 +162,5 @@
 #' }
 #'
 #' @source Lee et al, (2020) <doi:10.12688/f1000research.23580.2>
+#' @keywords internal
 "Lee_etal2020qPCR"

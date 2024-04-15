@@ -1,4 +1,4 @@
-#' @title ANOVA of RE values based on CRD 
+#' @title Relative efficiency (RE) analysis using ANOVA 
 #' @description Analysis of Variance of relative efficiency (RE) values based on a completely randomized design (CRD). Even there are more than a factor in the experiment, it is still possible to apply CRD analysis on the factor-level combinations as treatments. Analysis of variance based on factorial design or analysis of covariance can be performed using \code{qpcrANCOVA} function.  
 #' @details The \code{qpcrANOVA} function performs analysis of variance (ANOVA) of relative efficiency (RE) values based on a completely randomized design (CRD). 
 #' It is suitable when relative expression (RE) analysis between different treatment combinations 

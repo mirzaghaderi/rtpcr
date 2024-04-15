@@ -22,4 +22,4 @@ data_ttest
 \description{
 A sample data for demonstrating qPCR data analysis.
 }
-\keyword{datasets}
+\keyword{internal}

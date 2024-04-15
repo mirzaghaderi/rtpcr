@@ -1,4 +1,4 @@
-#' @title Analysis of the fold change (FC) of target genes using t-test.
+#' @title fold change (FC) analysis of target genes using t-test
 #' @description t.test based analysis of the fold change expression for any number of target genes.
 #' @details The \code{qpcrTTEST} function applies a t.test based analysis to calculate fold change (FC) expression and returns related statistics for any number of target genes along with one or two 
 #' reference gene(s), that have been evaluated under control and treatment conditions. Sampling may be paired or 

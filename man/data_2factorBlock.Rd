@@ -26,4 +26,4 @@ data_2factorBlock
 \description{
 A sample qPCR data set with blocking factor.
 }
-\keyword{datasets}
+\keyword{internal}

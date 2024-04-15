@@ -25,4 +25,4 @@ data_2factor
 \description{
 A sample dataset for demonstration purposes.
 }
-\keyword{datasets}
+\keyword{internal}

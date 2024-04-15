@@ -27,4 +27,4 @@ data_withTechRep
 \description{
 A sample data for calculating biological replicated.
 }
-\keyword{datasets}
+\keyword{internal}

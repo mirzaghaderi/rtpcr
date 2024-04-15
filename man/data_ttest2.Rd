@@ -22,4 +22,4 @@ data_ttest2
 \description{
 One target and two reference gens for demonstrating qPCR data analysis.
 }
-\keyword{datasets}
+\keyword{internal}

@@ -14,7 +14,6 @@
 #' @examples
 #'
 #' # See example input data frame:
-#' data(data_withTechRep)
 #' data_withTechRep
 #'
 #' # Calculating mean of technical replicates

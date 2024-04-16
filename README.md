@@ -86,7 +86,8 @@ devtools::install_github("mirzaghaderi/rtpcr")
 library(rtpcr)
 ```
 
-
+You can download aquick start help from 
+<a href="https://github.com/mirzaghaderi/rtpcr/blob/main/rtpcr%20package%20cheat%20sheet.pdf">here</a>
 
 
 # Contact 

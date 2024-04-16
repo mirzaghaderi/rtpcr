@@ -9,6 +9,8 @@ version](http://www.r-pkg.org/badges/version/rtpcr)](https://cran.r-project.org/
 ### Author: Ghader Mirzaghaderi
 
 <img src="https://github.com/mirzaghaderi/rtpcr/blob/mirzaghaderi-patch-4/rtpcr%20package.pdf?raw=true">
+<a href="https://github.com/mirzaghaderi/rtpcr/blob/mirzaghaderi-patch-4/rtpcr-package.pdf"><img src="https://raw.githubusercontent.com/rstudio/cheatsheets/master/pngs/thumbnails/data-visualization-cheatsheet-thumbs.png" width="630" height="252"/></a>  
+
 
 *Figure 1 - Graphical summary of the rtpcr package functionality. Functions are presented in blue.*
 

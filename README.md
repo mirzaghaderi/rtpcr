@@ -40,7 +40,7 @@ $$\text{Fold Change due to Treatment} = \frac{E^{-(Ct_{Tr}-Ct_{Co})target}}{E^{-
 
 # A generalized calculation method
 
-ΔC_t is the difference between the Ct value of the target gene and the Ct value of the referenec gene (e.g. ΔC_t = Cttarget−Ctref). The rtpcr packager functions are mainly based on the calculation of efficiency-weighted ΔC_t (wΔC_t) values from target and reference gene Ct values which are weighted for their amplification efficiencies as below:
+ΔC_t is the difference between the Ct value of the target gene and the Ct value of the referenec gene (e.g. ΔC_t = Cttarget−Ctref). The rtpcr package functions are mainly based on the calculation of efficiency-weighted ΔC_t (wΔC_t) values from target and reference gene Ct values which are weighted for their amplification efficiencies as below:
 
 
 $$wΔCt = log_{10}(E_{target}).Ct_{target} - log_{10}(E_{ref}).Ct_{ref}$$

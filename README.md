@@ -9,7 +9,7 @@ version](http://www.r-pkg.org/badges/version/rtpcr)](https://cran.r-project.org/
 ### Author: Ghader Mirzaghaderi
 
 
-<a href="man/figures/rtpcr-package.pdf"><img src="man/figures/rtpcr.jpg" width="500" height="630"/></a>  
+<a href="man/figures/rtpcr-package.pdf"><img src="man/figures/rtpcr.jpg"/></a>  
 
 
 

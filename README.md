@@ -19,7 +19,7 @@ The ‘rtpcr’ package was built based on a general method with various capabil
 real-time PCR, also known as quantitative PCR (qPCR), is a powerful analytical tool that has revolutionized nucleic acid quantification. Among the various approaches developed for data analysis in real-time PCR, the Livak method (Livak and Schmittgen, 2001), also known as the $2^{-ΔΔCt}$ method, stands out for its simplicity and widespread use. This method assumes that both the target and reference genes are amplified with efficiencies close to 100 %. On the other hand, the Pfaffl method (Pfaffl et al., 2002) offers a more flexible approach by accounting for differences in amplification efficiencies between the target and reference genes. This method adjusts the calculated expression ratio by incorporating the specific amplification efficiencies, thus providing a more accurate representation of the relative gene expression levels (Pfaffl et al., 2002). Both methods have their merits and limitations, and the choice between them depends on the experimental design and the precision required for the study. This paper aims to delve into the mathematical underpinnings of these methodologies, providing a comprehensive understanding of their applications and implications in real-time PCR analysis. Among the various approaches developed for data analysis in real-time PCR, the Livak method, also known as the $2^{-\Delta\Delta C_t}$ method, stands out for its simplicity and widespread use.
 
 
-$$\text{Fold Change} = $$
+$$\text{Fold Change due to Treatment} = $$
 
 $$= \frac{2^{-(Ct_{target}-Ct_{ref})Tr}}{2^{-(Ct_{target}-Ct_{ref})Co}}$$
 
@@ -34,20 +34,21 @@ $$= 2^{-ΔΔCt}$$
 where Tr is Treatment and Co is Control conditions, respectively. This method assumes that both the target and reference genes are amplified with efficiencies close to 100%, allowing for the relative quantification of gene expression levels (Livak and Schmittgen, 2001). On the other hand, the Pfaffl method offers a more flexible approach by accounting for differences in amplification efficiencies between the target and reference genes. This method adjusts the calculated expression ratio by incorporating the specific amplification efficiencies, thus providing a more accurate representation of the relative gene expression levels (Pfaffl et al., 2002).
 
 
-$$\text{Fold Change} = \frac{E^{-(Ct_{Tr}-Ct_{Co})target}}{E^{-(Ct_{Tr}-Ct_{Co})ref}}$$
+$$\text{Fold Change due to Treatment} = \frac{E^{-(Ct_{Tr}-Ct_{Co})target}}{E^{-(Ct_{Tr}-Ct_{Co})ref}}$$
 
 # A generalized calculation method
 
-ΔC_t is the difference between two Ct values (e.g. Cttarget−Ctref). The rtpcr packager functions are mainly based on the calculation of efficiency-weighted ΔC_t (wΔC_t) values from target and reference gene Ct values which are weighted for their amplification efficiencies as below:
+ΔC_t is the difference between the Ct value of the target gene and the Ct value of the referenec gene (e.g. ΔC_t = Cttarget−Ctref). The rtpcr packager functions are mainly based on the calculation of efficiency-weighted ΔC_t (wΔC_t) values from target and reference gene Ct values which are weighted for their amplification efficiencies as below:
 
 
 $$wΔCt = log_{10}(E_{target}).Ct_{target} - log_{10}(E_{ref}).Ct_{ref}$$
 
-From the mean wΔCt values over biological replicates, the relative expression of a target gene can be calculated for each condition as:
+From the mean wΔCt values over biological replicates, the relative Eexpression (RE) of a target gene (calibrated by the reference gene) can be calculated for each condition as:
 
 $$\text{Relative Expression} = 10^{-\overline{w\Delta Ct}}$$
 
-When there are only two conditions (e.g. Treatment and Control), the average fold change expression of a target gene can be calculated as follows: 
+Often, one condition is concidered as calibrator condition. Examples are Treatment versus Control where Control is served as the calibrator, or time 0 versus time 1 (e.g. after 1 hour) and time 2 (e.g. after 2 hours) where time 0 is served as the reference or calibrator level. So, calibrator is the reference level or sample that all others are compared to. The fold change (FC) value of the reference or calibrator level is 1 because it is not changed compared to itself. In such cases, the fold change expression of a target gene due to the treatment can be calculated as follows: 
+
 
 $$\text{Fold Change} = 10^{-(\overline{w\Delta Ct}{Tr}-\overline{w\Delta Ct}{Co})}$$
 

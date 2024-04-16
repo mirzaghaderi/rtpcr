@@ -3,7 +3,7 @@
 version](http://www.r-pkg.org/badges/version/rtpcr)](https://cran.r-project.org/web/packages/rtpcr/index.html)
 
 
-# rtpcr: a package for statistical analysis of real-time PCR data in R 
+# rtpcr: a package for statistical analysis and graphical presentation of real-time PCR data in R 
 
 <img src="https://github.com/mirzaghaderi/rtpcr/blob/main/Figure%201.jpg?raw=true">
 

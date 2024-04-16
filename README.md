@@ -1,11 +1,11 @@
 
-# rtpcr: a package for statistical analysis and graphical presentation of real-time PCR data in R <a href="https://cran.r-project.org/web/packages/rtpcr/index.html"><img src="man/figures/logo.jpg" align="right" height="135" /></a>
+#  <a href="https://cran.r-project.org/web/packages/rtpcr/index.html"><img src="man/figures/logo.jpg" align="right" height="135" /></a>
 
 [![](https://cranlogs.r-pkg.org/badges/grand-total/rtpcr)](https://cran.rstudio.com/web/packages/rtpcr/index.html)
 [![CRAN
 version](http://www.r-pkg.org/badges/version/rtpcr)](https://cran.r-project.org/web/packages/rtpcr/index.html)
   
-
+# rtpcr: a package for statistical analysis and graphical presentation of real-time PCR data in R
 ### Author: Ghader Mirzaghaderi
 
 <img src="https://github.com/mirzaghaderi/rtpcr/blob/main/Figure%201.jpg?raw=true">

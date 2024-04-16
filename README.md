@@ -5,7 +5,7 @@ version](http://www.r-pkg.org/badges/version/rtpcr)](https://cran.r-project.org/
 
 # rtpcr: a package for statistical analysis and graphical presentation of real-time PCR data in R 
 
-## Author: Ghader Mirzaghaderi
+### Author: Ghader Mirzaghaderi
 
 <img src="https://github.com/mirzaghaderi/rtpcr/blob/main/Figure%201.jpg?raw=true">
 

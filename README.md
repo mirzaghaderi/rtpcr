@@ -1,5 +1,5 @@
 
-# rtpcr <a href="https://cran.r-project.org/web/packages/rtpcr/index.html"><img src="man/figures/logo.jpg" align="right" height="1358" /></a>
+# rtpcr <a href="https://cran.r-project.org/web/packages/rtpcr/index.html"><img src="man/figures/logo.jpg" align="right" height="135" /></a>
 
 [![](https://cranlogs.r-pkg.org/badges/grand-total/rtpcr)](https://cran.rstudio.com/web/packages/rtpcr/index.html)
 [![CRAN

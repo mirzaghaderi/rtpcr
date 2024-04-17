@@ -473,8 +473,6 @@ meanTech(data_withTechRep, groups = 1:4)
 ```
 
 
-[Download rtpcr cheat sheet](help/figures/rtpcr-package.pdf)
-
 
 # Citation
 ```{r eval= F}

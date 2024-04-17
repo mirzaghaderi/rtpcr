@@ -5,7 +5,7 @@
 [![CRAN
 version](http://www.r-pkg.org/badges/version/rtpcr)](https://cran.r-project.org/web/packages/rtpcr/index.html)
   
-#  <a href="https://cran.r-project.org/web/packages/rtpcr/index.html"><img src="man/figures/logo.jpg" align="right" height="135" /></a>
+#  <a href="https://cran.r-project.org/web/packages/rtpcr/index.html"><img src="man/figures/logo.jpg" align="right" height="120" /></a>
 
 # rtpcr: a package for statistical analysis and graphical presentation of real-time PCR data in R
 ### Author: Ghader Mirzaghaderi

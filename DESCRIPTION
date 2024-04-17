@@ -15,5 +15,3 @@ Packaged: 2024-03-18 07:51:15 UTC; GM
 Depends: R (>= 3.5.0)
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
-Suggests: R.rsp
-VignetteBuilder: R.rsp

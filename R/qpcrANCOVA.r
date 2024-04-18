@@ -257,8 +257,8 @@ qpcrANCOVA <- function(x,
 
   
   
-  CI <- data.frame(CI, sddiff = (CI$UCL - CI$LCL)/(2*stats::qt(0.975, CI$df)))
-  
+  #CI <- data.frame(CI, sddiff = (CI$UCL - CI$LCL)/(2*stats::qt(0.975, CI$df)))
+  CI <- data.frame(CI, sddiff = abs(confidence_intervals$CI_upper - confidence_intervals$CI_lower)/(2*stats::qt(0.975, CI$df)))
   
   sig <- .convert_to_character(pp$p.value)
   

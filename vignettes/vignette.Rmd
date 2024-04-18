@@ -469,7 +469,7 @@ qqline(residuals, col = "red")
 # Mean of technical replicates
 Calculating the mean of technical replicates and getting an output table appropriate for subsequent ANOVA analysis can be done using the `meanTech` function. For this, the input data set should follow the column arrangement of the following example data. Grouping columns must be specified under the `groups` argument of the `meanTech` function.
 
-```{r eval= T, eval= T}
+```{r eval= T}
 # See example input data frame:
 data_withTechRep
 
@@ -477,28 +477,27 @@ data_withTechRep
 meanTech(data_withTechRep, groups = 1:4)
 ```
 
-# How to edot ouptput graphs?
+# How to edit ouptput graphs?
 
 the rtpcr graphical functions create a list containing the ggplot object so for editting or adding new layers to the graph output, you need to extract the ggplot object first:
 
-```{r eval= T, eval= T}
-a  <- qpcrANCOVA(data_1factor, 
+```{r eval= F, include = T, fig.height = 4, fig.width = 5}
+
+b <- qpcrANCOVA(data_2factor, 
             numberOfrefGenes = 1,
             mainFactor.column = 1,
-            mainFactor.level.order = c("L1", "L2", "L3"),
+            mainFactor.level.order = c("S", "R"),
             fill = c("#CDC673", "#EEDD82"),
             analysisType = "ancova",
-            fontsizePvalue = 5,
-            y.axis.adjust = 0.1)
+            fontsizePvalue = 7,
+            y.axis.adjust = 0.1, width = 0.35)
 
-#recall ggplot2
+
+
 library(ggplot2)
+p2 <- b$FC_Plot_of_the_main_factor_levels
+p2 + theme_set(theme_classic(base_size = 20))
 
-# extract the ggplot object
-plot <- a$FC_Plot_of_the_main_factor_levels
-
-# adding new adjustments
-plot + theme_set(theme_classic(base_size = 25))
 ```
 
 

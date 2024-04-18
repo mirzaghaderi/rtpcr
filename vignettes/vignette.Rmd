@@ -477,9 +477,33 @@ data_withTechRep
 meanTech(data_withTechRep, groups = 1:4)
 ```
 
+# How to edot ouptput graphs?
+
+the rtpcr graphical functions create a list containing the ggplot object so for editting or adding new layers to the graph output, you need to extract the ggplot object first:
+
+```{r eval= T, eval= T}
+a  <- qpcrANCOVA(data_1factor, 
+            numberOfrefGenes = 1,
+            mainFactor.column = 1,
+            mainFactor.level.order = c("L1", "L2", "L3"),
+            fill = c("#CDC673", "#EEDD82"),
+            analysisType = "ancova",
+            fontsizePvalue = 5,
+            y.axis.adjust = 0.1)
+
+#recall ggplot2
+library(ggplot2)
+
+# extract the ggplot object
+plot <- a$FC_Plot_of_the_main_factor_levels
+
+# adding new adjustments
+plot + theme_set(theme_classic(base_size = 25))
+```
 
 
 # Citation
+
 ```{r eval= F}
 citation("rtpcr")
 ```

@@ -236,22 +236,27 @@ qpcrANCOVA <- function(x,
   # Preparing t-test results
   t_test_results <- list()
   
-  for (i in 2:length(mainFactor.level.order)) {
+  for (i in 1:length(mainFactor.level.order)) {
     level_data <- subset(x, x[,1] == mainFactor.level.order[i])$wDCt
     t_test_result <- stats::t.test(level_data, subset(x, x[,1] == mainFactor.level.order[1])$wDCt)
     t_test_results[[paste("t_test_result_", mainFactor.level.order[i], "_vs_", mainFactor.level.order[1])]] <- t_test_result
   }
   
-   confidence_intervals <- data.frame(
+  confidence_intervals <- data.frame(
     Comparison = sapply(names(t_test_results), function(x) gsub("t_test_result_", "", x)),
     CI_lower = sapply(t_test_results, function(x) x$conf.int[1]),
     CI_upper = sapply(t_test_results, function(x) x$conf.int[2]),
-    df = sapply(t_test_results, function(x) x$parameter))
+    df = sapply(t_test_results, function(x) x$parameter),
+    p.value = sapply(t_test_results, function(x) x$p.value))
   
   CI <- data.frame(Comparison = confidence_intervals$Comparison,
                    LCL = 10^-confidence_intervals$CI_upper,
                    UCL = 10^-confidence_intervals$CI_lower,
-                   df = confidence_intervals$df)
+                   df = confidence_intervals$df,
+                   p.value = confidence_intervals$p.value)
+
+  
+  
   CI <- data.frame(CI, sddiff = (CI$UCL - CI$LCL)/(2*stats::qt(0.975, CI$df)))
   
   
@@ -264,17 +269,17 @@ qpcrANCOVA <- function(x,
                               FC = round(1/(10^-(pp$estimate)), 4),
                               pvalue = round(pp$p.value, 4),
                               sig = sig,
-                              LCL = CI$LCL,
-                              UCL = CI$UCL,
-                              sddiff = CI$sddiff)
+                              LCL = CI[-1,]$LCL,
+                              UCL = CI[-1,]$UCL,
+                              sddiff = CI[-1,]$sddiff)
   
   reference <- data.frame(contrast = mainFactor.level.order[1],
                           FC = "1",
                           pvalue = 1, 
                           sig = " ",
-                          LCL = 0,
-                          UCL = 0,
-                          sddiff = 0)
+                          LCL = CI[1,2],
+                          UCL = CI[1,3],
+                          sddiff = CI[1,6])
   
   post_hoc_test <- rbind(reference, post_hoc_test)
   

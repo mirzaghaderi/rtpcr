@@ -12,7 +12,7 @@
     } else if (numbers[i] < 0.1) {
       characters[i] <- "."
     } else {
-      characters[i] <- "ns"
+      characters[i] <- " "
     }
   }
   

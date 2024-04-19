@@ -69,7 +69,7 @@
       colnames(x)[ncol(x)-1] <- "Eref"
       colnames(x)[ncol(x)] <- "Ctref"
       
-      x <- data.frame(x, wDCt = (log10(x$Etarget)*x$Cttarget)-(log10(x$Eref)*x$Ctref))
+      x <- data.frame(x, wDCt = (log2(x$Etarget)*x$Cttarget)-(log2(x$Eref)*x$Ctref))
       
     } else if(numberOfrefGenes == 2) {
       
@@ -82,8 +82,8 @@
       colnames(x)[ncol(x)-1] <- "Eref2"
       colnames(x)[ncol(x)] <- "Ctref2"
       
-      x <- data.frame(x[1:(ncol(x)-2)], wDCt = (log10(x$Etarget)*x$Cttarget)-
-                        ((log10(x$Eref)*x$Ctref) + (log10(x$Eref2)*x$Ctref2))/2)
+      x <- data.frame(x[1:(ncol(x)-2)], wDCt = (log2(x$Etarget)*x$Cttarget)-
+                        ((log2(x$Eref)*x$Ctref) + (log2(x$Eref2)*x$Ctref2))/2)
     }
     
   } else {
@@ -97,7 +97,7 @@
       colnames(x)[ncol(x)-1] <- "Eref"
       colnames(x)[ncol(x)] <- "Ctref"
       
-      x <- data.frame(x, wDCt = (log10(x$Etarget)*x$Cttarget)-(log10(x$Eref)*x$Ctref))
+      x <- data.frame(x, wDCt = (log2(x$Etarget)*x$Cttarget)-(log2(x$Eref)*x$Ctref))
       
     } else if(numberOfrefGenes == 2) {
       factors <- colnames(x)[1:(ncol(x)-8)]
@@ -110,8 +110,8 @@
       colnames(x)[ncol(x)-1] <- "Eref2"
       colnames(x)[ncol(x)] <- "Ctref2"
       
-      x <- data.frame(x[1:(ncol(x)-2)], wDCt = (log10(x$Etarget)*x$Cttarget)-
-                        ((log10(x$Eref)*x$Ctref) + (log10(x$Eref2)*x$Ctref2))/2)
+      x <- data.frame(x[1:(ncol(x)-2)], wDCt = (log2(x$Etarget)*x$Cttarget)-
+                        ((log2(x$Eref)*x$Ctref) + (log2(x$Eref2)*x$Ctref2))/2)
     }
   }
   return(list(x = x, factors = factors))

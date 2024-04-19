@@ -32,6 +32,7 @@
 #' @param fontsizePvalue font size of the pvalue labels
 #' @param axis.text.x.angle angle of x axis text
 #' @param axis.text.x.hjust horizontal justification of x axis text
+#' @param errorbar Type of error bar, can be \code{se} or \code{ci}.
 #' @return Bar  plot of the average fold change for target genes along with the significance and the 95 percent CI as error bars.
 #' @examples
 #'
@@ -40,7 +41,8 @@
 #'
 #'
 #' qpcrTTESTplot(data_ttest, 
-#'               numberOfrefGenes = 1)
+#'               numberOfrefGenes = 1,
+#'               errorbar = "ci")
 #'
 #'
 #' # Producing the plot
@@ -55,7 +57,8 @@
 #'               y.axis.by = 2,
 #'               letter.position.adjust = 0.3,
 #'               ylab = "Fold Change in Treatment vs Control",
-#'               xlab = "Gene")
+#'               xlab = "Gene",
+#'               errorbar = "se")
 #'
 #'
 
@@ -75,7 +78,8 @@ qpcrTTESTplot <- function(x,
                           fontsize = 12,
                           fontsizePvalue = 7,
                           axis.text.x.angle = 0,
-                          axis.text.x.hjust = 0.5){
+                          axis.text.x.hjust = 0.5,
+                          errorbar = "se"){
 
   default.order <- unique(x[,2])[-length(unique(x[,2]))]
 
@@ -88,6 +92,8 @@ qpcrTTESTplot <- function(x,
         characters[i] <- "**"
       } else if (numbers[i] < 0.05) {
         characters[i] <- "*"
+      } else if (numbers[i] < 0.1) {
+        characters[i] <- "."
       } else {
         characters[i] <- "ns"
       }
@@ -132,23 +138,59 @@ qpcrTTESTplot <- function(x,
   Lower.Er <- df2$LCL
   Upper.Er <- df2$UCL
   pvalue <- df2$pvalue
+  se <- df2$se
 
   p <- ggplot(df2, aes(Gene, as.numeric(Fold_Change))) +
-    geom_col(col = "black", fill = fill, width = width) +
-    geom_errorbar(aes(Gene, ymin=as.numeric(Lower.Er), ymax = as.numeric(Upper.Er)),
-                  width=0.1) +
-    geom_text(aes(label = convert_to_character(pvalue),
-                  x = Gene,
-                  y = as.numeric(Upper.Er)),
-              vjust = -0.5, size = fontsizePvalue) +
-    ylab(ylab) + 
+    geom_col(col = "black", fill = fill, width = width)
+    
+    
+    if(errorbar == "ci") {
+      p <- p +
+        geom_errorbar(aes(Gene, ymin=as.numeric(Lower.Er), ymax = as.numeric(Upper.Er)), width=0.1)
+    } else if(errorbar == "se") {
+      p <- p +
+        geom_errorbar(aes(Gene, ymin = as.numeric(Fold_Change), ymax = as.numeric(Fold_Change) + as.numeric(se)), width=0.1)
+    }
+    
+
+  
+  if(errorbar == "ci") {
+    p <- p +
+      geom_text(aes(label = convert_to_character(pvalue),
+                    x = Gene,
+                    y = as.numeric(Upper.Er)),
+                vjust = -0.5, size = fontsizePvalue)
+  } else if(errorbar == "se") {
+    p <- p +
+      geom_text(aes(label = convert_to_character(pvalue),
+                    x = Gene,
+                    y = as.numeric(Fold_Change) + as.numeric(se)),
+                vjust = -0.5, size = fontsizePvalue)
+  }
+
+    
+    
+    p <- p + ylab(ylab) + 
     theme_bw()+
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
-          axis.title  = element_text(size = fontsize)) +
-    scale_y_continuous(breaks=seq(0, max(as.numeric(Upper.Er) + y.axis.adjust) + 2, by = y.axis.by),
-                       limits = c(0, max(as.numeric(Upper.Er) + y.axis.adjust) + 2), expand = c(0, 0)) +
-    theme(legend.text = element_text(colour = "black", size = fontsize),
+          axis.title  = element_text(size = fontsize)) 
+    
+    
+    if(errorbar == "ci") {
+      p <- p +
+        scale_y_continuous(breaks=seq(0, max(as.numeric(Fold_Change)) + max(as.numeric(Upper.Er) + y.axis.adjust) + 1, by = y.axis.by),
+                           limits = c(0, max(as.numeric(Fold_Change)) + max(as.numeric(Upper.Er) + y.axis.adjust) + 1), expand = c(0, 0))
+    } else if(errorbar == "se") {
+      p <- p +
+        scale_y_continuous(breaks=seq(0, max(as.numeric(Fold_Change)) + max(as.numeric(se) + y.axis.adjust) + 1, by = y.axis.by),
+                           limits = c(0, max(as.numeric(Fold_Change)) + max(as.numeric(se) + y.axis.adjust) + 1), expand = c(0, 0))
+      }
+    
+    
+    
+    
+      p <- p + theme(legend.text = element_text(colour = "black", size = fontsize),
           legend.background = element_rect(fill = "transparent"))
   
   if(xlab == "none"){

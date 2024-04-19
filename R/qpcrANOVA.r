@@ -105,11 +105,11 @@ qpcrANOVA <- function(x,
   ucl <- meanPairs$UCL
   lcl <- meanPairs$LCL
   Post_hoc_Testing <- data.frame(row.names = ROWS,
-                                 FC = round(10^(-diffs), 4),
+                                 FC = round(2^(-diffs), 4),
                                  pvalue = pval,
                                  signif. = signif,
-                                 LCL = round(10^(-ucl), 4),
-                                 UCL = round(10^(-lcl), 4))
+                                 LCL = round(2^(-ucl), 4),
+                                 UCL = round(2^(-lcl), 4))
   
   
   RowNames <- rownames(mean)
@@ -124,18 +124,18 @@ qpcrANOVA <- function(x,
   mean <- mean[order(rownames(mean)),]
   g <- g[order(rownames(g)),]
   
-  bwDCt <- 10^(-x$wDCt)
+  bwDCt <- x$wDCt    #bwDCt <- 2^(-x$wDCt)
   sdRow <- summarise(
     group_by(data.frame(T = x$T, bwDCt = bwDCt), T),
-    sd = sd(bwDCt, na.rm = TRUE))
-  sd <- sdRow[order(sdRow$T),]
+    se = stats::sd(bwDCt/sqrt(length(bwDCt)), na.rm = TRUE))   #sd = sd(bwDCt, na.rm = TRUE))
+  se <- sdRow[order(sdRow$T),]      #sd <- sdRow[order(sdRow$T),]
   
   Results <- data.frame(mean[,(ncol(mean)-2):ncol(mean)],
-                        RE = round(10^(-mean$wDCt), 5),
-                        LCL = round(10^(-mean$LCL), 5),
-                        UCL = round(10^(-mean$UCL), 5),
+                        RE = round(2^(-mean$wDCt), 5),
+                        LCL = round(2^(-mean$LCL), 5),
+                        UCL = round(2^(-mean$UCL), 5),
                         letters = g$groups,
-                        std = round(sd$sd, 5))
+                        se = round(se$se, 5))     #std = round(sd$sd, 5))
   
   
   # removing additional columns!

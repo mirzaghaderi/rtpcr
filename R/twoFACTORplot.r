@@ -1,6 +1,6 @@
 #' @title Bar plot of the relative gene expression (RE) from the \code{qpcrANOVA} output of a two-factorial experiment data
-#' @description Bar plot of the relative expression (RE) of a gene along with the 95\% confidence interval and significance
-#' @details The \code{twoFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
+#' @description Bar plot of the relative expression (RE) of a gene along with the standard error (se), 95\% confidence interval (ci) and significance
+#' @details The \code{twoFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance, standard error (se) and the 95\% confidence interval (ci) as error bars.
 #' @author Ghader Mirzaghaderi
 #' @export twoFACTORplot
 #' @import tidyr
@@ -18,7 +18,7 @@
 #' @param y.axis.by determines y axis step length.
 #' @param show.errorbars show errorbars
 #' @param show.points show points
-#' @param errorbar Type of error bar, can be \code{std} or \code{ci}.
+#' @param errorbar Type of error bar, can be \code{se} or \code{ci}.
 #' @param letter.position.adjust adjust the distance between the grouping letters to the error bars.
 #' @param xlab  the title of the x axis.
 #' @param ylab  the title of the y axis.
@@ -77,7 +77,7 @@ twoFACTORplot <- function(res,
                           y.axis.adjust = 0.5,
                           y.axis.by = 2,
                           show.errorbars = TRUE,
-                          errorbar = "std",
+                          errorbar = "se",
                           show.letters = TRUE,
                           show.points = FALSE,
                           letter.position.adjust = 0.1,
@@ -91,7 +91,7 @@ twoFACTORplot <- function(res,
   b <- res$Result
   a <- res$Final_data
   RE <- b$RE
-  std <- b$std
+  se <- b$se
   LCL <- b$LCL
   UCL <- b$UCL
   wDCt <- a$wDCt
@@ -107,8 +107,8 @@ twoFACTORplot <- function(res,
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
           axis.title  = element_text(size = fontsize),
           legend.text = element_text(size = fontsize)) +
-    scale_y_continuous(breaks = seq(0, max(RE) + max(std) + y.axis.adjust, by = y.axis.by), 
-                       limits = c(0, max(RE) + max(std) + y.axis.adjust), expand = c(0, 0)) +
+    scale_y_continuous(breaks = seq(0, max(RE) + max(se) + y.axis.adjust, by = y.axis.by), 
+                       limits = c(0, max(RE) + max(se) + y.axis.adjust), expand = c(0, 0)) +
     theme(legend.position  = legend.position) +
     theme(legend.title = element_text(size = fontsize, color = "black"),
           legend.background = element_rect(fill = "transparent")) 
@@ -116,19 +116,19 @@ twoFACTORplot <- function(res,
   
   if (show.errorbars) {
     qq1 <-qq1 +
-    geom_errorbar(aes(ymin = RE, ymax = RE + std), width = 0.2, position = position_dodge(width = 0.5))
+    geom_errorbar(aes(ymin = RE, ymax = RE + se), width = 0.2, position = position_dodge(width = 0.5))
   }
   
   
   if (show.points) {
     qq1 <-qq1 + 
     geom_point(data = a, aes(x = factor({{x.axis.factor}}, levels = as.character(unique({{x.axis.factor}}))), 
-                             y = (10^(-wDCt)), group = as.factor({{ group.factor }}), fill = as.factor({{ group.factor }})), 
+                             y = (2^(-wDCt)), group = as.factor({{ group.factor }}), fill = as.factor({{ group.factor }})), 
                position = position_dodge(width = width),color = "grey30",  fill = "grey30", shape = 21, size = 2)
   }
   if (show.letters) {
     qq1 <-qq1 + 
-      geom_text(data = b, aes(label = letters, x = {{ x.axis.factor }}, y = RE + std + letter.position.adjust), 
+      geom_text(data = b, aes(label = letters, x = {{ x.axis.factor }}, y = RE + se + letter.position.adjust), 
                 vjust = -0.5, size = fontsizePvalue, position = position_dodge(width = 0.5))
   }
   
@@ -166,7 +166,7 @@ twoFACTORplot <- function(res,
   if (show.points) {
     qq2 <-qq2 + 
       geom_point(data = a, aes(x = factor({{x.axis.factor}}, levels = as.character(unique({{x.axis.factor}}))), 
-                               y = (10^(-wDCt)), group = as.factor({{ group.factor }}), fill = as.factor({{ group.factor }})), 
+                               y = (2^(-wDCt)), group = as.factor({{ group.factor }}), fill = as.factor({{ group.factor }})), 
                  position = position_dodge(width = width),color = "grey30",  fill = "grey30", shape = 21, size = 3)
   }
   if (show.letters) {
@@ -184,7 +184,7 @@ twoFACTORplot <- function(res,
   }
   
   
-  if(errorbar == "std") {
+  if(errorbar == "se") {
     out2 <- list(plot = qq1)
     
   } else if(errorbar == "ci") {

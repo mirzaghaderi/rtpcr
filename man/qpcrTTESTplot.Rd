@@ -20,7 +20,8 @@ qpcrTTESTplot(
   fontsize = 12,
   fontsizePvalue = 7,
   axis.text.x.angle = 0,
-  axis.text.x.hjust = 0.5
+  axis.text.x.hjust = 0.5,
+  errorbar = "se"
 )
 }
 \arguments{
@@ -55,6 +56,8 @@ qpcrTTESTplot(
 \item{axis.text.x.angle}{angle of x axis text}
 
 \item{axis.text.x.hjust}{horizontal justification of x axis text}
+
+\item{errorbar}{Type of error bar, can be \code{se} or \code{ci}.}
 }
 \value{
 Bar  plot of the average fold change for target genes along with the significance and the 95 percent CI as error bars.
@@ -79,7 +82,8 @@ data_ttest
 
 
 qpcrTTESTplot(data_ttest, 
-              numberOfrefGenes = 1)
+              numberOfrefGenes = 1,
+              errorbar = "ci")
 
 
 # Producing the plot
@@ -94,7 +98,8 @@ qpcrTTESTplot(data_ttest,
               y.axis.by = 2,
               letter.position.adjust = 0.3,
               ylab = "Fold Change in Treatment vs Control",
-              xlab = "Gene")
+              xlab = "Gene",
+              errorbar = "se")
 
 
 }

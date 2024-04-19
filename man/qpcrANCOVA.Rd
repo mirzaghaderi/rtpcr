@@ -23,7 +23,8 @@ qpcrANCOVA(
   axis.text.x.angle = 0,
   axis.text.x.hjust = 0.5,
   x.axis.labels.rename = "none",
-  p.adj = "none"
+  p.adj = "none",
+  errorbar = "se"
 )
 }
 \arguments{
@@ -66,6 +67,8 @@ of time 0. The FC value of the reference or calibrator level is 1 because it is 
 \item{x.axis.labels.rename}{a vector replacing the x axis labels in the bar plot}
 
 \item{p.adj}{Method for adjusting p values}
+
+\item{errorbar}{Type of error bar, can be \code{se} or \code{ci}.}
 }
 \value{
 A list with 7 elements:
@@ -84,7 +87,7 @@ ANCOVA (analysis of covariance) and ANOVA (analysis of variance) can be performe
 \code{qpcrANCOVA} function, for uni- or multi-factorial experiment data. This function performs FC analysis even
 if there is only one factor (without covariate variable), although, for the data with 
 only one factor, the analysis turns into ANOVA. The bar plot of the fold changes (FC) 
-values along with the confidence interval is also returned by the \code{qpcrANCOVA} function.
+values along with the standard error (se) of confidence interval (ci) is also returned by the \code{qpcrANCOVA} function.
 }
 \details{
 The \code{qpcrANCOVA} function applies both ANCOVA and ANOVA analysis to the data of a uni- or 

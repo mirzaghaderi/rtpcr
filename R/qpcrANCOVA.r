@@ -3,7 +3,7 @@
 #' \code{qpcrANCOVA} function, for uni- or multi-factorial experiment data. This function performs FC analysis even
 #' if there is only one factor (without covariate variable), although, for the data with 
 #' only one factor, the analysis turns into ANOVA. The bar plot of the fold changes (FC) 
-#' values along with the confidence interval is also returned by the \code{qpcrANCOVA} function. 
+#' values along with the standard error (se) of confidence interval (ci) is also returned by the \code{qpcrANCOVA} function. 
 #' @details The \code{qpcrANCOVA} function applies both ANCOVA and ANOVA analysis to the data of a uni- or 
 #' multi-factorial experiment, although for the data with 
 #' only one factor, the analysis turns to ANOVA. ANCOVA is basically appropriate when the 
@@ -54,6 +54,7 @@
 #' @param x.axis.labels.rename a vector replacing the x axis labels in the bar plot
 #' @param block column name of the block if there is a blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.
 #' @param p.adj Method for adjusting p values
+#' @param errorbar Type of error bar, can be \code{se} or \code{ci}.
 #' @return A list with 7 elements:
 #' \describe{
 #'   \item{Final_data}{Input data frame plus the weighted Delat Ct values (wDCt)}
@@ -164,7 +165,8 @@ qpcrANCOVA <- function(x,
                        axis.text.x.angle = 0,
                        axis.text.x.hjust = 0.5,
                        x.axis.labels.rename = "none",
-                       p.adj = "none"){
+                       p.adj = "none",
+                       errorbar = "se"){
 
 
   
@@ -250,15 +252,22 @@ qpcrANCOVA <- function(x,
     p.value = sapply(t_test_results, function(x) x$p.value))
   
   CI <- data.frame(Comparison = confidence_intervals$Comparison,
-                   LCL = 10^-confidence_intervals$CI_upper,
-                   UCL = 10^-confidence_intervals$CI_lower,
+                   LCL = 2^-confidence_intervals$CI_upper,
+                   UCL = 2^-confidence_intervals$CI_lower,
                    df = confidence_intervals$df,
                    p.value = confidence_intervals$p.value)
 
   
   
   CI <- data.frame(CI, sddiff = (CI$UCL - CI$LCL)/(2*stats::qt(0.975, CI$df)))
-  #CI <- data.frame(CI, sddiff = abs(confidence_intervals$CI_upper - confidence_intervals$CI_lower)/(2*stats::qt(0.975, CI$df)))
+  
+  
+
+  bwDCt <- x$wDCt   
+  se <- summarise(
+    group_by(data.frame(factor = x[,1], bwDCt = bwDCt), x[,1]),
+    se = stats::sd(bwDCt, na.rm = TRUE)/sqrt(length(bwDCt)))  
+  
   
   sig <- .convert_to_character(pp$p.value)
   
@@ -266,12 +275,13 @@ qpcrANCOVA <- function(x,
   
   contrast <- pp[,1]
   post_hoc_test <- data.frame(contrast, 
-                              FC = round(1/(10^-(pp$estimate)), 4),
+                              FC = round(1/(2^-(pp$estimate)), 4),
                               pvalue = round(pp$p.value, 4),
                               sig = sig,
                               LCL = CI[-1,]$LCL,
                               UCL = CI[-1,]$UCL,
-                              sddiff = CI[-1,]$sddiff)
+                              sddiff = CI[-1,]$sddiff,
+                              se = se$se[-1])
   
   reference <- data.frame(contrast = mainFactor.level.order[1],
                           FC = "1",
@@ -279,7 +289,8 @@ qpcrANCOVA <- function(x,
                           sig = " ",
                           LCL = CI[1,2],
                           UCL = CI[1,3],
-                          sddiff = CI[1,6])
+                          sddiff = CI[1,6],
+                          se = se$se[1])
   
   post_hoc_test <- rbind(reference, post_hoc_test)
   
@@ -305,27 +316,38 @@ qpcrANCOVA <- function(x,
   UCL <- tableC$UCL
   FCp <- as.numeric(tableC$FC)
   significance <- tableC$sig
-  sddiff <- tableC$sddiff
-  
+  #sddiff <- tableC$sddiff
+  se <- tableC$se
   
   
 
   
   pfc2 <- ggplot(tableC, aes(contrast, FCp, fill = contrast)) +
-    geom_col(col = "black", width = width) +
-    geom_errorbar(aes(contrast, ymin = FCp, ymax =  FCp + sddiff),
-                  width=0.1) +
-    geom_text(aes(label = significance,
+    geom_col(col = "black", width = width)
+  
+  
+  
+  if(errorbar == "ci") {
+    pfc2 <- pfc2 +
+      geom_errorbar(aes(contrast, ymin = FCp - LCL, ymax =  FCp + UCL), width=0.1)
+  } else if(errorbar == "se") {
+    pfc2 <- pfc2 +
+      geom_errorbar(aes(contrast, ymin = FCp, ymax =  FCp + se), width=0.1)
+    }
+    
+    
+    
+    pfc2 <- pfc2 + geom_text(aes(label = significance,
                   x = contrast,
-                  y = FCp + sddiff + letter.position.adjust),
+                  y = FCp + se + letter.position.adjust),
               vjust = -0.5, size = fontsizePvalue) +
     ylab(ylab) +
     theme_bw()+
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
           axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
           axis.title  = element_text(size = fontsize)) +
-    scale_y_continuous(breaks=seq(0, max(FCp) + max(sddiff)  + y.axis.adjust, by = y.axis.by),
-                       limits = c(0, max(FCp) + max(sddiff) + y.axis.adjust), expand = c(0, 0)) +
+    scale_y_continuous(breaks=seq(0, max(FCp) + max(se)  + y.axis.adjust, by = y.axis.by),
+                       limits = c(0, max(FCp) + max(se) + y.axis.adjust), expand = c(0, 0)) +
     theme(legend.text = element_text(colour = "black", size = fontsize),
           legend.background = element_rect(fill = "transparent"))
   

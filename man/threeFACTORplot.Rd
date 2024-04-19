@@ -11,7 +11,7 @@ threeFACTORplot(
   fill = "Reds",
   xlab = "none",
   ylab = "Relative Expression",
-  errorbar = "std",
+  errorbar = "se",
   y.axis.adjust = 0.5,
   y.axis.by = 2,
   letter.position.adjust = 0.3,
@@ -37,7 +37,7 @@ threeFACTORplot(
 
 \item{ylab}{the title of the y axis}
 
-\item{errorbar}{Type of error bar, can be \code{std} or \code{ci}.}
+\item{errorbar}{Type of error bar, can be \code{se} or \code{ci}.}
 
 \item{y.axis.adjust}{a negative or positive number for reducing or increasing the length of the y axis.}
 
@@ -66,7 +66,7 @@ Bar plot of the average fold change for target genes along with the significance
 Bar plot of the relative expression (RE) of a gene along with the confidence interval and significance
 }
 \details{
-The \code{threeFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
+The \code{threeFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance, standard error (se) and the 95\% confidence interval (ci).
 }
 \examples{
 
@@ -105,7 +105,7 @@ threeFACTORplot(res,
    fill = "Reds",
    xlab = "Drought",
    ylab = "Relative Expression",
-   errorbar = "std",
+   errorbar = "se",
    legend.title = "Genotype",
    legend.position = c(0.2, 0.8))
 

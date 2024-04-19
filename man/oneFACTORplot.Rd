@@ -10,7 +10,7 @@ oneFACTORplot(
   fill = "skyblue",
   y.axis.adjust = 0.5,
   y.axis.by = 2,
-  errorbar = "std",
+  errorbar = "se",
   show.letters = TRUE,
   letter.position.adjust = 0.1,
   ylab = "Relative Expression",
@@ -32,7 +32,7 @@ oneFACTORplot(
 
 \item{y.axis.by}{determines y axis step length.}
 
-\item{errorbar}{Type of error bar, can be \code{std} or \code{ci}.}
+\item{errorbar}{Type of error bar, can be \code{se} or \code{ci}.}
 
 \item{show.letters}{a logical variable. If TRUE, mean grouping letters are added to the bars.}
 
@@ -54,7 +54,7 @@ oneFACTORplot(
 Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
 }
 \description{
-Bar plot of the relative expression of a gene along with the standard deviation, 95\% confidence interval and significance. \code{oneFACTORplot} is mainly useful for a one-factor experiment with more than two levels.
+Bar plot of the relative expression of a gene along with the standard error (se), 95\% confidence interval (ci) and significance. \code{oneFACTORplot} is mainly useful for a one-factor experiment with more than two levels.
 }
 \details{
 The \code{oneFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
@@ -70,7 +70,7 @@ oneFACTORplot(res,
          fill = "skyblue",
          y.axis.adjust = 0,
          y.axis.by = 0.2,
-         errorbar = "std",
+         errorbar = "se",
          show.letters = TRUE,
          letter.position.adjust = 0.05,
          ylab = "Relative Expression",

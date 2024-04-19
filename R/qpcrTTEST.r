@@ -75,7 +75,7 @@ qpcrTTEST <- function(x,
 
 
 
-    x <- data.frame(x, wCt = log10(x$E) * x$Ct)
+    x <- data.frame(x, wCt = log2(x$E) * x$Ct)
 
     if(numberOfrefGenes == 1) {
       x <- x
@@ -87,28 +87,34 @@ qpcrTTEST <- function(x,
       x <- x[-((a+(2*r)):(b+(2*r))),]
     }
 
+    
+    
+    
 
-
-
+    
+    
     GENE <- x$Gene
 
 
     levels_to_compare <- unique(GENE)[-length(unique(GENE))]
-    res <- matrix(nrow = length(levels_to_compare), ncol=6)
-    colnames(res) <- c("Gene", "dif", "FC", "LCL", "UCL", "pvalue")
+    res <- matrix(nrow = length(levels_to_compare), ncol=7)
+    colnames(res) <- c("Gene", "dif", "FC", "LCL", "UCL", "pvalue", "se")
     subset <- matrix(NA, nrow = 2 * r, ncol=length(levels_to_compare))
     ttest_result <- vector("list", length(levels_to_compare))
+    
 
 
     for (i in 1:length(levels_to_compare)) {
       subset[,i] <- x[GENE == levels_to_compare[i], "wCt"] - x[GENE == utils::tail(unique(GENE), 1), "wCt"]
       ttest_result[[i]] <- stats::t.test(subset[(r + 1):(2 * r), i], subset[1:r, i], paired = paired, var.equal = var.equal)
+      
       res[i, ] <- c(levels_to_compare[i],
                     round(mean(subset[(r+1):(2*r),i]) - mean(subset[1:r, i]), 4),
-                    round(10^-((mean(subset[(r+1):(2*r), i]) - mean(subset[1:r,i]))), 4),
-                    round(10^(-ttest_result[[i]]$conf.int[2]), 4), # Lower error bar point
-                    round(10^(-ttest_result[[i]]$conf.int[1]), 4), # Upper error bar point
-                    round(ttest_result[[i]]$p.value, 4))
+                    round(2^-((mean(subset[(r+1):(2*r), i]) - mean(subset[1:r,i]))), 4),
+                    round(2^(-ttest_result[[i]]$conf.int[2]), 4), # Lower error bar point
+                    round(2^(-ttest_result[[i]]$conf.int[1]), 4), # Upper error bar point
+                    round(ttest_result[[i]]$p.value, 4),
+                    round(stats::sd(subset[(r+1):(2*r),i])/sqrt(r), 4))
 
     }
     Raw_df <- melt(subset, value.name = "wDCt")[-1]

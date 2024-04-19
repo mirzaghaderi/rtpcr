@@ -13,7 +13,7 @@ twoFACTORplot(
   y.axis.adjust = 0.5,
   y.axis.by = 2,
   show.errorbars = TRUE,
-  errorbar = "std",
+  errorbar = "se",
   show.letters = TRUE,
   show.points = FALSE,
   letter.position.adjust = 0.1,
@@ -43,7 +43,7 @@ twoFACTORplot(
 
 \item{show.errorbars}{show errorbars}
 
-\item{errorbar}{Type of error bar, can be \code{std} or \code{ci}.}
+\item{errorbar}{Type of error bar, can be \code{se} or \code{ci}.}
 
 \item{show.letters}{a logical variable. If TRUE, mean grouping letters are added to the bars.}
 
@@ -69,10 +69,10 @@ twoFACTORplot(
 Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
 }
 \description{
-Bar plot of the relative expression (RE) of a gene along with the 95\% confidence interval and significance
+Bar plot of the relative expression (RE) of a gene along with the standard error (se), 95\% confidence interval (ci) and significance
 }
 \details{
-The \code{twoFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
+The \code{twoFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance, standard error (se) and the 95\% confidence interval (ci) as error bars.
 }
 \examples{
 

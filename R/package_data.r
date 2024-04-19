@@ -121,7 +121,7 @@
 #'
 #' @source Not applicable
 #' @keywords internal
-"data_ttest2"
+"Taylor_etal2019"
 
 #' Sample data (with technical replicates)
 #'

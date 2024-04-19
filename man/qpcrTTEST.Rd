@@ -4,7 +4,7 @@
 \alias{qpcrTTEST}
 \title{fold change (FC) analysis of target genes using t-test}
 \usage{
-qpcrTTEST(x, numberOfrefGenes, paired = FALSE, var.equal = FALSE)
+qpcrTTEST(x, numberOfrefGenes, paired = FALSE, var.equal = TRUE)
 }
 \arguments{
 \item{x}{a data frame of 4 columns including Conditions, E (efficiency), Gene and Ct values (see example below). Biological replicates needs to be equal for all Genes. Each Ct value is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used instead.}
@@ -47,6 +47,18 @@ qpcrTTEST(data_ttest,
    paired = FALSE,
    var.equal = TRUE,
    numberOfrefGenes = 1)
+
+
+
+qpcrTTEST(Taylor_etal2019, 
+          numberOfrefGenes = 2, 
+          var.equal = T)
+          
+qpcrTTESTplot(Taylor_etal2019, 
+              numberOfrefGenes = 2, 
+              var.equal = T,
+              y.axis.adjust = -0.7,
+              y.axis.by = 0.5)
 
 
 }

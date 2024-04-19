@@ -52,12 +52,26 @@
 #'    numberOfrefGenes = 1)
 #'
 #'
+#'
+#' qpcrTTEST(Taylor_etal2019, 
+#'           numberOfrefGenes = 2, 
+#'           var.equal = T)
+#'           
+#' qpcrTTESTplot(Taylor_etal2019, 
+#'               numberOfrefGenes = 2, 
+#'               var.equal = T,
+#'               y.axis.adjust = -0.7,
+#'               y.axis.by = 0.5)
+#'
+#'
+
+
 
 
 qpcrTTEST <- function(x,
                       numberOfrefGenes,
                       paired = FALSE,
-                      var.equal = FALSE) {
+                      var.equal = TRUE) {
 
   colnames(x)[1] <- "Condition"
   colnames(x)[2] <- "Gene"

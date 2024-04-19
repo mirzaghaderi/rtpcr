@@ -48,18 +48,18 @@ $$\text{Fold Change due to Treatment} = \frac{E^{-(Ct_{Tr}-Ct_{Co})target}}{E^{-
 ΔC_t is the difference between the Ct value of the target gene and the Ct value of the referenec gene (e.g. ΔC_t = Cttarget−Ctref). The rtpcr package functions are mainly based on the calculation of efficiency-weighted ΔC_t (wΔC_t) values from target and reference gene Ct values which are weighted for their amplification efficiencies as below:
 
 
-$$wΔCt = log_{10}(E_{target}).Ct_{target} - log_{10}(E_{ref}).Ct_{ref}$$
+$$wΔCt = log_{2}(E_{target}).Ct_{target} - log_{2}(E_{ref}).Ct_{ref}$$
 
 From the mean wΔCt values over biological replicates, the expression of a target gene relative to the reference gene (e.g. calibrated by the reference gene) can be calculated for each condition as:
 
-$$\text{Relative Expression (RE)} = 10^{-\overline{w\Delta Ct}}$$
+$$\text{Relative Expression (RE)} = 2^{-\overline{w\Delta Ct}}$$
 
 Often, one condition is considered as calibrator condition. Examples are Treatment versus Control where Control is served as the calibrator, or time 0 versus time 1 (e.g. after 1 hour) and time 2 (e.g. after 2 hours) where time 0 is served as the reference or calibrator level. So, calibrator is the reference level or sample that all others are compared to. The fold change (FC) expression of a target gene for the reference or calibrator level is 1 because it is not changed compared to itself. The fold change expression of a target gene due to the treatment can be calculated as follows: 
 
 
-$$\text{Fold Change due to Treatment} = 10^{-(\overline{w\Delta Ct}{Tr}-\overline{w\Delta Ct}{Co})}$$
+$$\text{Fold Change due to Treatment} = 2^{-(\overline{w\Delta Ct}{Tr}-\overline{w\Delta Ct}{Co})}$$
 
-if wDCt values are calculated from the E values, these calculations match the formula of Pfaffl while if 2 (complete efficiency) is used instead the result matches the $2^{-ΔΔCt}$ method. Here, a brief methodology is presented but details about the wΔC_t  calculations and statistical analysis are available in (Ganger et al., 2017). What is important here is that although the relative or fold change gene expression follows a lognormal distribution, a normal distribution is expected for the wΔCt or wΔΔCt values making it possible to apply t-test or analysis of variance to them. Following analysis, wΔCt values are statistically compared and standard deviations and confidence intervals are calculated, but the transformation y = 10x is applied in the final step to report the relative expression ratios, errors, and confidence limits.
+if wDCt values are calculated from the E values, these calculations match the formula of Pfaffl while if 2 (complete efficiency) is used instead the result matches the $2^{-ΔΔCt}$ method. Here, a brief methodology is presented but details about the wΔC_t  calculations and statistical analysis are available in (Ganger et al., 2017). What is important here is that although the relative or fold change gene expression follows a lognormal distribution, a normal distribution is expected for the wΔCt or wΔΔCt values making it possible to apply t-test or analysis of variance to them. Following analysis, wΔCt values are statistically compared and standard deviations and confidence intervals are calculated, but the transformation y = 2^-x is applied in the final step to report the relative expression ratios, errors, and confidence limits.
 
 # Installing and loading
 

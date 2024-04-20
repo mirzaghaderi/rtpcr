@@ -100,7 +100,7 @@ oneFACTORplot <- function(res,
   q1f2 <- ggplot(x, aes(rownames(x), y = RE, group = rownames(x))) +
     geom_col(color = "black", fill = fill, width = width) +
     #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
-    geom_errorbar(aes(ymin = RE - UCL, ymax = RE + LCL), width = 0.1) +
+    geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0.1) +
     ylab(ylab) +
     theme_bw() +
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
@@ -112,7 +112,7 @@ oneFACTORplot <- function(res,
 
   if (show.letters) {
     q1f2 <- q1f2 +
-      geom_text(data = x, aes(label = letters, x = rownames(x), y = RE + LCL + letter.position.adjust),
+      geom_text(data = x, aes(label = letters, x = rownames(x), y = UCL + letter.position.adjust),
                 vjust = -0.5, size = fontsizePvalue)
   }
 

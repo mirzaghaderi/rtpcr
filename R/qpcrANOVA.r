@@ -142,7 +142,6 @@ qpcrANOVA <- function(x,
   } else {
     # Concatenate the columns using paste0
     x$T <- do.call(paste, c(x[1:(ncol(x)-7)], sep = ":"))
-    x
     lm <- stats::lm(wDCt ~ block + T, x)
     anovaCRD <- stats::anova(lm)
   }
@@ -158,7 +157,6 @@ qpcrANOVA <- function(x,
     } else {
       # Concatenate the columns using paste0
       x$T <- do.call(paste, c(x[1:(ncol(x)-9)], sep = ":"))
-      x
       lm <- stats::lm(wDCt ~ block + T, x)
       anovaCRD <- stats::anova(lm)
     }
@@ -193,11 +191,9 @@ qpcrANOVA <- function(x,
   RowNames <- rownames(mean)
   mean$RowNames <- RowNames
   
-  if (is.null(block)) {
-    mean <- separate(mean, RowNames, into = factors, sep = ":", remove = T)
-  } else {
-    mean <- separate(mean, RowNames, into = factors[-length(factors)], sep = ":", remove = T) 
-  }
+
+  mean <- separate(mean, RowNames, into = factors, sep = ":", remove = T)
+
   
   mean <- mean[order(rownames(mean)),]
   g <- g[order(rownames(g)),]
@@ -210,8 +206,8 @@ qpcrANOVA <- function(x,
   
   Results <- data.frame(mean[,(ncol(mean)-2):ncol(mean)],
                         RE = round(2^(-mean$wDCt), 5),
-                        LCL = round(2^(-mean$LCL), 5),
-                        UCL = round(2^(-mean$UCL), 5),
+                        LCL = round(2^(-mean$UCL), 5),
+                        UCL = round(2^(-mean$LCL), 5),
                         letters = g$groups,
                         se = round(se$se, 5))     #std = round(sd$sd, 5))
   
@@ -234,7 +230,7 @@ qpcrANOVA <- function(x,
   
   outlist <- list(Final_data = xx,
                   lmCRD = lm,
-                  ANOVA_CRD = anovaCRD,
+                  ANOVA = anovaCRD,
                   Result = Results)  # Post_hoc_Test = Post_hoc_Testing
   
   

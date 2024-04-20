@@ -78,7 +78,7 @@
 #'    xlab = "Drought",
 #'    ylab = "Relative Expression",
 #'    errorbar = "ci",
-#'    y.axis.adjust = 8,
+#'    y.axis.adjust = 1,
 #'    y.axis.by = 2,
 #'    letter.position.adjust = 0.6,
 #'    legend.title = "Genotype",
@@ -156,7 +156,7 @@ threeFACTORplot <- function(res,
   
   pp2 <- ggplot(x, aes(x[,1], y = RE, fill = x[,2])) +
     geom_bar(stat = "identity", position = "dodge", width =  bar.width, col = "black") +
-    geom_errorbar(aes(ymax = RE + LCL, ymin = RE - UCL),
+    geom_errorbar(aes(ymin = LCL, ymax = UCL),
                   position = position_dodge(bar.width), width = 0.15, color = "black") +
     facet_grid( ~ x[,3])+
     ylab(ylab) +
@@ -178,7 +178,7 @@ threeFACTORplot <- function(res,
   
   if (show.letters) {
     pp2 <- pp2 +
-      geom_text(data = x, aes(label=letters, y = RE + LCL + letter.position.adjust), color = "black",
+      geom_text(data = x, aes(label=letters, y = UCL + letter.position.adjust), color = "black",
                 show.legend = FALSE, position = position_dodge(bar.width), size = fontsizePvalue)
   }
   

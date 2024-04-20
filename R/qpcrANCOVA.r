@@ -117,14 +117,24 @@
 #' df <- meanTech(Lee_etal2020qPCR, groups = 1:3) 
 #' df2 <- df[df$factor1 == "DSWHi",][-1]
 #' qpcrANCOVA(df2, 
-#'           mainFactor.column = 1,
-#'           mainFactor.level.order = c("D7", "D12", "D15","D18"),
-#'           numberOfrefGenes = 1,
-#'           analysisType = "ancova",
-#'           fontsizePvalue = 5,
-#'           y.axis.adjust = 0.1)
+#'            mainFactor.column = 1,
+#'            mainFactor.level.order = c("D7", "D12", "D15","D18"),
+#'            numberOfrefGenes = 1,
+#'            analysisType = "ancova",
+#'            fontsizePvalue = 5,
+#'            y.axis.adjust = 0.1)
 #'
 #'
+#' qpcrANCOVA(data_2factorBlock,
+#'            numberOfrefGenes = 1,
+#'            mainFactor.column = 1, 
+#'            mainFactor.level.order = c("S", "R"),
+#'            block = "block", 
+#'            fill = c("#CDC673", "#EEDD82"),
+#'            analysisType = "ancova",
+#'            fontsizePvalue = 7,
+#'            y.axis.adjust = 0.1, 
+#'            width = 0.35)
 #'
 #' addline_format <- function(x,...){gsub('\\s','\n',x)}
 #' order <- unique(data_2factor$Drought)
@@ -429,25 +439,40 @@ qpcrANCOVA <- function(x,
   
   
   #changing as.factor(x) to x
-  lmf$coefficients <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", lmf$coefficients)
-  lmf$coefficients <- gsub(":as factor", ":", lmf$coefficients)
-  
-  rownames(ANOVA) <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", rownames(ANOVA))
-  rownames(ANOVA) <- gsub(":as factor", ":", rownames(ANOVA))
-  
-  lmc$coefficients <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", lmc$coefficients)
-  lmc$coefficients <- gsub(":as factor", ":", lmc$coefficients)
-  
-  rownames(ANCOVA) <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", rownames(ANCOVA))
-  rownames(ANCOVA) <- gsub(":as factor", ":", rownames(ANCOVA))
-  
-  
-  
-  
+
+  if (is.null(block)) {
+    lmf$coefficients <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", lmf$coefficients)
+    lmf$coefficients <- gsub(":as factor", ":", lmf$coefficients)
+    
+    rownames(ANOVA) <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", rownames(ANOVA))
+    rownames(ANOVA) <- gsub(":as factor", ":", rownames(ANOVA))
+    
+    lmc$coefficients <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", lmc$coefficients)
+    lmc$coefficients <- gsub(":as factor", ":", lmc$coefficients)
+    
+    rownames(ANCOVA) <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", rownames(ANCOVA))
+    rownames(ANCOVA) <- gsub(":as factor", ":", rownames(ANCOVA))
+    lm_ANOVA <- lmf
+    lm_ANCOVA <- lmc
+  } else {
+    lmfb$coefficients <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", lmfb$coefficients)
+    lmfb$coefficients <- gsub(":as factor", ":", lmfb$coefficients)
+    
+    rownames(ANOVA) <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", rownames(ANOVA))
+    rownames(ANOVA) <- gsub(":as factor", ":", rownames(ANOVA))
+    
+    lmcb$coefficients <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", lmcb$coefficients)
+    lmcb$coefficients <- gsub(":as factor", ":", lmcb$coefficients)
+    
+    rownames(ANCOVA) <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", rownames(ANCOVA))
+    rownames(ANCOVA) <- gsub(":as factor", ":", rownames(ANCOVA))
+    lm_ANOVA <- lmfb
+    lm_ANCOVA <- lmcb
+  }
   
   outlist2 <- list(Final_data = x,
-                   lm_ANOVA = lmf,
-                   lm_ANCOVA = lmc,
+                   lm_ANOVA = lm_ANOVA,
+                   lm_ANCOVA = lm_ANCOVA,
                    ANOVA_table = ANOVA,
                    ANCOVA_table = ANCOVA,
                    FC_statistics_of_the_main_factor  = tableC,

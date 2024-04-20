@@ -94,9 +94,9 @@ twoFACTORplot(res,
    ylab = "Relative Expression",
    xlab = "Drought Levels",
    show.letters = TRUE, 
-   letter.position.adjust = 0.3,
-   legend.position = c(0.09, 0.8),
-   errorbar = "ci")
+   letter.position.adjust = 0.2,
+   legend.position = c(0.2, 0.8),
+   errorbar = "se")
 
 # Plotting the same data with 'Drought' as grouping factor
 twoFACTORplot(res,

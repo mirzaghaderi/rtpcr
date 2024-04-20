@@ -412,7 +412,7 @@ p2 <- threeFACTORplot(res,
    xlab = "Drought",
    ylab = "Relative Expression",
    errorbar = "ci",
-   y.axis.adjust = 8,
+   y.axis.adjust = 2,
    y.axis.by = 2,
    letter.position.adjust = 0.6,
    legend.title = "Genotype",
@@ -427,7 +427,7 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ```
 
 
-# An example of Showing point on the plot
+# An example of showing point on the plot
 ```{r, eval=F, include = T}
 
 library(ggplot2)

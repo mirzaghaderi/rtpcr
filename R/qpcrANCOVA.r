@@ -380,7 +380,6 @@ qpcrANCOVA <- function(x,
   UCL <- tableC$UCL
   FCp <- as.numeric(tableC$FC)
   significance <- tableC$sig
-  #sddiff <- tableC$sddiff
   se <- tableC$se
   
   

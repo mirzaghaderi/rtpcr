@@ -393,18 +393,20 @@ qpcrANCOVA <- function(x,
   
   if(errorbar == "ci") {
     pfc2 <- pfc2 +
-      geom_errorbar(aes(contrast, ymin = LCL, ymax =  UCL), width=0.1)
+      geom_errorbar(aes(contrast, ymin = LCL, ymax =  UCL), width=0.1) +
+      geom_text(aes(label = significance, x = contrast,
+                           y = UCL + letter.position.adjust),
+                       vjust = -0.5, size = fontsizePvalue)
   } else if(errorbar == "se") {
     pfc2 <- pfc2 +
-      geom_errorbar(aes(contrast, ymin = FCp, ymax =  FCp + se), width=0.1)
+      geom_errorbar(aes(contrast, ymin = FCp, ymax =  FCp + se), width=0.1) +
+      geom_text(aes(label = significance, x = contrast,
+                           y = FCp + se + letter.position.adjust),
+                       vjust = -0.5, size = fontsizePvalue)
     }
     
     
-    
-    pfc2 <- pfc2 + geom_text(aes(label = significance,
-                  x = contrast,
-                  y = FCp + se + letter.position.adjust),
-              vjust = -0.5, size = fontsizePvalue) +
+  pfc2 <- pfc2 +
     ylab(ylab) +
     theme_bw()+
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),

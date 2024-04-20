@@ -393,7 +393,7 @@ qpcrANCOVA <- function(x,
   
   if(errorbar == "ci") {
     pfc2 <- pfc2 +
-      geom_errorbar(aes(contrast, ymin = FCp - LCL, ymax =  FCp + UCL), width=0.1)
+      geom_errorbar(aes(contrast, ymin = LCL, ymax =  UCL), width=0.1)
   } else if(errorbar == "se") {
     pfc2 <- pfc2 +
       geom_errorbar(aes(contrast, ymin = FCp, ymax =  FCp + se), width=0.1)

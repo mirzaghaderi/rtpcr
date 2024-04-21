@@ -297,7 +297,7 @@ qpcrANCOVA <- function(x,
   pp1 <- emmeans(lm, colnames(x)[1], data = x, adjust = p.adj)
   pp <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
   pp <- pp[1:length(mainFactor.level.order)-1,]
-  
+
   
   # Preparing t-test results
   t_test_results <- list()

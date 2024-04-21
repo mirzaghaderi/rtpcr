@@ -11,7 +11,7 @@
 
 
 <a href="man/figures/rtpcr-package.pdf"><img src="man/figures/rtpcr.jpg"/></a>  
-
+*A quick guide in PDF format to use rtpcr package.*
 
 
 Real-time polymerase chain reaction (real-time PCR), is widely used in biological research. Various analysis methods are employed on the real-time PCR data to measure the mRNA levels under different experimental conditions. 

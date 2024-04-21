@@ -10,7 +10,7 @@
 ### Author: Ghader Mirzaghaderi
 
 
-*A quick guide in PDF format to use rtpcr package.*
+*A quick guide in PDF format to use rtpcr package:*
 <a href="man/figures/rtpcr-package.pdf"><img src="man/figures/rtpcr.jpg"/></a>  
 
 

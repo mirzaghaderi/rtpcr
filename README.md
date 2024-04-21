@@ -91,6 +91,7 @@ library(rtpcr)
 ```
 
 
+Further information aabout how to use rtpcr package can be found here.
 
 
 # Contact 

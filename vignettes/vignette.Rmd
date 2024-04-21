@@ -144,7 +144,7 @@ To simplify 'rtpcr' usage, examples for using the functions are presented below.
            
 *Table 2. Functions and examples for using them.*
 
- | function             |                 Analysis | Example (see package help for the more arguments) |
+ | function             |                 Analysis | Example (see package help for more arguments) |
  |:---------------------|:-----------------------------------|:----------------------------------|
  | efficiency             | Efficiency, standard curves and related statistics | efficiency(data_efficiency) |
  | meanTech      | Calculating the mean of technical replicates | meanTech(data_withTechRep, groups = 1:4) |

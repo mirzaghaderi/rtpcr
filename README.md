@@ -92,7 +92,7 @@ library(rtpcr)
 
 
 Further information aabout how to use rtpcr package can be found 
-<a href="https://github.com/mirzaghaderi/rtpcr/blob/v1.0.5/vignettes/vignette.html">here </a>.
+<a href="https://htmlpreview.github.io/?https://github.com/mirzaghaderi/rtpcr/blob/main/vignettes/vignette.html">here </a>.
 
 
 

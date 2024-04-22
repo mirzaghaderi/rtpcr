@@ -9,7 +9,7 @@ qpcrANCOVA(
   numberOfrefGenes,
   analysisType = "ancova",
   mainFactor.column,
-  mainFactor.level.order,
+  mainFactor.level.order = NULL,
   block = NULL,
   width = 0.5,
   fill = "#BFEFFF",

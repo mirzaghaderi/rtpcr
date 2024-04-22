@@ -161,7 +161,7 @@ qpcrANCOVA <- function(x,
                        numberOfrefGenes,
                        analysisType = "ancova",
                        mainFactor.column,
-                       mainFactor.level.order,
+                       mainFactor.level.order = NULL,
                        block = NULL,
                        width = 0.5,
                        fill = "#BFEFFF",
@@ -181,8 +181,20 @@ qpcrANCOVA <- function(x,
 
   
   x <- x[, c(mainFactor.column, (1:ncol(x))[-mainFactor.column])] 
-  x <- x[order(match(x[,1], mainFactor.level.order)), ]
-  x[,1] <- factor(x[,1], levels = mainFactor.level.order)
+  
+  
+  if (is.null(mainFactor.level.order)) {
+    mainFactor.level.order <- unique(x[,1])
+    calibrartor <- x[,1][1]
+    warning(paste("The", calibrartor, "level was used as calibrator."))
+  } else if (any(is.na(match(unique(x[,1]), mainFactor.level.order))) == TRUE){
+    stop("The `mainFactor.level.order` doesn't match main factor levels.")
+  } else {
+    x <- x[order(match(x[,1], mainFactor.level.order)), ]
+    x[,1] <- factor(x[,1], levels = mainFactor.level.order)
+  }
+  
+  
   
   
   

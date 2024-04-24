@@ -25,6 +25,6 @@ Not applicable
 data_withTechRep
 }
 \description{
-A sample data for calculating biological replicated.
+A sample data for calculating biological replicated. Each line belongs to a separate individual (non-repeated measure experiment).
 }
 \keyword{internal}

@@ -133,6 +133,8 @@ To use the functions, input data should be prepared in the right format with app
  |                |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - ref1E - ref1Ct - ref2E - ref2Ct  | |
  
 
+NOTE: For ANOVA and ANCOVA analysis, each line in the input data set should belong to a separate individual reflecting a non-repeated measure experiment).
+
 To see list of data in the rtpcr package run `data(package = "rtpcr")`. 
 Example data sets can be presented by running the name of each data set. A description of the columns names in  each data set is called by "?" followed by the names of the data set, for example `?data_1factor`
 

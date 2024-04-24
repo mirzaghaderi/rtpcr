@@ -3,7 +3,7 @@
 \docType{data}
 \name{Taylor_etal2019}
 \alias{Taylor_etal2019}
-\title{Sample data (one target, two reference)}
+\title{Sample data (one target and two reference genes under two different conditions)}
 \format{
 A data frame with 18 observations and 4 variables:
 \describe{
@@ -20,6 +20,7 @@ Not applicable
 Taylor_etal2019
 }
 \description{
-One target and two reference gens for demonstrating qPCR data analysis.
+One target and two reference gens for demonstrating qPCR data analysis. In unpaired condition, each line belongs to a separate individual.
+However t-test can be applied for paired samples where the data is acquired from same individuals in two conditions e.g. before and after a treatment.
 }
 \keyword{internal}

@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_ttest}
 \alias{data_ttest}
-\title{Sample data (one factor-two level qPCR)}
+\title{Sample qPCR data of an experiment conducted under two different conditions}
 \format{
 A data frame with 24 observations and 4 variables:
 \describe{
@@ -20,6 +20,7 @@ University of Kurdistan
 data_ttest
 }
 \description{
-A sample data for demonstrating qPCR data analysis.
+A sample data for demonstrating qPCR data analysis. In unpaired condition, each line belongs to a separate individual.
+However t-test can be applied for paired samples where the data is acquired from same individuals in two conditions e.g. before and after a treatment.
 }
 \keyword{internal}

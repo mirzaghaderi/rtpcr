@@ -15,7 +15,7 @@
 
 #' Sample data (one factor three levels)
 #'
-#' A sample dataset for demonstration purposes.
+#' A sample dataset for demonstration purposes. Each line belongs to a separate individual (non-repeated measure experiment).
 #'
 #' @format A data frame with 9 observations and 6 variables:
 #' \describe{
@@ -33,7 +33,7 @@
 
 #' Sample data (two factor)
 #'
-#' A sample dataset for demonstration purposes.
+#' A sample dataset for demonstration purposes. Each line belongs to a separate individual (non-repeated measure experiment).
 #'
 #' @format A data frame with 18 observations and 7 variables:
 #' \describe{
@@ -52,7 +52,7 @@
 
 #' Sample data (two factor with blocking factor)
 #'
-#' A sample qPCR data set with blocking factor.
+#' A sample qPCR data set with blocking factor. Each line belongs to a separate individual (non-repeated measure experiment).
 #'
 #' @format A data frame with 18 observations and 8 variables:
 #' \describe{
@@ -72,7 +72,7 @@
 
 #' Sample data (three factor)
 #'
-#' A sample dataset for demonstration purposes.
+#' A sample dataset for demonstration purposes. Each line belongs to a separate individual (non-repeated measure experiment).
 #'
 #' @format A data frame with 36 observations and 8 variables:
 #' \describe{
@@ -91,9 +91,10 @@
 "data_3factor"
 
 
-#' Sample data (one factor-two level qPCR)
+#' Sample qPCR data of an experiment conducted under two different conditions
 #'
-#' A sample data for demonstrating qPCR data analysis.
+#' A sample data for demonstrating qPCR data analysis. In unpaired condition, each line belongs to a separate individual.
+#' However t-test can be applied for paired samples where the data is acquired from same individuals in two conditions e.g. before and after a treatment. 
 #'
 #' @format A data frame with 24 observations and 4 variables:
 #' \describe{
@@ -107,9 +108,10 @@
 #' @keywords internal
 "data_ttest"
 
-#' Sample data (one target, two reference)
+#' Sample data (one target and two reference genes under two different conditions)
 #'
-#' One target and two reference gens for demonstrating qPCR data analysis.
+#' One target and two reference gens for demonstrating qPCR data analysis. In unpaired condition, each line belongs to a separate individual.
+#' However t-test can be applied for paired samples where the data is acquired from same individuals in two conditions e.g. before and after a treatment. 
 #'
 #' @format A data frame with 18 observations and 4 variables:
 #' \describe{
@@ -125,7 +127,7 @@
 
 #' Sample data (with technical replicates)
 #'
-#' A sample data for calculating biological replicated.
+#' A sample data for calculating biological replicated. Each line belongs to a separate individual (non-repeated measure experiment).
 #'
 #' @format A data frame with 18 observations and 9 variables:
 #' \describe{
@@ -147,7 +149,7 @@
 
 #' Sample data (with technical replicates)
 #'
-#' A sample data for calculating biological replicated.
+#' A sample data for calculating biological replicated. Each line belongs to a separate individual (non-repeated measure experiment).
 #'
 #' @format A data frame with 72 observations and 8 variables:
 #' \describe{

@@ -23,6 +23,6 @@ Not applicable
 data_2factor
 }
 \description{
-A sample dataset for demonstration purposes.
+A sample dataset for demonstration purposes. Each line belongs to a separate individual (non-repeated measure experiment).
 }
 \keyword{internal}

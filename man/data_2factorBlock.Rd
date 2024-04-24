@@ -24,6 +24,6 @@ Not applicable
 data_2factorBlock
 }
 \description{
-A sample qPCR data set with blocking factor.
+A sample qPCR data set with blocking factor. Each line belongs to a separate individual (non-repeated measure experiment).
 }
 \keyword{internal}

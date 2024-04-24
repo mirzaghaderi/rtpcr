@@ -36,9 +36,10 @@ qpcrANCOVA(
 
 \item{mainFactor.column}{the factor for which FC is calculated for its levels. The remaining factors (if any) are considered as covariate(s).}
 
-\item{mainFactor.level.order}{a vector of main factor level names. The first level in the vector is used 
+\item{mainFactor.level.order}{NULL or a vector of main factor level names. The first level in the vector is used 
 as reference or calibrator which is the reference level or sample that all others are compared to. Examples are untreated 
-of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.}
+of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.
+If NULL, the first level of the main factor column is used as calibrator.}
 
 \item{block}{column name of the block if there is a blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.}
 

@@ -184,7 +184,7 @@ qpcrREPEATED <- function(x,
   
   for (i in 1:length(x$time)) {
     level_data <- subset(x, x$time == x$time[i])$wDCt
-    t_test_result <- stats::t.test(level_data, subset(x, x$time == x$time[1])$wDCt)
+    t_test_result <- stats::t.test(level_data, subset(x, x$time == x$time[1])$wDCt, paired = TRUE)
     t_test_results[[paste("t_test_result_", x$time[i], "_vs_", x$time[1])]] <- t_test_result
   }
   

@@ -87,7 +87,7 @@ along with confidence interval and standard error for the FC values.
 }
 \examples{
 
-a <- qpcrREPEATED(data_repeated_measure_1,
+qpcrREPEATED(data_repeated_measure_1,
             numberOfrefGenes = 1,
             block = NULL)
 

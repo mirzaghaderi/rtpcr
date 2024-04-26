@@ -49,7 +49,7 @@
 #' 
 #' @examples
 #' 
-#' a <- qpcrREPEATED(data_repeated_measure_1,
+#' qpcrREPEATED(data_repeated_measure_1,
 #'             numberOfrefGenes = 1,
 #'             block = NULL)
 #'
@@ -58,9 +58,6 @@
 #'              block = NULL)
 #'                                                        
 #'                                                        
-
-
-
 
 qpcrREPEATED <- function(x,
                          numberOfrefGenes,
@@ -164,7 +161,7 @@ qpcrREPEATED <- function(x,
       if((ncol(x)-6) <= 2){
       formula <- wDCt ~ time + (1|id) + (1|block/id)
       } else {
-      formula <- paste("wDCt ~ ", paste("as.factor(", "time",") *"), paste("as.factor(", factors, ")", collapse = " * "), "+ (1 | id) + (1|block/id)")
+      formula <- paste("wDCt ~ ", paste("time"," *"), paste(factors, collapse = " * "), "+ (1 | id) + (1|block/id)")
       }
     }
   lm <- lmer(formula, data = x)
@@ -174,69 +171,38 @@ qpcrREPEATED <- function(x,
   
   
   pp1 <- emmeans(lm, "time", data = x, adjust = p.adj)
-  pp <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
-  pp <- pp[1:length(unique(x$time))-1,]
-  
-  
-  
-  # Preparing t-test results
-  t_test_results <- list()
-  
-  for (i in 1:length(x$time)) {
-    level_data <- subset(x, x$time == x$time[i])$wDCt
-    t_test_result <- stats::t.test(level_data, subset(x, x$time == x$time[1])$wDCt, paired = TRUE)
-    t_test_results[[paste("t_test_result_", x$time[i], "_vs_", x$time[1])]] <- t_test_result
-  }
-  
-  confidence_intervals <- data.frame(
-    Comparison = sapply(names(t_test_results), function(x) gsub("t_test_result_", "", x)),
-    CI_lower = sapply(t_test_results, function(x) x$conf.int[1]),
-    CI_upper = sapply(t_test_results, function(x) x$conf.int[2]),
-    df = sapply(t_test_results, function(x) x$parameter),
-    p.value = sapply(t_test_results, function(x) x$p.value))
-  
-  CI <- data.frame(Comparison = confidence_intervals$Comparison,
-                   LCL = 2^-confidence_intervals$CI_upper,
-                   UCL = 2^-confidence_intervals$CI_lower,
-                   df = confidence_intervals$df,
-                   p.value = confidence_intervals$p.value)
-  
+  pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
+  pp3 <- pp2[1:length(unique(x$time))-1,]
+  ci <- as.data.frame(stats::confint(graphics::pairs(pp1)), adjust = p.adj)[1:length(unique(x$time))-1,]
+  pp <- cbind(pp3, lower.CL = ci$lower.CL, upper.CL = ci$upper.CL)
   
   bwDCt <- x$wDCt   
   se <- summarise(
-    group_by(data.frame(factor = x$time, bwDCt = bwDCt), x$time),
-    se = stats::sd(bwDCt, na.rm = TRUE)/sqrt(length(bwDCt)))  
+  group_by(data.frame(factor = x$time, bwDCt = bwDCt), x$time),
+  se = stats::sd(bwDCt, na.rm = TRUE)/sqrt(length(bwDCt)))  
   
   
   sig <- .convert_to_character(pp$p.value)
-  
-  
-  
-  
-  
-  contrast <- pp[,1]
+  contrast <- pp$contrast
   post_hoc_test <- data.frame(contrast, 
-                              FC = round(1/(2^-(pp$estimate)), 4),
-                              pvalue = round(pp$p.value, 4),
+                              FC = round(1/(2^-(pp$estimate)), 7),
+                              pvalue = pp$p.value,
                               sig = sig,
-                              LCL = CI[-1,]$LCL,
-                              UCL = CI[-1,]$UCL,
+                              LCL = 1/(2^-pp$lower.CL),
+                              UCL = 1/(2^-pp$upper.CL),
                               se = se$se[-1])
   
   reference <- data.frame(contrast = "time1",
                           FC = "1",
                           pvalue = 1, 
                           sig = " ",
-                          LCL = CI[1,2],
-                          UCL = CI[1,3],
+                          LCL = 0,
+                          UCL = 0,
                           se = se$se[1])
   
-  post_hoc_test <- rbind(reference, post_hoc_test)
-  
-  
+  tableC  <- rbind(reference, post_hoc_test)
   
   FINALDATA <- x
-  tableC <- post_hoc_test
   
   tableC$contrast <- sapply(strsplit(tableC$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))
   

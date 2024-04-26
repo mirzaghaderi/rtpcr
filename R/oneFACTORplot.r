@@ -9,7 +9,7 @@
 #' @import ggplot2
 #' @import lme4
 #' @import agricolae
-#' @param res an object created by \code{qpcrANOVA(x)} function on a one factor data such as \code{data_1factor}.
+#' @param res an FC data frame object created by \code{qpcrANOVA(x)$Result} function on a one factor data such as \code{data_1factor}.
 #' @param width a positive number determining bar width.
 #' @param fill  specify a fill color.
 #' @param y.axis.adjust  a negative or positive number for reducing or increasing the length of the y axis.
@@ -27,7 +27,7 @@
 #' @examples
 #'
 #' # Before plotting, the result needs to be extracted as below:
-#' res <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)
+#' res <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result
 #'
 #' # Bar plot
 #' oneFACTORplot(res,
@@ -61,12 +61,16 @@ oneFACTORplot <- function(res,
                           axis.text.x.angle = 0,
                           axis.text.x.hjust = 0.5){
 
-  x <- res$Result
-  RE <- x$RE
+  
+  x <- res
   LCL <- x$LCL
   UCL <- x$UCL
   se <- x$se
-
+  
+  if (any(grepl("RE", names(x)))) {
+  RE <- x$RE
+  
+  
   q1f1 <- ggplot(x, aes(rownames(x), y = RE, group = rownames(x))) +
     geom_col(color = "black", fill = fill, width = width) +
     #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
@@ -132,9 +136,86 @@ oneFACTORplot <- function(res,
   } else if(errorbar == "ci") {
     out1 <- list(plot = q1f2)
   }
-  
+  }
   
 
+  
+  
+  
+  
+  
+  if (any(grepl("FC", names(x)))) {
+    x$FC <- as.numeric(x$FC)
+    letters <- x$sig
+    FC <- x$FC
+    
+    
+    q1f1 <- ggplot(x, aes(contrast, y = FC, group = contrast)) +
+      geom_col(color = "black", fill = fill, width = width) +
+      #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
+      geom_errorbar(aes(ymin = FC, ymax = FC + se), width = 0.1) +
+      ylab(ylab) +
+      xlab(xlab) +
+      theme_bw() +
+      theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
+            axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
+            axis.title  = element_text(size = fontsize),
+            legend.text = element_text(size = fontsize)) +
+      scale_y_continuous(breaks = seq(0, max(FC) + max(se) + y.axis.adjust, by = y.axis.by),
+                         limits = c(0, max(FC) + max(se) + y.axis.adjust), expand = c(0, 0))
+    
+    if (show.letters) {
+      q1f1 <-q1f1 +
+        geom_text(data = x, aes(label = letters, x = contrast, y = FC + se + letter.position.adjust),
+                  vjust = -0.5, size = fontsizePvalue)
+    }
+    
+    if(xlab == "none"){
+      q1f1 <- q1f1 + 
+        labs(x = NULL)
+    }else{
+      q1f1 <- q1f1 +
+        xlab(xlab)
+    }
+    
+    
+    
+    q1f2 <- ggplot(x, aes(contrast, y = FC, group = contrast)) +
+      geom_col(color = "black", fill = fill, width = width) +
+      #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
+      geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0.1) +
+      ylab(ylab) +
+      theme_bw() +
+      theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
+            axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
+            axis.title  = element_text(size = fontsize),
+            legend.text = element_text(size = fontsize)) +
+      scale_y_continuous(breaks = seq(0, max(FC) + max(LCL) + y.axis.adjust, by = y.axis.by),
+                         limits = c(0, max(FC) + max(LCL) + y.axis.adjust), expand = c(0, 0))
+    
+    if (show.letters) {
+      q1f2 <- q1f2 +
+        geom_text(data = x, aes(label = letters, x = contrast, y = UCL + letter.position.adjust),
+                  vjust = -0.5, size = fontsizePvalue)
+    }
+    
+    if(xlab == "none"){
+      q1f2 <- q1f2 + 
+        labs(x = NULL)
+    }else{
+      q1f2 <- q1f2 +
+        xlab(xlab)
+    }
+    
+    
+    
+    if(errorbar == "se") {
+      out1 <- list(plot = q1f1)
+      
+    } else if(errorbar == "ci") {
+      out1 <- list(plot = q1f2)
+    }
+  }
   
   return(out1)
 }

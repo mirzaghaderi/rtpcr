@@ -166,3 +166,47 @@
 #' @source Lee et al, (2020) <doi:10.12688/f1000research.23580.2>
 #' @keywords internal
 "Lee_etal2020qPCR"
+
+
+
+#' Repeated measure sample data
+#'
+#' A repeated measure sample data in which 6 individuals have been analysed.  In the "id" column, a unique number is assigned to each individual,  e.g. all the three number 1 indicate one individual.
+#' samples are taken or measurements are scored over different time points (time column) from each individual.
+#'
+#' @format A data frame with 18 observations and 7 variables:
+#' \describe{
+#'   \item{id}{experimental factor}
+#'   \item{treatment}{treatment}
+#'   \item{time}{time course levels}
+#'   \item{Eg}{Amplification efficiency of target gene}
+#'   \item{Ctg}{Ct of target gene}
+#'   \item{Eref}{Amplification efficiency of reference gene}
+#'   \item{Ctref}{Ct of reference gene}
+#' }
+#' 
+#' @source NA
+#' @keywords internal
+
+"data_repeated_measure_2"
+
+
+#' Repeated measure sample data
+#'
+#' A repeated measure sample data in which 3 individuals have been analysed.  In the "id" column, a unique number is assigned to each individual, e.g. all the three number 1 indicate one individual.
+#' samples are taken or measurements are scored over different time points (time column) from each individual.
+#'
+#' @format A data frame with 9 observations and 6 variables:
+#' \describe{
+#'   \item{id}{experimental factor}
+#'   \item{time}{time course levels}
+#'   \item{Eg}{Amplification efficiency of target gene}
+#'   \item{Ctg}{Ct of target gene}
+#'   \item{Eref}{Amplification efficiency of reference gene}
+#'   \item{Ctref}{Ct of reference gene}
+#' }
+#' 
+#' @source NA
+#' @keywords internal
+
+"data_repeated_measure_1"

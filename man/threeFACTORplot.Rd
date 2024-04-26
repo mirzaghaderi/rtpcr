@@ -25,7 +25,7 @@ threeFACTORplot(
 )
 }
 \arguments{
-\item{res}{an object created by \code{qpcrANOVA(x)} function on a three factorial data such as \code{data_3factor} example data frame.}
+\item{res}{the FC data frame created by \code{qpcrANOVA(x)$Result} function on a three factorial data such as \code{data_3factor} example data frame.}
 
 \item{arrangement}{order based on the columns in the output table (e.g. c(2,3,1) or c(1,3,2)) affecting factor arrangement of the output graph.}
 
@@ -74,7 +74,7 @@ The \code{threeFACTORplot} function generates the bar plot of the average fold c
 data_3factor
 
 # Before plotting, the result needs to be extracted as below:
-res <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)
+res <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)$Result
 res
 
 # Arrange the first three colunms of the result table.

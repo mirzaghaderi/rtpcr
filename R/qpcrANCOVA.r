@@ -3,7 +3,7 @@
 #' \code{qpcrANCOVA} function, for uni- or multi-factorial experiment data. This function performs FC analysis even
 #' if there is only one factor (without covariate variable), although, for the data with 
 #' only one factor, the analysis turns into ANOVA. The bar plot of the fold changes (FC) 
-#' values along with the standard error (se) of confidence interval (ci) is also returned by the \code{qpcrANCOVA} function. 
+#' values along with the standard error (se) or confidence interval (ci) is also returned by the \code{qpcrANCOVA} function. 
 #' @details The \code{qpcrANCOVA} function applies both ANCOVA and ANOVA analysis to the data of a uni- or 
 #' multi-factorial experiment, although for the data with 
 #' only one factor, the analysis turns to ANOVA. ANCOVA is basically appropriate when the 
@@ -35,7 +35,7 @@
 #' @import emmeans
 #' @param x a data frame of condition(s), biological replicates, efficiency (E) and Ct values of target and reference genes. Each Ct value in the data frame is the mean of technical replicates. NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment). Please refer to the vignette for preparing your data frame correctly.
 #' @param numberOfrefGenes number of reference genes which is 1 or 2 (Up to two reference genes can be handled).
-#' @param analysisType should be one of "ancova" or "anova".
+#' @param analysisType should be one of "ancova" or "anova". Default is "ancova".
 #' @param mainFactor.column the factor for which FC is calculated for its levels. The remaining factors (if any) are considered as covariate(s).
 #' @param mainFactor.level.order  NULL or a vector of main factor level names. The first level in the vector is used 
 #' as reference or calibrator which is the reference level or sample that all others are compared to. Examples are untreated 
@@ -85,9 +85,7 @@
 #'  qpcrANCOVA(data_1factor, 
 #'             numberOfrefGenes = 1,
 #'             mainFactor.column = 1,
-#'             mainFactor.level.order = c("L1", "L2", "L3"),
 #'             fill = c("#CDC673", "#EEDD82"),
-#'             analysisType = "ancova",
 #'             fontsizePvalue = 5,
 #'             y.axis.adjust = 0.1)
 #'

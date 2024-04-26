@@ -22,7 +22,7 @@ oneFACTORplot(
 )
 }
 \arguments{
-\item{res}{an object created by \code{qpcrANOVA(x)} function on a one factor data such as \code{data_1factor}.}
+\item{res}{an FC data frame object created by \code{qpcrANOVA(x)$Result} function on a one factor data such as \code{data_1factor}.}
 
 \item{width}{a positive number determining bar width.}
 
@@ -62,7 +62,7 @@ The \code{oneFACTORplot} function generates the bar plot of the average fold cha
 \examples{
 
 # Before plotting, the result needs to be extracted as below:
-res <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)
+res <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result
 
 # Bar plot
 oneFACTORplot(res,

@@ -32,7 +32,7 @@ qpcrANCOVA(
 
 \item{numberOfrefGenes}{number of reference genes which is 1 or 2 (Up to two reference genes can be handled).}
 
-\item{analysisType}{should be one of "ancova" or "anova".}
+\item{analysisType}{should be one of "ancova" or "anova". Default is "ancova".}
 
 \item{mainFactor.column}{the factor for which FC is calculated for its levels. The remaining factors (if any) are considered as covariate(s).}
 
@@ -88,7 +88,7 @@ ANCOVA (analysis of covariance) and ANOVA (analysis of variance) can be performe
 \code{qpcrANCOVA} function, for uni- or multi-factorial experiment data. This function performs FC analysis even
 if there is only one factor (without covariate variable), although, for the data with 
 only one factor, the analysis turns into ANOVA. The bar plot of the fold changes (FC) 
-values along with the standard error (se) of confidence interval (ci) is also returned by the \code{qpcrANCOVA} function.
+values along with the standard error (se) or confidence interval (ci) is also returned by the \code{qpcrANCOVA} function.
 }
 \details{
 The \code{qpcrANCOVA} function applies both ANCOVA and ANOVA analysis to the data of a uni- or 
@@ -119,9 +119,7 @@ is significant, suggesting that ANCOVA is not appropriate in this case.
  qpcrANCOVA(data_1factor, 
             numberOfrefGenes = 1,
             mainFactor.column = 1,
-            mainFactor.level.order = c("L1", "L2", "L3"),
             fill = c("#CDC673", "#EEDD82"),
-            analysisType = "ancova",
             fontsizePvalue = 5,
             y.axis.adjust = 0.1)
 

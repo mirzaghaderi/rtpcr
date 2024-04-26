@@ -9,7 +9,7 @@
 #' @import ggplot2
 #' @import lme4
 #' @import agricolae
-#' @param res an object created by \code{qpcrANOVA(x)} function on a three factorial data such as \code{data_3factor} example data frame.
+#' @param res the FC data frame created by \code{qpcrANOVA(x)$Result} function on a three factorial data such as \code{data_3factor} example data frame.
 #' @param arrangement order based on the columns in the output table (e.g. c(2,3,1) or c(1,3,2)) affecting factor arrangement of the output graph.
 #' @param bar.width a positive number determining bar width.
 #' @param fill  a color vector specifying the fill color for the columns of the bar plot. One of the palettes in \code{\link[RColorBrewer]{display.brewer.all}} (e.g. "Reds" or "Blues", ...) can be applied.
@@ -33,7 +33,7 @@
 #' data_3factor
 #'
 #' # Before plotting, the result needs to be extracted as below:
-#' res <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)
+#' res <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)$Result
 #' res
 #'
 #' # Arrange the first three colunms of the result table.
@@ -108,13 +108,15 @@ threeFACTORplot <- function(res,
                          axis.text.x.angle = 0,
                          axis.text.x.hjust = 0.5){
   
-  x <- res$Result
+  x <- res
   x <- x[, c(arrangement, 4:ncol(x))]
-  RE <- x$RE
   se <- x$se
   LCL <- x$LCL
   UCL <- x$UCL
   
+  
+  if (any(grepl("RE", names(x)))) {
+    RE <- x$RE
   
   pp1 <- ggplot(x, aes(x[,1], y = RE, fill = x[,2])) +
     geom_bar(stat = "identity", position = "dodge", width =  bar.width, col = "black") +
@@ -197,8 +199,101 @@ threeFACTORplot <- function(res,
   } else if(errorbar == "ci") {
     out <- list(plot = pp2)
   }
-  
+  }
 
+  
+  
+  
+  
+  if (any(grepl("FC", names(x)))) {
+    x$FC <- as.numeric(x$FC)
+    letters <- x$sig
+    FC <- x$FC
+    
+    pp1 <- ggplot(x, aes(x[,1], y = FC, fill = x[,2])) +
+      geom_bar(stat = "identity", position = "dodge", width =  bar.width, col = "black") +
+      geom_errorbar(aes(ymax = FC + se, ymin = FC),
+                    position = position_dodge(bar.width), width = 0.15, color = "black") +
+      facet_grid( ~ x[,3])+
+      ylab(ylab) +
+      theme_bw() +
+      theme(legend.position = legend.position) +
+      scale_fill_brewer(palette = fill) +
+      scale_y_continuous(breaks = seq(0, max(x$FC) + max(x$se) +
+                                        y.axis.adjust, by = y.axis.by),
+                         limits = c(0, max(x$FC) + max(x$se) + y.axis.adjust),
+                         expand = c(0, 0)) +
+      theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
+            axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
+            axis.title  = element_text(size = fontsize)) +
+      theme(legend.text = element_text(colour = "black", size = fontsize),
+            legend.background = element_rect(fill = "transparent")) +
+      guides(fill = guide_legend(title = legend.title, theme = theme(legend.title = element_text(size = 12, colour = "black")))) +
+      theme(strip.background = element_rect(fill = "#F0FFFF")) +
+      theme(strip.text = element_text(size = fontsize))
+    
+    if (show.letters) {
+      pp1 <- pp1 + 
+        geom_text(data = x, aes(label=letters, y = FC + se + letter.position.adjust), color = "black",
+                  show.legend = FALSE, position = position_dodge(bar.width), size = fontsizePvalue)
+    }
+    
+    if(xlab == "none"){
+      pp1 <- pp1 + 
+        labs(x = NULL)
+    }else{
+      pp1 <- pp1 +
+        xlab(xlab)
+    }
+    
+    
+    
+    pp2 <- ggplot(x, aes(x[,1], y = FC, fill = x[,2])) +
+      geom_bar(stat = "identity", position = "dodge", width =  bar.width, col = "black") +
+      geom_errorbar(aes(ymin = LCL, ymax = UCL),
+                    position = position_dodge(bar.width), width = 0.15, color = "black") +
+      facet_grid( ~ x[,3])+
+      ylab(ylab) +
+      theme_bw() +
+      theme(legend.position = legend.position) +
+      scale_fill_brewer(palette = fill) +
+      scale_y_continuous(breaks = seq(0, max(x$FC) + max(x$LCL) +
+                                        y.axis.adjust, by = y.axis.by),
+                         limits = c(0, max(x$FC) + max(x$LCL) + y.axis.adjust),
+                         expand = c(0, 0)) +
+      theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
+            axis.text.y = element_text(size = fontsize, color = "black", angle = 0, hjust = 0.5),
+            axis.title  = element_text(size = fontsize)) +
+      theme(legend.text = element_text(colour = "black", size = fontsize),
+            legend.background = element_rect(fill = "transparent")) +
+      guides(fill = guide_legend(title = legend.title, theme = theme(legend.title = element_text(size = fontsize, colour = "black")))) +
+      theme(strip.background = element_rect(fill = "#F0FFFF")) +
+      theme(strip.text = element_text(size = fontsize))
+    
+    if (show.letters) {
+      pp2 <- pp2 +
+        geom_text(data = x, aes(label=letters, y = UCL + letter.position.adjust), color = "black",
+                  show.legend = FALSE, position = position_dodge(bar.width), size = fontsizePvalue)
+    }
+    
+    if(xlab == "none"){
+      pp2 <- pp2 + 
+        labs(x = NULL)
+    }else{
+      pp2 <- pp2 +
+        xlab(xlab)
+    }
+    
+    
+    if(errorbar == "se") {
+      out <- list(plot = pp1)
+      
+    } else if(errorbar == "ci") {
+      out <- list(plot = pp2)
+    }
+  }
+  
+  
   
   return(out)
 }

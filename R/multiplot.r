@@ -15,7 +15,7 @@
 #'                     width = 0.3)
 #' 
 #' 
-#' out2 <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)
+#' out2 <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result
 #' p2 <- oneFACTORplot(out2,
 #'                     width = 0.2,
 #'                     fill = "skyblue",

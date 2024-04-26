@@ -114,7 +114,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
 
 # Data structure and column arrangement
 
-To use the functions, input data should be prepared in the right format with appropriate column arrangement. The correct column arrangement is shown in Table 1.
+To use the functions, input data should be prepared in the right format with appropriate column arrangement. The correct column arrangement is shown in Table 1 and Table 2. For ANOVA and ANCOVA analysis, ensure that each line in the data set belongs to a separate individual (reflecting a non-repeated measure experiment).
 
 *Table 1. Data structure and column arrangement required for ‘rtpcr’ package.  rep: technical replicate; targetE and refE: amplification efficiency columns for target and reference genes respectively. targetCt and refCt: target and reference Ct columns, respectively. factors (factor1, factor2 and/or factor3): experimental factors.*
 
@@ -133,7 +133,21 @@ To use the functions, input data should be prepared in the right format with app
  |                |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - ref1E - ref1Ct - ref2E - ref2Ct  | |
  
 
-NOTE: For ANOVA and ANCOVA analysis, each line in the input data set should belong to a separate individual reflecting a non-repeated measure experiment).
+NOTE: For ANOVA and ANCOVA analysis, each line in the input data set belongs to a separate individual (reflecting a non-repeated measure experiment).
+
+
+
+
+*Table 2. Repeated measure data structure and column arrangement required for ‘rtpcr’ package.  targetE and refE: amplification efficiency columns for target and reference genes respectively. targetCt and refCt: target and reference Ct columns, respectively. In the "id" column, a unique number is assigned to each individual, e.g. all the three number 1 indicate one individual.*
+
+ | Experiment type      |  Column arrangement of the input data   | Example in the package                   |
+ |:---------------------|:----------------------------------------|:------------------------------------------|
+ |Repeated measure      | id - time - targetE - targetCt - ref1E - ref1Ct | data_repeated_measure_1 |
+ |                      | id - time - targetE - targetCt - ref1E - ref1Ct - ref2E - ref2Ct | |
+  |Repeated measure     | id - treatment - time - targetE - targetCt - ref1E - ref1Ct | data_repeated_measure_2 |
+ |                      | id - treatment - time - targetE - targetCt - ref1E - ref1Ct - ref2E - ref2Ct | |
+
+
 
 To see list of data in the rtpcr package run `data(package = "rtpcr")`. 
 Example data sets can be presented by running the name of each data set. A description of the columns names in  each data set is called by "?" followed by the names of the data set, for example `?data_1factor`
@@ -144,19 +158,20 @@ To simplify 'rtpcr' usage, examples for using the functions are presented below.
 
 
            
-*Table 2. Functions and examples for using them.*
+*Table 3. Functions and examples for using them.*
 
  | function             |                 Analysis | Example (see package help for more arguments) |
  |:---------------------|:-----------------------------------|:----------------------------------|
  | efficiency             | Efficiency, standard curves and related statistics | efficiency(data_efficiency) |
  | meanTech      | Calculating the mean of technical replicates | meanTech(data_withTechRep, groups = 1:4) |
  | qpcrANCOVA      | FC and bar plot of the target gene (one or multi-factorial experiments) | qpcrANCOVA(data_1factor, numberOfrefGenes = 1, mainFactor.column = 1, mainFactor.level.order = c("L1", "L2", "L3") |
- |  oneFACTORplot    | Bar plot of the relative gene expression from a one-factor experiment | out <- qpcrANOVA(data_1factor, numberOfrefGenes = 1);   oneFACTORplot(out) |
+ |  oneFACTORplot    | Bar plot of the relative gene expression from a one-factor experiment | out <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)\$Result;   oneFACTORplot(out) |
  |  qpcrANOVA  | Analysis of Variance of the qpcr data  | qpcrANOVA(data_3factor, numberOfrefGenes = 1)|
  | qpcrTTEST     | Computing the average fold change and related statistics | qpcrTTEST(data_ttest,  numberOfrefGenes = 1, paired = FALSE, var.equal = TRUE) |
  | qpcrTTESTplot  | Bar plot of the average fold change of the target genes	 | qpcrTTESTplot(data_ttest,  numberOfrefGenes = 1, order = c("C2H2-01", "C2H2-12", "C2H2-26")) |
- |  threeFACTORplot  | Bar plot of the relative gene expression from a three-factor experiment | res <- qpcrANOVA(data_3factor,  numberOfrefGenes = 1); threeFACTORplot(res, arrangement = c(3, 1, 2)) |
- | twoFACTORplot   | Bar plot of the relative gene expression from a two-factor experiment | res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1); twoFACTORplot(res, x.axis.factor = Genotype, group.factor = Drought) |
+ |  threeFACTORplot  | Bar plot of the relative gene expression from a three-factor experiment | res <- qpcrANOVA(data_3factor,  numberOfrefGenes = 1)\$Result; threeFACTORplot(res, arrangement = c(3, 1, 2)) |
+ | twoFACTORplot   | Bar plot of the relative gene expression from a two-factor experiment | res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)\$Result; twoFACTORplot(res, x.axis.factor = Genotype, group.factor = Drought) |
+  | qpcrREPEATED   | Bar plot of the fold change expression for repeated measure data (where you take observations repeatedly over time) |  qpcrREPEATED(data_repeated_measure_2, numberOfrefGenes = 1 |
  
 
  
@@ -204,7 +219,7 @@ data_ttest
 
 ### Data analysis under two conditions
 
-Here, the above data set was used for the Fold Change expression analysis of the target genes using the `qpcrTTEST` function. This function performs a t-test-based analysis of any number of genes that have been evaluated under control and treatment conditions. The output is a table of target gene names, fold changes confidence limits, and the t.test derived p-values. The `qpcrTTEST` function includes the `var.equal` argument. When set to `FALSE`, `t.test` is performed under the unequal variances hypothesis. Furthermore, the samples in qPCR may be unpaired or paired so the analysis can be done for unpaired or paired conditions. Paired samples refer to a situation where the measurements are made on the same set of subjects or individuals. This could occur if the data is aquired from the same set of individulas before and after a treatment. In such cases, the paired t-test is used for statistical comparisons by setting the t-test `paired` argument to `TRUE`.
+Here, the above data set was used for the Fold Change expression analysis of the target genes using the `qpcrTTEST` function. This function performs a t-test-based analysis of any number of genes that have been evaluated under control and treatment conditions. The output is a table of target gene names, fold changes confidence limits, and the t.test derived p-values. The `qpcrTTEST` function includes the `var.equal` argument. When set to `FALSE`, `t.test` is performed under the unequal variances hypothesis. Furthermore, the samples in qPCR may be unpaired or paired so the analysis can be done for unpaired or paired conditions. Paired samples refer to a situation where the measurements are made on the same set of subjects or individuals. This could occur if the data is acquired from the same set of individuals before and after a treatment. In such cases, the paired t-test is used for statistical comparisons by setting the t-test `paired` argument to `TRUE`.
 
 ```{r eval= T}
 qpcrTTEST(data_ttest, 
@@ -301,7 +316,7 @@ res$Post_hoc_Test
 ```{r eval= T, fig.height = 4, fig.width = 9, fig.align = 'center', fig.cap = "A: bar plot representing Relative expression of a gene under three levels of a factor generated using `oneFACTORplot` function, B: Plot of the Fold change expression produced by the `qpcrANCOVA` function from the same data used for 'A'. The first element in the `mainFactor.level.order` argument (here L1) is served as the Reference level, although the x-axis names have later been renamed by the `x.axis.labels.rename` argument. Error bars represent 95% confidence interval in A and standard error in B."}
 
 # Before plotting, the result needs to be extracted as below:
-out2 <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)
+out2 <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result
 
 f1 <- oneFACTORplot(out2,
               width = 0.2,
@@ -350,7 +365,8 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ```{r eval= T, include = T, fig.height = 4, fig.width = 9, fig.align = 'center', fig.cap = "Relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard error. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from a `LSD.test`."}
 
 # Before plotting, the result needs to be extracted as below:
-res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)
+res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Result
+Final_data <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Final_data
 
 # Plot of the 'res' data with 'Genotype' as grouping factor
 q1 <- twoFACTORplot(res,
@@ -375,7 +391,6 @@ q2 <- twoFACTORplot(res,
    legend.position = c(0.15, 0.8),
    show.letters = FALSE,
    show.errorbars = F,
-   show.points = T,
    fontsizePvalue = 4)
 
 multiplot(q1, q2, cols = 2)
@@ -390,7 +405,7 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ### A three-factorial experiment example
 ```{r, fig.height = 5, fig.width = 11, fig.align = 'center', fig.cap = "A and B) Relative expression (RE) of a target gene from a three-factorial experiment data produced by  `threeFACTORplot`  function. Error bars represent standard error (A), although can be set to confidence interval (B). Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an ‘LSD.test’."}
 # Before plotting, the result needs to be extracted as below:
-res <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)
+res <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)$Result
 res
 
 # releveling a factor levels first
@@ -428,6 +443,23 @@ grid.text("A", x = 0.02, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ```
 
+
+# Repeated measure data in qpcr
+```{r, eval=T, fig.height = 4, fig.width = 7, fig.align = 'center', fig.cap = "Fold change expression (FC) of a target gene from a one and a two factorial experiment data produced by  `qpcrREPEATED`  function. Error bars represent standard error (A), although can be set to confidence interval."}
+
+a <- qpcrREPEATED(data_repeated_measure_1,
+                  numberOfrefGenes = 1,
+                  fill = c("#778899", "#BCD2EE"),
+                  axis.text.x.angle = 45,
+                  axis.text.x.hjust = 1)
+
+b <- qpcrREPEATED(data_repeated_measure_2,
+                  numberOfrefGenes = 1,
+                  axis.text.x.angle = 45,
+                  axis.text.x.hjust = 1)
+
+multiplot(a, b, cols = 2)
+```
 
 # An example of showing point on the plot
 ```{r, eval=T, include = T, fig.height = 4, fig.width = 6, fig.align = 'center'}

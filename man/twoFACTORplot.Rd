@@ -15,7 +15,6 @@ twoFACTORplot(
   show.errorbars = TRUE,
   errorbar = "se",
   show.letters = TRUE,
-  show.points = FALSE,
   letter.position.adjust = 0.1,
   ylab = "Relative Expression",
   xlab = "none",
@@ -27,7 +26,7 @@ twoFACTORplot(
 )
 }
 \arguments{
-\item{res}{an object created by \code{qpcrANOVA(x)} function on a two factor data such as \code{data_2factor}.}
+\item{res}{the FC data frame created by \code{qpcrANOVA(x)$Result} function on a two factor data such as \code{data_2factor}.}
 
 \item{x.axis.factor}{x-axis factor.}
 
@@ -46,8 +45,6 @@ twoFACTORplot(
 \item{errorbar}{Type of error bar, can be \code{se} or \code{ci}.}
 
 \item{show.letters}{a logical variable. If TRUE, mean grouping letters are added to the bars.}
-
-\item{show.points}{show points}
 
 \item{letter.position.adjust}{adjust the distance between the grouping letters to the error bars.}
 
@@ -80,8 +77,7 @@ The \code{twoFACTORplot} function generates the bar plot of the average fold cha
 data_2factor
 
 # Before generating plot, the result table needs to be extracted as below:
-res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)
-res
+res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Result
 
 # Plot of the 'res' data with 'Genotype' as grouping factor
 twoFACTORplot(res,
@@ -93,21 +89,18 @@ twoFACTORplot(res,
    y.axis.by = 2,
    ylab = "Relative Expression",
    xlab = "Drought Levels",
-   show.letters = TRUE, 
    letter.position.adjust = 0.2,
    legend.position = c(0.2, 0.8),
    errorbar = "se")
 
 # Plotting the same data with 'Drought' as grouping factor
 twoFACTORplot(res,
-   x.axis.factor = Genotype,
-   group.factor = Drought,
-   xlab = "Genotype",
-   fill = "Blues",
-   fontsize = 12,
-   show.letters = FALSE,
-   show.points = TRUE,
-   show.errorbars = FALSE)
+              x.axis.factor = Genotype,
+              group.factor = Drought,
+              xlab = "Genotype",
+              fill = "Blues",
+              fontsizePvalue = 5,
+              errorbar = "ci")
 
 
 }

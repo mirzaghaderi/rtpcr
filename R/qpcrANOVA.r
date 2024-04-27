@@ -12,7 +12,7 @@
 #' @import tidyr
 #' @import reshape2
 #' @import ggplot2
-#' @import lme4
+#' @import lmerTest
 #' @import agricolae
 #' @param x A data frame consisting of condition columns, target gene efficiency (E), target Gene Ct, reference gene efficiency and reference gene Ct values, respectively. Each Ct in the data frame is the mean of technical replicates. Complete amplification efficiencies of 2 was assumed in the example data for all wells but the calculated efficienies can be used instead. NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment).
 #' @param numberOfrefGenes number of reference genes (1 or 2). Up to two reference genes can be handled.

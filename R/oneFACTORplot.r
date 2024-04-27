@@ -7,7 +7,6 @@
 #' @import dplyr
 #' @import reshape2
 #' @import ggplot2
-#' @import lme4
 #' @import agricolae
 #' @param res an FC data frame object created by \code{qpcrANOVA(x)$Result} function on a one factor data such as \code{data_1factor}.
 #' @param width a positive number determining bar width.

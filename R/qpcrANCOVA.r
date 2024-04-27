@@ -31,7 +31,7 @@
 #' @import dplyr
 #' @import reshape2
 #' @import ggplot2
-#' @import lme4
+#' @import lmerTest
 #' @import emmeans
 #' @param x a data frame of condition(s), biological replicates, efficiency (E) and Ct values of target and reference genes. Each Ct value in the data frame is the mean of technical replicates. NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment). Please refer to the vignette for preparing your data frame correctly.
 #' @param numberOfrefGenes number of reference genes which is 1 or 2 (Up to two reference genes can be handled).

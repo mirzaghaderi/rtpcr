@@ -11,13 +11,14 @@
 #' @import dplyr
 #' @import reshape2
 #' @import ggplot2
-#' @import lme4
 #' @import emmeans
+#' @import lmerTest
 #' @param x a data frame of condition(s), biological replicates, efficiency (E) and Ct values of target and reference genes. Each Ct value in the data frame is the mean of technical replicates. NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment). Please refer to the vignette for preparing your data frame correctly.
 #' @param numberOfrefGenes number of reference genes which is 1 or 2 (Up to two reference genes can be handled).
 #' as reference or calibrator which is the reference level or sample that all others are compared to. Examples are untreated 
 #' of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.
 #' If NULL, the first level of the main factor column is used as calibrator.
+#' @param factor the factor for which the FC values is analysed.
 #' @param width a positive number determining bar width. 
 #' @param fill  specify the fill color for the columns in the bar plot. If a vector of two colors is specified, the reference level is differentialy colored.
 #' @param y.axis.adjust  a negative or positive value for reducing or increasing the length of the y axis.
@@ -51,16 +52,19 @@
 #' 
 #' qpcrREPEATED(data_repeated_measure_1,
 #'             numberOfrefGenes = 1,
-#'             block = NULL)
+#'             factor = "time")
 #'
 #' qpcrREPEATED(data_repeated_measure_2,
 #'              numberOfrefGenes = 1,
-#'              block = NULL)
+#'              factor = "time")
 #'                                                        
 #'                                                        
 
+
+
 qpcrREPEATED <- function(x,
                          numberOfrefGenes,
+                         factor,
                          block = NULL,
                          width = 0.5,
                          fill = "#BFEFFF",
@@ -145,8 +149,8 @@ qpcrREPEATED <- function(x,
   
   
   # converting columns 1 to time as factor
-  x[, 1:which(names(x) == "time")] <- lapply(x[, 1:which(names(x) == "time")], factor)
-  
+  x <- x %>% 
+    mutate(across(2:which(names(x) == "time"), as.factor))
   
   # Check if there is block
   if (is.null(block)) {
@@ -164,22 +168,31 @@ qpcrREPEATED <- function(x,
       formula <- paste("wDCt ~ ", paste("time"," *"), paste(factors, collapse = " * "), "+ (1 | id) + (1|block/id)")
       }
     }
-  lm <- lmer(formula, data = x)
+  lm <- lmerTest::lmer(formula, data = x)
   ANOVA <- stats::anova(lm) 
-  ANOVA
   
-  
-  
-  pp1 <- emmeans(lm, "time", data = x, adjust = p.adj)
+  v <- match(colnames(x), factor)
+  n <- which(!is.na(v))
+  factor <- colnames(x)[n]
+  x[,n] <- factor(x[,n])
+  lvls <- unique(x[,n])
+  calibrartor <- x[,n][1]
+  warning(paste("The level", calibrartor, " was used as calibrator."))
+  pp1 <- emmeans(lm, factor, data = x, adjust = p.adj)
   pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
-  pp3 <- pp2[1:length(unique(x$time))-1,]
-  ci <- as.data.frame(stats::confint(graphics::pairs(pp1)), adjust = p.adj)[1:length(unique(x$time))-1,]
+  if (length(lvls) >= 3){
+    pp3 <- pp2[1:length(lvls) - 1,] 
+  } else {
+    pp3 <- pp2
+  }
+  ci <- as.data.frame(stats::confint(graphics::pairs(pp1)), adjust = p.adj)[1:length(lvls)-1,]
+  #confint(contrast(pp1, interaction = "pairwise", by = NULL)
   pp <- cbind(pp3, lower.CL = ci$lower.CL, upper.CL = ci$upper.CL)
   
   bwDCt <- x$wDCt   
   se <- summarise(
-  group_by(data.frame(factor = x$time, bwDCt = bwDCt), x$time),
-  se = stats::sd(bwDCt, na.rm = TRUE)/sqrt(length(bwDCt)))  
+    group_by(data.frame(factor = x[n], bwDCt = bwDCt), x[n]),
+    se = stats::sd(bwDCt, na.rm = TRUE)/sqrt(length(bwDCt)))  
   
   
   sig <- .convert_to_character(pp$p.value)
@@ -192,7 +205,7 @@ qpcrREPEATED <- function(x,
                               UCL = 1/(2^-pp$upper.CL),
                               se = se$se[-1])
   
-  reference <- data.frame(contrast = "time1",
+  reference <- data.frame(contrast = factor,
                           FC = "1",
                           pvalue = 1, 
                           sig = " ",
@@ -201,6 +214,8 @@ qpcrREPEATED <- function(x,
                           se = se$se[1])
   
   tableC  <- rbind(reference, post_hoc_test)
+
+  
   
   FINALDATA <- x
   

@@ -7,6 +7,7 @@
 qpcrREPEATED(
   x,
   numberOfrefGenes,
+  factor,
   block = NULL,
   width = 0.5,
   fill = "#BFEFFF",
@@ -31,6 +32,8 @@ qpcrREPEATED(
 as reference or calibrator which is the reference level or sample that all others are compared to. Examples are untreated 
 of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.
 If NULL, the first level of the main factor column is used as calibrator.}
+
+\item{factor}{the factor for which the FC values is analysed.}
 
 \item{block}{column name of the block if there is a blocking factor (for correct column arrangement see example data.). 
 Block effect is usually considered as random and its interaction with any main effect is not considered.}
@@ -89,11 +92,11 @@ along with confidence interval and standard error for the FC values.
 
 qpcrREPEATED(data_repeated_measure_1,
             numberOfrefGenes = 1,
-            block = NULL)
+            factor = "time")
 
 qpcrREPEATED(data_repeated_measure_2,
              numberOfrefGenes = 1,
-             block = NULL)
+             factor = "time")
                                                        
                                                        
 }

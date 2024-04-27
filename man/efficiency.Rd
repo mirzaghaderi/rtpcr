@@ -4,10 +4,10 @@
 \alias{efficiency}
 \title{Efficiency, standard curves and related statistics}
 \usage{
-efficiency(x)
+efficiency(df)
 }
 \arguments{
-\item{x}{a data frame}
+\item{df}{a data frame}
 }
 \value{
 A list including standard curves along with the Slope, Efficiency, and R2 statistics

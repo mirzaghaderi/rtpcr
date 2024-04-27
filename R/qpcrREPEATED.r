@@ -35,14 +35,12 @@
 #' Block effect is usually considered as random and its interaction with any main effect is not considered.
 #' @param p.adj Method for adjusting p values
 #' @param errorbar Type of error bar, can be \code{se} or \code{ci}.
-#' @return A list with 7 elements:
+#' @return A list with 5 elements:
 #' \describe{
 #'   \item{Final_data}{Input data frame plus the weighted Delat Ct values (wDCt)}
-#'   \item{lm_ANOVA}{lm of factorial analysis-tyle}
-#'   \item{lm_ANCOVA}{lm of ANCOVA analysis-type}
+#'   \item{lm}{lm of factorial analysis-tyle}
 #'   \item{ANOVA_table}{ANOVA table}
-#'   \item{ANCOVA_table}{ANCOVA table}
-#'   \item{FC Table}{Table of FC values, significance and confidence limits for the main factor levels.}
+#'   \item{FC Table}{Table of FC values, significance, confidence interval and standard error for the selected factor levels.}
 #'   \item{Bar plot of FC values}{Bar plot of the fold change values for the main factor levels.}
 #' }
 #' 

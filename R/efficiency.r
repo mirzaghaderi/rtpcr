@@ -1,14 +1,14 @@
-#' @title Efficiency, standard curves and related statistics
-#' @description The \code{efficiency} function calculates amplification efficiency and returns standard curves and related statistics.
-#' @details The \code{efficiency} function calculates amplification efficiency of a target and a reference gene, and present the related standard curves along with the Slope, Efficiency, and R2 statistics. The function also compares the slopes of the two standard curves.
+#' @title Slope, R2 and Efficiency (E) statistics
+#' @description The \code{efficiency} function calculates amplification efficiency and returns related statistics.
+#' @details The \code{efficiency} function calculates amplification efficiency of genes, and present the Slope, Efficiency, and R2 statistics. 
 #' @author Ghader Mirzaghaderi
 #' @export efficiency
 #' @import tidyr
 #' @import dplyr
 #' @import reshape2
 #' @import purrr
-#' @param df a data frame
-#' @return A list including standard curves along with the Slope, Efficiency, and R2 statistics
+#' @param df a data frame of dilutions and Ct of genes. First column is dilutions and other columns are Ct values for different genes.
+#' @return A data frame including  Slope, R2 and Efficiency (E) statistics for each gene.
 #' @examples
 #'
 #' 

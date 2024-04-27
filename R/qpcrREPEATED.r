@@ -1,4 +1,4 @@
-#' @title Repeated measure analysis
+#' @title Repeated measure analysis of qPCR data
 #' @description Fold change (FC) analysis of observations repeatedly taken over time
 #' \code{qpcrREPEATED} function, for Repeated measure analysis of uni- or multi-factorial experiment data. The bar plot of the fold changes (FC) 
 #' values along with the standard error (se) or confidence interval (ci) is also returned by the \code{qpcrREPEATED} function. 
@@ -13,10 +13,11 @@
 #' @import ggplot2
 #' @import emmeans
 #' @import lmerTest
-#' @param x to prepare a data frame for  Repeated measure, please refer to the vignette. The first column of the data frame is id, 
+#' @param x The first column of the data frame is id, 
 #' followed by the factor(s) which include time. Other columns are efficiency and Ct values of targer and reference genes.
 #' In the "id" column, a unique number is assigned to each individual, for example in the \code{data_repeated_measure_1}, 
 #' all the three number 1 indicate one individual which has been sampled over different time courses.
+#' To prepare a data frame from a  repeated measure analysis, please refer to the vignette. 
 #' @param numberOfrefGenes number of reference genes which is 1 or 2 (Up to two reference genes can be handled).
 #' as reference or calibrator which is the reference level or sample that all others are compared to. Examples are untreated 
 #' of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.

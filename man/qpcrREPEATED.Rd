@@ -2,7 +2,7 @@
 % Please edit documentation in R/qpcrREPEATED.r
 \name{qpcrREPEATED}
 \alias{qpcrREPEATED}
-\title{Repeated measure analysis}
+\title{Repeated measure analysis of qPCR data}
 \usage{
 qpcrREPEATED(
   x,
@@ -26,7 +26,11 @@ qpcrREPEATED(
 )
 }
 \arguments{
-\item{x}{a data frame of condition(s), biological replicates, efficiency (E) and Ct values of target and reference genes. Each Ct value in the data frame is the mean of technical replicates. NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment). Please refer to the vignette for preparing your data frame correctly.}
+\item{x}{The first column of the data frame is id, 
+followed by the factor(s) which include time. Other columns are efficiency and Ct values of targer and reference genes.
+In the "id" column, a unique number is assigned to each individual, for example in the \code{data_repeated_measure_1}, 
+all the three number 1 indicate one individual which has been sampled over different time courses.
+To prepare a data frame from a  repeated measure analysis, please refer to the vignette.}
 
 \item{numberOfrefGenes}{number of reference genes which is 1 or 2 (Up to two reference genes can be handled).
 as reference or calibrator which is the reference level or sample that all others are compared to. Examples are untreated 
@@ -38,7 +42,7 @@ If NULL, the first level of the main factor column is used as calibrator.}
 \item{block}{column name of the block if there is a blocking factor (for correct column arrangement see example data.). 
 Block effect is usually considered as random and its interaction with any main effect is not considered.}
 
-\item{width}{a positive number determining bar width.}
+\item{width}{a positive number determining bar width in the output barplot.}
 
 \item{fill}{specify the fill color for the columns in the bar plot. If a vector of two colors is specified, the reference level is differentialy colored.}
 
@@ -67,14 +71,12 @@ Block effect is usually considered as random and its interaction with any main e
 \item{errorbar}{Type of error bar, can be \code{se} or \code{ci}.}
 }
 \value{
-A list with 7 elements:
+A list with 5 elements:
 \describe{
   \item{Final_data}{Input data frame plus the weighted Delat Ct values (wDCt)}
-  \item{lm_ANOVA}{lm of factorial analysis-tyle}
-  \item{lm_ANCOVA}{lm of ANCOVA analysis-type}
+  \item{lm}{lm of factorial analysis-tyle}
   \item{ANOVA_table}{ANOVA table}
-  \item{ANCOVA_table}{ANCOVA table}
-  \item{FC Table}{Table of FC values, significance and confidence limits for the main factor levels.}
+  \item{FC Table}{Table of FC values, significance, confidence interval and standard error for the selected factor levels.}
   \item{Bar plot of FC values}{Bar plot of the fold change values for the main factor levels.}
 }
 }

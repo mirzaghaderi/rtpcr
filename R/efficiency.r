@@ -6,6 +6,7 @@
 #' @import tidyr
 #' @import dplyr
 #' @import reshape2
+#' @import ggplot2
 #' @import purrr
 #' @param df a data frame of dilutions and Ct of genes. First column is dilutions and other columns are Ct values for different genes.
 #' @return A data frame including  Slope, R2 and Efficiency (E) statistics for each gene.
@@ -44,5 +45,33 @@ efficiency <- function(df) {
   colnames(results) <- c("Gene", "Slope", "R2", "E")
   rownames(results) <- NULL
 
-   return(results)
+  
+
+  
+  # COMPAIRING SLOPES
+  # making a long format data
+  e <- melt(df, id = "dilutions")
+  
+  dilutions <- e$dilutions
+  value <- e$value
+  
+  lm <- lm(value ~ log10(dilutions) * variable, data = e)
+  slopes <- emtrends(lm, pairwise ~ variable, var = "log10(dilutions)")
+  
+  
+  
+  
+  
+  fits <- lapply(df[,-1], function(x) lm(x ~ log10(df[,1])))
+  mdat <- melt(df,id="dilutions")
+  variable <- mdat$variable
+  p <- ggplot(data = mdat) + 
+    geom_point(aes(y = value, x = log10(dilutions), color=variable)) +
+    geom_smooth(data=mdat,aes(x = log10(dilutions),y=value,color = variable),formula = y ~ x,
+                method = "lm", se = F)
+  
+  
+  
+  res <- list(Efficiency = results, Slope_compare = slopes, plot = p)
+   return(res)
 }

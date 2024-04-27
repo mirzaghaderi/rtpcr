@@ -22,7 +22,7 @@
 #' of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.
 #' If NULL, the first level of the main factor column is used as calibrator.
 #' @param factor the factor for which the FC values is analysed.
-#' @param width a positive number determining bar width. 
+#' @param width a positive number determining bar width in the output barplot. 
 #' @param fill  specify the fill color for the columns in the bar plot. If a vector of two colors is specified, the reference level is differentialy colored.
 #' @param y.axis.adjust  a negative or positive value for reducing or increasing the length of the y axis.
 #' @param letter.position.adjust adjust the distance between the signs and the error bars.

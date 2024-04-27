@@ -13,7 +13,10 @@
 #' @import ggplot2
 #' @import emmeans
 #' @import lmerTest
-#' @param x a data frame of condition(s), biological replicates, efficiency (E) and Ct values of target and reference genes. Each Ct value in the data frame is the mean of technical replicates. NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment). Please refer to the vignette for preparing your data frame correctly.
+#' @param x to prepare a data frame for  Repeated measure, please refer to the vignette. The first column of the data frame is id, 
+#' followed by the factor(s) which include time. Other columns are efficiency and Ct values of targer and reference genes.
+#' In the "id" column, a unique number is assigned to each individual, for example in the \code{data_repeated_measure_1}, 
+#' all the three number 1 indicate one individual which has been sampled over different time courses.
 #' @param numberOfrefGenes number of reference genes which is 1 or 2 (Up to two reference genes can be handled).
 #' as reference or calibrator which is the reference level or sample that all others are compared to. Examples are untreated 
 #' of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.

@@ -26,9 +26,9 @@ qpcrREPEATED(
 )
 }
 \arguments{
-\item{x}{The first column of the data frame is id, 
-followed by the factor(s) which include time. Other columns are efficiency and Ct values of target and reference genes.
-In the "id" column, a unique number is assigned to each individual, for example in the \code{data_repeated_measure_1}, 
+\item{x}{input data frame in which the first column is id, 
+followed by the factor(s) which include at least time factor. Additional factor(s) may also be present. Other columns are efficiency and Ct values of target and reference genes.
+In the "id" column, a unique number is assigned to each individual from which samples have been takes over time, for example in the \code{data_repeated_measure_1}, 
 all the three number 1 indicate one individual which has been sampled over different time courses.
 To prepare a data frame from a  repeated measure analysis, please refer to the vignette.}
 

@@ -14,7 +14,7 @@
 #' @import emmeans
 #' @import lmerTest
 #' @param x The first column of the data frame is id, 
-#' followed by the factor(s) which include time. Other columns are efficiency and Ct values of targer and reference genes.
+#' followed by the factor(s) which include time. Other columns are efficiency and Ct values of target and reference genes.
 #' In the "id" column, a unique number is assigned to each individual, for example in the \code{data_repeated_measure_1}, 
 #' all the three number 1 indicate one individual which has been sampled over different time courses.
 #' To prepare a data frame from a  repeated measure analysis, please refer to the vignette. 
@@ -22,8 +22,8 @@
 #' as reference or calibrator which is the reference level or sample that all others are compared to. Examples are untreated 
 #' of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.
 #' If NULL, the first level of the main factor column is used as calibrator.
-#' @param factor the factor for which the FC values is analysed.
-#' @param width a positive number determining bar width in the output barplot. 
+#' @param factor the factor for which the FC values is analysed. The first level of the specified factor in the input data frame is used as calibrator.
+#' @param width a positive number determining bar width in the output bar plot. 
 #' @param fill  specify the fill color for the columns in the bar plot. If a vector of two colors is specified, the reference level is differentialy colored.
 #' @param y.axis.adjust  a negative or positive value for reducing or increasing the length of the y axis.
 #' @param letter.position.adjust adjust the distance between the signs and the error bars.
@@ -83,10 +83,10 @@ qpcrREPEATED <- function(x,
                          p.adj = "none",
                          errorbar = "se"){
   
-
   
   
-    if (is.null(block)) {
+  
+  if (is.null(block)) {
     
     
     if(numberOfrefGenes == 1) {
@@ -150,9 +150,14 @@ qpcrREPEATED <- function(x,
   }
   
   
+  
+  
   # converting columns 1 to time as factor
-  x <- x %>% 
-    mutate(across(2:which(names(x) == "time"), as.factor))
+  
+  for (i in 2:which(names(x) == "time")) {
+    x[[i]] <- factor(x[[i]], levels = unique(x[[i]]))
+  }
+  
   
   # Check if there is block
   if (is.null(block)) {
@@ -161,24 +166,29 @@ qpcrREPEATED <- function(x,
     } else {
       formula <- paste("wDCt ~", paste("time"," *"), paste(factors, collapse = " * "), "+ (1 | id)")
       #formula <- paste("wDCt ~", paste("as.factor(","time",") *"), paste("as.factor(", factors, ")", collapse = " * "), "+ (1 | id)")
-      }
-    } else {
-      #x <- x[, c(match("block", names(x)), (1:ncol(x))[-match("block", names(x))])]
-      if((ncol(x)-6) <= 2){
-      formula <- wDCt ~ time + (1|id) + (1|block/id)
-      } else {
-      formula <- paste("wDCt ~ ", paste("time"," *"), paste(factors, collapse = " * "), "+ (1 | id) + (1|block/id)")
-      }
     }
+  } else {
+    #x <- x[, c(match("block", names(x)), (1:ncol(x))[-match("block", names(x))])]
+    if((ncol(x)-6) <= 2){
+      formula <- wDCt ~ time + (1|id) + (1|block/id)
+    } else {
+      formula <- paste("wDCt ~ ", paste("time"," *"), paste(factors, collapse = " * "), "+ (1 | id) + (1|block/id)")
+    }
+  }
   lm <- lmerTest::lmer(formula, data = x)
   ANOVA <- stats::anova(lm) 
+  
+  
+  
+  
+  
   
   v <- match(colnames(x), factor)
   n <- which(!is.na(v))
   factor <- colnames(x)[n]
-  x[,n] <- factor(x[,n])
   lvls <- unique(x[,n])
-  calibrartor <- x[,n][1]
+  calibrartor <- lvls[1]
+  
   warning(paste("The level", calibrartor, " was used as calibrator."))
   pp1 <- emmeans(lm, factor, data = x, adjust = p.adj)
   pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
@@ -207,7 +217,12 @@ qpcrREPEATED <- function(x,
                               UCL = 1/(2^-pp$upper.CL),
                               se = se$se[-1])
   
-  reference <- data.frame(contrast = factor,
+  
+  words <- strsplit(as.character(contrast[1]), " ")[[1]]
+  referencelevel <- words[1]
+ 
+  
+  reference <- data.frame(contrast = as.character(referencelevel),
                           FC = "1",
                           pvalue = 1, 
                           sig = " ",
@@ -216,8 +231,8 @@ qpcrREPEATED <- function(x,
                           se = se$se[1])
   
   tableC  <- rbind(reference, post_hoc_test)
-
   
+  factor
   
   FINALDATA <- x
   
@@ -239,6 +254,11 @@ qpcrREPEATED <- function(x,
   FCp <- as.numeric(tableC$FC)
   significance <- tableC$sig
   se <- tableC$se
+  
+  
+  
+  
+  
   
   
   
@@ -296,7 +316,7 @@ qpcrREPEATED <- function(x,
   }
   
   
-
+  
   
   outlist2 <- list(Final_data = x,
                    lm = lm,

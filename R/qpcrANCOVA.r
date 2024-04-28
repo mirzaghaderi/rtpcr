@@ -37,8 +37,8 @@
 #' @param numberOfrefGenes number of reference genes which is 1 or 2 (Up to two reference genes can be handled).
 #' @param analysisType should be one of "ancova" or "anova". Default is "ancova".
 #' @param mainFactor.column the factor for which FC is calculated for its levels. The remaining factors (if any) are considered as covariate(s).
-#' @param mainFactor.level.order  NULL or a vector of main factor level names. The first level in the vector is used 
-#' as reference or calibrator which is the reference level or sample that all others are compared to. Examples are untreated 
+#' @param mainFactor.level.order  NULL or a vector of main factor level names. If \code{NULL}, the first level of the \code{mainFactor.column} is used 
+#' as reference or calibrator. If a vector of main factor levels (in any order) is specified, the first level in the vector is used as calibrator. Calibrator is the reference level or sample that all others are compared to. Examples are untreated 
 #' of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.
 #' If NULL, the first level of the main factor column is used as calibrator.
 #' @param width a positive number determining bar width. 

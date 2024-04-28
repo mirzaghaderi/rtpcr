@@ -71,9 +71,9 @@ oneFACTORplot <- function(res,
   
   
   q1f1 <- ggplot(x, aes(rownames(x), y = RE, group = rownames(x))) +
-    geom_col(color = "black", fill = fill, width = width) +
-    #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
-    geom_errorbar(aes(ymin = RE, ymax = RE + se), width = 0.1) +
+    geom_col(color = "black", fill = fill[1], width = width) + 
+  #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
+  geom_errorbar(aes(ymin = RE, ymax = RE + se), width = 0.1) +
     ylab(ylab) +
     xlab(xlab) +
     theme_bw() +
@@ -101,9 +101,9 @@ oneFACTORplot <- function(res,
 
 
   q1f2 <- ggplot(x, aes(rownames(x), y = RE, group = rownames(x))) +
-    geom_col(color = "black", fill = fill, width = width) +
-    #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
-    geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0.1) +
+    geom_col(color = "black",  fill = fill[1], width = width) +
+  #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
+  geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0.1) +
     ylab(ylab) +
     theme_bw() +
     theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),
@@ -149,10 +149,21 @@ oneFACTORplot <- function(res,
     FC <- x$FC
     
     
-    q1f1 <- ggplot(x, aes(contrast, y = FC, group = contrast)) +
-      geom_col(color = "black", fill = fill, width = width) +
-      #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
-      geom_errorbar(aes(ymin = FC, ymax = FC + se), width = 0.1) +
+    q1f1 <- ggplot(x, aes(contrast, y = FC, fill = contrast, group = contrast)) +
+      geom_col(color = "black", width = width) 
+    
+    
+    if(length(fill) == 2) {
+      q1f1 <- q1f1 +
+        scale_fill_manual(values = c(fill[1], rep(fill[2], nrow(x)-1))) + guides(fill = "none")
+    } 
+    if (length(fill) == 1) {
+      q1f1 <- q1f1 +
+        scale_fill_manual(values = rep(fill, nrow(x))) + guides(fill = "none")
+    }
+    
+    #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
+    q1f1 <- q1f1 + geom_errorbar(aes(ymin = FC, ymax = FC + se), width = 0.1) +
       ylab(ylab) +
       xlab(xlab) +
       theme_bw() +
@@ -179,10 +190,23 @@ oneFACTORplot <- function(res,
     
     
     
-    q1f2 <- ggplot(x, aes(contrast, y = FC, group = contrast)) +
-      geom_col(color = "black", fill = fill, width = width) +
+    q1f2 <- ggplot(x, aes(contrast, y = FC, fill = contrast, group = contrast)) +
+      geom_col(color = "black", width = width) 
+    
+    
+    if(length(fill) == 2) {
+      q1f2 <- q1f2 +
+        scale_fill_manual(values = c(fill[1], rep(fill[2], nrow(x)-1))) + guides(fill = "none")
+    } 
+    if (length(fill) == 1) {
+      q1f2 <- q1f2 +
+        scale_fill_manual(values = rep(fill, nrow(x))) + guides(fill = "none")
+    }
+    
+    
+    
       #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
-      geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0.1) +
+    q1f2 <- q1f2 + geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0.1) +
       ylab(ylab) +
       theme_bw() +
       theme(axis.text.x = element_text(size = fontsize, color = "black", angle = axis.text.x.angle, hjust = axis.text.x.hjust),

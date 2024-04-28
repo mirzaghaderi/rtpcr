@@ -27,7 +27,7 @@ qpcrREPEATED(
 }
 \arguments{
 \item{x}{The first column of the data frame is id, 
-followed by the factor(s) which include time. Other columns are efficiency and Ct values of targer and reference genes.
+followed by the factor(s) which include time. Other columns are efficiency and Ct values of target and reference genes.
 In the "id" column, a unique number is assigned to each individual, for example in the \code{data_repeated_measure_1}, 
 all the three number 1 indicate one individual which has been sampled over different time courses.
 To prepare a data frame from a  repeated measure analysis, please refer to the vignette.}
@@ -37,12 +37,12 @@ as reference or calibrator which is the reference level or sample that all other
 of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.
 If NULL, the first level of the main factor column is used as calibrator.}
 
-\item{factor}{the factor for which the FC values is analysed.}
+\item{factor}{the factor for which the FC values is analysed. The first level of the specified factor in the input data frame is used as calibrator.}
 
 \item{block}{column name of the block if there is a blocking factor (for correct column arrangement see example data.). 
 Block effect is usually considered as random and its interaction with any main effect is not considered.}
 
-\item{width}{a positive number determining bar width in the output barplot.}
+\item{width}{a positive number determining bar width in the output bar plot.}
 
 \item{fill}{specify the fill color for the columns in the bar plot. If a vector of two colors is specified, the reference level is differentialy colored.}
 

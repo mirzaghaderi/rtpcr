@@ -36,7 +36,7 @@ Real-time polymerase chain reaction (real-time PCR) is widely used in biological
 and <a href="https://doi.org/10.1016/j.tibtech.2018.12.002">Taylor et al. 2019</a>, matching both <a href="https://doi.org/10.1006/meth.2001.1262">Livak and Schmittgen (2001)</a> and <a href="https://doi.org/10.1093/nar/30.9.e36">Pfaffl et al. (2002) </a> methods  was used. Based on the experimental conditions, the functions of the ‘rtpcr’ package use t-test (for experiments with a two-level factor), analysis of variance, analysis of covariance (ANCOVA) or analysis of repeated measure data to calculate the fold change (FC, ${\Delta\Delta C_t}$ method) or relative expression (RE, ${\Delta C_t}$ method). The functions further provide standard errors and confidence interval for means, apply statistical mean comparisons and present significance. To facilitate function application, different data sets were used as examples and the outputs were explained. An outstanding feature of ‘rtpcr’ package is providing publication-ready bar plots with various controlling arguments for experiments with up to three different factors which are further editable by ggplot2 functions.
 
 # Calculation methods
-The basic method for expression estimation of a gene between conditions relies on the calculation of fold differences by applying the PCR amplification efficiency (E) and the threshold cycle (syn. crossing point or Ct). Among the various approaches developed for data analysis in real-time PCR, the Livak approach, also known as the $2^{-\Delta\Delta C_t}$ method, stands out for its simplicity and widespread use where the fold change (FC) exoression ($2^{-\Delta\Delta C_t}$) in Treatment (Tr) compared to Control (Co) condition is calculated according to equation:
+The basic method for expression estimation of a gene between conditions relies on the calculation of fold differences by applying the PCR amplification efficiency (E) and the threshold cycle (syn. crossing point or Ct). Among the various approaches developed for data analysis in real-time PCR, the Livak approach, also known as the $2^{-\Delta\Delta C_t}$ method, stands out for its simplicity and widespread use where the fold change (FC) exoression $(2^{-\Delta\Delta C_t})$ in Treatment (Tr) compared to Control (Co) condition is calculated according to equation:
 
 
 $$\begin{align*}
@@ -58,7 +58,7 @@ $$\text{Fold change} = \frac{E^{-(C_{t_{\text{Tr}}}-C_{t_{\text{Co}}})_{target}}
 {E^{-(C_{t_{\text{Tr}}}-C_{t_{\text{Co}}})_{ref}}}$$
 
 # A generalized calculation method
-The rtpcr package was developed for the R environment in the major operating systems. The packager functions are mainly based on the calculation of efficiency-weighted $\Delta C_t$ ($w\Delta C_t$) values from target and reference gene Ct (equation 3). $w\Delta C_t$  values are weighted for the amplification efficiencies as described by Ganger et al. (2017) except that log2 was used instead of log10:
+The rtpcr package was developed for the R environment in the major operating systems. The packager functions are mainly based on the calculation of efficiency-weighted $\Delta C_t$ $(w\Delta C_t)$ values from target and reference gene Ct (equation 3). $w\Delta C_t$  values are weighted for the amplification efficiencies as described by Ganger et al. (2017) except that log2 was used instead of log10:
 
 
 $$w\Delta Ct =\log_{2}(E_{target}).Ct_{target}-\log_{2}(E_{ref}).Ct_{ref}$$
@@ -166,11 +166,11 @@ To simplify 'rtpcr' usage, examples for using the functions are presented below.
  | qpcrANCOVA      | FC and bar plot of the target gene (one or multi-factorial experiments) | qpcrANCOVA(data_1factor, numberOfrefGenes = 1, mainFactor.column = 1, mainFactor.level.order = c("L1", "L2", "L3") |
  |  oneFACTORplot    | Bar plot of the relative gene expression from a one-factor experiment | out <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)\$Result;   oneFACTORplot(out) |
  |  qpcrANOVA  | Analysis of Variance of the qpcr data  | qpcrANOVA(data_3factor, numberOfrefGenes = 1)|
- | qpcrTTEST     | Computing the average fold change and related statistics | qpcrTTEST(data_ttest,  numberOfrefGenes = 1, paired = FALSE, var.equal = TRUE) |
+ | qpcrTTEST     | Computing the fold change and related statistics | qpcrTTEST(data_ttest,  numberOfrefGenes = 1, paired = FALSE, var.equal = TRUE) |
  | qpcrTTESTplot  | Bar plot of the average fold change of the target genes	 | qpcrTTESTplot(data_ttest,  numberOfrefGenes = 1, order = c("C2H2-01", "C2H2-12", "C2H2-26")) |
  |  threeFACTORplot  | Bar plot of the relative gene expression from a three-factor experiment | res <- qpcrANOVA(data_3factor,  numberOfrefGenes = 1)\$Result; threeFACTORplot(res, arrangement = c(3, 1, 2)) |
  | twoFACTORplot   | Bar plot of the relative gene expression from a two-factor experiment | res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)\$Result; twoFACTORplot(res, x.axis.factor = Genotype, group.factor = Drought) |
-  | qpcrREPEATED   | Bar plot of the fold change expression for repeated measure data (where you take observations repeatedly over time) |  qpcrREPEATED(data_repeated_measure_2, numberOfrefGenes = 1 |
+  | qpcrREPEATED   | Bar plot of the fold change expression for repeated measure observations (taken over time from each individual) |  qpcrREPEATED(data_repeated_measure_2, numberOfrefGenes = 1 |
  
 
  

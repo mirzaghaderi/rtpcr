@@ -2,7 +2,7 @@
 % Please edit documentation in R/efficiency.r
 \name{efficiency}
 \alias{efficiency}
-\title{Slope, R2 and Efficiency (E) statistics}
+\title{Slope, R2 and Efficiency (E) statistics and standard curves}
 \usage{
 efficiency(df)
 }
@@ -10,10 +10,15 @@ efficiency(df)
 \item{df}{a data frame of dilutions and Ct of genes. First column is dilutions and other columns are Ct values for different genes.}
 }
 \value{
-A data frame including  Slope, R2 and Efficiency (E) statistics for each gene.
+A list 3 elements.
+\describe{
+  \item{efficiency}{Slope, R2 and Efficiency (E) statistics}
+  \item{Slope_compare}{slope comparison table}
+  \item{plot}{standard curves}
+  }
 }
 \description{
-The \code{efficiency} function calculates amplification efficiency and returns related statistics.
+The \code{efficiency} function calculates amplification efficiency and returns related statistics and standard curves.
 }
 \details{
 The \code{efficiency} function calculates amplification efficiency of genes, and present the Slope, Efficiency, and R2 statistics.

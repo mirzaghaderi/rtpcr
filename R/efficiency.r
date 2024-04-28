@@ -1,5 +1,5 @@
-#' @title Slope, R2 and Efficiency (E) statistics
-#' @description The \code{efficiency} function calculates amplification efficiency and returns related statistics.
+#' @title Slope, R2 and Efficiency (E) statistics and standard curves
+#' @description The \code{efficiency} function calculates amplification efficiency and returns related statistics and standard curves.
 #' @details The \code{efficiency} function calculates amplification efficiency of genes, and present the Slope, Efficiency, and R2 statistics. 
 #' @author Ghader Mirzaghaderi
 #' @export efficiency
@@ -9,7 +9,12 @@
 #' @import ggplot2
 #' @import purrr
 #' @param df a data frame of dilutions and Ct of genes. First column is dilutions and other columns are Ct values for different genes.
-#' @return A data frame including  Slope, R2 and Efficiency (E) statistics for each gene.
+#' @return A list 3 elements.
+#' \describe{
+#'   \item{efficiency}{Slope, R2 and Efficiency (E) statistics}
+#'   \item{Slope_compare}{slope comparison table}
+#'   \item{plot}{standard curves}
+#'   }
 #' @examples
 #'
 #' 
@@ -63,11 +68,13 @@ efficiency <- function(df) {
   
   
   fits <- lapply(df[,-1], function(x) lm(x ~ log10(df[,1])))
-  mdat <- melt(df,id="dilutions")
-  variable <- mdat$variable
+  mdat <- melt(df, id="dilutions")
+  Ct <- mdat$value
+  Gene <- mdat$variable
+  variable <- mdat$Gene
   p <- ggplot(data = mdat) + 
-    geom_point(aes(y = value, x = log10(dilutions), color=variable)) +
-    geom_smooth(data=mdat,aes(x = log10(dilutions),y=value,color = variable),formula = y ~ x,
+    geom_point(aes(y = Ct, x = log10(dilutions), color = Gene)) +
+    geom_smooth(data = mdat,aes(x = log10(dilutions), y = Ct, color = Gene), formula = y ~ x,
                 method = "lm", se = F)
   
   

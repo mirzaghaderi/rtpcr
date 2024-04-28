@@ -1,10 +1,13 @@
-#' @title Repeated measure analysis of qPCR data
-#' @description Fold change (FC) analysis of observations repeatedly taken over time
-#' \code{qpcrREPEATED} function, for Repeated measure analysis of uni- or multi-factorial experiment data. The bar plot of the fold changes (FC) 
+#' @title Fold change (FC) analysis of repeated measure qPCR data
+#' 
+#' @description \code{qpcrREPEATED} function performs fold change (FC) analysis of observations repeatedly taken over different time courses, 
+#' Data may be obtained over time from a uni- or multi-factorial experiment. The bar plot of the fold changes (FC) 
 #' values along with the standard error (se) or confidence interval (ci) is also returned by the \code{qpcrREPEATED} function. 
-#' @details The \code{qpcrREPEATED} function prtforms Fold change (FC) analysis of observations repeatedly taken over time. It 
-#' performs a full model factorial analysis of variance to the data and returns FC values
-#' along with confidence interval and standard error for the FC values.
+#' 
+#' @details The \code{qpcrREPEATED} function performs fold change (FC) analysis of observations repeatedly taken over time. 
+#' The intended factor (could be time or any other factor) is defined for the analysis by the \code{factor} argument, then the function performs FC analyses on its levels
+#' so that the first levels (as appears in the input data frame) is used as reference or calibrator. the function returns FC values along with confidence interval and standard error for the FC values.
+#' 
 #' @author Ghader Mirzaghaderi
 #' @export qpcrREPEATED
 #' @import tidyr

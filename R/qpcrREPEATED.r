@@ -192,7 +192,7 @@ qpcrREPEATED <- function(x,
   lvls <- unique(x[,n])
   calibrartor <- lvls[1]
   
-  warning(paste("The level", calibrartor, " was used as calibrator."))
+  warning(paste("The level", calibrartor, " of the selected factor was used as calibrator."))
   pp1 <- emmeans(lm, factor, data = x, adjust = p.adj)
   pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
   if (length(lvls) >= 3){

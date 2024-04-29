@@ -497,15 +497,31 @@ ggplot(b, aes(x = Type, y = RE, fill = factor(Conc))) +
 
 # Checking normality of residuals
 
-If the residuals from a `t.test` or a `lm` object are not normally distributed, the grouping letters (deduced from the `LSD.test`) might be violated. In such cases, one could apply another data transformation to the wDCt data for ANOVA and mean comparison purposes or use non-parametric tests such as the Mann-Whitney test (also known as the Wilcoxon rank-sum test), `wilcox.test()`, which is an alternative to `t.test`, or the `kruskal.test()` test which alternative to one-way analysis of variance, to test the difference between medians of the populations using independent samples. However, the `t.test` function (along with the `qpcrTTEST` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis.
+If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, one could use non-parametric tests such as the Mann-Whitney test (also known as the Wilcoxon rank-sum test), `wilcox.test()`, which is an alternative to `t.test`, or the `kruskal.test()` test which alternative to one-way analysis of variance, to test the difference between medians of the populations using independent samples. However, the `t.test` function (along with the `qpcrTTEST` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis. Residuals for `lm` (from `qpcrANOVA` and `qpcrANCOVA` functions) and `lmer` (from `qpcrREPEATED` function) objects can be extracted and plotted as follow:
 
-```{r eval= T, eval= T, , fig.height = 4, fig.width = 5, fig.align = 'center', fig.cap = "QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions."}
+```{r eval= T, eval= T, , fig.height = 10, fig.width = 10, fig.align = 'center', fig.cap = "QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions."}
 
 residuals <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$lmCRD$residuals
 shapiro.test(residuals) 
 
+par(mfrow = c(2,2))
+plot(residuals)
 qqnorm(residuals)
 qqline(residuals, col = "red")
+
+
+# For the repeated measure models, residulas can be extracted by `residuals(a$lm)` and plotted by `plot(residuals(a$lm))` where 'a' is an object created by the `qpcrREPEATED` function.
+
+a <- qpcrREPEATED(data_repeated_measure_2, 
+                  numberOfrefGenes = 1, 
+                  factor = "time", 
+                  y.axis.adjust = 0.4)
+
+
+residuals(a$lm)
+plot(residuals(a$lm))
+qqnorm(residuals(a$lm))
+qqline(residuals(a$lm), col = "red")
 ```
 
 # Mean of technical replicates

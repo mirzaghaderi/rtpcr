@@ -2,7 +2,7 @@
 % Please edit documentation in R/qpcrTTESTplot.r
 \name{qpcrTTESTplot}
 \alias{qpcrTTESTplot}
-\title{Bar plot of the average fold change (FC) of the target genes}
+\title{Bar plot of the average fold change (\eqn{\Delta \Delta C_T} method) of the target genes}
 \usage{
 qpcrTTESTplot(
   x,
@@ -63,7 +63,7 @@ qpcrTTESTplot(
 Bar  plot of the average fold change for target genes along with the significance and the 95 percent CI as error bars.
 }
 \description{
-Bar plot of the average fold change (FC) values for for any number of target genes under a two-level conditional experimental (e.g. control and treatment).
+Bar plot of the average fold change (\eqn{\Delta \Delta C_T} method) values for for any number of target genes under a two-level conditional experimental (e.g. control and treatment).
 }
 \details{
 The \code{qpcrTTESTplot} function applies a t.test based analysis to any number of target genes 

@@ -1,9 +1,14 @@
-#' @title Fold change (FC) analysis using ANCOVA
+#' @title Fold change (\eqn{\Delta \Delta C_T} method) analysis using ANCOVA
+#' 
 #' @description ANCOVA (analysis of covariance) and ANOVA (analysis of variance) can be performed using 
-#' \code{qpcrANCOVA} function, for uni- or multi-factorial experiment data. This function performs FC analysis even
+#' 
+#' \code{qpcrANCOVA} function, for uni- or multi-factorial experiment data. This function performs fold 
+#' change or \eqn{\Delta \Delta C_T} method analysis for the target gene even
 #' if there is only one factor (without covariate variable), although, for the data with 
 #' only one factor, the analysis turns into ANOVA. The bar plot of the fold changes (FC) 
-#' values along with the standard error (se) or confidence interval (ci) is also returned by the \code{qpcrANCOVA} function. 
+#' values along with the standard error (se) and confidence interval (ci) is also returned by 
+#' the \code{qpcrANCOVA} function. 
+#' 
 #' @details The \code{qpcrANCOVA} function applies both ANCOVA and ANOVA analysis to the data of a uni- or 
 #' multi-factorial experiment, although for the data with 
 #' only one factor, the analysis turns to ANOVA. ANCOVA is basically appropriate when the 

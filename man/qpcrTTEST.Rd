@@ -2,7 +2,7 @@
 % Please edit documentation in R/qpcrTTEST.r
 \name{qpcrTTEST}
 \alias{qpcrTTEST}
-\title{fold change (FC) analysis of target genes using t-test}
+\title{Fold change (\eqn{\Delta \Delta C_T} method) analysis of target genes using t-test}
 \usage{
 qpcrTTEST(x, numberOfrefGenes, paired = FALSE, var.equal = TRUE)
 }
@@ -29,7 +29,7 @@ If the residuals of the model do not follow normal distribution and variances be
 t.test based analysis of the fold change expression for any number of target genes.
 }
 \details{
-The \code{qpcrTTEST} function applies a t.test based analysis to calculate fold change (FC) expression and returns related statistics for any number of target genes along with one or two 
+The \code{qpcrTTEST} function applies a t.test based analysis to calculate fold change (\eqn{\Delta \Delta C_T} method) expression and returns related statistics for any number of target genes along with one or two 
 reference gene(s), that have been evaluated under control and treatment conditions. Sampling may be paired or 
 unpaired. Paired samples in quantitative PCR refer to two sample data that are collected from one set of individuals 
 at two different conditions, for example before and after a treatment or at two different time points. While 

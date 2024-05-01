@@ -2,7 +2,7 @@
 % Please edit documentation in R/twoFACTORplot.r
 \name{twoFACTORplot}
 \alias{twoFACTORplot}
-\title{Bar plot of the relative gene expression (RE) from the \code{qpcrANOVA} output of a two-factorial experiment data}
+\title{Bar plot of the relative gene expression (\eqn{\Delta C_T} method) from the \code{qpcrANOVA} output of a two-factorial experiment data}
 \usage{
 twoFACTORplot(
   res,
@@ -66,7 +66,7 @@ twoFACTORplot(
 Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
 }
 \description{
-Bar plot of the relative expression (RE) of a gene along with the standard error (se), 95\% confidence interval (ci) and significance
+Bar plot of the relative expression (\eqn{\Delta C_T} method) of a gene along with the standard error (se), 95\% confidence interval (ci) and significance
 }
 \details{
 The \code{twoFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance, standard error (se) and the 95\% confidence interval (ci) as error bars.

@@ -1,6 +1,9 @@
-#' @title Bar plot of the relative gene expression (RE) from the \code{qpcrANOVA} output of a one-factor experiment data
+#' @title Bar plot of the relative gene expression (\eqn{\Delta C_T} method) from the \code{qpcrANOVA} output of a one-factor experiment data
+#' 
 #' @description Bar plot of the relative expression of a gene along with the standard error (se), 95\% confidence interval (ci) and significance. \code{oneFACTORplot} is mainly useful for a one-factor experiment with more than two levels.
+#' 
 #' @details The \code{oneFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
+#' 
 #' @author Ghader Mirzaghaderi
 #' @export oneFACTORplot
 #' @import tidyr

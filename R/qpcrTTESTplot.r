@@ -1,5 +1,7 @@
-#' @title Bar plot of the average fold change (FC) of the target genes
-#' @description Bar plot of the average fold change (FC) values for for any number of target genes under a two-level conditional experimental (e.g. control and treatment).
+#' @title Bar plot of the average fold change (\eqn{\Delta \Delta C_T} method) of the target genes
+#' 
+#' @description Bar plot of the average fold change (\eqn{\Delta \Delta C_T} method) values for for any number of target genes under a two-level conditional experimental (e.g. control and treatment).
+#' 
 #' @details The \code{qpcrTTESTplot} function applies a t.test based analysis to any number of target genes 
 #' along with one or two reference gene(s), that have been evaluated under control and treatment conditions. 
 #' It returns the bar plot of the fold change (FC) values for target genes along with the 95\% CI and significance. Sampling may be paired or 
@@ -8,6 +10,7 @@
 #' for unpaired samples, two sets of individuals are used: one under untreated and the other set under treated 
 #' condition. Paired samples allow to compare gene expression changes within the same individual, reducing 
 #' inter-individual variability. Unpaired and paired samples are commonly analyzed using unpaired and paired t-test, respectively.
+#' 
 #' @author Ghader Mirzaghaderi
 #' @export qpcrTTESTplot
 #' @import tidyr

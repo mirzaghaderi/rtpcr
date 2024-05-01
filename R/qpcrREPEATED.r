@@ -1,11 +1,11 @@
-#' @title Fold change (FC) analysis of repeated measure qPCR data
+#' @title Fold change (\eqn{\Delta \Delta C_T} method) analysis of repeated measure qPCR data
 #' 
-#' @description \code{qpcrREPEATED} function performs fold change (FC) analysis of observations repeatedly taken over different time courses, 
+#' @description \code{qpcrREPEATED} function performs fold change (\eqn{\Delta \Delta C_T} method) analysis of observations repeatedly taken over different time courses, 
 #' Data may be obtained over time from a uni- or multi-factorial experiment. The bar plot of the fold changes (FC) 
 #' values along with the standard error (se) or confidence interval (ci) is also returned by the \code{qpcrREPEATED} function. 
 #' 
 #' @details The \code{qpcrREPEATED} function performs fold change (FC) analysis of observations repeatedly taken over time. 
-#' The intended factor (could be time or any other factor) is defined for the analysis by the \code{factor} argument, then the function performs FC analyses on its levels
+#' The intended factor (could be time or any other factor) is defined for the analysis by the \code{factor} argument, then the function performs FC analysis on its levels
 #' so that the first levels (as appears in the input data frame) is used as reference or calibrator. the function returns FC values along with confidence interval and standard error for the FC values.
 #' 
 #' @author Ghader Mirzaghaderi

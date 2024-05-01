@@ -1,6 +1,9 @@
-#' @title Bar plot of the relative gene expression (RE) from the \code{qpcrANOVA} output of a a three-factorial experiment data
-#' @description Bar plot of the relative expression (RE) of a gene along with the confidence interval and significance
+#' @title Bar plot of the relative gene expression (\eqn{\Delta C_T} method) from the \code{qpcrANOVA} output of a a three-factorial experiment data
+#' 
+#' @description Bar plot of the relative expression (\eqn{\Delta C_T} method) of a gene along with the confidence interval and significance
+#' 
 #' @details The \code{threeFACTORplot} function generates the bar plot of the average fold change for target genes along with the significance, standard error (se) and the 95\% confidence interval (ci).
+#' 
 #' @author Ghader Mirzaghaderi
 #' @export threeFACTORplot
 #' @import tidyr

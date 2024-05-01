@@ -2,7 +2,7 @@
 % Please edit documentation in R/oneFACTORplot.r
 \name{oneFACTORplot}
 \alias{oneFACTORplot}
-\title{Bar plot of the relative gene expression (RE) from the \code{qpcrANOVA} output of a one-factor experiment data}
+\title{Bar plot of the relative gene expression (\eqn{\Delta C_T} method) from the \code{qpcrANOVA} output of a one-factor experiment data}
 \usage{
 oneFACTORplot(
   res,

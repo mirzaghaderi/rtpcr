@@ -199,7 +199,7 @@ qpcrANCOVA <- function(x,
   }
   
   
-  
+  # The data frame doesn't have ? columns. Please refer to the vignette to ensure that our data is properly structured.
   
   
   if (is.null(block)) {
@@ -335,7 +335,7 @@ qpcrANCOVA <- function(x,
                               se = se$se[-1])
   
   reference <- data.frame(contrast = mainFactor.level.order[1],
-                          FC = "1",
+                          FC = 1,
                           pvalue = 1, 
                           sig = " ",
                           LCL = 0,

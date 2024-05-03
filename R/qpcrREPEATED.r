@@ -168,10 +168,8 @@ qpcrREPEATED <- function(x,
       formula <- wDCt ~ time + (1 | id)
     } else {
       formula <- paste("wDCt ~", paste("time"," *"), paste(factors, collapse = " * "), "+ (1 | id)")
-      #formula <- paste("wDCt ~", paste("as.factor(","time",") *"), paste("as.factor(", factors, ")", collapse = " * "), "+ (1 | id)")
     }
   } else {
-    #x <- x[, c(match("block", names(x)), (1:ncol(x))[-match("block", names(x))])]
     if((ncol(x)-6) <= 2){
       formula <- wDCt ~ time + (1|id) + (1|block/id)
     } else {
@@ -201,7 +199,6 @@ qpcrREPEATED <- function(x,
     pp3 <- pp2
   }
   ci <- as.data.frame(stats::confint(graphics::pairs(pp1)), adjust = p.adj)[1:length(lvls)-1,]
-  #confint(contrast(pp1, interaction = "pairwise", by = NULL)
   pp <- cbind(pp3, lower.CL = ci$lower.CL, upper.CL = ci$upper.CL)
   
   bwDCt <- x$wDCt   
@@ -226,7 +223,7 @@ qpcrREPEATED <- function(x,
  
   
   reference <- data.frame(contrast = as.character(referencelevel),
-                          FC = "1",
+                          FC = 1,
                           pvalue = 1, 
                           sig = " ",
                           LCL = 0,

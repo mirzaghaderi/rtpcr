@@ -51,6 +51,7 @@
 #'    letter.position.adjust = 0.2,
 #'    legend.position = c(0.2, 0.8),
 #'    errorbar = "se")
+#'    
 #'
 #' # Plotting the same data with 'Drought' as grouping factor
 #' twoFACTORplot(res,
@@ -60,6 +61,28 @@
 #'               fill = "Blues",
 #'               fontsizePvalue = 5,
 #'               errorbar = "ci")
+#'               
+#'               
+#'               
+#' # Combining FC results of two different genes:
+#' a <- qpcrREPEATED(data_repeated_measure_1,
+#'                   numberOfrefGenes = 1,
+#'                   factor = "time")
+#' 
+#' b <- qpcrREPEATED(data_repeated_measure_2,
+#'                   factor = "time",
+#'                   numberOfrefGenes = 1)
+#' 
+#' a1 <- a$FC_statistics_of_the_main_factor
+#' b1 <- b$FC_statistics_of_the_main_factor
+#' c <- rbind(a1, b1)
+#' c$gene <- factor(c(1,1,1,2,2,2))
+#' c
+#' 
+#' twoFACTORplot(c, x.axis.factor = contrast, 
+#'               group.factor = gene, fill = 'Reds',
+#'               ylab = "FC", axis.text.x.angle = 45,
+#'               axis.text.x.hjust = 1)
 #'
 #'
 
@@ -186,8 +209,7 @@ twoFACTORplot <- function(res,
   
   
   if (any(grepl("FC", names(b)))) {
-    x$FC <- as.numeric(x$FC)
-    letters <- x$sig
+    letters <- b$sig
     FC <- b$FC
     
     qq1 <- ggplot(b, aes(factor({{x.axis.factor}}, levels = as.character(unique({{x.axis.factor}}))),

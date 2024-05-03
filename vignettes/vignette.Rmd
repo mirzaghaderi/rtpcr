@@ -538,6 +538,8 @@ meanTech(data_withTechRep, groups = 1:4)
 
 # Combining FC results of different genes
 
+`qpcrANCOVA` and `twoFACTORplot` functions give FC results for one gene each time. you can combine FC tables of different genes and present their bar plot by `twoFACTORplot` function. An example has been shown bellow for two genes, however it works for any number of genes.
+
 ```{r eval= T, eval= T, , fig.height = 4, fig.width = 5, fig.align = 'center', fig.cap = "Fold change expression of two different genes. FC tables of any number of genes can be combined and used as input data frame for `twoFACTORplot` function."}
 
 a <- qpcrREPEATED(data_repeated_measure_1,

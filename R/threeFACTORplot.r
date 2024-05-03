@@ -208,7 +208,6 @@ threeFACTORplot <- function(res,
   
   
   if (any(grepl("FC", names(x)))) {
-    x$FC <- as.numeric(x$FC)
     letters <- x$sig
     FC <- x$FC
     

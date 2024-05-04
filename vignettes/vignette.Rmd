@@ -472,6 +472,11 @@ library(ggplot2)
 b <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)$Result
 a <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)$Final_data
 
+# Arrange factor levels to your desired order:
+b$Conc <- factor(b$Conc, levels = c("L","M","H"))
+a$Conc <- factor(a$Conc, levels = c("L","M","H"))
+
+# Generating plot
 ggplot(b, aes(x = Type, y = RE, fill = factor(Conc))) +
   geom_bar(stat = "identity", position = "dodge") +
   facet_wrap(~ SA) +

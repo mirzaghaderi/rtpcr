@@ -188,6 +188,7 @@ qpcrANCOVA <- function(x,
   
   
   if (is.null(mainFactor.level.order)) {
+    x[,1] <- factor(x[,1], levels = unique(x[,1]))
     mainFactor.level.order <- unique(x[,1])
     calibrartor <- x[,1][1]
     warning(paste("The", calibrartor, "level was used as calibrator."))
@@ -310,6 +311,7 @@ qpcrANCOVA <- function(x,
   
   
   
+  
   pp1 <- emmeans(lm, colnames(x)[1], data = x, adjust = p.adj)
   pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
   pp3 <- pp2[1:length(mainFactor.level.order)-1,]
@@ -346,6 +348,7 @@ qpcrANCOVA <- function(x,
   
   FINALDATA <- x
   
+  tableC$contrast <- as.character(tableC$contrast)
   tableC$contrast <- sapply(strsplit(tableC$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))
   
   if(any(x.axis.labels.rename == "none")){

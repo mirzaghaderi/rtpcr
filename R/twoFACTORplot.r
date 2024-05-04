@@ -104,7 +104,7 @@ twoFACTORplot <- function(res,
                           xlab = "none",
                           legend.position = c(0.09, 0.8),
                           fontsize = 12,
-                          fontsizePvalue = 7,
+                          fontsizePvalue = 5,
                           axis.text.x.angle = 0,
                           axis.text.x.hjust = 0.5){
   b <- res

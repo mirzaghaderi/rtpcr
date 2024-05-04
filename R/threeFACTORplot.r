@@ -105,7 +105,7 @@ threeFACTORplot <- function(res,
                          legend.title = "Legend Title",
                          legend.position = c(0.4, 0.8),
                          fontsize = 12,
-                         fontsizePvalue = 7,
+                         fontsizePvalue = 5,
                          show.letters = TRUE,
                          axis.text.x.angle = 0,
                          axis.text.x.hjust = 0.5){

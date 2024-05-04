@@ -59,7 +59,7 @@ oneFACTORplot <- function(res,
                           ylab = "Relative Expression",
                           xlab = "none",
                           fontsize = 12,
-                          fontsizePvalue = 7,
+                          fontsizePvalue = 5,
                           axis.text.x.angle = 0,
                           axis.text.x.hjust = 0.5){
 

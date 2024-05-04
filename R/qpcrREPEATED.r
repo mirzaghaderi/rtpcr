@@ -17,9 +17,12 @@
 #' @import emmeans
 #' @import lmerTest
 #' @param x input data frame in which the first column is id, 
-#' followed by the factor(s) which include at least time factor. Additional factor(s) may also be present. Other columns are efficiency and Ct values of target and reference genes.
-#' In the "id" column, a unique number is assigned to each individual from which samples have been takes over time, for example in the \code{data_repeated_measure_1}, 
-#' all the three number 1 indicate one individual which has been sampled over different time courses.
+#' followed by the factor(s) which include at least time factor. 
+#' The first level of time factor in data set is used as calibrator or reference level.
+#' Additional factor(s) may also be present. Other columns are efficiency and Ct values of target and reference genes.
+#' In the "id" column, a unique number is assigned to each individual from which samples have been takes over time, 
+#' for example in the \code{data_repeated_measure_1}, 
+#' all the three number 1 indicate one individual which has been sampled over three different time courses.
 #' To prepare a data frame from a  repeated measure analysis, please refer to the vignette. 
 #' @param numberOfrefGenes number of reference genes which is 1 or 2 (Up to two reference genes can be handled).
 #' as reference or calibrator which is the reference level or sample that all others are compared to. Examples are untreated 

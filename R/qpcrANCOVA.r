@@ -329,7 +329,7 @@ qpcrANCOVA <- function(x,
   sig <- .convert_to_character(pp$p.value)
   contrast <- pp$contrast
   post_hoc_test <- data.frame(contrast, 
-                              FC = round(1/(2^-(pp$estimate)), 7),
+                              FC = 1/(2^-(pp$estimate)),
                               pvalue = pp$p.value,
                               sig = sig,
                               LCL = 1/(2^-pp$lower.CL),
@@ -345,6 +345,9 @@ qpcrANCOVA <- function(x,
                           se = se$se[1])
   
   tableC <- rbind(reference, post_hoc_test)
+  
+  #round tableC to 4 decimal places
+  tableC[, sapply(tableC, is.numeric)] <- lapply(tableC[, sapply(tableC, is.numeric)], function(x) round(x, 4))
   
   FINALDATA <- x
   

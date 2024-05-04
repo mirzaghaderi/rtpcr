@@ -206,11 +206,15 @@ qpcrANOVA <- function(x,
   se <- sdRow[order(sdRow$T),]      #sd <- sdRow[order(sdRow$T),]
   
   Results <- data.frame(mean[,(ncol(mean)-2):ncol(mean)],
-                        RE = round(2^(-mean$wDCt), 5),
-                        LCL = round(2^(-mean$UCL), 5),
-                        UCL = round(2^(-mean$LCL), 5),
+                        RE = 2^(-mean$wDCt),
+                        LCL = 2^(-mean$UCL),
+                        UCL = 2^(-mean$LCL),
                         letters = g$groups,
-                        se = round(se$se, 5))     #std = round(sd$sd, 5))
+                        se = se$se)
+  
+  
+  #round Results to 4 decimal places
+  Results[, sapply(Results, is.numeric)] <- lapply(Results[, sapply(Results, is.numeric)], function(x) round(x, 4))
   
   
   # removing additional columns!

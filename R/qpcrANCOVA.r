@@ -261,28 +261,34 @@ qpcrANCOVA <- function(x,
     }
   }
   
+
+  
+  # converting columns 1 to time as factor
+  
+  for (i in 2:which(names(x) == "rep")-1) {
+    x[[i]] <- factor(x[[i]], levels = unique(x[[i]]))
+  }
   
   
   # Check if there is block
   if (is.null(block)) {
     
     # ANOVA based on factorial design
-    formula_ANOVA <- paste("wDCt ~", paste("as.factor(", factors, ")", collapse = " * "))
+    formula_ANOVA <- paste("wDCt ~", paste(factors, collapse = " * "))
     lmf <- lm(formula_ANOVA, data = x)
     ANOVA <- stats::anova(lmf)
     # ANCOVA 
-    formula_ANCOVA <- paste("wDCt ~", paste("as.factor(", rev(factors), ")", collapse = " + "))
+    formula_ANCOVA <- paste("wDCt ~", paste(rev(factors), collapse = " + "))
     lmc <- lm(formula_ANCOVA, data = x)
     ANCOVA <- stats::anova(lmc)
-    #rownames(ANCOVA) <- as.vector(cat(paste0('"', rev(factors), '"'), '"Residuals"'))
     
   } else {
     # If ANOVA based on factorial design was desired with blocking factor:
-    formula_ANOVA <- paste("wDCt ~", paste("as.factor(", "block",") +"), paste("as.factor(", factors, ")", collapse = " * "))
+    formula_ANOVA <- paste("wDCt ~ block +", paste(factors, collapse = " * "))
     lmfb <- lm(formula_ANOVA, data = x)
     ANOVA <- stats::anova(lmfb)
     # ANCOVA 
-    formula_ANCOVA <- paste("wDCt ~", paste("as.factor(", "block",") +"), paste("as.factor(", rev(factors), ")", collapse = " + "))
+    formula_ANCOVA <- paste("wDCt ~ block +", paste(rev(factors), collapse = " + "))
     lmcb <- lm(formula_ANCOVA, data = x)
     ANCOVA <- stats::anova(lmcb)
   }
@@ -310,6 +316,10 @@ qpcrANCOVA <- function(x,
   
   
   
+  
+  
+
+ 
   
   
   pp1 <- emmeans(lm, colnames(x)[1], data = x, adjust = p.adj)
@@ -460,6 +470,13 @@ qpcrANCOVA <- function(x,
     lm_ANCOVA <- lmcb
   }
   
+  
+  
+  
+  
+  
+  
+  
   outlist2 <- list(Final_data = x,
                    lm_ANOVA = lm_ANOVA,
                    lm_ANCOVA = lm_ANCOVA,
@@ -470,3 +487,4 @@ qpcrANCOVA <- function(x,
 
   return(outlist2)
 }
+

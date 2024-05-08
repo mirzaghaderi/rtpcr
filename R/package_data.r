@@ -2,16 +2,18 @@
 #'
 #' A sample qPCR dataset for demonstrating efficiency calculation.
 #'
-#' @format A data frame with 21 observations and 3 variables:
+#' @format A data frame with 21 observations and 4 variables:
 #' \describe{
 #'   \item{dilutions}{Dilution factor}
-#'   \item{C2H2.26}{Target gene}
+#'   \item{C2H2.26}{Target gene 1}
+#'   \item{C2H2.01}{Target gene 2}
 #'   \item{GAPDH}{Reference gene}
 #' }
 #'
 #' @source Where the data comes from (if applicable)
 #' @keywords internal
 "data_efficiency"
+
 
 #' Sample data (one factor three levels)
 #'

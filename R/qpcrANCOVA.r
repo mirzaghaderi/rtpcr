@@ -274,22 +274,22 @@ qpcrANCOVA <- function(x,
   if (is.null(block)) {
     
     # ANOVA based on factorial design
-    formula_ANOVA <- paste("wDCt ~", paste(factors, collapse = " * "))
-    lmf <- lm(formula_ANOVA, data = x)
+    formula_ANOVA <- paste("wDCt ~", paste(factors, collapse = " * "), "+ (1 | rep)")
+    lmf <- lmerTest::lmer(formula_ANOVA, data = x)
     ANOVA <- stats::anova(lmf)
     # ANCOVA 
-    formula_ANCOVA <- paste("wDCt ~", paste(rev(factors), collapse = " + "))
-    lmc <- lm(formula_ANCOVA, data = x)
+    formula_ANCOVA <- paste("wDCt ~", paste(rev(factors), collapse = " + "), "+ (1 | rep)")
+    lmc <- lmerTest::lmer(formula_ANCOVA, data = x)
     ANCOVA <- stats::anova(lmc)
     
   } else {
     # If ANOVA based on factorial design was desired with blocking factor:
-    formula_ANOVA <- paste("wDCt ~ block +", paste(factors, collapse = " * "))
-    lmfb <- lm(formula_ANOVA, data = x)
+    formula_ANOVA <- paste("wDCt ~ block +", paste(factors, collapse = " * "), "+ (1 | rep)")
+    lmfb <- lmerTest::lmer(formula_ANOVA, data = x)
     ANOVA <- stats::anova(lmfb)
     # ANCOVA 
-    formula_ANCOVA <- paste("wDCt ~ block +", paste(rev(factors), collapse = " + "))
-    lmcb <- lm(formula_ANCOVA, data = x)
+    formula_ANCOVA <- paste("wDCt ~ block +", paste(rev(factors), collapse = " + "), "+ (1 | rep)")
+    lmcb <- lmerTest::lmer(formula_ANCOVA, data = x)
     ANCOVA <- stats::anova(lmcb)
   }
   
@@ -438,40 +438,15 @@ qpcrANCOVA <- function(x,
   
   
   
-  #changing as.factor(x) to x
+
 
   if (is.null(block)) {
-    lmf$coefficients <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", lmf$coefficients)
-    lmf$coefficients <- gsub(":as factor", ":", lmf$coefficients)
-    
-    rownames(ANOVA) <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", rownames(ANOVA))
-    rownames(ANOVA) <- gsub(":as factor", ":", rownames(ANOVA))
-    
-    lmc$coefficients <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", lmc$coefficients)
-    lmc$coefficients <- gsub(":as factor", ":", lmc$coefficients)
-    
-    rownames(ANCOVA) <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", rownames(ANCOVA))
-    rownames(ANCOVA) <- gsub(":as factor", ":", rownames(ANCOVA))
     lm_ANOVA <- lmf
     lm_ANCOVA <- lmc
   } else {
-    lmfb$coefficients <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", lmfb$coefficients)
-    lmfb$coefficients <- gsub(":as factor", ":", lmfb$coefficients)
-    
-    rownames(ANOVA) <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", rownames(ANOVA))
-    rownames(ANOVA) <- gsub(":as factor", ":", rownames(ANOVA))
-    
-    lmcb$coefficients <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", lmcb$coefficients)
-    lmcb$coefficients <- gsub(":as factor", ":", lmcb$coefficients)
-    
-    rownames(ANCOVA) <- gsub("as\\.factor\\(([^)]+)\\)", "\\1", rownames(ANCOVA))
-    rownames(ANCOVA) <- gsub(":as factor", ":", rownames(ANCOVA))
     lm_ANOVA <- lmfb
     lm_ANCOVA <- lmcb
   }
-  
-  
-  
   
   
   

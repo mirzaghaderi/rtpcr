@@ -274,11 +274,11 @@ qpcrANCOVA <- function(x,
     
     # ANOVA based on factorial design
     formula_ANOVA <- paste("wDCt ~", paste(factors, collapse = " * "), "+ (1 | rep)")
-    lmf <- lmerTest::lmer(formula_ANOVA, data = x)
+    base::suppressMessages(lmf <- lmerTest::lmer(formula_ANOVA, data = x))
     ANOVA <- stats::anova(lmf)
     # ANCOVA 
     formula_ANCOVA <- paste("wDCt ~", paste(rev(factors), collapse = " + "), "+ (1 | rep)")
-    lmc <- lmerTest::lmer(formula_ANCOVA, data = x)
+    base::suppressMessages(lmc <- lmerTest::lmer(formula_ANCOVA, data = x))
     ANCOVA <- stats::anova(lmc)
     
   } else {

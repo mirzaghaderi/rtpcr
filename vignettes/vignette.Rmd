@@ -210,7 +210,7 @@ Note: It is advised that the amplification efficiency be calculated for each cDN
 ## Target genes in two conditions (t-test)
 
 ### Example data
-When a target gene is assessed under two different conditions (for example Control and treatment), it is possible to calculate the average fold change expression i.e. $2^{-\Delta \Delta C_t}$ of the target gene in treatment relative to control conditions. For this, the data should be prepared according to the following data set consisting of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct value is the mean of technical replicates. Complete amplification efficiencies of 2 have been assumed here for all wells but the calculated efficiencies can be used instead. 
+When a target gene is assessed under two different conditions (for example Control and treatment), it is possible to calculate the average fold change expression $({\Delta \Delta C_t}$ method) of the target gene in treatment relative to control conditions. For this, the data should be prepared according to the following data set consisting of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct value is the mean of technical replicates. Complete amplification efficiencies of 2 have been assumed here for all wells but the calculated efficiencies can be used instead. 
 
 ```{r eval= T, fig.height = 3, fig.width = 5, fig.align = 'center'}
 data_ttest
@@ -464,6 +464,37 @@ b <- qpcrREPEATED(data_repeated_measure_2,
 
 multiplot(a, b, cols = 2)
 ```
+
+
+
+## Fold change analysis using a model
+
+The `qpcrMeans` performs fold change ${\Delta \Delta C_t}$ mwthid analysis using a model produced by the
+`qpcrANCOVA` or `qpcrREPEATED.` The values can be returned for any effects in the model including simple effects,
+interactions and slicing if an ANOVA model is used, but ANCOVA models returned by rtpcr package only include simple effects.
+
+```{r, eval=T}
+# Returning fold change values from a fitted model.
+# Firstly, result of `qpcrANCOVA` or `qpcrREPEATED` is 
+# acquired which includes a model object:
+res <- qpcrANCOVA(data_3factor, numberOfrefGenes = 1, mainFactor.column = 1)
+
+# Returning fold change values of Conc levels from a fitted model:
+qpcrMeans(res$lm_ANOVA, specs = "Conc")
+
+# Returning fold change values of Conc levels sliced by Type:
+qpcrMeans(res$lm_ANOVA, specs = "Conc | Type")
+
+# Returning fold change values of Conc levels sliced by Type*SA:
+qpcrMeans(res$lm_ANOVA, specs = "Conc | (Type*SA)")
+
+# Returning fold change values of Conc
+qpcrMeans(res$lm_ANOVA, specs = "Conc * Type")
+```
+
+
+
+
 
 # An example of showing point on the plot
 ```{r, eval=T, include = T, fig.height = 4, fig.width = 6, fig.align = 'center'}

@@ -115,7 +115,7 @@ twoFACTORplot <- function(res,
   
   if (any(grepl("RE", names(b)))) {
     RE <- b$RE
-    
+    if(errorbar == "se") { 
   qq1 <- ggplot(b, aes(factor({{x.axis.factor}}, levels = as.character(unique({{x.axis.factor}}))),
                        y = RE, group = {{ group.factor }}, fill = {{ group.factor }})) +
     geom_col(color = "black", position = "dodge", width = width) +
@@ -153,9 +153,8 @@ twoFACTORplot <- function(res,
     qq1 <- qq1 +
       xlab(xlab)
   }
-  
-  
-  qq2 <- ggplot(b, aes(factor({{x.axis.factor}}, levels = as.character(unique({{x.axis.factor}}))),
+    } else if(errorbar == "ci") {
+  qq1 <- ggplot(b, aes(factor({{x.axis.factor}}, levels = as.character(unique({{x.axis.factor}}))),
                        y = RE, group = {{ group.factor }}, fill = {{ group.factor }})) +
     geom_col(color = "black", position = "dodge", width = width) +
     scale_fill_brewer(palette = fill) +
@@ -174,32 +173,32 @@ twoFACTORplot <- function(res,
   
   
   if (show.errorbars) {
-    qq2 <-qq2 +
+    qq1 <-qq1 +
       geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0.2, position = position_dodge(width = 0.5))
   }
   
 
   if (show.letters) {
-    qq2 <- qq2 + 
+    qq1 <- qq1 + 
       geom_text(data = b, aes(label = letters, x = {{ x.axis.factor }}, y = UCL + letter.position.adjust), 
                 vjust = -0.5, size = fontsizePvalue, position = position_dodge(width = 0.5))
   }
   
   if(xlab == "none"){
-    qq2 <- qq2 + 
+    qq1 <- qq1 + 
       labs(x = NULL)
   }else{
-    qq2 <- qq2 +
+    qq1 <- qq1 +
       xlab(xlab)
   }
+    }
   
-  
-  if(errorbar == "se") {
-    out2 <- list(plot = qq1)
-    
-  } else if(errorbar == "ci") {
-    out2 <- list(plot = qq2)
-  }
+  # if(errorbar == "se") {
+  #   out2 <- list(plot = qq1)
+  #   
+  # } else if(errorbar == "ci") {
+  #   out2 <- list(plot = qq1)
+  # }
   }
   
   
@@ -211,7 +210,7 @@ twoFACTORplot <- function(res,
   if (any(grepl("FC", names(b)))) {
     letters <- b$sig
     FC <- b$FC
-    
+    if(errorbar == "se") {
     qq1 <- ggplot(b, aes(factor({{x.axis.factor}}, levels = as.character(unique({{x.axis.factor}}))),
                          y = FC, group = {{ group.factor }}, fill = {{ group.factor }})) +
       geom_col(color = "black", position = "dodge", width = width) +
@@ -249,9 +248,8 @@ twoFACTORplot <- function(res,
       qq1 <- qq1 +
         xlab(xlab)
     }
-    
-    
-    qq2 <- ggplot(b, aes(factor({{x.axis.factor}}, levels = as.character(unique({{x.axis.factor}}))),
+    } else if(errorbar == "ci") {
+    qq1 <- ggplot(b, aes(factor({{x.axis.factor}}, levels = as.character(unique({{x.axis.factor}}))),
                          y = FC, group = {{ group.factor }}, fill = {{ group.factor }})) +
       geom_col(color = "black", position = "dodge", width = width) +
       scale_fill_brewer(palette = fill) +
@@ -270,36 +268,31 @@ twoFACTORplot <- function(res,
     
     
     if (show.errorbars) {
-      qq2 <-qq2 +
+      qq1 <-qq1 +
         geom_errorbar(aes(ymin = LCL, ymax = UCL), width = 0.2, position = position_dodge(width = 0.5))
     }
     
     
     if (show.letters) {
-      qq2 <- qq2 + 
+      qq1 <- qq1 + 
         geom_text(data = b, aes(label = letters, x = {{ x.axis.factor }}, y = UCL + letter.position.adjust), 
                   vjust = -0.5, size = fontsizePvalue, position = position_dodge(width = 0.5))
     }
     
     if(xlab == "none"){
-      qq2 <- qq2 + 
+      qq1 <- qq1 + 
         labs(x = NULL)
     }else{
-      qq2 <- qq2 +
+      qq1 <- qq1 +
         xlab(xlab)
     }
+    }  
     
-    
-    if(errorbar == "se") {
-      out2 <- list(plot = qq1)
-      
-    } else if(errorbar == "ci") {
-      out2 <- list(plot = qq2)
-    }
+
   }
   
   
-  return(out2)
+  return(qq1)
 }
 
 

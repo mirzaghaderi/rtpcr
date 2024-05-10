@@ -1,14 +1,14 @@
 #' @title Relative efficiency (\eqn{\Delta C_T} method) analysis using ANOVA 
 #' 
-#' @description Analysis of Variance of relative efficiency (\eqn{\Delta C_T} method) values based on a completely randomized design (CRD). Even there are more than a factor in the experiment, it is still possible to apply CRD analysis on the factor-level combinations as treatments. Analysis of variance based on factorial design or analysis of covariance can be performed using \code{qpcrANCOVA} function.  
-#' @details The \code{qpcrANOVA} function performs analysis of variance (ANOVA) of relative efficiency (RE) values based on a completely randomized design (CRD). 
+#' @description Analysis of Variance of relative efficiency (\eqn{\Delta C_T} method) values based on a completely randomized design (CRD). Even there are more than a factor in the experiment, it is still possible to apply CRD analysis on the factor-level combinations as treatments. Analysis of variance based on factorial design or analysis of covariance can be performed using \code{qpcrANOVAFC} function.  
+#' @details The \code{qpcrANOVARE} function performs analysis of variance (ANOVA) of relative efficiency (RE) values based on a completely randomized design (CRD). 
 #' It is suitable when relative expression (RE) analysis between different treatment combinations 
 #' (in a Uni- or multi-factorial experiment) is desired. If there are more than a factor in the experiment, 
 #' it is still possible to apply CRD analysis on the factor-level combinations as treatments. 
 #' For this, a column of treatment combinations is made first as a grouping factor Fold change analysis based 
-#' on factorial design or analysis of covariance for the can be performed using \link{qpcrANCOVA}.
+#' on factorial design or analysis of covariance for the can be performed using \link{qpcrANOVAFC}.
 #' @author Ghader Mirzaghaderi
-#' @export qpcrANOVA
+#' @export qpcrANOVARE
 #' @import dplyr
 #' @import tidyr
 #' @import reshape2
@@ -45,13 +45,13 @@
 #' # should be calculated first using meanTech function.
 #'
 #' # Applying ANOVA analysis
-#' qpcrANOVA(
+#' qpcrANOVARE(
 #'      data_3factor,
 #'      numberOfrefGenes = 1,
 #'      p.adj = "none")
 #'
 #'
-#' qpcrANOVA(
+#' qpcrANOVARE(
 #'     data_2factorBlock,
 #'     block = "Block",
 #'     numberOfrefGenes = 1)
@@ -60,7 +60,7 @@
 
 
 
-qpcrANOVA <- function(x,
+qpcrANOVARE <- function(x,
                       numberOfrefGenes,
                       block = NULL,
                       p.adj = c("none","holm","hommel", 

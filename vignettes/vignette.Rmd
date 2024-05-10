@@ -71,7 +71,7 @@ Often, one condition is considered as calibrator condition. Examples are Treatme
 
 $$\text{Fold Change due to Treatment}=2^{-(\overline{w\Delta Ct}_{\text{Tr}}-{\overline{w\Delta Ct}_{\text{Co}}})}$$
 
-`qpcrTTEST` and `qpcrTTESTplot` functions calculate FC for multi-genes-two conditional cases and `qpcrANCOVA` represents FC for single-gene-single factor or single-gene-multi factorial experiments. If $w \Delta C_t$ values is calculated from the E valuses, these calculations match the formula of Pfaffl while if 2 (complete efficiency) be used instead, the result match the $2^{-\Delta\Delta C_t}$ method. In any case we called these as Fold Change in the outputs of `rtpcr`. Under factorial experiments where the calculation of the expression of the target gene relative to the reference gene (called Relative Expression) in each condition is desired, `qpcrANOVA`, `oneFACTORplot`, `twoFACTORplot` and `threeFACTORplot` functions were developed for ANOVA analysis, and representing the plots from single, double or triple factor experiments, respectively. The last three functions generate ‘ggplot2’-derived graphs based on the output of the `qpcrANOVA` function. If available, the blocking factor can also be handled by `qpcrTTEST`, `qpcrANOVA` and `qpcrANCOVA` functions. Standard error of the FC and RE means is calculated according to <a href="https://doi.org/10.1016/j.tibtech.2018.12.002">Taylor et al. 2019</a> in rtpcr package.
+`qpcrTTEST` and `qpcrTTESTplot` functions calculate FC for multi-genes-two conditional cases and `qpcrANOVAFC` represents FC for single-gene-single factor or single-gene-multi factorial experiments. If $w \Delta C_t$ values is calculated from the E valuses, these calculations match the formula of Pfaffl while if 2 (complete efficiency) be used instead, the result match the $2^{-\Delta\Delta C_t}$ method. In any case we called these as Fold Change in the outputs of `rtpcr`. Under factorial experiments where the calculation of the expression of the target gene relative to the reference gene (called Relative Expression) in each condition is desired, `qpcrANOVARE`, `oneFACTORplot`, `twoFACTORplot` and `threeFACTORplot` functions were developed for ANOVA analysis, and representing the plots from single, double or triple factor experiments, respectively. The last three functions generate ‘ggplot2’-derived graphs based on the output of the `qpcrANOVARE` function. If available, the blocking factor can also be handled by `qpcrTTEST`, `qpcrANOVARE` and `qpcrANOVAFC` functions. Standard error of the FC and RE means is calculated according to <a href="https://doi.org/10.1016/j.tibtech.2018.12.002">Taylor et al. 2019</a> in rtpcr package.
 Here, a brief methodology is presented but details about the $w\Delta C_t$  calculations and statistical analysis are available in. Importantly, because the relative or FC gene expression follow a lognormal distribution, a normal distribution is expected for the $w \Delta C_t$ or $w\Delta\Delta C_t$ values making it possible to apply t-test or analysis of variance to them. Following analysis, $w\Delta C_t$ values are statistically compared and standard deviations and confidence intervals is calculated, but the transformation $y = 2^{-x}$ is applied in the final step in order to report the results (i.e. RE ratios, errors and confidence limits).
 
 
@@ -163,13 +163,13 @@ To simplify 'rtpcr' usage, examples for using the functions are presented below.
  |:---------------------|:-----------------------------------|:----------------------------------|
  | efficiency             | Efficiency, standard curves and related statistics | efficiency(data_efficiency) |
  | meanTech      | Calculating the mean of technical replicates | meanTech(data_withTechRep, groups = 1:4) |
- | qpcrANCOVA      | FC and bar plot of the target gene (one or multi-factorial experiments) | qpcrANCOVA(data_1factor, numberOfrefGenes = 1, mainFactor.column = 1, mainFactor.level.order = c("L1", "L2", "L3") |
- |  oneFACTORplot    | Bar plot of the relative gene expression from a one-factor experiment | out <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)\$Result;   oneFACTORplot(out) |
- |  qpcrANOVA  | Analysis of Variance of the qpcr data  | qpcrANOVA(data_3factor, numberOfrefGenes = 1)|
+ | qpcrANOVAFC      | FC and bar plot of the target gene (one or multi-factorial experiments) | qpcrANOVAFC(data_1factor, numberOfrefGenes = 1, mainFactor.column = 1, mainFactor.level.order = c("L1", "L2", "L3") |
+ |  oneFACTORplot    | Bar plot of the relative gene expression from a one-factor experiment | out <- qpcrANOVARE(data_1factor, numberOfrefGenes = 1)\$Result;   oneFACTORplot(out) |
+ |  qpcrANOVARE  | Analysis of Variance of the qpcr data  | qpcrANOVARE(data_3factor, numberOfrefGenes = 1)|
  | qpcrTTEST     | Computing the fold change and related statistics | qpcrTTEST(data_ttest,  numberOfrefGenes = 1, paired = FALSE, var.equal = TRUE) |
  | qpcrTTESTplot  | Bar plot of the average fold change of the target genes	 | qpcrTTESTplot(data_ttest,  numberOfrefGenes = 1, order = c("C2H2-01", "C2H2-12", "C2H2-26")) |
- |  threeFACTORplot  | Bar plot of the relative gene expression from a three-factor experiment | res <- qpcrANOVA(data_3factor,  numberOfrefGenes = 1)\$Result; threeFACTORplot(res, arrangement = c(3, 1, 2)) |
- | twoFACTORplot   | Bar plot of the relative gene expression from a two-factor experiment | res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)\$Result; twoFACTORplot(res, x.axis.factor = Genotype, group.factor = Drought) |
+ |  threeFACTORplot  | Bar plot of the relative gene expression from a three-factor experiment | res <- qpcrANOVARE(data_3factor,  numberOfrefGenes = 1)\$Result; threeFACTORplot(res, arrangement = c(3, 1, 2)) |
+ | twoFACTORplot   | Bar plot of the relative gene expression from a two-factor experiment | res <- qpcrANOVARE(data_2factor, numberOfrefGenes = 1)\$Result; twoFACTORplot(res, x.axis.factor = Genotype, group.factor = Drought) |
   | qpcrREPEATED   | Bar plot of the fold change expression for repeated measure observations (taken over time from each individual) |  qpcrREPEATED(data_repeated_measure_2, numberOfrefGenes = 1 |
  
 
@@ -261,14 +261,14 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 
 ## Analysis of covariance (ANCOVA)
 
-analysis of covariance (ANCOVA) is a method based on both ANOVA and linear regression. It is basically suitable when the levels of a factor are also affected by an uncontrolled quantitative covariate. For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may also be affected by drought. since we already know that temperature affects the target gene, we are interesting now if the gene expression is also altered by the drought levels. We can design an experiment to understand the gene behavior at both temperature and drought levels at the same time. The drought is another factor (the covariate) that may affect the expression of our gene under the levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA or even ANOVA based on a factorial experiment using `qpcrANCOVA` function, if more than a factor exist. Bar plot of fold changes (FCs) along with the 95\% confidence interval is also returned by the `qpcrANCOVA` function. There is also a function called `oneFACTORplot` which returns FC values and related plot for a one-factor-experiment with more than two levels. 
+analysis of covariance (ANCOVA) is a method based on both ANOVA and linear regression. It is basically suitable when the levels of a factor are also affected by an uncontrolled quantitative covariate. For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may also be affected by drought. since we already know that temperature affects the target gene, we are interesting now if the gene expression is also altered by the drought levels. We can design an experiment to understand the gene behavior at both temperature and drought levels at the same time. The drought is another factor (the covariate) that may affect the expression of our gene under the levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA or even ANOVA based on a factorial experiment using `qpcrANOVAFC` function, if more than a factor exist. Bar plot of fold changes (FCs) along with the 95\% confidence interval is also returned by the `qpcrANOVAFC` function. There is also a function called `oneFACTORplot` which returns FC values and related plot for a one-factor-experiment with more than two levels. 
 
-```{r eval = T, fig.height = 3, fig.width = 5, fig.align='center', fig.cap = "Statistical table and figure of the Fold change expression of a gene in three different levels of Drough stress relative to the D0 as reference or calibrator level produced by the `qpcrANCOVA` function. The other factor i.e. Genotype has been concidered as covariate."}
+```{r eval = T, fig.height = 3, fig.width = 5, fig.align='center', fig.cap = "Statistical table and figure of the Fold change expression of a gene in three different levels of Drough stress relative to the D0 as reference or calibrator level produced by the `qpcrANOVAFC` function. The other factor i.e. Genotype has been concidered as covariate."}
 # See sample data
 data_2factor
 
 order <- unique(data_2factor$Drought)
-qpcrANCOVA(data_2factor, 
+qpcrANOVAFC(data_2factor, 
            numberOfrefGenes = 1, 
            analysisType = "ancova",
            mainFactor.column = 2,
@@ -280,7 +280,7 @@ qpcrANCOVA(data_2factor,
 
 ## A target gene under more than two conditions (ANOVA)
 
-Analysis of variance (ANOVA) of factorial experiments in the frame of a completely randomized design (CRD) can be done by the `qpcrANOVA` function. ANOVA of qPCR data is suitable when there is a factor with more than two levels, or when there is more than an experimental factor. The input data set should be prepared as shown below. Factor columns should be presented first followed by biological replicates and efficiency and Ct values of target and reference genes. The example data set below (`data_3factor`) represents amplification efficiency and Ct values for target and reference genes under three grouping factors (two different cultivars, three drought levels, and the presence or absence of bacteria). The table can contain any number of factor columns. The factor columns should be followed by five other columns assigned to biological replicates (r), the efficiency of the target gene, Ct values of the target gene, the efficiency of the reference gene, and Ct values of the reference gene, respectively. Here, the efficiency of 2 has been used for all wells, but the calculated efficiencies can be used instead.
+Analysis of variance (ANOVA) of factorial experiments in the frame of a completely randomized design (CRD) can be done by the `qpcrANOVARE` function. ANOVA of qPCR data is suitable when there is a factor with more than two levels, or when there is more than an experimental factor. The input data set should be prepared as shown below. Factor columns should be presented first followed by biological replicates and efficiency and Ct values of target and reference genes. The example data set below (`data_3factor`) represents amplification efficiency and Ct values for target and reference genes under three grouping factors (two different cultivars, three drought levels, and the presence or absence of bacteria). The table can contain any number of factor columns. The factor columns should be followed by five other columns assigned to biological replicates (r), the efficiency of the target gene, Ct values of the target gene, the efficiency of the reference gene, and Ct values of the reference gene, respectively. Here, the efficiency of 2 has been used for all wells, but the calculated efficiencies can be used instead.
 
 
 ```{r eval= T}
@@ -288,7 +288,7 @@ Analysis of variance (ANOVA) of factorial experiments in the frame of a complete
 data_3factor
 ```
 
-The `qpcrANOVA` function performs ANOVA based on both factorial arrangement and completely randomized design (CRD). For the latter, a column of treatment combinations is made first as a grouping factor followed by ANOVA. You can call the input data set along with the added wCt and treatment combinations by `qpcrANOVA`. CRD-based analysis is especially useful when post-hoc tests and mean comparisons/grouping are desired for all treatment combinations. The final results along with the ANOVA tables can be called by `qpcrANOVA`.
+The `qpcrANOVARE` function performs ANOVA based on both factorial arrangement and completely randomized design (CRD). For the latter, a column of treatment level combinations is made first as a grouping factor followed by ANOVA. You can call the input data set along with the added wCt and treatment combinations by `qpcrANOVARE`. CRD-based analysis is especially useful when post-hoc tests and mean comparisons/grouping are desired for all treatment combinations. The final results along with the ANOVA tables can be called by `qpcrANOVARE`.
 
 ### Reverse ordering of the grouping letters
 
@@ -296,14 +296,14 @@ One may be interested in presenting the statistical mean comparison result in th
 
 ### Output table of the analysis
 
-The `qpcrANOVA` function produces the main analysis output including mean wDCt, LCL, UCL, grouping letters, and standard deviations. The standard deviation for each mean is derived from the back-transformed raw wDCt values from biological replicates for that mean.
+The `qpcrANOVARE` function produces the main analysis output including mean wDCt, LCL, UCL, grouping letters, and standard deviations. The standard deviation for each mean is derived from the back-transformed raw wDCt values from biological replicates for that mean.
 
 ```{r eval= T, fig.height = 3, fig.width = 5}
 # If the data include technical replicates, means of technical replicates
 # should be calculated first using meanTech function.
 
 # Applying ANOVA analysis
-res <- qpcrANOVA(data_2factor,
+res <- qpcrANOVARE(data_2factor,
           numberOfrefGenes = 1,
           p.adj = "none")
 res$Result
@@ -312,10 +312,10 @@ res$Post_hoc_Test
 
 
 
-```{r eval= T, fig.height = 4, fig.width = 9, fig.align = 'center', fig.cap = "A: bar plot representing Relative expression of a gene under three levels of a factor generated using `oneFACTORplot` function, B: Plot of the Fold change expression produced by the `qpcrANCOVA` function from the same data used for 'A'. The first element in the `mainFactor.level.order` argument (here L1) is served as the Reference level, although the x-axis names have later been renamed by the `x.axis.labels.rename` argument. Error bars represent 95% confidence interval in A and standard error in B."}
+```{r eval= T, fig.height = 4, fig.width = 9, fig.align = 'center', fig.cap = "A: bar plot representing Relative expression of a gene under three levels of a factor generated using `oneFACTORplot` function, B: Plot of the Fold change expression produced by the `qpcrANOVAFC` function from the same data used for 'A'. The first element in the `mainFactor.level.order` argument (here L1) is served as the Reference level, although the x-axis names have later been renamed by the `x.axis.labels.rename` argument. Error bars represent 95% confidence interval in A and standard error in B."}
 
 # Before plotting, the result needs to be extracted as below:
-out2 <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result
+out2 <- qpcrANOVARE(data_1factor, numberOfrefGenes = 1)$Result
 
 f1 <- oneFACTORplot(out2,
               width = 0.2,
@@ -335,7 +335,7 @@ addline_format <- function(x,...){
     gsub('\\s','\n',x)
 }
 order <- unique(data_2factor$Drought)
-f2 <- qpcrANCOVA(data_1factor,
+f2 <- qpcrANOVAFC(data_1factor,
                  numberOfrefGenes = 1,
                  mainFactor.column = 1,
                  mainFactor.level.order = c("L1","L2","L3"),
@@ -364,8 +364,8 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ```{r eval= T, include = T, fig.height = 4, fig.width = 9, fig.align = 'center', fig.cap = "Relative expression of a target gene under two different factors of genotype (with two levels) and drought (with three levels). Error bars represent standard error. Means (columns) lacking letters in common have significant difference at alpha = 0.05 as resulted from a `LSD.test`."}
 
 # Before plotting, the result needs to be extracted as below:
-res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Result
-Final_data <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Final_data
+res <- qpcrANOVARE(data_2factor, numberOfrefGenes = 1)$Result
+Final_data <- qpcrANOVARE(data_2factor, numberOfrefGenes = 1)$Final_data
 
 # Plot of the 'res' data with 'Genotype' as grouping factor
 q1 <- twoFACTORplot(res,
@@ -404,7 +404,7 @@ grid.text("B", x = 0.52, y = 1, just = c("right", "top"), gp=gpar(fontsize=16))
 ### A three-factorial experiment example
 ```{r, fig.height = 5, fig.width = 11, fig.align = 'center', fig.cap = "A and B) Relative expression (RE) of a target gene from a three-factorial experiment data produced by  `threeFACTORplot`  function. Error bars represent standard error (A), although can be set to confidence interval (B). Means (columns) lacking letters in common have significant differences at alpha = 0.05 as resulted from an ‘LSD.test’."}
 # Before plotting, the result needs to be extracted as below:
-res <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)$Result
+res <- qpcrANOVARE(data_3factor, numberOfrefGenes = 1)$Result
 res
 
 # releveling a factor levels first
@@ -470,14 +470,14 @@ multiplot(a, b, cols = 2)
 ## Fold change analysis using a model
 
 The `qpcrMeans` performs fold change ${\Delta \Delta C_t}$ mwthid analysis using a model produced by the
-`qpcrANCOVA` or `qpcrREPEATED.` The values can be returned for any effects in the model including simple effects,
+`qpcrANOVAFC` or `qpcrREPEATED.` The values can be returned for any effects in the model including simple effects,
 interactions and slicing if an ANOVA model is used, but ANCOVA models returned by rtpcr package only include simple effects.
 
 ```{r, eval=T}
 # Returning fold change values from a fitted model.
-# Firstly, result of `qpcrANCOVA` or `qpcrREPEATED` is 
+# Firstly, result of `qpcrANOVAFC` or `qpcrREPEATED` is 
 # acquired which includes a model object:
-res <- qpcrANCOVA(data_3factor, numberOfrefGenes = 1, mainFactor.column = 1)
+res <- qpcrANOVAFC(data_3factor, numberOfrefGenes = 1, mainFactor.column = 1)
 
 # Returning fold change values of Conc levels from a fitted model:
 qpcrMeans(res$lm_ANOVA, specs = "Conc")
@@ -500,8 +500,8 @@ qpcrMeans(res$lm_ANOVA, specs = "Conc * Type")
 ```{r, eval=T, include = T, fig.height = 4, fig.width = 6, fig.align = 'center'}
 
 library(ggplot2)
-b <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)$Result
-a <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)$Final_data
+b <- qpcrANOVARE(data_3factor, numberOfrefGenes = 1)$Result
+a <- qpcrANOVARE(data_3factor, numberOfrefGenes = 1)$Final_data
 
 # Arrange factor levels to your desired order:
 b$Conc <- factor(b$Conc, levels = c("L","M","H"))
@@ -533,11 +533,11 @@ ggplot(b, aes(x = Type, y = RE, fill = factor(Conc))) +
 
 # Checking normality of residuals
 
-If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, one could use non-parametric tests such as the Mann-Whitney test (also known as the Wilcoxon rank-sum test), `wilcox.test()`, which is an alternative to `t.test`, or the `kruskal.test()` test which alternative to one-way analysis of variance, to test the difference between medians of the populations using independent samples. However, the `t.test` function (along with the `qpcrTTEST` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis. Residuals for `lm` (from `qpcrANOVA` and `qpcrANCOVA` functions) and `lmer` (from `qpcrREPEATED` function) objects can be extracted and plotted as follow:
+If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, one could use non-parametric tests such as the Mann-Whitney test (also known as the Wilcoxon rank-sum test), `wilcox.test()`, which is an alternative to `t.test`, or the `kruskal.test()` test which alternative to one-way analysis of variance, to test the difference between medians of the populations using independent samples. However, the `t.test` function (along with the `qpcrTTEST` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis. Residuals for `lm` (from `qpcrANOVARE` and `qpcrANOVAFC` functions) and `lmer` (from `qpcrREPEATED` function) objects can be extracted and plotted as follow:
 
 ```{r eval= T, eval= T, fig.height = 5, fig.width = 10, fig.align = 'center', fig.cap = "QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions."}
 
-residuals <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$lmCRD$residuals
+residuals <- qpcrANOVARE(data_1factor, numberOfrefGenes = 1)$lmCRD$residuals
 shapiro.test(residuals) 
 
 par(mfrow = c(1,2))
@@ -577,7 +577,7 @@ meanTech(data_withTechRep, groups = 1:4)
 
 # Combining FC results of different genes
 
-`qpcrANCOVA` and `twoFACTORplot` functions give FC results for one gene each time. you can combine FC tables of different genes and present their bar plot by `twoFACTORplot` function. An example has been shown bellow for two genes, however it works for any number of genes.
+`qpcrANOVAFC` and `twoFACTORplot` functions give FC results for one gene each time. you can combine FC tables of different genes and present their bar plot by `twoFACTORplot` function. An example has been shown bellow for two genes, however it works for any number of genes.
 
 ```{r eval= T, eval= T, , fig.height = 4, fig.width = 5, fig.align = 'center', fig.cap = "Fold change expression of two different genes. FC tables of any number of genes can be combined and used as input data frame for `twoFACTORplot` function."}
 
@@ -610,7 +610,7 @@ the rtpcr graphical functions create a list containing the ggplot object so for 
 
 ```{r eval= F, include = T, fig.height = 4, fig.width = 5}
 
-b <- qpcrANCOVA(data_2factor, 
+b <- qpcrANOVAFC(data_2factor, 
             numberOfrefGenes = 1,
             mainFactor.column = 1,
             mainFactor.level.order = c("S", "R"),

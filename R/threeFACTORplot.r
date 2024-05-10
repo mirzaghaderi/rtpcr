@@ -1,4 +1,4 @@
-#' @title Bar plot of the relative gene expression (\eqn{\Delta C_T} method) from the \code{qpcrANOVA} output of a a three-factorial experiment data
+#' @title Bar plot of the relative gene expression (\eqn{\Delta C_T} method) from the \code{qpcrANOVARE} output of a a three-factorial experiment data
 #' 
 #' @description Bar plot of the relative expression (\eqn{\Delta C_T} method) of a gene along with the confidence interval and significance
 #' 
@@ -11,7 +11,7 @@
 #' @import reshape2
 #' @import ggplot2
 #' @import agricolae
-#' @param res the FC data frame created by \code{qpcrANOVA(x)$Result} function on a three factorial data such as \code{data_3factor} example data frame.
+#' @param res the FC data frame created by \code{qpcrANOVARE(x)$Result} function on a three factorial data such as \code{data_3factor} example data frame.
 #' @param arrangement order based on the columns in the output table (e.g. c(2,3,1) or c(1,3,2)) affecting factor arrangement of the output graph.
 #' @param bar.width a positive number determining bar width.
 #' @param fill  a color vector specifying the fill color for the columns of the bar plot. One of the palettes in \code{\link[RColorBrewer]{display.brewer.all}} (e.g. "Reds" or "Blues", ...) can be applied.
@@ -35,7 +35,7 @@
 #' data_3factor
 #'
 #' # Before plotting, the result needs to be extracted as below:
-#' res <- qpcrANOVA(data_3factor, numberOfrefGenes = 1)$Result
+#' res <- qpcrANOVARE(data_3factor, numberOfrefGenes = 1)$Result
 #' res
 #'
 #' # Arrange the first three colunms of the result table.

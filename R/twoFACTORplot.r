@@ -1,4 +1,4 @@
-#' @title Bar plot of the relative gene expression (\eqn{\Delta C_T} method) from the \code{qpcrANOVA} output of a two-factorial experiment data
+#' @title Bar plot of the relative gene expression (\eqn{\Delta C_T} method) from the \code{qpcrANOVARE} output of a two-factorial experiment data
 #' 
 #' @description Bar plot of the relative expression (\eqn{\Delta C_T} method) of a gene along with the standard error (se), 95\% confidence interval (ci) and significance
 #' 
@@ -11,7 +11,7 @@
 #' @import reshape2
 #' @import ggplot2
 #' @import agricolae
-#' @param res the FC data frame created by \code{qpcrANOVA(x)$Result} function on a two factor data such as \code{data_2factor}.
+#' @param res the FC data frame created by \code{qpcrANOVARE(x)$Result} function on a two factor data such as \code{data_2factor}.
 #' @param x.axis.factor x-axis factor.
 #' @param group.factor grouping factor.
 #' @param width a positive number determining bar width.
@@ -36,7 +36,7 @@
 #' data_2factor
 #'
 #' # Before generating plot, the result table needs to be extracted as below:
-#' res <- qpcrANOVA(data_2factor, numberOfrefGenes = 1)$Result
+#' res <- qpcrANOVARE(data_2factor, numberOfrefGenes = 1)$Result
 #'
 #' # Plot of the 'res' data with 'Genotype' as grouping factor
 #' twoFACTORplot(res,

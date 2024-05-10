@@ -1,10 +1,10 @@
 #' @title Fold change (\eqn{\Delta \Delta C_T} method) analysis using a model
 #' 
 #' @description Fold change (\eqn{\Delta \Delta C_T} method) analysis using a model produced by the
-#' \code{qpcrANCOVA} or \code{qpcrREPEATED}.
+#' \code{qpcrANOVAFC} or \code{qpcrREPEATED}.
 #' 
 #' @details The \code{qpcrMeans} performs fold change (\eqn{\Delta \Delta C_T} method) analysis using a model produced by the
-#' \code{qpcrANCOVA} or \code{qpcrREPEATED}. The values can be returned for any effects in the model including simple effects,
+#' \code{qpcrANOVAFC} or \code{qpcrREPEATED}. The values can be returned for any effects in the model including simple effects,
 #' interactions and slicing if an ANOVA model is used, but ANCOVA models returned by rtpcr package only include simple effects.
 #' 
 #' @author Ghader Mirzaghaderi
@@ -19,9 +19,9 @@
 #' @examples
 #' 
 #' # Returning fold change values from a fitted model.
-#' # Firstly, result of `qpcrANCOVA` or `qpcrREPEATED` is 
+#' # Firstly, result of `qpcrANOVAFC` or `qpcrREPEATED` is 
 #' # acquired which includes a model object:
-#' res <- qpcrANCOVA(data_3factor, numberOfrefGenes = 1, mainFactor.column = 1)
+#' res <- qpcrANOVAFC(data_3factor, numberOfrefGenes = 1, mainFactor.column = 1)
 #' 
 #' # Returning fold change values of Conc levels from a fitted model:
 #' qpcrMeans(res$lm_ANOVA, specs = "Conc")

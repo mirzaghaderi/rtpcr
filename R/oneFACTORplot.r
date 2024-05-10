@@ -1,4 +1,4 @@
-#' @title Bar plot of the relative gene expression (\eqn{\Delta C_T} method) from the \code{qpcrANOVA} output of a one-factor experiment data
+#' @title Bar plot of the relative gene expression (\eqn{\Delta C_T} method) from the \code{qpcrANOVARE} output of a one-factor experiment data
 #' 
 #' @description Bar plot of the relative expression of a gene along with the standard error (se), 95\% confidence interval (ci) and significance. \code{oneFACTORplot} is mainly useful for a one-factor experiment with more than two levels.
 #' 
@@ -11,7 +11,7 @@
 #' @import reshape2
 #' @import ggplot2
 #' @import agricolae
-#' @param res an FC data frame object created by \code{qpcrANOVA(x)$Result} function on a one factor data such as \code{data_1factor}.
+#' @param res an FC data frame object created by \code{qpcrANOVARE(x)$Result} function on a one factor data such as \code{data_1factor}.
 #' @param width a positive number determining bar width.
 #' @param fill  specify a fill color.
 #' @param y.axis.adjust  a negative or positive number for reducing or increasing the length of the y axis.
@@ -29,7 +29,7 @@
 #' @examples
 #'
 #' # Before plotting, the result needs to be extracted as below:
-#' res <- qpcrANOVA(data_1factor, numberOfrefGenes = 1)$Result
+#' res <- qpcrANOVARE(data_1factor, numberOfrefGenes = 1)$Result
 #'
 #' # Bar plot
 #' oneFACTORplot(res,

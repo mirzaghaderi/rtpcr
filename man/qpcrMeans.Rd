@@ -32,6 +32,9 @@ interactions and slicing if an ANOVA model is used, but ANCOVA models returned b
 # acquired which includes a model object:
 res <- qpcrANOVAFC(data_3factor, numberOfrefGenes = 1, mainFactor.column = 1)
 
+# Returning fold change values of Type levels from a fitted model:
+qpcrMeans(res$lm_ANOVA, specs = "Type")
+
 # Returning fold change values of Conc levels from a fitted model:
 qpcrMeans(res$lm_ANOVA, specs = "Conc")
 
@@ -41,8 +44,7 @@ qpcrMeans(res$lm_ANOVA, specs = "Conc | Type")
 # Returning fold change values of Conc levels sliced by Type*SA:
 qpcrMeans(res$lm_ANOVA, specs = "Conc | (Type*SA)")
 
-# Returning fold change values of Conc
-qpcrMeans(res$lm_ANOVA, specs = "Conc * Type")
+
 }
 \author{
 Ghader Mirzaghaderi

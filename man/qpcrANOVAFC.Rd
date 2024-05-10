@@ -32,9 +32,9 @@ qpcrANOVAFC(
 
 \item{numberOfrefGenes}{number of reference genes which is 1 or 2 (Up to two reference genes can be handled).}
 
-\item{analysisType}{should be one of "ancova" or "anova". Default is "ancova".}
+\item{analysisType}{should be one of "ancova" or "anova". Default is "anova".}
 
-\item{mainFactor.column}{the factor for which FC is calculated for its levels. The remaining factors (if any) are considered as covariate(s).}
+\item{mainFactor.column}{the factor for which FC is calculated for its levels. If \code{ancova} is selected as \code{analysisType}, the remaining factors (if any) are considered as covariate(s).}
 
 \item{mainFactor.level.order}{NULL or a vector of main factor level names. If \code{NULL}, the first level of the \code{mainFactor.column} is used 
 as reference or calibrator. If a vector of main factor levels (in any order) is specified, the first level in the vector is used as calibrator. Calibrator is the reference level or sample that all others are compared to. Examples are untreated 

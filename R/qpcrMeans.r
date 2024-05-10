@@ -12,6 +12,7 @@
 #' @import emmeans
 #' @param model an `lmer` fitted model object
 #' @param specs A character vector specifying the names of the predictors over which FC values are desired
+#' @param p.adj Method for adjusting p values
 #' @return Table of FC values, significance and confidence limits.
 #' 
 #' 

@@ -451,14 +451,25 @@ qpcrANCOVA <- function(x,
   
   
   
-  outlist2 <- list(Final_data = x,
+  outlist2 <- structure(list(Final_data = x,
                    lm_ANOVA = lm_ANOVA,
                    lm_ANCOVA = lm_ANCOVA,
                    ANOVA_table = ANOVA,
                    ANCOVA_table = ANCOVA,
-                   FC_statistics_of_the_main_factor  = tableC,
-                   FC_Plot_of_the_main_factor_levels = pfc2)
-
-  return(outlist2)
+                   Fold_Change  = tableC,
+                   FC_Plot_of_the_main_factor_levels = pfc2), class = "XX")
+  
+  print.XX <- function(outlist2){
+    cat("ANOVA table:", "\n")
+    print(outlist2$ANOVA_table)
+    cat("\n","ANCOVA table:", "\n")
+    print(outlist2$ANCOVA_table)
+    cat("\n","Fold Change table:", "\n")
+    print(outlist2$Fold_Change)
+    cat("\n","Fold Change plot of the main factor levels:", "\n")
+    print(outlist2$FC_Plot_of_the_main_factor_levels )
+    invisible(outlist2)
+  }
+  print.XX(outlist2)
 }
 

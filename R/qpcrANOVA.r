@@ -233,11 +233,19 @@ qpcrANOVA <- function(x,
   xx <- x[, -(ncol(x))] # Removing the last column of T
   # rownames(Results) <- NULL # Removing rownames 
   
-  outlist <- list(Final_data = xx,
-                  lmCRD = lm,
-                  ANOVA = anovaCRD,
-                  Result = Results)  # Post_hoc_Test = Post_hoc_Testing
+
   
+  outlist2 <- structure(list(Final_data = xx,
+                             lmCRD = lm,
+                             ANOVA = anovaCRD,
+                             Result = Results), class = "XX")
   
-  return(outlist)
+  print.XX <- function(outlist2){
+    cat("ANOVA table:", "\n")
+    print(outlist2$ANOVA)
+    cat("\n","Relative expression table:", "\n")
+    print(outlist2$Result)
+    invisible(outlist2)
+  }
+  print.XX(outlist2)
 }

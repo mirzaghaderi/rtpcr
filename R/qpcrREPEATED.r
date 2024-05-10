@@ -322,14 +322,20 @@ qpcrREPEATED <- function(x,
   
   
   
-  outlist2 <- list(Final_data = x,
-                   lm = lm,
-                   ANOVA_table = ANOVA,
-                   FC_statistics_of_the_main_factor  = tableC,
-                   FC_Plot = pfc2)
+  outlist2 <- structure(list(Final_data = x,
+                             lm = lm,
+                             ANOVA_table = ANOVA,
+                             FC_statistics_of_the_main_factor  = tableC,
+                             FC_Plot = pfc2), class = "XX")
   
-  return(outlist2)
-  
-  
-  
+  print.XX <- function(outlist2){
+    cat("ANOVA table:", "\n")
+    print(outlist2$ANOVA_table)
+    cat("\n","Fold Change table:", "\n")
+    print(outlist2$FC_statistics_of_the_main_factor)
+    cat("\n","Fold Change plot of the main factor levels:", "\n")
+    print(outlist2$FC_Plot)
+    invisible(outlist2)
+  }
+  print.XX(outlist2)
 }

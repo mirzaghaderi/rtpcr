@@ -10,6 +10,8 @@ qpcrMeans(model, specs, p.adj = "none")
 \item{model}{an `lmer` fitted model object}
 
 \item{specs}{A character vector specifying the names of the predictors over which FC values are desired}
+
+\item{p.adj}{Method for adjusting p values}
 }
 \value{
 Table of FC values, significance and confidence limits.

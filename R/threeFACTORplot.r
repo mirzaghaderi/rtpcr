@@ -119,7 +119,7 @@ threeFACTORplot <- function(res,
   
   if (any(grepl("RE", names(x)))) {
     RE <- x$RE
-  
+    if(errorbar == "se") {
   pp1 <- ggplot(x, aes(x[,1], y = RE, fill = x[,2])) +
     geom_bar(stat = "identity", position = "dodge", width =  bar.width, col = "black") +
     geom_errorbar(aes(ymax = RE + se, ymin = RE),
@@ -155,10 +155,8 @@ threeFACTORplot <- function(res,
     pp1 <- pp1 +
       xlab(xlab)
   }
-  
-  
-  
-  pp2 <- ggplot(x, aes(x[,1], y = RE, fill = x[,2])) +
+  } else if(errorbar == "ci") {
+  pp1 <- ggplot(x, aes(x[,1], y = RE, fill = x[,2])) +
     geom_bar(stat = "identity", position = "dodge", width =  bar.width, col = "black") +
     geom_errorbar(aes(ymin = LCL, ymax = UCL),
                   position = position_dodge(bar.width), width = 0.15, color = "black") +
@@ -181,28 +179,35 @@ threeFACTORplot <- function(res,
     theme(strip.text = element_text(size = fontsize))
   
   if (show.letters) {
-    pp2 <- pp2 +
+    pp1 <- pp1 +
       geom_text(data = x, aes(label=letters, y = UCL + letter.position.adjust), color = "black",
                 show.legend = FALSE, position = position_dodge(bar.width), size = fontsizePvalue)
   }
   
   if(xlab == "none"){
-    pp2 <- pp2 + 
+    pp1 <- pp1 + 
       labs(x = NULL)
   }else{
-    pp2 <- pp2 +
+    pp1 <- pp1 +
       xlab(xlab)
   }
+  } 
   
-  
-  if(errorbar == "se") {
-    out <- list(plot = pp1)
-    
-  } else if(errorbar == "ci") {
-    out <- list(plot = pp2)
-  }
+  # if(errorbar == "se") {
+  #   out <- list(plot = pp1)
+  #   
+  # } else if(errorbar == "ci") {
+  #   out <- list(plot = pp1)
+  # }
   }
 
+  
+  
+  
+  
+  
+  
+  
   
   
   
@@ -210,7 +215,7 @@ threeFACTORplot <- function(res,
   if (any(grepl("FC", names(x)))) {
     letters <- x$sig
     FC <- x$FC
-    
+    if(errorbar == "se") {
     pp1 <- ggplot(x, aes(x[,1], y = FC, fill = x[,2])) +
       geom_bar(stat = "identity", position = "dodge", width =  bar.width, col = "black") +
       geom_errorbar(aes(ymax = FC + se, ymin = FC),
@@ -246,10 +251,8 @@ threeFACTORplot <- function(res,
       pp1 <- pp1 +
         xlab(xlab)
     }
-    
-    
-    
-    pp2 <- ggplot(x, aes(x[,1], y = FC, fill = x[,2])) +
+    } else if(errorbar == "ci") {
+    pp1 <- ggplot(x, aes(x[,1], y = FC, fill = x[,2])) +
       geom_bar(stat = "identity", position = "dodge", width =  bar.width, col = "black") +
       geom_errorbar(aes(ymin = LCL, ymax = UCL),
                     position = position_dodge(bar.width), width = 0.15, color = "black") +
@@ -272,29 +275,29 @@ threeFACTORplot <- function(res,
       theme(strip.text = element_text(size = fontsize))
     
     if (show.letters) {
-      pp2 <- pp2 +
+      pp1 <- pp1 +
         geom_text(data = x, aes(label=letters, y = UCL + letter.position.adjust), color = "black",
                   show.legend = FALSE, position = position_dodge(bar.width), size = fontsizePvalue)
     }
     
     if(xlab == "none"){
-      pp2 <- pp2 + 
+      pp1 <- pp1 + 
         labs(x = NULL)
     }else{
-      pp2 <- pp2 +
+      pp1 <- pp1 +
         xlab(xlab)
     }
+    } 
     
-    
-    if(errorbar == "se") {
-      out <- list(plot = pp1)
-      
-    } else if(errorbar == "ci") {
-      out <- list(plot = pp2)
-    }
+    # if(errorbar == "se") {
+    #   out <- list(plot = pp1)
+    #   
+    # } else if(errorbar == "ci") {
+    #   out <- list(plot = pp1)
+    # }
   }
   
   
   
-  return(out)
+  return(pp1)
 }

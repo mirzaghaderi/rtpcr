@@ -6,7 +6,7 @@
 \usage{
 oneFACTORplot(
   res,
-  width = 0.2,
+  width = 0.4,
   fill = "skyblue",
   y.axis.adjust = 0.5,
   y.axis.by = 2,

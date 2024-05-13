@@ -5,7 +5,7 @@
 #' change or \eqn{\Delta \Delta C_T} method analysis for the target gene even
 #' if there is only one factor (without covariate variable), although, for the data with 
 #' only one factor, ANCOVA is equivalent to ANOVA. The bar plot of the fold changes (FC) 
-#' values along with the standard error (se) and confidence interval (ci) is also returned by 
+#' values along with the standard error (se) and confidence interval (ci) is alsdata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAWElEQVR42mNgGPTAxsZmJsVqQApgmGw1yApwKcQiT7phRBuCzzCSDSHGMKINIeDNmWQlA2IigKJwIssQkHdINgxfmBBtGDEBS3KCxBc7pMQgMYE5c/AXPwAwSX4lV3pTWwAAAABJRU5ErkJggg==o returned by 
 #' the \code{qpcrANOVAFC} function. 
 #' 
 #' @details The \code{qpcrANOVAFC} function applies both ANOVA and ANCOVA analysis to the data of a uni- or 
@@ -59,6 +59,7 @@
 #' @param block column name of the block if there is a blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.
 #' @param p.adj Method for adjusting p values
 #' @param errorbar Type of error bar, can be \code{se} or \code{ci}.
+#' @param plot  if \code{FALSE}, prevents the plot.
 #' @return A list with 7 elements:
 #' \describe{
 #'   \item{Final_data}{Input data frame plus the weighted Delat Ct values (wDCt)}
@@ -178,7 +179,8 @@ qpcrANOVAFC <- function(x,
                        axis.text.x.hjust = 0.5,
                        x.axis.labels.rename = "none",
                        p.adj = "none",
-                       errorbar = "se"){
+                       errorbar = "se",
+                       plot = TRUE){
 
 
   
@@ -465,8 +467,12 @@ qpcrANOVAFC <- function(x,
     print(outlist2$ANCOVA_table)
     cat("\n","Fold Change table:", "\n")
     print(outlist2$Fold_Change)
-    cat("\n","Fold Change plot of the main factor levels:", "\n")
-    print(outlist2$FC_Plot_of_the_main_factor_levels )
+    
+    if (plot == TRUE){
+      cat("\n","Fold Change plot of the main factor levels:", "\n")
+    print(outlist2$FC_Plot_of_the_main_factor_levels)
+    }
+    
     invisible(outlist2)
   }
   print.XX(outlist2)

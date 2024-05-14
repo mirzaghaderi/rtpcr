@@ -1,6 +1,6 @@
 #' @title Relative expression (\eqn{\Delta C_T} method) analysis using ANOVA 
 #' 
-#' @description Analysis of Variance of relative expression (\eqn{\Delta C_T} method) values based on a completely randomized design (CRD). Even there are more than a factor in the experiment, it is still possible to apply CRD analysis on the factor-level combinations as treatments. Analysis of variance based on factorial design or analysis of covariance can be performed using \code{qpcrANOVAFC} function.  
+#' @description Analysis of variance of relative expression (\eqn{\Delta C_T} method) values based on a completely randomized design (CRD). Even there are more than a factor in the experiment, it is still possible to apply CRD analysis on the factor-level combinations as treatments. Analysis of variance based on factorial design or analysis of covariance can be performed using \code{qpcrANOVAFC} function.  
 #' @details The \code{qpcrANOVARE} function performs analysis of variance (ANOVA) of relative expression (RE) values based on a completely randomized design (CRD). 
 #' It is suitable when relative expression (RE) analysis between different treatment combinations 
 #' (in a Uni- or multi-factorial experiment) is desired. If there are more than a factor in the experiment, 

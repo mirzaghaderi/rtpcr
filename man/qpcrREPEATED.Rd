@@ -22,7 +22,8 @@ qpcrREPEATED(
   x.axis.labels.rename = "none",
   letter.position.adjust = 0,
   p.adj = "none",
-  errorbar = "se"
+  errorbar = "se",
+  plot = TRUE
 )
 }
 \arguments{
@@ -72,6 +73,8 @@ Block effect is usually considered as random and its interaction with any main e
 \item{p.adj}{Method for adjusting p values}
 
 \item{errorbar}{Type of error bar, can be \code{se} or \code{ci}.}
+
+\item{plot}{if \code{FALSE}, prevents the plot.}
 }
 \value{
 A list with 5 elements:

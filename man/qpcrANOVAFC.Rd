@@ -24,7 +24,8 @@ qpcrANOVAFC(
   axis.text.x.hjust = 0.5,
   x.axis.labels.rename = "none",
   p.adj = "none",
-  errorbar = "se"
+  errorbar = "se",
+  plot = TRUE
 )
 }
 \arguments{
@@ -70,6 +71,8 @@ If NULL, the first level of the main factor column is used as calibrator.}
 \item{p.adj}{Method for adjusting p values}
 
 \item{errorbar}{Type of error bar, can be \code{se} or \code{ci}.}
+
+\item{plot}{if \code{FALSE}, prevents the plot.}
 }
 \value{
 A list with 7 elements:
@@ -89,7 +92,7 @@ ANOVA (analysis of variance) and ANCOVA (analysis of covariance) can be performe
 change or \eqn{\Delta \Delta C_T} method analysis for the target gene even
 if there is only one factor (without covariate variable), although, for the data with 
 only one factor, ANCOVA is equivalent to ANOVA. The bar plot of the fold changes (FC) 
-values along with the standard error (se) and confidence interval (ci) is also returned by 
+values along with the standard error (se) and confidence interval (ci) is alsdata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAWElEQVR42mNgGPTAxsZmJsVqQApgmGw1yApwKcQiT7phRBuCzzCSDSHGMKINIeDNmWQlA2IigKJwIssQkHdINgxfmBBtGDEBS3KCxBc7pMQgMYE5c/AXPwAwSX4lV3pTWwAAAABJRU5ErkJggg==o returned by 
 the \code{qpcrANOVAFC} function.
 }
 \details{

@@ -30,7 +30,7 @@ p1 <- qpcrTTESTplot(data_ttest,
 
 out2 <- qpcrANOVARE(data_1factor, numberOfrefGenes = 1)$Result
 p2 <- oneFACTORplot(out2,
-                    width = 0.2,
+                    width = 0.4,
                     fill = "skyblue",
                     y.axis.adjust = 0.5,
                     y.axis.by = 1,

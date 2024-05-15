@@ -43,17 +43,11 @@ on factorial design or analysis of covariance for the can be performed using \li
 
 # If the data include technical replicates, means of technical replicates
 # should be calculated first using meanTech function.
-
 # Applying ANOVA analysis
-qpcrANOVARE(
-     data_3factor,
-     numberOfrefGenes = 1)
+qpcrANOVARE(data_3factor, numberOfrefGenes = 1)
 
 
-qpcrANOVARE(
-    data_2factorBlock,
-    block = "Block",
-    numberOfrefGenes = 1)
+qpcrANOVARE(data_2factorBlock, block = "Block", numberOfrefGenes = 1)
 
 
 }

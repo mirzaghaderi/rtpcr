@@ -1,6 +1,6 @@
 #' @title Multiple plot function
-#' @description Multiple plot function
-#' @details Producing multiple plots plate using ggplot objects
+#' @description \code{multiplot} function combines multiple ggplot objects into a single plate.
+#' @details Combining multiple ggplot objects into a single plate.
 #' @author gist.github.com/pedroj/ffe89c67282f82c1813d
 #' @export multiplot
 #' @import grid

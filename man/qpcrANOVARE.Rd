@@ -27,7 +27,7 @@ A list with 5 elements:
   \item{lm}{The output of linear model analysis including ANOVA tables based on factorial experiment and completely randomized design (CRD).}
   \item{ANOVA_factorial}{ANOVA table based on factorial arrangement}
   \item{ANOVA_CRD}{ANOVA table based on CRD}
-  \item{Result}{The result table including treatments and factors, RE (Relative Expression), LCL, UCL, letter grouping and standard deviation of relative expression.}
+  \item{Result}{The result table including treatments and factors, RE (Relative Expression), LCL, UCL, letter display for pair-wise comparisons and standard deviation of relative expression.}
   \item{Post_hoc_Test}{Post hoc test of FC (Fold Change), pvalue, significance and confidence interval (LCL, UCL).}
 }
 }

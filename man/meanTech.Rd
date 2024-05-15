@@ -15,7 +15,7 @@ meanTech(x, groups)
 A data frame with the mean of technical replicates.
 }
 \description{
-Calculating of technical replicates in and output table appropriate for subsequent ANOVA analysis
+Calculating arithmetic mean of technical replicates for subsequent ANOVA analysis
 }
 \details{
 The meanTech calculates mean of technical replicates. Arithmetic mean of technical replicates can be calculated in order to 

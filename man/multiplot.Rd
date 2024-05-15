@@ -15,10 +15,10 @@ multiplot(..., cols = 1)
 A  multiple-plots plate
 }
 \description{
-Multiple plot function
+\code{multiplot} function combines multiple ggplot objects into a single plate.
 }
 \details{
-Producing multiple plots plate using ggplot objects
+Combining multiple ggplot objects into a single plate.
 }
 \examples{
 

@@ -91,23 +91,12 @@
 #'
 
 
-threeFACTORplot <- function(res,
-                         arrangement = c(1, 2, 3),
-                         bar.width = 0.5,
-                         fill = "Reds",
-                         xlab = "none",
-                         ylab = "Relative Expression",
-                         errorbar = "se",
-                         y.axis.adjust = 0.5,
-                         y.axis.by = 2,
-                         letter.position.adjust = 0.3,
-                         legend.title = "Legend Title",
-                         legend.position = c(0.4, 0.8),
-                         fontsize = 12,
-                         fontsizePvalue = 5,
-                         show.letters = TRUE,
-                         axis.text.x.angle = 0,
-                         axis.text.x.hjust = 0.5){
+threeFACTORplot <- function(res, arrangement = c(1, 2, 3), bar.width = 0.5, fill = "Reds",
+                         xlab = "none", ylab = "Relative Expression", errorbar = "se",
+                         y.axis.adjust = 0.5, y.axis.by = 2, letter.position.adjust = 0.3,
+                         legend.title = "Legend Title", legend.position = c(0.4, 0.8),
+                         fontsize = 12, fontsizePvalue = 5, show.letters = TRUE,
+                         axis.text.x.angle = 0, axis.text.x.hjust = 0.5){
   
   x <- res
   x <- x[, c(arrangement, 4:ncol(x))]

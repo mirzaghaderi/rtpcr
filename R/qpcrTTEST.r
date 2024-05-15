@@ -69,10 +69,7 @@
 
 
 
-qpcrTTEST <- function(x,
-                      numberOfrefGenes,
-                      paired = FALSE,
-                      var.equal = TRUE) {
+qpcrTTEST <- function(x,numberOfrefGenes, paired = FALSE, var.equal = TRUE) {
 
   colnames(x)[1] <- "Condition"
   colnames(x)[2] <- "Gene"

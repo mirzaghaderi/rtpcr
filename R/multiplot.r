@@ -34,8 +34,7 @@
 #'
 #'
 #'
-multiplot <- function(...,
-                      cols=1) {
+multiplot <- function(..., cols=1) {
   
   # Make a list from the ... arguments
   plots <- c(list(...))

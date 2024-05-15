@@ -88,24 +88,11 @@
 
 
 
-twoFACTORplot <- function(res,
-                          x.axis.factor,
-                          group.factor,
-                          width = 0.5,
-                          fill = "Blues",
-                          y.axis.adjust = 0.5,
-                          y.axis.by = 2,
-                          show.errorbars = TRUE,
-                          errorbar = "se",
-                          show.letters = TRUE,
-                          letter.position.adjust = 0.1,
-                          ylab = "Relative Expression",
-                          xlab = "none",
-                          legend.position = c(0.09, 0.8),
-                          fontsize = 12,
-                          fontsizePvalue = 5,
-                          axis.text.x.angle = 0,
-                          axis.text.x.hjust = 0.5){
+twoFACTORplot <- function(res, x.axis.factor, group.factor, width = 0.5, fill = "Blues", 
+                          y.axis.adjust = 0.5, y.axis.by = 2, show.errorbars = TRUE,
+                          errorbar = "se", show.letters = TRUE, letter.position.adjust = 0.1,
+                          ylab = "Relative Expression", xlab = "none", legend.position = c(0.09, 0.8),
+                          fontsize = 12, fontsizePvalue = 5, axis.text.x.angle = 0, axis.text.x.hjust = 0.5){
   b <- res
   se <- b$se
   LCL <- b$LCL

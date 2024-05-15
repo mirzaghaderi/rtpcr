@@ -71,25 +71,11 @@
 
 
 
-qpcrREPEATED <- function(x,
-                         numberOfrefGenes,
-                         factor,
-                         block = NULL,
-                         width = 0.5,
-                         fill = "#BFEFFF",
-                         y.axis.adjust = 1,
-                         y.axis.by = 1,
-                         ylab = "Fold Change",
-                         xlab = "none",
-                         fontsize = 12,
-                         fontsizePvalue = 7,
-                         axis.text.x.angle = 0,
-                         axis.text.x.hjust = 0.5,
-                         x.axis.labels.rename = "none",
-                         letter.position.adjust = 0,
-                         p.adj = "none",
-                         errorbar = "se",
-                         plot = TRUE){
+qpcrREPEATED <- function(x, numberOfrefGenes, factor, block = NULL,
+                         width = 0.5, fill = "#BFEFFF", y.axis.adjust = 1, y.axis.by = 1,
+                         ylab = "Fold Change", xlab = "none", fontsize = 12, fontsizePvalue = 7,
+                         axis.text.x.angle = 0, axis.text.x.hjust = 0.5, x.axis.labels.rename = "none",
+                         letter.position.adjust = 0, p.adj = "none", errorbar = "se", plot = TRUE){
   
   
   

@@ -64,23 +64,11 @@
 #'
 
 
-qpcrTTESTplot <- function(x,
-                          order = "none",
-                          numberOfrefGenes,
-                          paired = FALSE,
-                          var.equal = TRUE,
-                          width = 0.5,
-                          fill = "skyblue",
-                          y.axis.adjust = 0,
-                          y.axis.by = 2,
-                          letter.position.adjust = 0.3,
-                          ylab = "Average Fold Change",
-                          xlab = "none",
-                          fontsize = 12,
-                          fontsizePvalue = 7,
-                          axis.text.x.angle = 0,
-                          axis.text.x.hjust = 0.5,
-                          errorbar = "se"){
+qpcrTTESTplot <- function(x, order = "none", numberOfrefGenes, paired = FALSE,
+                          var.equal = TRUE, width = 0.5, fill = "skyblue", y.axis.adjust = 0,
+                          y.axis.by = 2, letter.position.adjust = 0.3, ylab = "Average Fold Change",
+                          xlab = "none", fontsize = 12, fontsizePvalue = 7, axis.text.x.angle = 0,
+                          axis.text.x.hjust = 0.5, errorbar = "se"){
 
   default.order <- unique(x[,2])[-length(unique(x[,2]))]
 

@@ -24,8 +24,7 @@
 #'
 #'
 
-meanTech <- function(x,
-                     groups){
+meanTech <- function(x, groups){
 
   g <- colnames(x)[groups]
 

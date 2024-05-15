@@ -160,27 +160,12 @@
 
 
 
-qpcrANOVAFC <- function(x,
-                       numberOfrefGenes,
-                       analysisType = "anova",
-                       mainFactor.column,
-                       mainFactor.level.order = NULL,
-                       block = NULL,
-                       width = 0.5,
-                       fill = "#BFEFFF",
-                       y.axis.adjust = 1,
-                       y.axis.by = 1,
-                       letter.position.adjust = 0.1,
-                       ylab = "Fold Change",
-                       xlab = "none",
-                       fontsize = 12,
-                       fontsizePvalue = 7,
-                       axis.text.x.angle = 0,
-                       axis.text.x.hjust = 0.5,
-                       x.axis.labels.rename = "none",
-                       p.adj = "none",
-                       errorbar = "se",
-                       plot = TRUE){
+qpcrANOVAFC <- function(x, numberOfrefGenes, analysisType = "anova", mainFactor.column,
+                       mainFactor.level.order = NULL, block = NULL,
+                       width = 0.5, fill = "#BFEFFF", y.axis.adjust = 1, y.axis.by = 1,
+                       letter.position.adjust = 0.1, ylab = "Fold Change", xlab = "none",
+                       fontsize = 12, fontsizePvalue = 7, axis.text.x.angle = 0, axis.text.x.hjust = 0.5,
+                       x.axis.labels.rename = "none", p.adj = "none",  errorbar = "se", plot = TRUE){
 
 
   

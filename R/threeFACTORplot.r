@@ -10,7 +10,6 @@
 #' @import dplyr
 #' @import reshape2
 #' @import ggplot2
-#' @import agricolae
 #' @param res the FC data frame created by \code{qpcrANOVARE(x)$Result} function on a three factorial data such as \code{data_3factor} example data frame.
 #' @param arrangement order based on the columns in the output table (e.g. c(2,3,1) or c(1,3,2)) affecting factor arrangement of the output graph.
 #' @param bar.width a positive number determining bar width.

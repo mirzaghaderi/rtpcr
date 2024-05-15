@@ -4,12 +4,7 @@
 \alias{qpcrANOVARE}
 \title{Relative expression (\eqn{\Delta C_T} method) analysis using ANOVA}
 \usage{
-qpcrANOVARE(
-  x,
-  numberOfrefGenes,
-  block = NULL,
-  p.adj = c("none", "holm", "hommel", "hochberg", "bonferroni", "BH", "BY", "fdr")
-)
+qpcrANOVARE(x, numberOfrefGenes, block = NULL, alpha = 0.05, adjust = "none")
 }
 \arguments{
 \item{x}{A data frame consisting of condition columns, target gene efficiency (E), target Gene Ct, reference gene efficiency and reference gene Ct values, respectively. Each Ct in the data frame is the mean of technical replicates. Complete amplification efficiencies of 2 was assumed in the example data for all wells but the calculated efficienies can be used instead. NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment).}
@@ -18,7 +13,9 @@ qpcrANOVARE(
 
 \item{block}{column name of the blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.}
 
-\item{p.adj}{Method for adjusting p values (see p.adjust)}
+\item{alpha}{significance level}
+
+\item{adjust}{Method for adjusting p values}
 }
 \value{
 A list with 5 elements:
@@ -50,8 +47,7 @@ on factorial design or analysis of covariance for the can be performed using \li
 # Applying ANOVA analysis
 qpcrANOVARE(
      data_3factor,
-     numberOfrefGenes = 1,
-     p.adj = "none")
+     numberOfrefGenes = 1)
 
 
 qpcrANOVARE(

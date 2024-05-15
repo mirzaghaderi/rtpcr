@@ -10,7 +10,6 @@
 #' @import dplyr
 #' @import reshape2
 #' @import ggplot2
-#' @import agricolae
 #' @param res the FC data frame created by \code{qpcrANOVARE(x)$Result} function on a two factor data such as \code{data_2factor}.
 #' @param x.axis.factor x-axis factor.
 #' @param group.factor grouping factor.

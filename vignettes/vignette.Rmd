@@ -301,8 +301,7 @@ The `qpcrANOVARE` function produces the main analysis output including mean wDCt
 
 # Applying ANOVA analysis
 res <- qpcrANOVARE(data_2factor,
-          numberOfrefGenes = 1,
-          p.adj = "none")
+                   numberOfrefGenes = 1)
 res$Result
 res$Post_hoc_Test
 ```

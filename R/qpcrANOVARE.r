@@ -18,7 +18,8 @@
 #' @param x A data frame consisting of condition columns, target gene efficiency (E), target Gene Ct, reference gene efficiency and reference gene Ct values, respectively. Each Ct in the data frame is the mean of technical replicates. Complete amplification efficiencies of 2 was assumed in the example data for all wells but the calculated efficienies can be used instead. NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment).
 #' @param numberOfrefGenes number of reference genes (1 or 2). Up to two reference genes can be handled.
 #' @param block column name of the blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.
-#' @param p.adj Method for adjusting p values (see p.adjust)
+#' @param alpha significance level
+#' @param adjust Method for adjusting p values
 #' @return A list with 5 elements:
 #' \describe{
 #'   \item{Final_data}{The row data plus weighed delta Ct (wDCt) values.}
@@ -47,8 +48,7 @@
 #' # Applying ANOVA analysis
 #' qpcrANOVARE(
 #'      data_3factor,
-#'      numberOfrefGenes = 1,
-#'      p.adj = "none")
+#'      numberOfrefGenes = 1)
 #'
 #'
 #' qpcrANOVARE(
@@ -60,11 +60,7 @@
 
 
 
-qpcrANOVARE <- function(x,
-                        numberOfrefGenes,
-                        block = NULL,
-                        p.adj = c("none","holm","hommel", 
-                                  "hochberg", "bonferroni", "BH", "BY", "fdr")){
+qpcrANOVARE <- function(x, numberOfrefGenes, block = NULL, alpha = 0.05, adjust= "none"){
   
   
   
@@ -169,7 +165,7 @@ qpcrANOVARE <- function(x,
   
   
   emg = emmeans(lm,pairwise ~ T)
-  meanPairs <- cld(emg[[1]],adjust = "none",alpha = 0.05,reversed = FALSE, Letters = LETTERS)
+  meanPairs <- cld(emg[[1]], adjust= adjust, alpha = alpha, reversed = FALSE, Letters = LETTERS)
   ROWS <- meanPairs$T
   diffs <- meanPairs$emmean
   ucl <- meanPairs$upper.CL

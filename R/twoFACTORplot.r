@@ -113,6 +113,11 @@ twoFACTORplot <- function(res,
   UCL <- b$UCL
   
   
+  if (any(grepl("letters", names(b)))) {
+    b$letters <- gsub(" ", "", b$letters)
+  }
+  
+  
   if (any(grepl("RE", names(b)))) {
     RE <- b$RE
     if(errorbar == "se") { 

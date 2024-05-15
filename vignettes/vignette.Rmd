@@ -81,7 +81,7 @@ Here, a brief methodology is presented but details about the $w\Delta C_t$  calc
 
 ```{r eval= T, include= F, message=FALSE, warning = FALSE}
 library(rtpcr)
-library(agricolae)
+library(multcomp)
 library(dplyr)
 library(reshape2)
 library(tidyr)
@@ -290,9 +290,6 @@ data_3factor
 
 The `qpcrANOVARE` function performs ANOVA based on both factorial arrangement and completely randomized design (CRD). For the latter, a column of treatment level combinations is made first as a grouping factor followed by ANOVA. You can call the input data set along with the added wCt and treatment combinations by `qpcrANOVARE`. CRD-based analysis is especially useful when post-hoc tests and mean comparisons/grouping are desired for all treatment combinations. The final results along with the ANOVA tables can be called by `qpcrANOVARE`.
 
-### Reverse ordering of the grouping letters
-
-One may be interested in presenting the statistical mean comparison result in the frame of grouping letters. This is rather challenging because in the grouping output of mean comparisons (via the `LSD.test` function of agricolae package), means are sorted into descending order so that the largest mean, is the first in the table and "a" letter is assigned to it. If `LSD.test` is applied to the wCt means, the biggest wCt mean receives "a" letter as expected, but this value turns into the smallest mean after its reverse log transformation by  $2^{-(\Delta Ct)}$. to solve this issue, I used a function that assigns the grouping letters appropriately.
 
 ### Output table of the analysis
 

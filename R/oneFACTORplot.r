@@ -69,6 +69,12 @@ oneFACTORplot <- function(res,
   UCL <- x$UCL
   se <- x$se
   
+  
+  if (any(grepl("letters", names(x)))) {
+    x$letters <- gsub(" ", "", x$letters)
+  }
+  
+  
   if (any(grepl("RE", names(x)))) {
   RE <- x$RE
   if(errorbar == "se") {

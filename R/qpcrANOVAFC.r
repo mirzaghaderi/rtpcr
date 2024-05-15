@@ -5,7 +5,7 @@
 #' change or \eqn{\Delta \Delta C_T} method analysis for the target gene even
 #' if there is only one factor (without covariate variable), although, for the data with 
 #' only one factor, ANCOVA is equivalent to ANOVA. The bar plot of the fold changes (FC) 
-#' values along with the standard error (se) and confidence interval (ci) is alsdata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAWElEQVR42mNgGPTAxsZmJsVqQApgmGw1yApwKcQiT7phRBuCzzCSDSHGMKINIeDNmWQlA2IigKJwIssQkHdINgxfmBBtGDEBS3KCxBc7pMQgMYE5c/AXPwAwSX4lV3pTWwAAAABJRU5ErkJggg==o returned by 
+#' values along with the standard error (se) and confidence interval (ci) is also returned by 
 #' the \code{qpcrANOVAFC} function. 
 #' 
 #' @details The \code{qpcrANOVAFC} function applies both ANOVA and ANCOVA analysis to the data of a uni- or 

@@ -124,9 +124,6 @@ qpcrANOVARE <- function(x, numberOfrefGenes, block = NULL, alpha = 0.05, adjust=
   }
   
   
-  
-  
-  
   # Check if there is block
   if(numberOfrefGenes == 1) {
     if (is.null(block)) {
@@ -160,8 +157,6 @@ qpcrANOVARE <- function(x, numberOfrefGenes, block = NULL, alpha = 0.05, adjust=
       anovaCRD <- stats::anova(lm)
     }
   }
-  
-  
   
   
   emg = emmeans(lm,pairwise ~ T)
@@ -198,11 +193,8 @@ qpcrANOVARE <- function(x, numberOfrefGenes, block = NULL, alpha = 0.05, adjust=
     cbind(mean[, 1:5]) 
   
   
-  
   xx <- x[, -(ncol(x))] # Removing the last column of T
-  # rownames(Results) <- NULL # Removing rownames 
-  
-  
+ 
   
   outlist2 <- structure(list(Final_data = xx,
                              lmCRD = lm,

@@ -418,9 +418,7 @@ plot = TRUE
   }
   
   
-  
-  
-  
+
   outlist2 <- structure(list(Final_data = x,
                    lm_ANOVA = lm_ANOVA,
                    lm_ANCOVA = lm_ANCOVA,
@@ -430,15 +428,15 @@ plot = TRUE
                    FC_Plot_of_the_main_factor_levels = pfc2), class = "XX")
   
   print.XX <- function(outlist2){
-    cat("ANOVA table:", "\n")
+    cat("ANOVA table", "\n")
     print(outlist2$ANOVA_table)
-    cat("\n","ANCOVA table:", "\n")
+    cat("\n","ANCOVA table", "\n")
     print(outlist2$ANCOVA_table)
-    cat("\n","Fold Change table:", "\n")
+    cat("\n", sep = '', "Fold Change table", "\n")
     print(outlist2$Fold_Change)
     
     if (plot == TRUE){
-      cat("\n","Fold Change plot of the main factor levels:", "\n")
+      cat("\n", sep = '', "Fold Change plot of the main factor levels", "\n")
     print(outlist2$FC_Plot_of_the_main_factor_levels)
     }
     

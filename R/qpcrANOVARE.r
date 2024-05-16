@@ -194,9 +194,8 @@ qpcrANOVARE <- function(x, numberOfrefGenes, block = NULL, alpha = 0.05, adjust=
                              Results = Results), class = "XX")
   
   print.XX <- function(outlist2){
-    cat("ANOVA table:", "\n")
     print(outlist2$ANOVA)
-    cat("\n","Relative expression table:", "\n")
+    cat("\n", sep = '',"Relative expression table", "\n")
     print(outlist2$Results)
     invisible(outlist2)
   }

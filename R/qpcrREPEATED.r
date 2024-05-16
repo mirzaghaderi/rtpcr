@@ -317,13 +317,12 @@ qpcrREPEATED <- function(x, numberOfrefGenes, factor, block = NULL,
                              FC_Plot = pfc2), class = "XX")
   
   print.XX <- function(outlist2){
-    cat("ANOVA table:", "\n")
     print(outlist2$ANOVA_table)
-    cat("\n","Fold Change table:", "\n")
+    cat("\n", sep = '',"Fold Change table", "\n")
     print(outlist2$FC_statistics_of_the_main_factor)
     
     if (plot == TRUE){
-    cat("\n","Fold Change plot of the main factor levels:", "\n")
+    cat("\n", sep = '',"Fold Change plot of the main factor levels", "\n")
     print(outlist2$FC_Plot)
     }
     

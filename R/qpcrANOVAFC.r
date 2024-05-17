@@ -131,8 +131,8 @@
 qpcrANOVAFC <- function(
 x, 
 numberOfrefGenes, 
-analysisType = "anova", 
 mainFactor.column, 
+analysisType = "anova",
 mainFactor.level.order = NULL, 
 block = NULL, 
 width = 0.5, 
@@ -153,6 +153,14 @@ plot = TRUE
 )
 {
 
+  if (missing(numberOfrefGenes)) {
+    stop("argument 'numberOfrefGenes' is missing, with no default")
+  }
+  if (missing(mainFactor.column)) {
+    stop("argument 'mainFactor.column' is missing, with no default")
+  }
+  
+  
   x <- x[, c(mainFactor.column, (1:ncol(x))[-mainFactor.column])] 
   
   

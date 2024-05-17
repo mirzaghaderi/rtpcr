@@ -57,6 +57,11 @@
 qpcrANOVARE <- function(x, numberOfrefGenes, block = NULL, alpha = 0.05, adjust= "none")
   {
   
+  
+  if (missing(numberOfrefGenes)) {
+    stop("argument 'numberOfrefGenes' is missing, with no default")
+  }
+  
   if (is.null(block)) {
     
     

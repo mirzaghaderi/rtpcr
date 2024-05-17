@@ -40,6 +40,11 @@
 
 
 qpcrMeans <- function(model, specs, p.adj = "none"){
+  
+  if(any(c("lmerModLmerTest", "lm") %in% class(model)) == FALSE){
+    stop("'model' is not a model")
+  }
+  
   f <- stats::as.formula(paste("pairwise ~", specs))
   base::suppressMessages(Pv <- emmeans(model, f, adjust = p.adj))
   base::suppressMessages(emm2 <- stats::confint(emmeans(model, f, adjust = p.adj)))

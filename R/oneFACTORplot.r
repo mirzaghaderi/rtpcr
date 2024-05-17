@@ -48,10 +48,19 @@
 
 
 oneFACTORplot <- function(res, width = 0.4, fill = "skyblue", y.axis.adjust = 0.5, y.axis.by = 2,
-                          errorbar = "se", show.letters = TRUE, letter.position.adjust = 0.1,
+                          errorbar, show.letters = TRUE, letter.position.adjust = 0.1,
                           ylab = "Relative Expression", xlab = "none", fontsize = 12,
                           fontsizePvalue = 5, axis.text.x.angle = 0, axis.text.x.hjust = 0.5){
 
+  
+  if (!("data.frame" %in% class(res))) {
+    stop("Error: 'res' is not a data frame")
+  }
+  
+  if (missing(errorbar)) {
+    stop("argument 'errorbar' is missing, with no default")
+  }
+  
   
   x <- res
   LCL <- x$LCL

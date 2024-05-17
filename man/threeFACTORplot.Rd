@@ -11,7 +11,7 @@ threeFACTORplot(
   fill = "Reds",
   xlab = "none",
   ylab = "Relative Expression",
-  errorbar = "se",
+  errorbar,
   y.axis.adjust = 0.5,
   y.axis.by = 2,
   letter.position.adjust = 0.3,
@@ -79,13 +79,12 @@ res
 
 # Arrange the first three colunms of the result table.
 # This determines the columns order and shapes the plot output.
-threeFACTORplot(res,
-    arrangement = c(3, 1, 2),
+threeFACTORplot(res, arrangement = c(3, 1, 2), errorbar = "se",
     xlab = "condition")
 
 
 threeFACTORplot(res, arrangement = c(1, 2, 3), bar.width = 0.5, fill = "Greys", 
-xlab = "Genotype", ylab = "Relative Expression")
+xlab = "Genotype", ylab = "Relative Expression", errorbar = "se")
 
 
 # Reordering factor levels to a desired order.

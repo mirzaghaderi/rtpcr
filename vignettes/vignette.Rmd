@@ -163,13 +163,13 @@ To simplify `rtpcr` usage, examples for using the functions are presented below.
  | efficiency           | Efficiency, standard curves and related statistics | efficiency(data_efficiency) |
  | meanTech             | Calculating the mean of technical replicates | meanTech(data_withTechRep, groups = 1:4) |
  | qpcrANOVAFC          | FC and bar plot of the target gene (one or multi-factorial experiments) | qpcrANOVAFC(data_1factor, numberOfrefGenes = 1, mainFactor.column = 1, mainFactor.level.order = c("L1", "L2", "L3") |
- |  oneFACTORplot       | Bar plot of the relative gene expression from a one-factor experiment | out <- qpcrANOVARE(data_1factor, numberOfrefGenes = 1)\$Result;  oneFACTORplot(out) |
+ |  oneFACTORplot       | Bar plot of the relative gene expression from a one-factor experiment | out <- qpcrANOVARE(data_1factor, numberOfrefGenes = 1)\$Result;  oneFACTORplot(out, errorbar = "se") |
  |  qpcrANOVARE         | Analysis of Variance of the qpcr data  | qpcrANOVARE(data_3factor, numberOfrefGenes = 1) |
  | qpcrTTEST            | Computing the fold change and related statistics | qpcrTTEST(data_ttest,  numberOfrefGenes = 1, paired = FALSE, var.equal = TRUE) |
  | qpcrTTESTplot        | Bar plot of the average fold change of the target genes	 | qpcrTTESTplot(data_ttest,  numberOfrefGenes = 1, order = c("C2H2-01", "C2H2-12", "C2H2-26")) |
  |  threeFACTORplot     | Bar plot of the relative gene expression from a three-factor experiment | res <- qpcrANOVARE(data_3factor,  numberOfrefGenes = 1)\$Result; threeFACTORplot(res, 
- arrangement = c(3, 1, 2)) |
- | twoFACTORplot        | Bar plot of the relative gene expression from a two-factor experiment | res <- qpcrANOVARE(data_2factor, numberOfrefGenes = 1)\$Result; twoFACTORplot(res, x.axis.factor = Genotype, group.factor = Drought) | 
+ arrangement = c(3, 1, 2), errorbar = "se") |
+ | twoFACTORplot        | Bar plot of the relative gene expression from a two-factor experiment | res <- qpcrANOVARE(data_2factor, numberOfrefGenes = 1)\$Result; twoFACTORplot(res, x.axis.factor = Genotype, group.factor = Drought, errorbar = "se") | 
  | qpcrREPEATED        | Bar plot of the fold change expression for repeated measure observations (taken over time from each individual) |  qpcrREPEATED(data_repeated_measure_2, numberOfrefGenes = 1), factor = "time" |
  
 
@@ -367,6 +367,7 @@ Final_data <- qpcrANOVARE(data_2factor, numberOfrefGenes = 1)$Final_data
 q1 <- twoFACTORplot(res,
    x.axis.factor = Drought,
    group.factor = Genotype,
+   errorbar = "se",
    width = 0.5,
    fill = "Greens",
    y.axis.adjust = 0.5,
@@ -381,6 +382,7 @@ q1 <- twoFACTORplot(res,
 q2 <- twoFACTORplot(res,
    x.axis.factor = Genotype,
    group.factor = Drought,
+   errorbar = "se",
    xlab = "Genotype",
    fill = "Blues",
    legend.position = c(0.15, 0.8),
@@ -410,6 +412,7 @@ res$Type <- factor(res$Type, levels = c("S","R"))
 # This determines the columns order and shapes the plot output.
 p1 <- threeFACTORplot(res,
     arrangement = c(3, 1, 2),
+    errorbar = "se",
     legend.position = c(0.2, 0.85),
     xlab = "condition",
     fontsizePvalue = 4)
@@ -479,14 +482,17 @@ res <- qpcrANOVAFC(data_3factor, numberOfrefGenes = 1, mainFactor.column = 1)
 # Returning fold change values of Conc levels from a fitted model:
 qpcrMeans(res$lm_ANOVA, specs = "Conc")
 
-# Returning fold change values of Conc levels sliced by Type:
-qpcrMeans(res$lm_ANOVA, specs = "Conc | Type")
 
 # Returning fold change values of Conc levels sliced by Type*SA:
 qpcrMeans(res$lm_ANOVA, specs = "Conc | (Type*SA)")
 
 # Returning fold change values of Conc
 qpcrMeans(res$lm_ANOVA, specs = "Conc * Type")
+
+# Returning fold change values of Conc levels sliced by Type:
+res2 <- qpcrMeans(res$lm_ANOVA, specs = "Conc | Type")
+twoFACTORplot(res2, x.axis.factor = contrast, ylab = "Fold Change",
+              group.factor = Type, errorbar = "ci")
 ```
 
 
@@ -595,7 +601,7 @@ c$gene <- factor(c(1,1,1,2,2,2))
 c
 
 twoFACTORplot(c, x.axis.factor = contrast, 
-              group.factor = gene, fill = 'Reds',
+              group.factor = gene, fill = 'Reds', errorbar = "se",
               ylab = "FC", axis.text.x.angle = 45,
               axis.text.x.hjust = 1, legend.position = c(0.2, 0.8))
 ```

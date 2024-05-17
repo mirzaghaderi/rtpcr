@@ -13,7 +13,7 @@ twoFACTORplot(
   y.axis.adjust = 0.5,
   y.axis.by = 2,
   show.errorbars = TRUE,
-  errorbar = "se",
+  errorbar,
   show.letters = TRUE,
   letter.position.adjust = 0.1,
   ylab = "Relative Expression",
@@ -123,6 +123,7 @@ c
 twoFACTORplot(c, x.axis.factor = contrast, 
               group.factor = gene, fill = 'Reds',
               ylab = "FC", axis.text.x.angle = 45,
+              errorbar = "se",
               axis.text.x.hjust = 1)
 
 

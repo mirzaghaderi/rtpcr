@@ -39,13 +39,12 @@
 #'
 #' # Arrange the first three colunms of the result table.
 #' # This determines the columns order and shapes the plot output.
-#' threeFACTORplot(res,
-#'     arrangement = c(3, 1, 2),
+#' threeFACTORplot(res, arrangement = c(3, 1, 2), errorbar = "se",
 #'     xlab = "condition")
 #'
 #'
 #' threeFACTORplot(res, arrangement = c(1, 2, 3), bar.width = 0.5, fill = "Greys", 
-#' xlab = "Genotype", ylab = "Relative Expression")
+#' xlab = "Genotype", ylab = "Relative Expression", errorbar = "se")
 #'
 #'
 #' # Reordering factor levels to a desired order.
@@ -71,11 +70,21 @@
 
 
 threeFACTORplot <- function(res, arrangement = c(1, 2, 3), bar.width = 0.5, fill = "Reds", 
-                            xlab = "none", ylab = "Relative Expression", errorbar = "se", 
+                            xlab = "none", ylab = "Relative Expression", errorbar, 
                             y.axis.adjust = 0.5, y.axis.by = 2, letter.position.adjust = 0.3, 
                             legend.title = "Legend Title", legend.position = c(0.4, 0.8), 
                             fontsize = 12, fontsizePvalue = 5, show.letters = TRUE, 
                             axis.text.x.angle = 0, axis.text.x.hjust = 0.5){
+
+  
+  if (!("data.frame" %in% class(res))) {
+    stop("'res' is not a data frame")
+  }
+  
+  if (missing(errorbar)) {
+    stop("argument 'errorbar' is missing, with no default")
+  }
+  
   
   x <- res
   x <- x[, c(arrangement, 4:ncol(x))]

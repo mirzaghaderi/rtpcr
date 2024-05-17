@@ -10,7 +10,7 @@ oneFACTORplot(
   fill = "skyblue",
   y.axis.adjust = 0.5,
   y.axis.by = 2,
-  errorbar = "se",
+  errorbar,
   show.letters = TRUE,
   letter.position.adjust = 0.1,
   ylab = "Relative Expression",

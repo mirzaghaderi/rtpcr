@@ -81,6 +81,7 @@
 #' twoFACTORplot(c, x.axis.factor = contrast, 
 #'               group.factor = gene, fill = 'Reds',
 #'               ylab = "FC", axis.text.x.angle = 45,
+#'               errorbar = "se",
 #'               axis.text.x.hjust = 1)
 #'
 #'
@@ -90,9 +91,28 @@
 
 twoFACTORplot <- function(res, x.axis.factor, group.factor, width = 0.5, fill = "Blues", 
                           y.axis.adjust = 0.5, y.axis.by = 2, show.errorbars = TRUE,
-                          errorbar = "se", show.letters = TRUE, letter.position.adjust = 0.1,
+                          errorbar, show.letters = TRUE, letter.position.adjust = 0.1,
                           ylab = "Relative Expression", xlab = "none", legend.position = c(0.09, 0.8),
                           fontsize = 12, fontsizePvalue = 5, axis.text.x.angle = 0, axis.text.x.hjust = 0.5){
+  
+  
+  if (!("data.frame" %in% class(res))) {
+    stop("'res' is not a data frame")
+  }
+  
+  if (missing(x.axis.factor)) {
+    stop("argument 'x.axis.factor' is missing, with no default")
+  }
+  if (missing(group.factor)) {
+    stop("argument 'group.factor' is missing, with no default")
+  }
+  if (missing(errorbar)) {
+    stop("argument 'errorbar' is missing, with no default")
+  }  
+  
+  
+  
+  
   b <- res
   se <- b$se
   LCL <- b$LCL

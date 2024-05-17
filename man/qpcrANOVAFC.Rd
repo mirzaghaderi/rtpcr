@@ -7,10 +7,10 @@
 qpcrANOVAFC(
   x,
   numberOfrefGenes,
-  analysisType = "anova",
   mainFactor.column,
+  analysisType = "anova",
   mainFactor.level.order = NULL,
-  block = NULL,
+  block,
   width = 0.5,
   fill = "#BFEFFF",
   y.axis.adjust = 1,
@@ -33,9 +33,9 @@ qpcrANOVAFC(
 
 \item{numberOfrefGenes}{number of reference genes which is 1 or 2 (Up to two reference genes can be handled).}
 
-\item{analysisType}{should be one of "ancova" or "anova". Default is "anova".}
-
 \item{mainFactor.column}{the factor for which FC is calculated for its levels. If \code{ancova} is selected as \code{analysisType}, the remaining factors (if any) are considered as covariate(s).}
+
+\item{analysisType}{should be one of "ancova" or "anova". Default is "anova".}
 
 \item{mainFactor.level.order}{NULL or a vector of main factor level names. If \code{NULL}, the first level of the \code{mainFactor.column} is used 
 as reference or calibrator. If a vector of main factor levels (in any order) is specified, the first level in the vector is used as calibrator. Calibrator is the reference level or sample that all others are compared to. Examples are untreated 
@@ -120,11 +120,11 @@ is significant, suggesting that ANCOVA is not appropriate in this case.
 \examples{
 
 
-qpcrANOVAFC(data_1factor, numberOfrefGenes = 1, mainFactor.column = 1, 
+qpcrANOVAFC(data_1factor, numberOfrefGenes = 1, mainFactor.column = 1,block = NULL, 
 fill = c("#CDC673", "#EEDD82"), fontsizePvalue = 5, y.axis.adjust = 0.1)
 
 
-qpcrANOVAFC(data_2factor, numberOfrefGenes = 1, mainFactor.column = 2,  
+qpcrANOVAFC(data_2factor, numberOfrefGenes = 1, mainFactor.column = 2, block = NULL, 
 analysisType = "ancova", fontsizePvalue = 5, y.axis.adjust = 0.4)
 
 
@@ -133,14 +133,14 @@ analysisType = "ancova", fontsizePvalue = 5, y.axis.adjust = 0.4)
 # we get mean of technical reps first:
 df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
 order <- rev(unique(df$DS))
-qpcrANOVAFC(df, numberOfrefGenes = 1, analysisType = "ancova", 
+qpcrANOVAFC(df, numberOfrefGenes = 1, analysisType = "ancova", block = NULL, 
 mainFactor.column = 2, fill = c("skyblue", "#BFEFFF"), y.axis.adjust = 0.05)
 
 
 df <- meanTech(Lee_etal2020qPCR, groups = 1:3) 
 df2 <- df[df$factor1 == "DSWHi",][-1]
 qpcrANOVAFC(df2, mainFactor.column = 1, fontsizePvalue = 5, y.axis.adjust = 0.1,
-mainFactor.level.order = c("D7", "D12", "D15","D18"),
+mainFactor.level.order = c("D7", "D12", "D15","D18"), block = NULL,
 numberOfrefGenes = 1, analysisType = "ancova")
 
 
@@ -153,7 +153,7 @@ fontsizePvalue = 7, y.axis.adjust = 0.1, width = 0.35)
 addline_format <- function(x,...){gsub('\\\\s','\n',x)}
 order <- unique(data_2factor$Drought)
 qpcrANOVAFC(data_1factor, numberOfrefGenes = 1, mainFactor.column = 1,
-mainFactor.level.order = c("L1","L2","L3"), width = 0.5,
+mainFactor.level.order = c("L1","L2","L3"), width = 0.5, block = NULL,
 fill = c("skyblue","#79CDCD"), y.axis.by = 1, letter.position.adjust = 0,
 y.axis.adjust = 1, ylab = "Fold Change", fontsize = 12,
 x.axis.labels.rename = addline_format(c("Control", 

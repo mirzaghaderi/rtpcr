@@ -46,7 +46,7 @@
 #' # If the data include technical replicates, means of technical replicates
 #' # should be calculated first using meanTech function.
 #' # Applying ANOVA analysis
-#' qpcrANOVARE(data_3factor, numberOfrefGenes = 1)
+#' qpcrANOVARE(data_3factor, numberOfrefGenes = 1, block = NULL)
 #'
 #'
 #' qpcrANOVARE(data_2factorBlock, block = "Block", numberOfrefGenes = 1)
@@ -54,12 +54,15 @@
 #'
 
 
-qpcrANOVARE <- function(x, numberOfrefGenes, block = NULL, alpha = 0.05, adjust= "none")
+qpcrANOVARE <- function(x, numberOfrefGenes, block, alpha = 0.05, adjust= "none")
   {
   
   
   if (missing(numberOfrefGenes)) {
     stop("argument 'numberOfrefGenes' is missing, with no default")
+  }
+  if (missing(block)) {
+    stop("argument 'block' is missing, with no default. Requires NULL or a blocking column.")
   }
   
   if (is.null(block)) {

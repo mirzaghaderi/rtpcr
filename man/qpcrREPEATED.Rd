@@ -8,7 +8,7 @@ qpcrREPEATED(
   x,
   numberOfrefGenes,
   factor,
-  block = NULL,
+  block,
   width = 0.5,
   fill = "#BFEFFF",
   y.axis.adjust = 1,
@@ -100,11 +100,11 @@ so that the first levels (as appears in the input data frame) is used as referen
 
 qpcrREPEATED(data_repeated_measure_1,
             numberOfrefGenes = 1,
-            factor = "time")
+            factor = "time", block = NULL)
 
 qpcrREPEATED(data_repeated_measure_2,
              numberOfrefGenes = 1,
-             factor = "time")
+             factor = "time", block = NULL)
                                                        
                                                        
 }

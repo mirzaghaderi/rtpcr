@@ -4,7 +4,7 @@
 \alias{qpcrANOVARE}
 \title{Relative expression (\eqn{\Delta C_T} method) analysis using ANOVA}
 \usage{
-qpcrANOVARE(x, numberOfrefGenes, block = NULL, alpha = 0.05, adjust = "none")
+qpcrANOVARE(x, numberOfrefGenes, block, alpha = 0.05, adjust = "none")
 }
 \arguments{
 \item{x}{A data frame consisting of condition columns, target gene efficiency (E), target Gene Ct, reference gene efficiency and reference gene Ct values, respectively. Each Ct in the data frame is the mean of technical replicates. Complete amplification efficiencies of 2 was assumed in the example data for all wells but the calculated efficienies can be used instead. NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment).}
@@ -44,7 +44,7 @@ on factorial design or analysis of covariance for the can be performed using \li
 # If the data include technical replicates, means of technical replicates
 # should be calculated first using meanTech function.
 # Applying ANOVA analysis
-qpcrANOVARE(data_3factor, numberOfrefGenes = 1)
+qpcrANOVARE(data_3factor, numberOfrefGenes = 1, block = NULL)
 
 
 qpcrANOVARE(data_2factorBlock, block = "Block", numberOfrefGenes = 1)

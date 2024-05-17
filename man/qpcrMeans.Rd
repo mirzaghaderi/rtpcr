@@ -30,7 +30,7 @@ interactions and slicing if an ANOVA model is used, but ANCOVA models returned b
 # Returning fold change values from a fitted model.
 # Firstly, result of `qpcrANOVAFC` or `qpcrREPEATED` is 
 # acquired which includes a model object:
-res <- qpcrANOVAFC(data_3factor, numberOfrefGenes = 1, mainFactor.column = 1)
+res <- qpcrANOVAFC(data_3factor, numberOfrefGenes = 1, mainFactor.column = 1, block = NULL)
 
 # Returning fold change values of Type levels from a fitted model:
 qpcrMeans(res$lm_ANOVA, specs = "Type")

@@ -28,7 +28,7 @@
 #' @examples
 #'
 #' # Before plotting, the result needs to be extracted as below:
-#' res <- qpcrANOVARE(data_1factor, numberOfrefGenes = 1)$Result
+#' res <- qpcrANOVARE(data_1factor, numberOfrefGenes = 1, block = NULL)$Result
 #'
 #' # Bar plot
 #' oneFACTORplot(res,

@@ -61,23 +61,32 @@
 #' 
 #' qpcrREPEATED(data_repeated_measure_1,
 #'             numberOfrefGenes = 1,
-#'             factor = "time")
+#'             factor = "time", block = NULL)
 #'
 #' qpcrREPEATED(data_repeated_measure_2,
 #'              numberOfrefGenes = 1,
-#'              factor = "time")
+#'              factor = "time", block = NULL)
 #'                                                        
 #'                                                        
 
 
 
-qpcrREPEATED <- function(x, numberOfrefGenes, factor, block = NULL,
+qpcrREPEATED <- function(x, numberOfrefGenes, factor, block,
                          width = 0.5, fill = "#BFEFFF", y.axis.adjust = 1, y.axis.by = 1,
                          ylab = "Fold Change", xlab = "none", fontsize = 12, fontsizePvalue = 7,
                          axis.text.x.angle = 0, axis.text.x.hjust = 0.5, x.axis.labels.rename = "none",
                          letter.position.adjust = 0, p.adj = "none", errorbar = "se", plot = TRUE){
   
   
+  if (missing(numberOfrefGenes)) {
+    stop("argument 'numberOfrefGenes' is missing, with no default")
+  }
+  if (missing(factor)) {
+    stop("argument 'factor' is missing, with no default")
+  }
+  if (missing(block)) {
+    stop("argument 'block' is missing, with no default. Requires NULL or a blocking column.")
+  }
   
   
   if (is.null(block)) {

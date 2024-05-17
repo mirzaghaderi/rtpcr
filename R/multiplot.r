@@ -15,7 +15,7 @@
 #'                     width = 0.3)
 #' 
 #' 
-#' out2 <- qpcrANOVARE(data_1factor, numberOfrefGenes = 1)$Result
+#' out2 <- qpcrANOVARE(data_1factor, numberOfrefGenes = 1, block = NULL)$Result
 #' p2 <- oneFACTORplot(out2,
 #'                     width = 0.4,
 #'                     fill = "skyblue",

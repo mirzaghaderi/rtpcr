@@ -42,7 +42,7 @@
 qpcrMeans <- function(model, specs, p.adj = "none"){
   
   if(any(c("lmerModLmerTest", "lm") %in% class(model)) == FALSE){
-    stop("'model' is not a model")
+    stop("The provided model is not an accepted model object created by qpcrANOVAFC, qpcrANOVARE, or qpcrREPEATED functions.")
   }
   
   f <- stats::as.formula(paste("pairwise ~", specs))

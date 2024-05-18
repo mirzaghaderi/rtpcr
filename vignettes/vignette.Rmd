@@ -289,7 +289,6 @@ the `qpcrANOVARE` function performs Relative Expression (RE) analysis for uni- o
 data_3factor
 ```
 
-The `qpcrANOVARE` function performs ANOVA based on both factorial arrangement and completely randomized design (CRD). CRD-based analysis is especially useful when post-hoc testsand mean comparisons/grouping  for relative expression are desired for all treatment combinations. The final results along with the ANOVA tables is returned by the `qpcrANOVARE` function.
 
 
 ### Output table of the analysis

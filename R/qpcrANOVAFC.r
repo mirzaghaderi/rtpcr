@@ -160,7 +160,7 @@ plot = TRUE
     stop("argument 'mainFactor.column' is missing, with no default")
   }
   if (missing(block)) {
-    stop("argument 'block' is missing, with no default. Requires NULL or a blocking column.")
+    stop("argument 'block' is missing, with no default. Requires NULL or a blocking factor column.")
   }
   
   

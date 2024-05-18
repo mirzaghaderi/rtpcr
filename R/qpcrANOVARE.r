@@ -1,12 +1,14 @@
 #' @title Relative expression (\eqn{\Delta C_T} method) analysis using ANOVA 
 #' 
-#' @description Analysis of variance of relative expression (\eqn{\Delta C_T} method) values based on a completely randomized design (CRD). Even there are more than a factor in the experiment, it is still possible to apply CRD analysis on the factor-level combinations as treatments. Analysis of variance based on factorial design or analysis of covariance can be performed using \code{qpcrANOVAFC} function.  
-#' @details The \code{qpcrANOVARE} function performs analysis of variance (ANOVA) of relative expression (RE) values based on a completely randomized design (CRD). 
+#' @description Analysis of variance of relative expression (\eqn{\Delta C_T} method) values for 
+#' all factor level combinations. Analysis of variance based on factorial design or analysis of 
+#' covariance can be performed using \code{qpcrANOVAFC} function.  
+#' @details The \code{qpcrANOVARE} function performs analysis of variance (ANOVA) of relative expression (RE) 
+#' values for all factor level combinations as treatments. 
 #' It is suitable when relative expression (RE) analysis between different treatment combinations 
-#' (in a Uni- or multi-factorial experiment) is desired. If there are more than a factor in the experiment, 
-#' it is still possible to apply CRD analysis on the factor-level combinations as treatments. 
-#' For this, a column of treatment combinations is made first as a grouping factor Fold change analysis based 
-#' on factorial design or analysis of covariance for the can be performed using \link{qpcrANOVAFC}.
+#' (in a Uni- or multi-factorial experiment) is desired. 
+#' Fold change analysis based 
+#' on factorial design or analysis of covariance can be performed using \link{qpcrANOVAFC}.
 #' @author Ghader Mirzaghaderi
 #' @export qpcrANOVARE
 #' @import dplyr
@@ -55,14 +57,14 @@
 
 
 qpcrANOVARE <- function(x, numberOfrefGenes, block, alpha = 0.05, adjust= "none")
-  {
+{
   
   
   if (missing(numberOfrefGenes)) {
     stop("argument 'numberOfrefGenes' is missing, with no default")
   }
   if (missing(block)) {
-    stop("argument 'block' is missing, with no default. Requires NULL or a blocking column.")
+    stop("argument 'block' is missing, with no default. Requires NULL or a blocking factor column.")
   }
   
   if (is.null(block)) {
@@ -194,7 +196,7 @@ qpcrANOVARE <- function(x, numberOfrefGenes, block, alpha = 0.05, adjust= "none"
   
   
   xx <- x[, -(ncol(x))] # Removing the last column of T
- 
+  
   
   outlist2 <- structure(list(Final_data = xx,
                              lmCRD = lm,
@@ -209,4 +211,3 @@ qpcrANOVARE <- function(x, numberOfrefGenes, block, alpha = 0.05, adjust= "none"
   }
   print.XX(outlist2)
 }
-

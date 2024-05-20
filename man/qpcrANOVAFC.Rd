@@ -97,25 +97,22 @@ the \code{qpcrANOVAFC} function.
 }
 \details{
 The \code{qpcrANOVAFC} function applies both ANOVA and ANCOVA analysis to the data of a uni- or 
-multi-factorial experiment, although for the data with 
-only one factor, the ANCOVA analysis is equivalent to ANOVA. ANCOVA is basically appropriate when the 
-levels of a factor are #' also affected by uncontrolled quantitative covariate(s). 
+multi-factorial experiment. If there are more than one factor analysis is applied on the levels of the 
+\code{mainFactor.column} and other column(s) are used as covariate(s), ANCOVA is basically appropriate when 
+a factor is affected by uncontrolled quantitative covariate(s). 
 For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may 
 also be affected by drought. Since we already know that temperature affects the target gene, we are 
 interested to know if the gene expression is also altered by the drought levels. We can design an 
 experiment to understand the gene behavior at both temperature and drought levels at the same time. 
 The drought is another factor (the covariate) that may affect the expression of our gene under the 
 levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA 
-or even ANOVA based on a factorial experiment using \code{qpcrANOVAFC}. This function performs FC 
+or using ANOVA based on a factorial experiment using \code{qpcrANOVAFC}. This function performs FC 
 analysis even there is only one factor (without covariate or factor  variable). Bar plot of fold changes 
-(FC) values along with the pair-wise errors (square roots of pooled variances of each pair of samples) are also returned by the 
-\code{qpcrANOVAFC} function. There is also a function called \code{oneFACTORplot} which returns RE values 
-and related plot for a one-factor-experiment with more than two levels.
+(FC) values along with the errors (square roots of pooled variance of each pair of samples) are also returned by the 
+\code{qpcrANOVAFC} function.
 Along with the ANCOVA, the \code{qpcrANOVAFC} also performs a full model factorial analysis of variance. 
-If there is covariate variable(s), before ANCOVA analysis, it is better to run ANOVA based on a 
-factorial design to see if the main factor and covariate(s) interaction is significant or not. 
-If the pvalue of the interaction effect is smaller than 0.05, then the interaction between the main factor and covariate 
-is significant, suggesting that ANCOVA is not appropriate in this case.
+If there is covariate variable(s), we concidere ANOVA result to see
+if the interaction between the main factor and covariate is significant, suggesting that ANCOVA is not appropriate in this case.
 }
 \examples{
 

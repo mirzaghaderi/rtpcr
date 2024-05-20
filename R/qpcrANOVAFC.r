@@ -441,7 +441,7 @@ plot = TRUE
   print.XX <- function(outlist2){
     cat("ANOVA table", "\n")
     print(outlist2$ANOVA_table)
-    cat("\n","ANCOVA table", "\n")
+    cat("\n", sep = '', "ANCOVA table", "\n")
     print(outlist2$ANCOVA_table)
     cat("\n", sep = '', "Fold Change table", "\n")
     print(outlist2$Fold_Change)

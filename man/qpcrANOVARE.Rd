@@ -30,8 +30,7 @@ A list with 5 elements:
 }
 \description{
 Analysis of variance of relative expression (\eqn{\Delta C_T} method) values for 
-all factor level combinations. Analysis of variance based on factorial design or analysis of 
-covariance can be performed using \code{qpcrANOVAFC} function.
+all factor level combinations.
 }
 \details{
 The \code{qpcrANOVARE} function performs analysis of variance (ANOVA) of relative expression (RE) 

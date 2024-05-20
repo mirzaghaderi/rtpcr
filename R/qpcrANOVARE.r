@@ -1,12 +1,11 @@
 #' @title Relative expression (\eqn{\Delta C_T} method) analysis using ANOVA 
 #' 
 #' @description Analysis of variance of relative expression (\eqn{\Delta C_T} method) values for 
-#' all factor level combinations. Analysis of variance based on factorial design or analysis of 
-#' covariance can be performed using \code{qpcrANOVAFC} function.  
+#' all factor level combinations. 
 #' @details The \code{qpcrANOVARE} function performs analysis of variance (ANOVA) of relative expression (RE) 
 #' values for all factor level combinations as treatments. 
 #' It is suitable when relative expression (RE) analysis between different treatment combinations 
-#' (in a Uni- or multi-factorial experiment) is desired. 
+#' (in a uni- or multi-factorial experiment) is desired. 
 #' Fold change analysis based 
 #' on factorial design or analysis of covariance can be performed using \link{qpcrANOVAFC}.
 #' @author Ghader Mirzaghaderi
@@ -14,7 +13,6 @@
 #' @import dplyr
 #' @import tidyr
 #' @import reshape2
-#' @import ggplot2
 #' @import lmerTest
 #' @import multcomp
 #' @import multcompView

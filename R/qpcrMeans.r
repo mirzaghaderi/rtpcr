@@ -1,6 +1,6 @@
 #' @title Fold change (\eqn{\Delta \Delta C_T} method) analysis using a model
 #' 
-#' @description Fold change (\eqn{\Delta \Delta C_T} method) analysis using a model produced by the
+#' @description Fold change (\eqn{\Delta \Delta C_T} method) analysis using a model object produced by the
 #' \code{qpcrANOVAFC} or \code{qpcrREPEATED}.
 #' 
 #' @details The \code{qpcrMeans} performs fold change (\eqn{\Delta \Delta C_T} method) analysis using a model produced by the

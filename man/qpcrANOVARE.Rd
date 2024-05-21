@@ -7,7 +7,12 @@
 qpcrANOVARE(x, numberOfrefGenes, block, alpha = 0.05, adjust = "none")
 }
 \arguments{
-\item{x}{A data frame consisting of condition columns, target gene efficiency (E), target Gene Ct, reference gene efficiency and reference gene Ct values, respectively. Each Ct in the data frame is the mean of technical replicates. Complete amplification efficiencies of 2 was assumed in the example data for all wells but the calculated efficienies can be used instead. NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment). See \href{../doc/vignette.html}{\code{vignette("data structure and column arrangement")}} for details.}
+\item{x}{A data frame consisting of condition columns, target gene efficiency (E), target Gene Ct, reference 
+gene efficiency and reference gene Ct values, respectively. Each Ct in the data frame is the mean of 
+technical replicates. Complete amplification efficiencies of 2 was assumed in the example data for 
+all wells but the calculated efficienies can be used instead. NOTE: Each line belongs to a separate 
+individual reflecting a non-repeated measure experiment). 
+See \href{../doc/vignette.html}{\code{vignette}}, section "data structure and column arrangement" for details.}
 
 \item{numberOfrefGenes}{number of reference genes (1 or 2). Up to two reference genes can be handled.}
 

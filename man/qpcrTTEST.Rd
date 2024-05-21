@@ -7,7 +7,7 @@
 qpcrTTEST(x, numberOfrefGenes, paired = FALSE, var.equal = TRUE)
 }
 \arguments{
-\item{x}{a data frame of 4 columns including Conditions, E (efficiency), Gene and Ct values (see example below). Biological replicates needs to be equal for all Genes. Each Ct value is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used instead. See \href{../doc/vignette.html}{\code{vignette("data structure and column arrangement")}} for details.}
+\item{x}{a data frame of 4 columns including Conditions, E (efficiency), Gene and Ct values (see examples below). Biological replicates needs to be equal for all Genes. Each Ct value is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used instead. See \href{../doc/vignette.html}{\code{vignette}} for details about "data structure and column arrangement".}
 
 \item{numberOfrefGenes}{number of reference genes. Up to two reference genes can be handled.}
 

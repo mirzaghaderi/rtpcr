@@ -29,7 +29,10 @@ qpcrANOVAFC(
 )
 }
 \arguments{
-\item{x}{a data frame of condition(s), biological replicates, efficiency (E) and Ct values of target and reference genes. Each Ct value in the data frame is the mean of technical replicates. NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment). See \href{../doc/vignette.html}{\code{vignette("data structure and column arrangement")}} for details.}
+\item{x}{a data frame of condition(s), biological replicates, efficiency (E) and Ct values of 
+target and reference genes. Each Ct value in the data frame is the mean of technical replicates. 
+NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment). 
+See \href{../doc/vignette.html}{\code{vignette}}, section "data structure and column arrangement" for details.}
 
 \item{numberOfrefGenes}{number of reference genes which is 1 or 2 (Up to two reference genes can be handled).}
 

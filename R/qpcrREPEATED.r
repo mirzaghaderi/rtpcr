@@ -23,7 +23,7 @@
 #' In the "id" column, a unique number is assigned to each individual from which samples have been takes over time, 
 #' for example in the \code{data_repeated_measure_1}, 
 #' all the three number 1 indicate one individual which has been sampled over three different time courses.
-#' See \href{../doc/vignette.html}{\code{vignette("data structure and column arrangement")}} for details.
+#' See \href{../doc/vignette.html}{\code{vignette}}, section "data structure and column arrangement" for details.
 #' @param numberOfrefGenes number of reference genes which is 1 or 2 (Up to two reference genes can be handled).
 #' as reference or calibrator which is the reference level or sample that all others are compared to. Examples are untreated 
 #' of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.

@@ -1,6 +1,6 @@
 #' @title Fold change (\eqn{\Delta \Delta C_T} method) analysis of repeated measure qPCR data
 #' 
-#' @description \code{qpcrREPEATED} function performs fold change (\eqn{\Delta \Delta C_T} method) analysis of observations repeatedly taken over different time courses, 
+#' @description \code{qpcrREPEATED} function performs fold change (\eqn{\Delta \Delta C_T} method) analysis of observations repeatedly taken over different time courses. 
 #' Data may be obtained over time from a uni- or multi-factorial experiment. The bar plot of the fold changes (FC) 
 #' values along with the standard error (se) or confidence interval (ci) is also returned by the \code{qpcrREPEATED} function. 
 #' 
@@ -17,13 +17,13 @@
 #' @import emmeans
 #' @import lmerTest
 #' @param x input data frame in which the first column is id, 
-#' followed by the factor(s) which include at least time factor. 
-#' The first level of time factor in data set is used as calibrator or reference level.
+#' followed by the factor column(s) which include at least time. 
+#' The first level of time in data frame is used as calibrator or reference level.
 #' Additional factor(s) may also be present. Other columns are efficiency and Ct values of target and reference genes.
 #' In the "id" column, a unique number is assigned to each individual from which samples have been takes over time, 
 #' for example in the \code{data_repeated_measure_1}, 
 #' all the three number 1 indicate one individual which has been sampled over three different time courses.
-#' To prepare a data frame from a  repeated measure analysis, please refer to the vignette. 
+#' See \href{../doc/vignette.html}{\code{vignette("data structure and column arrangement")}} for details.
 #' @param numberOfrefGenes number of reference genes which is 1 or 2 (Up to two reference genes can be handled).
 #' as reference or calibrator which is the reference level or sample that all others are compared to. Examples are untreated 
 #' of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.

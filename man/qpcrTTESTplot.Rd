@@ -25,7 +25,7 @@ qpcrTTESTplot(
 )
 }
 \arguments{
-\item{x}{a data frame. The data frame consists of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct in the following data frame is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used we well. We use this data set for Fold Change expression analysis of the target genes in treatment condition compared to normal condition.}
+\item{x}{a data frame. The data frame consists of 4 columns belonging to condition levels, E (efficiency), genes and Ct values, respectively. Each Ct in the following data frame is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used we well. We use this data set for Fold Change expression analysis of the target genes in treatment condition compared to normal condition. See \href{../doc/vignette.html}{\code{vignette("data structure and column arrangement")}} for details.}
 
 \item{order}{a vector determining genes order on the output graph.}
 

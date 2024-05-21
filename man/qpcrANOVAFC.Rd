@@ -29,7 +29,7 @@ qpcrANOVAFC(
 )
 }
 \arguments{
-\item{x}{a data frame of condition(s), biological replicates, efficiency (E) and Ct values of target and reference genes. Each Ct value in the data frame is the mean of technical replicates. NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment). Please refer to the vignette for preparing your data frame correctly.}
+\item{x}{a data frame of condition(s), biological replicates, efficiency (E) and Ct values of target and reference genes. Each Ct value in the data frame is the mean of technical replicates. NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment). See \href{../doc/vignette.html}{\code{vignette("data structure and column arrangement")}} for details.}
 
 \item{numberOfrefGenes}{number of reference genes which is 1 or 2 (Up to two reference genes can be handled).}
 
@@ -134,17 +134,19 @@ qpcrANOVAFC(df, numberOfrefGenes = 1, analysisType = "ancova", block = NULL,
 mainFactor.column = 2, fill = c("skyblue", "#BFEFFF"), y.axis.adjust = 0.05)
 
 
-df <- meanTech(Lee_etal2020qPCR, groups = 1:3) 
-df2 <- df[df$factor1 == "DSWHi",][-1]
-qpcrANOVAFC(df2, mainFactor.column = 1, fontsizePvalue = 5, y.axis.adjust = 0.1,
-mainFactor.level.order = c("D7", "D12", "D15","D18"), block = NULL,
-numberOfrefGenes = 1, analysisType = "ancova")
 
 
 qpcrANOVAFC(data_2factorBlock,  numberOfrefGenes = 1, mainFactor.column = 1, 
 mainFactor.level.order = c("S", "R"), block = "block", 
 fill = c("#CDC673", "#EEDD82"), analysisType = "ancova",
 fontsizePvalue = 7, y.axis.adjust = 0.1, width = 0.35)
+
+
+df <- meanTech(Lee_etal2020qPCR, groups = 1:3) 
+df2 <- df[df$factor1 == "DSWHi",][-1]
+qpcrANOVAFC(df2, mainFactor.column = 1, fontsizePvalue = 5, y.axis.adjust = 0.1,
+mainFactor.level.order = c("D7", "D12", "D15","D18"), block = NULL,
+numberOfrefGenes = 1, analysisType = "ancova")
 
 
 addline_format <- function(x,...){gsub('\\\\s','\n',x)}

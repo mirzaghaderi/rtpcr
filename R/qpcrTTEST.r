@@ -15,7 +15,7 @@
 #' @import dplyr
 #' @import reshape2
 #' @import ggplot2
-#' @param x a data frame of 4 columns including Conditions, E (efficiency), Gene and Ct values (see example below). Biological replicates needs to be equal for all Genes. Each Ct value is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used instead.
+#' @param x a data frame of 4 columns including Conditions, E (efficiency), Gene and Ct values (see example below). Biological replicates needs to be equal for all Genes. Each Ct value is the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here for all wells but the calculated efficienies can be used instead. See \href{../doc/vignette.html}{\code{vignette("data structure and column arrangement")}} for details.
 #' @param paired a logical indicating whether you want a paired t-test.
 #' @param var.equal a logical variable indicating whether to treat the two variances as being equal. If TRUE then the pooled variance is used to estimate the variance otherwise the Welch (or Satterthwaite) approximation to the degrees of freedom is used.
 #' @param numberOfrefGenes number of reference genes. Up to two reference genes can be handled.

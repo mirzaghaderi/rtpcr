@@ -3,17 +3,17 @@
 #' @description Fold change (\eqn{\Delta \Delta C_T} method) analysis using a model object produced by the
 #' \code{qpcrANOVAFC} or \code{qpcrREPEATED}.
 #' 
-#' @details The \code{qpcrMeans} performs fold change (\eqn{\Delta \Delta C_T} method) analysis using a model produced by the
+#' @details The \code{qpcrMeans} function performs fold change (\eqn{\Delta \Delta C_T} method) analysis using a model produced by the
 #' \code{qpcrANOVAFC} or \code{qpcrREPEATED}. The values can be returned for any effects in the model including simple effects,
 #' interactions and slicing if an ANOVA model is used, but ANCOVA models returned by rtpcr package only include simple effects.
 #' 
 #' @author Ghader Mirzaghaderi
 #' @export qpcrMeans
 #' @import emmeans
-#' @param model an `lmer` fitted model object
+#' @param model an `lmer` fitted model object created by qpcrANOVAFC or qpcrREPEATED functions
 #' @param specs A character vector specifying the names of the predictors over which FC values are desired
 #' @param p.adj Method for adjusting p values
-#' @return Table of FC values, significance and confidence limits.
+#' @return Table of FC values, significance and confidence interval.
 #' 
 #' 
 #' @examples

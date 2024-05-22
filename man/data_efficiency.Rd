@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_efficiency}
 \alias{data_efficiency}
-\title{Sample data (amplification efficiency)}
+\title{Sample qPCR data: amplification efficiency}
 \format{
 A data frame with 21 observations and 4 variables:
 \describe{

@@ -36,7 +36,7 @@
 #' @import emmeans
 #' @param x a data frame of condition(s), biological replicates, efficiency (E) and Ct values of 
 #' target and reference genes. Each Ct value in the data frame is the mean of technical replicates. 
-#' NOTE: Each line belongs to a separate individual reflecting a non-repeated measure experiment). 
+#' \strong{NOTE:} Each line belongs to a separate individual reflecting a non-repeated measure experiment). 
 #' See \href{../doc/vignette.html}{\code{vignette}}, section "data structure and column arrangement" for details.
 #' 
 #' @param numberOfrefGenes number of reference genes which is 1 or 2 (Up to two reference genes can be handled).
@@ -98,7 +98,7 @@
 #'
 #' # Data from Lee et al., 2020 
 #' # Here, the data set contains technical replicates so 
-#' # we get mean of technical reps first:
+#' # we get mean of technical replicates first:
 #' df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
 #' order <- rev(unique(df$DS))
 #' qpcrANOVAFC(df, numberOfrefGenes = 1, analysisType = "ancova", block = NULL, 

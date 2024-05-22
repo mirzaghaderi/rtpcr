@@ -78,8 +78,10 @@ threeFACTORplot <- function(res, arrangement = c(1, 2, 3), bar.width = 0.5, fill
 
   
   if (!("data.frame" %in% class(res))) {
-    stop("'res' is not a data frame")
+    stop(deparse(substitute(res)), " is not a data frame")
   }
+  
+  
   
   if (missing(errorbar)) {
     stop("argument 'errorbar' is missing, with no default")

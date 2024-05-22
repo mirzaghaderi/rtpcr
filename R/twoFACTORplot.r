@@ -97,7 +97,7 @@ twoFACTORplot <- function(res, x.axis.factor, group.factor, width = 0.5, fill = 
   
   
   if (!("data.frame" %in% class(res))) {
-    stop("'res' is not a data frame")
+    stop(deparse(substitute(res)), " is not a data frame")
   }
   
   if (missing(x.axis.factor)) {

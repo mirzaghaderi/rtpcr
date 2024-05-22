@@ -54,7 +54,7 @@ oneFACTORplot <- function(res, width = 0.4, fill = "skyblue", y.axis.adjust = 0.
 
   
   if (!("data.frame" %in% class(res))) {
-    stop("Error: 'res' is not a data frame")
+    stop(deparse(substitute(res)), " is not a data frame")
   }
   
   if (missing(errorbar)) {

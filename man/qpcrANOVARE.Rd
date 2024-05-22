@@ -10,7 +10,7 @@ qpcrANOVARE(x, numberOfrefGenes, block, alpha = 0.05, adjust = "none")
 \item{x}{A data frame consisting of condition columns, target gene efficiency (E), target Gene Ct, reference 
 gene efficiency and reference gene Ct values, respectively. Each Ct in the data frame is the mean of 
 technical replicates. Complete amplification efficiencies of 2 was assumed in the example data for 
-all wells but the calculated efficienies can be used instead. NOTE: Each line belongs to a separate 
+all wells but the calculated efficienies can be used instead.  \strong{NOTE:} Each line belongs to a separate 
 individual reflecting a non-repeated measure experiment). 
 See \href{../doc/vignette.html}{\code{vignette}}, section "data structure and column arrangement" for details.}
 
@@ -49,7 +49,7 @@ on factorial design or analysis of covariance can be performed using \link{qpcrA
 
 # If the data include technical replicates, means of technical replicates
 # should be calculated first using meanTech function.
-# Applying ANOVA analysis
+# Applying ANOVA
 qpcrANOVARE(data_3factor, numberOfrefGenes = 1, block = NULL)
 
 

@@ -1,4 +1,4 @@
-#' Sample data (amplification efficiency)
+#' Sample qPCR data: amplification efficiency
 #'
 #' A sample qPCR dataset for demonstrating efficiency calculation.
 #'
@@ -93,10 +93,9 @@
 "data_3factor"
 
 
-#' Sample qPCR data of an experiment conducted under two different conditions
+#' Sample qPCR data from an experiment conducted under two different conditions
 #'
-#' A sample data for demonstrating qPCR data analysis. In unpaired condition, each line belongs to a separate individual.
-#' However t-test can be applied for paired samples where the data is acquired from same individuals in two conditions e.g. before and after a treatment. 
+#' Sample qPCR data from an experiment conducted under two different conditions.
 #'
 #' @format A data frame with 24 observations and 4 variables:
 #' \describe{
@@ -110,10 +109,9 @@
 #' @keywords internal
 "data_ttest"
 
-#' Sample data (one target and two reference genes under two different conditions)
+#' Sample qPCR data (one target and two reference genes under two different conditions)
 #'
-#' One target and two reference gens for demonstrating qPCR data analysis. In unpaired condition, each line belongs to a separate individual.
-#' However t-test can be applied for paired samples where the data is acquired from same individuals in two conditions e.g. before and after a treatment. 
+#' Sample qPCR data (one target and two reference genes under two different conditions)
 #'
 #' @format A data frame with 18 observations and 4 variables:
 #' \describe{

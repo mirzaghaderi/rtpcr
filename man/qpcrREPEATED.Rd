@@ -31,8 +31,8 @@ qpcrREPEATED(
 followed by the factor column(s) which include at least time. 
 The first level of time in data frame is used as calibrator or reference level.
 Additional factor(s) may also be present. Other columns are efficiency and Ct values of target and reference genes.
-In the "id" column, a unique number is assigned to each individual from which samples have been takes over time, 
-for example in the \code{data_repeated_measure_1}, 
+ \strong{NOTE:} In the "id" column, a unique number is assigned to each individual from which samples have been taken over time, 
+for example see \code{data_repeated_measure_1}, 
 all the three number 1 indicate one individual which has been sampled over three different time courses.
 See \href{../doc/vignette.html}{\code{vignette}}, section "data structure and column arrangement" for details.}
 
@@ -87,14 +87,17 @@ A list with 5 elements:
 }
 }
 \description{
-\code{qpcrREPEATED} function performs fold change (\eqn{\Delta \Delta C_T} method) analysis of observations repeatedly taken over different time courses. 
+\code{qpcrREPEATED} function performs fold change (\eqn{\Delta \Delta C_T} method) 
+analysis of observations repeatedly taken over different time courses. 
 Data may be obtained over time from a uni- or multi-factorial experiment. The bar plot of the fold changes (FC) 
 values along with the standard error (se) or confidence interval (ci) is also returned by the \code{qpcrREPEATED} function.
 }
 \details{
 The \code{qpcrREPEATED} function performs fold change (FC) analysis of observations repeatedly taken over time. 
-The intended factor (could be time or any other factor) is defined for the analysis by the \code{factor} argument, then the function performs FC analysis on its levels
-so that the first levels (as appears in the input data frame) is used as reference or calibrator. the function returns FC values along with confidence interval and standard error for the FC values.
+The intended factor (could be time or any other factor) is defined for the analysis by the \code{factor} argument, 
+then the function performs FC analysis on its levels
+so that the first levels (as appears in the input data frame) is used as reference or calibrator. 
+The function returns FC values along with confidence interval and standard error for the FC values.
 }
 \examples{
 

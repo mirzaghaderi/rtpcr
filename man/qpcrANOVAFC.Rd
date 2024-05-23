@@ -100,22 +100,22 @@ the \code{qpcrANOVAFC} function.
 }
 \details{
 The \code{qpcrANOVAFC} function applies both ANOVA and ANCOVA analysis to the data of a uni- or 
-multi-factorial experiment. If there are more than one factor analysis is applied on the levels of the 
-\code{mainFactor.column} and other column(s) are used as covariate(s), ANCOVA is basically appropriate when 
-a factor is affected by uncontrolled quantitative covariate(s). 
+a multi-factorial experiment. If there are more than one factor, FC value calculations for 
+the `mainFactor.column` and the statistical analysis is performed based on a full model factorial 
+experiment by default. However, if `ancova` is defined for the `analysisType` argument,
+FC values are calculated for the levels of the `mainFactor.column` and the other factors are 
+used as covariate(s) in the analysis of variance, but we should consider ANCOVA table:
+if the interaction between the main factor and covariate is significant, ANCOVA is not appropriate in this case. 
+ANCOVA is basically used when a factor is affected by uncontrolled quantitative covariate(s). 
 For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may 
 also be affected by drought. Since we already know that temperature affects the target gene, we are 
 interested to know if the gene expression is also altered by the drought levels. We can design an 
 experiment to understand the gene behavior at both temperature and drought levels at the same time. 
 The drought is another factor (the covariate) that may affect the expression of our gene under the 
 levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA 
-or using ANOVA based on a factorial experiment using \code{qpcrANOVAFC}. This function performs FC 
+or using ANOVA based on a factorial experiment using \code{qpcrANOVAFC}. \code{qpcrANOVAFC} function performs FC 
 analysis even there is only one factor (without covariate or factor  variable). Bar plot of fold changes 
-(FC) values along with the errors (square roots of pooled variance of each pair of samples) are also returned by the 
-\code{qpcrANOVAFC} function.
-Along with the ANCOVA, the \code{qpcrANOVAFC} also performs a full model factorial analysis of variance. 
-If there is covariate variable(s), we concidere ANOVA result to see
-if the interaction between the main factor and covariate is significant, suggesting that ANCOVA is not appropriate in this case.
+(FC) values along with the standard errors are also returned by the \code{qpcrANOVAFC} function.
 }
 \examples{
 

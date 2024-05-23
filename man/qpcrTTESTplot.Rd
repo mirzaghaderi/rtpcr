@@ -29,7 +29,7 @@ qpcrTTESTplot(
 E (efficiency), genes and Ct values, respectively. Each Ct in the following data frame is 
 the mean of technical replicates. Complete amplification efficiencies of 2 is assumed here 
 for all wells but the calculated efficienies can be used we well. We use this data set for 
-Fold Change expression analysis of the target genes in treatment condition compared to 
+fold change expression analysis of the target genes in treatment condition compared to 
 normal condition. See \href{../doc/vignette.html}{\code{vignette}} for details.}
 
 \item{order}{a vector determining genes order on the output graph.}

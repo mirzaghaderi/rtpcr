@@ -11,7 +11,7 @@ qpcrREPEATED(
   block,
   width = 0.5,
   fill = "#BFEFFF",
-  y.axis.adjust = 1,
+  y.axis.adjust = 2,
   y.axis.by = 1,
   ylab = "Fold Change",
   xlab = "none",

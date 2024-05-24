@@ -75,7 +75,7 @@
 
 
 qpcrREPEATED <- function(x, numberOfrefGenes, factor, block,
-                         width = 0.5, fill = "#BFEFFF", y.axis.adjust = 1, y.axis.by = 1,
+                         width = 0.5, fill = "#BFEFFF", y.axis.adjust = 2, y.axis.by = 1,
                          ylab = "Fold Change", xlab = "none", fontsize = 12, fontsizePvalue = 7,
                          axis.text.x.angle = 0, axis.text.x.hjust = 0.5, x.axis.labels.rename = "none",
                          letter.position.adjust = 0, p.adj = "none", errorbar = "se", plot = TRUE){
@@ -280,9 +280,9 @@ qpcrREPEATED <- function(x, numberOfrefGenes, factor, block,
                 vjust = -0.5, size = fontsizePvalue)
   } else if(errorbar == "se") {
     pfc2 <- pfc2 +
-      geom_errorbar(aes(contrast, ymin = FCp, ymax =  FCp + se), width=0.1) +
+      geom_errorbar(aes(contrast, ymin = 2^(log2(FCp) - se), ymax =  2^(log2(FCp) + se)), width=0.1) +
       geom_text(aes(label = significance, x = contrast,
-                    y = FCp + se + letter.position.adjust),
+                    y = 2^(log2(FCp) + se) + letter.position.adjust),
                 vjust = -0.5, size = fontsizePvalue)
   }
   

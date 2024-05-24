@@ -34,7 +34,7 @@ target and reference genes. Each Ct value in the data frame is the mean of techn
 \strong{NOTE:} Each line belongs to a separate individual reflecting a non-repeated measure experiment). 
 See \href{../doc/vignette.html}{\code{vignette}}, section "data structure and column arrangement" for details.}
 
-\item{numberOfrefGenes}{number of reference genes which is 1 or 2 (Up to two reference genes can be handled).}
+\item{numberOfrefGenes}{number of reference genes which is 1 or 2 (up to two reference genes can be handled).}
 
 \item{mainFactor.column}{the factor for which fold change expression is calculated for its levels. 
 If \code{ancova} is selected as \code{analysisType}, the remaining factors (if any) are considered as covariate(s).}
@@ -45,8 +45,7 @@ If \code{ancova} is selected as \code{analysisType}, the remaining factors (if a
 the first level of the \code{mainFactor.column} is used 
 as calibrator. If a vector of main factor levels (in any order) is specified, the first level in the vector is 
 used as calibrator. Calibrator is the reference level or sample that all others are compared to. Examples are untreated 
-of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.
-If NULL, the first level of the main factor column is used as calibrator.}
+of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.}
 
 \item{block}{column name of the block if there is a blocking factor (for correct column arrangement see 
 example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the 

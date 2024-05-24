@@ -7,7 +7,7 @@
 qpcrANOVARE(x, numberOfrefGenes, block, alpha = 0.05, adjust = "none")
 }
 \arguments{
-\item{x}{A data frame consisting of condition columns, target gene efficiency (E), target Gene Ct, reference 
+\item{x}{a data frame consisting of condition columns, target gene efficiency (E), target Gene Ct, reference 
 gene efficiency and reference gene Ct values, respectively. Each Ct in the data frame is the mean of 
 technical replicates. Complete amplification efficiencies of 2 was assumed in the example data for 
 all wells but the calculated efficienies can be used instead.  \strong{NOTE:} Each line belongs to a separate 
@@ -25,7 +25,7 @@ not considered.}
 
 \item{alpha}{significance level}
 
-\item{adjust}{Method for adjusting p values}
+\item{adjust}{method for adjusting p values}
 }
 \value{
 A list with 5 elements:

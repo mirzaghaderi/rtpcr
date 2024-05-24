@@ -18,7 +18,7 @@
 #' @import lmerTest
 #' @import multcomp
 #' @import multcompView
-#' @param x A data frame consisting of condition columns, target gene efficiency (E), target Gene Ct, reference 
+#' @param x a data frame consisting of condition columns, target gene efficiency (E), target Gene Ct, reference 
 #' gene efficiency and reference gene Ct values, respectively. Each Ct in the data frame is the mean of 
 #' technical replicates. Complete amplification efficiencies of 2 was assumed in the example data for 
 #' all wells but the calculated efficienies can be used instead.  \strong{NOTE:} Each line belongs to a separate 
@@ -33,7 +33,7 @@
 #' on a plate. Block effect is usually considered as random and its interaction with any main effect is 
 #' not considered.
 #' @param alpha significance level
-#' @param adjust Method for adjusting p values
+#' @param adjust method for adjusting p values
 #' @return A list with 5 elements:
 #' \describe{
 #'   \item{Final_data}{The row data plus weighed delta Ct (wDCt) values.}

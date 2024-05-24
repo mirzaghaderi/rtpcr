@@ -1,15 +1,15 @@
 #' @title Fold change (\eqn{\Delta \Delta C_T} method) analysis using ANOVA and ANCOVA
 #' 
-#' @description ANOVA (analysis of variance) and ANCOVA (analysis of covariance) can be performed using 
-#' \code{qpcrANOVAFC} function, for uni- or multi-factorial experiment data. This function performs fold 
-#' change or \eqn{\Delta \Delta C_T} method analysis for the target gene even
-#' if there is only one factor (without covariate variable), although, for the data with 
-#' only one factor, ANCOVA is equivalent to ANOVA. The bar plot of the fold changes (FC) 
-#' values along with the standard error (se) and confidence interval (ci) is also returned by 
+#' @description Fold change (\eqn{\Delta \Delta C_T} method) analysis of qPCR data can be done using 
+#' ANOVA (analysis of variance) and ANCOVA (analysis of covariance) by the 
+#' \code{qpcrANOVAFC} function, for uni- or multi-factorial experiment data. The bar plot of the fold changes (FC) 
+#' values along with the standard error (se) and confidence interval (ci) is returned by 
 #' the \code{qpcrANOVAFC} function. 
 #' 
-#' @details The \code{qpcrANOVAFC} function applies both ANOVA and ANCOVA analysis to the data of a uni- or 
-#' a multi-factorial experiment. If there are more than one factor, FC value calculations for 
+#' @details Fold change (\eqn{\Delta \Delta C_T} method) analysis of qPCR data can be done using 
+#' ANOVA (analysis of variance) and ANCOVA (analysis of covariance) by the 
+#' \code{qpcrANOVAFC} function, for uni- or multi-factorial experiment data. 
+#' If there are more than one factor, FC value calculations for 
 #' the `mainFactor.column` and the statistical analysis is performed based on a full model factorial 
 #' experiment by default. However, if `ancova` is defined for the `analysisType` argument,
 #' FC values are calculated for the levels of the `mainFactor.column` and the other factors are 
@@ -41,13 +41,17 @@
 #' 
 #' @param numberOfrefGenes number of reference genes which is 1 or 2 (Up to two reference genes can be handled).
 #' @param analysisType should be one of "ancova" or "anova". Default is "anova".
-#' @param mainFactor.column the factor for which FC is calculated for its levels. If \code{ancova} is selected as \code{analysisType}, the remaining factors (if any) are considered as covariate(s).
-#' @param mainFactor.level.order  NULL or a vector of main factor level names. If \code{NULL}, the first level of the \code{mainFactor.column} is used 
-#' as reference or calibrator. If a vector of main factor levels (in any order) is specified, the first level in the vector is used as calibrator. Calibrator is the reference level or sample that all others are compared to. Examples are untreated 
+#' @param mainFactor.column the factor for which fold change expression is calculated for its levels. 
+#' If \code{ancova} is selected as \code{analysisType}, the remaining factors (if any) are considered as covariate(s).
+#' @param mainFactor.level.order  NULL (default) or a vector of main factor level names. If \code{NULL}, 
+#' the first level of the \code{mainFactor.column} is used 
+#' as calibrator. If a vector of main factor levels (in any order) is specified, the first level in the vector is 
+#' used as calibrator. Calibrator is the reference level or sample that all others are compared to. Examples are untreated 
 #' of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.
 #' If NULL, the first level of the main factor column is used as calibrator.
 #' @param width a positive number determining bar width. 
-#' @param fill  specify the fill color for the columns in the bar plot. If a vector of two colors is specified, the reference level is differentialy colored.
+#' @param fill  specify the fill color for the columns in the bar plot. If a vector of two colors is specified, 
+#' the reference level is differentialy colored.
 #' @param y.axis.adjust  a negative or positive value for reducing or increasing the length of the y axis.
 #' @param letter.position.adjust adjust the distance between the signs and the error bars.
 #' @param y.axis.by determines y axis step length
@@ -58,7 +62,12 @@
 #' @param axis.text.x.angle angle of x axis text
 #' @param axis.text.x.hjust horizontal justification of x axis text
 #' @param x.axis.labels.rename a vector replacing the x axis labels in the bar plot
-#' @param block column name of the block if there is a blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.
+#' @param block column name of the block if there is a blocking factor (for correct column arrangement see 
+#' example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the 
+#' plates may interfere with the actual amount of gene expression. One solution is to conduct each plate 
+#' as a complete randomized block so that at least one replicate of each treatment and control is present 
+#' on a plate. Block effect is usually considered as random and its interaction with any main effect 
+#' is not considered.
 #' @param p.adj Method for adjusting p values
 #' @param errorbar Type of error bar, can be \code{se} or \code{ci}.
 #' @param plot  if \code{FALSE}, prevents the plot.

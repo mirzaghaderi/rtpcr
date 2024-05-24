@@ -11,12 +11,17 @@ qpcrANOVARE(x, numberOfrefGenes, block, alpha = 0.05, adjust = "none")
 gene efficiency and reference gene Ct values, respectively. Each Ct in the data frame is the mean of 
 technical replicates. Complete amplification efficiencies of 2 was assumed in the example data for 
 all wells but the calculated efficienies can be used instead.  \strong{NOTE:} Each line belongs to a separate 
-individual reflecting a non-repeated measure experiment). 
-See \href{../doc/vignette.html}{\code{vignette}}, section "data structure and column arrangement" for details.}
+individual reflecting a non-repeated measure experiment). See \href{../doc/vignette.html}{\code{vignette}}, 
+section "data structure and column arrangement" for details.}
 
 \item{numberOfrefGenes}{number of reference genes (1 or 2). Up to two reference genes can be handled.}
 
-\item{block}{column name of the blocking factor (for correct column arrangement see example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a complete randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.}
+\item{block}{column name of the blocking factor (for correct column arrangement see example data.). 
+When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may 
+interfere with the actual amount of gene expression. One solution is to conduct each plate as a 
+complete randomized block so that at least one replicate of each treatment and control is present 
+on a plate. Block effect is usually considered as random and its interaction with any main effect is 
+not considered.}
 
 \item{alpha}{significance level}
 
@@ -26,24 +31,27 @@ See \href{../doc/vignette.html}{\code{vignette}}, section "data structure and co
 A list with 5 elements:
 \describe{
   \item{Final_data}{The row data plus weighed delta Ct (wDCt) values.}
-  \item{lm}{The output of linear model analysis including ANOVA tables based on factorial experiment and completely randomized design (CRD).}
+  \item{lm}{The output of linear model analysis including ANOVA tables based on factorial experiment 
+  and completely randomized design (CRD).}
   \item{ANOVA_factorial}{ANOVA table based on factorial arrangement}
   \item{ANOVA_CRD}{ANOVA table based on CRD}
-  \item{Result}{The result table including treatments and factors, RE (Relative Expression), LCL, UCL, letter display for pair-wise comparisons and standard deviation of relative expression.}
-  \item{Post_hoc_Test}{Post hoc test of FC (Fold Change), pvalue, significance and confidence interval (LCL, UCL).}
+  \item{Result}{The result table including treatments and factors, RE (Relative Expression), LCL, UCL, 
+  letter display for pair-wise comparisons and standard deviation of relative expression.}
+  \item{Post_hoc_Test}{Post hoc test of FC (Fold Change), pvalue, significance and confidence 
+  interval (LCL, UCL).}
 }
 }
 \description{
 Analysis of variance of relative expression (\eqn{\Delta C_T} method) values for 
-all factor level combinations.
+all factor level combinations in the experiment in which the expression level of a 
+reference gene is used as normalizer.
 }
 \details{
-The \code{qpcrANOVARE} function performs analysis of variance (ANOVA) of relative expression (RE) 
-values for all factor level combinations as treatments. 
-It is suitable when relative expression (RE) analysis between different treatment combinations 
-(in a uni- or multi-factorial experiment) is desired. 
-Fold change analysis based 
-on factorial design or analysis of covariance can be performed using \link{qpcrANOVAFC}.
+The \code{qpcrANOVARE} function performs analysis of variance (ANOVA) of relative 
+expression (RE) values for all factor level combinations as treatments using the expression 
+level of a reference gene is used as normalizer. To get a reliable result, the expression of 
+the reference gene needs to be constant across all test samples and it expression should not 
+be affected by the experimental treatment under study.
 }
 \examples{
 

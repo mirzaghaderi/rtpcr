@@ -203,13 +203,6 @@ twoFACTORplot <- function(res, x.axis.factor, group.factor, width = 0.5, fill = 
       xlab(xlab)
   }
     }
-  
-  # if(errorbar == "se") {
-  #   out2 <- list(plot = qq1)
-  #   
-  # } else if(errorbar == "ci") {
-  #   out2 <- list(plot = qq1)
-  # }
   }
   
   
@@ -242,13 +235,13 @@ twoFACTORplot <- function(res, x.axis.factor, group.factor, width = 0.5, fill = 
     
     if (show.errorbars) {
       qq1 <-qq1 +
-        geom_errorbar(aes(ymin = FC, ymax = FC + se), width = 0.2, position = position_dodge(width = 0.5))
+        geom_errorbar(aes(ymin = 2^(log2(FC) - se), ymax =  2^(log2(FC) + se)), width = 0.2, position = position_dodge(width = 0.5))
     }
     
     
     if (show.letters) {
       qq1 <-qq1 + 
-        geom_text(data = b, aes(label = letters, x = {{ x.axis.factor }}, y = FC + se + letter.position.adjust), 
+        geom_text(data = b, aes(label = letters, x = {{ x.axis.factor }}, y = 2^(log2(FC) + se) + letter.position.adjust), 
                   vjust = -0.5, size = fontsizePvalue, position = position_dodge(width = 0.5))
     }
     

@@ -93,7 +93,7 @@
 #' 
 #'
 #' qpcrANOVAFC(data_2factor, numberOfrefGenes = 1, mainFactor.column = 2, block = NULL, 
-#' analysisType = "ancova", fontsizePvalue = 5, y.axis.adjust = 0.4)
+#' analysisType = "ancova", fontsizePvalue = 5, y.axis.adjust = 1)
 #'
 #'
 #' # Data from Lee et al., 2020 
@@ -141,7 +141,7 @@ mainFactor.level.order = NULL,
 block, 
 width = 0.5, 
 fill = "#BFEFFF", 
-y.axis.adjust = 1, 
+y.axis.adjust = 2, 
 y.axis.by = 1, 
 letter.position.adjust = 0.1, 
 ylab = "Fold Change", 
@@ -175,7 +175,8 @@ plot = TRUE
     x[,1] <- factor(x[,1], levels = unique(x[,1]))
     mainFactor.level.order <- unique(x[,1])
     calibrartor <- x[,1][1]
-    warning(paste("The", calibrartor, "level was used as calibrator."))
+    #warning(paste("The", calibrartor, "level was used as calibrator."))
+    warning(structure(paste("The", calibrartor, "level was used as calibrator."), foreground = "blue"))
   } else if (any(is.na(match(unique(x[,1]), mainFactor.level.order))) == TRUE){
     stop("The `mainFactor.level.order` doesn't match main factor levels.")
   } else {
@@ -381,9 +382,9 @@ plot = TRUE
                        vjust = -0.5, size = fontsizePvalue)
   } else if(errorbar == "se") {
     pfc2 <- pfc2 +
-      geom_errorbar(aes(contrast, ymin = FCp, ymax =  FCp + se), width=0.1) +
+      geom_errorbar(aes(contrast, ymin = 2^(log2(FCp) - se), ymax =  2^(log2(FCp) + se)), width=0.1) +
       geom_text(aes(label = significance, x = contrast,
-                           y = FCp + se + letter.position.adjust),
+                           y = 2^(log2(FCp) + se) + letter.position.adjust),
                        vjust = -0.5, size = fontsizePvalue)
     }
     

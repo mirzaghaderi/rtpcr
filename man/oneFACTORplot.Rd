@@ -68,7 +68,7 @@ res <- qpcrANOVARE(data_1factor, numberOfrefGenes = 1, block = NULL)$Result
 oneFACTORplot(res,
          width = 0.2,
          fill = "skyblue",
-         y.axis.adjust = 0,
+         y.axis.adjust = 1,
          y.axis.by = 0.2,
          errorbar = "se",
          show.letters = TRUE,

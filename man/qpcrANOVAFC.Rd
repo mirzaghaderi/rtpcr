@@ -13,7 +13,7 @@ qpcrANOVAFC(
   block,
   width = 0.5,
   fill = "#BFEFFF",
-  y.axis.adjust = 1,
+  y.axis.adjust = 2,
   y.axis.by = 1,
   letter.position.adjust = 0.1,
   ylab = "Fold Change",
@@ -125,7 +125,7 @@ fill = c("#CDC673", "#EEDD82"), fontsizePvalue = 5, y.axis.adjust = 0.1)
 
 
 qpcrANOVAFC(data_2factor, numberOfrefGenes = 1, mainFactor.column = 2, block = NULL, 
-analysisType = "ancova", fontsizePvalue = 5, y.axis.adjust = 0.4)
+analysisType = "ancova", fontsizePvalue = 5, y.axis.adjust = 1)
 
 
 # Data from Lee et al., 2020 

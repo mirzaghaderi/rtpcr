@@ -147,7 +147,7 @@ qpcrTTESTplot <- function(x, order = "none", numberOfrefGenes, paired = FALSE,
         geom_errorbar(aes(Gene, ymin=as.numeric(Lower.Er), ymax = as.numeric(Upper.Er)), width=0.1)
     } else if(errorbar == "se") {
       p <- p +
-        geom_errorbar(aes(Gene, ymin = as.numeric(Fold_Change), ymax = as.numeric(Fold_Change) + as.numeric(se)), width=0.1)
+        geom_errorbar(aes(Gene, ymin = 2^(log2(as.numeric(Fold_Change)) - as.numeric(se)), ymax =  2^(log2(as.numeric(Fold_Change)) + as.numeric(se))), width=0.1)
     }
     
 
@@ -162,7 +162,7 @@ qpcrTTESTplot <- function(x, order = "none", numberOfrefGenes, paired = FALSE,
     p <- p +
       geom_text(aes(label = convert_to_character(pvalue),
                     x = Gene,
-                    y = as.numeric(Fold_Change) + as.numeric(se)),
+                    y = 2^(log2(as.numeric(Fold_Change)) + as.numeric(se))),
                 vjust = -0.5, size = fontsizePvalue)
   }
 
@@ -181,7 +181,7 @@ qpcrTTESTplot <- function(x, order = "none", numberOfrefGenes, paired = FALSE,
                            limits = c(0, max(as.numeric(Fold_Change)) + max(as.numeric(Upper.Er) + y.axis.adjust) + 1), expand = c(0, 0))
     } else if(errorbar == "se") {
       p <- p +
-        scale_y_continuous(breaks=seq(0, max(as.numeric(Fold_Change)) + max(as.numeric(se) + y.axis.adjust) + 1, by = y.axis.by),
+        scale_y_continuous(breaks = seq(0, max(as.numeric(Fold_Change)) + max(as.numeric(se) + y.axis.adjust) + 1, by = y.axis.by),
                            limits = c(0, max(as.numeric(Fold_Change)) + max(as.numeric(se) + y.axis.adjust) + 1), expand = c(0, 0))
       }
     

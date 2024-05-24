@@ -175,13 +175,6 @@ threeFACTORplot <- function(res, arrangement = c(1, 2, 3), bar.width = 0.5, fill
       xlab(xlab)
   }
   } 
-  
-  # if(errorbar == "se") {
-  #   out <- list(plot = pp1)
-  #   
-  # } else if(errorbar == "ci") {
-  #   out <- list(plot = pp1)
-  # }
   }
 
   
@@ -201,7 +194,7 @@ threeFACTORplot <- function(res, arrangement = c(1, 2, 3), bar.width = 0.5, fill
     if(errorbar == "se") {
     pp1 <- ggplot(x, aes(x[,1], y = FC, fill = x[,2])) +
       geom_bar(stat = "identity", position = "dodge", width =  bar.width, col = "black") +
-      geom_errorbar(aes(ymax = FC + se, ymin = FC),
+      geom_errorbar(aes(ymin = 2^(log2(FC) - se), ymax =  2^(log2(FC) + se)),
                     position = position_dodge(bar.width), width = 0.15, color = "black") +
       facet_grid( ~ x[,3])+
       ylab(ylab) +
@@ -223,7 +216,7 @@ threeFACTORplot <- function(res, arrangement = c(1, 2, 3), bar.width = 0.5, fill
     
     if (show.letters) {
       pp1 <- pp1 + 
-        geom_text(data = x, aes(label=letters, y = FC + se + letter.position.adjust), color = "black",
+        geom_text(data = x, aes(label=letters, y = 2^(log2(FC) + se) + letter.position.adjust), color = "black",
                   show.legend = FALSE, position = position_dodge(bar.width), size = fontsizePvalue)
     }
     
@@ -271,13 +264,6 @@ threeFACTORplot <- function(res, arrangement = c(1, 2, 3), bar.width = 0.5, fill
         xlab(xlab)
     }
     } 
-    
-    # if(errorbar == "se") {
-    #   out <- list(plot = pp1)
-    #   
-    # } else if(errorbar == "ci") {
-    #   out <- list(plot = pp1)
-    # }
   }
   
   

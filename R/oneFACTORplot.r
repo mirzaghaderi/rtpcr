@@ -34,7 +34,7 @@
 #' oneFACTORplot(res,
 #'          width = 0.2,
 #'          fill = "skyblue",
-#'          y.axis.adjust = 0,
+#'          y.axis.adjust = 1,
 #'          y.axis.by = 0.2,
 #'          errorbar = "se",
 #'          show.letters = TRUE,
@@ -131,21 +131,7 @@ oneFACTORplot <- function(res, width = 0.4, fill = "skyblue", y.axis.adjust = 0.
       xlab(xlab)
   }
   } 
-
-  
-  # if(errorbar == "se") {
-  #   out1 <- list(plot = q1f1)
-  #   
-  # } else if(errorbar == "ci") {
-  #   out1 <- list(plot = q1f1)
-  # }
   }
-  
-
-  
-  
-  
-  
   
   
   
@@ -170,7 +156,7 @@ oneFACTORplot <- function(res, width = 0.4, fill = "skyblue", y.axis.adjust = 0.
     }
     
     #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
-    q1f1 <- q1f1 + geom_errorbar(aes(ymin = FC, ymax = FC + se), width = 0.1) +
+    q1f1 <- q1f1 + geom_errorbar(aes(ymin = 2^(log2(FC) - se), ymax =  2^(log2(FC) + se)), width = 0.1) +
       ylab(ylab) +
       xlab(xlab) +
       theme_bw() +
@@ -183,7 +169,7 @@ oneFACTORplot <- function(res, width = 0.4, fill = "skyblue", y.axis.adjust = 0.
     
     if (show.letters) {
       q1f1 <-q1f1 +
-        geom_text(data = x, aes(label = letters, x = contrast, y = FC + se + letter.position.adjust),
+        geom_text(data = x, aes(label = letters, x = contrast, y = 2^(log2(FC) + se) + letter.position.adjust),
                   vjust = -0.5, size = fontsizePvalue)
     }
     
@@ -235,14 +221,6 @@ oneFACTORplot <- function(res, width = 0.4, fill = "skyblue", y.axis.adjust = 0.
         xlab(xlab)
     }
     }
-    
-    
-    # if(errorbar == "se") {
-    #   out1 <- list(plot = q1f1)
-    #   
-    # } else if(errorbar == "ci") {
-    #   out1 <- list(plot = q1f1)
-    # }
   }
   
   return(q1f1)

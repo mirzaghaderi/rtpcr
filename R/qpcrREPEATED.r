@@ -321,6 +321,7 @@ qpcrREPEATED <- function(x, numberOfrefGenes, factor, block,
   
   
   
+  tableC <- data.frame(tableC, Lower.se = 2^(log2(tableC$FC) - tableC$se), Upper.se =  2^(log2(tableC$FC) + tableC$se))
   
   outlist2 <- structure(list(Final_data = x,
                              lm = lm,

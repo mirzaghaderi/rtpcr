@@ -25,20 +25,16 @@ not considered.}
 
 \item{alpha}{significance level}
 
-\item{adjust}{method for adjusting p values}
+\item{adjust}{method for adjusting p-values}
 }
 \value{
-A list with 5 elements:
+A list with 4 elements:
 \describe{
   \item{Final_data}{The row data plus weighed delta Ct (wDCt) values.}
-  \item{lm}{The output of linear model analysis including ANOVA tables based on factorial experiment 
-  and completely randomized design (CRD).}
-  \item{ANOVA_factorial}{ANOVA table based on factorial arrangement}
-  \item{ANOVA_CRD}{ANOVA table based on CRD}
+  \item{lm}{The output of linear model analysis including ANOVA tables}
+  \item{ANOVA}{ANOVA table based on CRD}
   \item{Result}{The result table including treatments and factors, RE (Relative Expression), LCL, UCL, 
   letter display for pair-wise comparisons and standard deviation of relative expression.}
-  \item{Post_hoc_Test}{Post hoc test of FC (Fold Change), pvalue, significance and confidence 
-  interval (LCL, UCL).}
 }
 }
 \description{

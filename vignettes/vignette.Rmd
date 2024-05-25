@@ -267,13 +267,11 @@ In the rtpcr package, the fold change analysis of a target gene is applied based
 # See sample data
 data_2factor
 
-order <- unique(data_2factor$Drought)
 qpcrANOVAFC(data_2factor, 
            numberOfrefGenes = 1, 
            block = NULL,
            analysisType = "ancova",
            mainFactor.column = 2,
-           mainFactor.level.order = order,
            fontsizePvalue = 4,
            x.axis.labels.rename = "none")
 ```
@@ -331,7 +329,6 @@ f1 <- oneFACTORplot(out2,
 addline_format <- function(x,...){
     gsub('\\s','\n',x)
 }
-order <- unique(data_2factor$Drought)
 f2 <- qpcrANOVAFC(data_1factor,
                  numberOfrefGenes = 1,
                  mainFactor.column = 1,

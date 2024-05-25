@@ -25,7 +25,7 @@
 #' @return A list of two elements:
 #' \describe{
 #'   \item{Row_data}{The row data including Genes and weighed delta Ct (wDCt) values.}
-#'   \item{Result}{Output table including the Fold Change values, lower and upper confidence interval and the pvalues from compairing fold change between treated and non-treated conditions}
+#'   \item{Result}{Output table including the Fold Change values, lower and upper confidence interval, pvalue, se and lower and upper se values on the bar plot}
 #' }
 #' For more information about the test procedure and its arguments,
 #' refer \code{\link[stats]{t.test}}, and \code{\link[stats]{lm}}.
@@ -60,12 +60,6 @@
 #'           numberOfrefGenes = 2, 
 #'           var.equal = TRUE)
 #'  
-#'           
-#' qpcrTTESTplot(Taylor_etal2019, 
-#'               numberOfrefGenes = 2, 
-#'               var.equal = TRUE,
-#'               y.axis.adjust = -0.7,
-#'               y.axis.by = 0.5)
 #'
 #'
 
@@ -132,8 +126,13 @@ qpcrTTEST <- function(x,numberOfrefGenes, paired = FALSE, var.equal = TRUE) {
                     round(stats::sd(subset[(r+1):(2*r),i])/sqrt(r), 4))
 
     }
+    res <- as.data.frame(res)
+    res$FC <- as.numeric(res$FC)
+    res$se <- as.numeric(res$se)
+    res$dif <- NULL
+    res <- data.frame(res, Lower.se = 2^(log2(res$FC) - res$se), Upper.se =  2^(log2(res$FC) + res$se))
     Raw_df <- melt(subset, value.name = "wDCt")[-1]
-    res <- list(Raw_data = Raw_df, Result = data.frame(res))
+    res <- list(Raw_data = Raw_df, Result = res)
     return(res)
   }
 }

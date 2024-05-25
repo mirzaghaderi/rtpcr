@@ -57,12 +57,6 @@ qpcrTTEST(Taylor_etal2019,
           numberOfrefGenes = 2, 
           var.equal = TRUE)
  
-          
-qpcrTTESTplot(Taylor_etal2019, 
-              numberOfrefGenes = 2, 
-              var.equal = TRUE,
-              y.axis.adjust = -0.7,
-              y.axis.by = 0.5)
 
 
 }

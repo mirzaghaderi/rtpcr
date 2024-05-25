@@ -130,7 +130,10 @@ qpcrTTEST <- function(x,numberOfrefGenes, paired = FALSE, var.equal = TRUE) {
     res$FC <- as.numeric(res$FC)
     res$se <- as.numeric(res$se)
     res$dif <- NULL
-    res <- data.frame(res, Lower.se = 2^(log2(res$FC) - res$se), Upper.se =  2^(log2(res$FC) + res$se))
+    res <- data.frame(res, 
+                      Lower.se = round(2^(log2(res$FC) - res$se), 4), 
+                      Upper.se = round(2^(log2(res$FC) + res$se), 4))
+    
     Raw_df <- melt(subset, value.name = "wDCt")[-1]
     res <- list(Raw_data = Raw_df, Result = res)
     return(res)

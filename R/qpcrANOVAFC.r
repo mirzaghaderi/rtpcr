@@ -437,7 +437,9 @@ plot = TRUE
   
   
   
-  tableC <- data.frame(tableC, Lower.se = 2^(log2(tableC$FC) - tableC$se), Upper.se =  2^(log2(tableC$FC) + tableC$se))
+  tableC <- data.frame(tableC, 
+                       Lower.se = round(2^(log2(tableC$FC) - tableC$se), 4), 
+                       Upper.se = round(2^(log2(tableC$FC) + tableC$se), 4))
   
   outlist2 <- structure(list(Final_data = x,
                    lm_ANOVA = lm_ANOVA,

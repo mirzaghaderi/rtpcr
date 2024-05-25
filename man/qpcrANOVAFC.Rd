@@ -151,7 +151,7 @@ fontsizePvalue = 7, y.axis.adjust = 0.1, width = 0.35)
 
 df <- meanTech(Lee_etal2020qPCR, groups = 1:3) 
 df2 <- df[df$factor1 == "DSWHi",][-1]
-qpcrANOVAFC(df2, mainFactor.column = 1, fontsizePvalue = 5, y.axis.adjust = 0.1,
+qpcrANOVAFC(df2, mainFactor.column = 1, fontsizePvalue = 5, y.axis.adjust = 2,
 block = NULL, numberOfrefGenes = 1, analysisType = "anova")
 
 

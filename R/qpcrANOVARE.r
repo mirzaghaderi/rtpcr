@@ -190,7 +190,7 @@ qpcrANOVARE <- function(x, numberOfrefGenes, block, alpha = 0.05, adjust= "none"
                         RE = round(2^(-diffs), 4),
                         LCL = round(2^(-ucl), 4),
                         UCL = round(2^(-lcl), 4),
-                        se = se$se,
+                        se = round(se$se, 4),
                         letters)
   
   
@@ -207,6 +207,12 @@ qpcrANOVARE <- function(x, numberOfrefGenes, block, alpha = 0.05, adjust= "none"
   
   xx <- x[, -(ncol(x))] # Removing the last column of T
   
+  Results <- data.frame(Results, 
+                       Lower.se = round(2^(log2(Results$RE) - Results$se), 4), 
+                       Upper.se = round(2^(log2(Results$RE) + Results$se), 4))
+  
+  Results <- Results %>%
+    relocate(Lower.se, Upper.se, .before = letters)
   
   outlist2 <- structure(list(Final_data = xx,
                              lmCRD = lm,

@@ -19,7 +19,7 @@ qpcrTTEST(x, numberOfrefGenes, paired = FALSE, var.equal = TRUE)
 A list of two elements:
 \describe{
   \item{Row_data}{The row data including Genes and weighed delta Ct (wDCt) values.}
-  \item{Result}{Output table including the Fold Change values, lower and upper confidence interval, pvalue, se and lower and upper se values on the bar plot}
+  \item{Result}{Output table including the Fold Change values, lower and upper confidence interval, pvalue and standard error with the lower and upper limits.}
 }
 For more information about the test procedure and its arguments,
 refer \code{\link[stats]{t.test}}, and \code{\link[stats]{lm}}.

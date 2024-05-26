@@ -93,7 +93,7 @@ A list with 7 elements:
   \item{lm_ANCOVA}{lm of ANCOVA analysis-type}
   \item{ANOVA_table}{ANOVA table}
   \item{ANCOVA_table}{ANCOVA table}
-  \item{FC Table}{Table of FC values, significance and confidence limits for the main factor levels.}
+  \item{FC Table}{Table of FC values, significance and confidence interval and standard error with the lower and upper limits for the main factor levels.}
   \item{Bar plot of FC values}{Bar plot of the fold change values for the main factor levels.}
 }
 }

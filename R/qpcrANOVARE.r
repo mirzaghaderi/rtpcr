@@ -40,7 +40,7 @@
 #'   \item{lm}{The output of linear model analysis including ANOVA tables}
 #'   \item{ANOVA}{ANOVA table based on CRD}
 #'   \item{Result}{The result table including treatments and factors, RE (Relative Expression), LCL, UCL, 
-#'   letter display for pair-wise comparisons and standard deviation of relative expression.}
+#'   letter display for pair-wise comparisons and standard error with the lower and upper limits.}
 #' }
 #'
 #' @references Livak, Kenneth J, and Thomas D Schmittgen. 2001. Analysis of

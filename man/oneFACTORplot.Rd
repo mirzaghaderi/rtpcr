@@ -66,7 +66,7 @@ res <- qpcrANOVARE(data_1factor, numberOfrefGenes = 1, block = NULL)$Result
 
 # Bar plot
 oneFACTORplot(res,
-         width = 0.2,
+         width = 0.4,
          fill = "skyblue",
          y.axis.adjust = 1,
          y.axis.by = 0.2,

@@ -32,7 +32,7 @@
 #'
 #' # Bar plot
 #' oneFACTORplot(res,
-#'          width = 0.2,
+#'          width = 0.4,
 #'          fill = "skyblue",
 #'          y.axis.adjust = 1,
 #'          y.axis.by = 0.2,
@@ -79,7 +79,8 @@ oneFACTORplot <- function(res, width = 0.4, fill = "skyblue", y.axis.adjust = 0.
   q1f1 <- ggplot(x, aes(rownames(x), y = RE, group = rownames(x))) +
     geom_col(color = "black", fill = fill[1], width = width) + 
   #geom_hline(aes(yintercept = 1), col = "red", linetype = 2, show.legend = FALSE) +
-  geom_errorbar(aes(ymin = RE, ymax = RE + se), width = 0.1) +
+  geom_errorbar(aes(ymin = 2^(log2(RE) - se), ymax =  2^(log2(RE) + se)), width = 0.1) +
+    # ymin = RE, ymax = RE + se
     ylab(ylab) +
     xlab(xlab) +
     theme_bw() +
@@ -92,7 +93,7 @@ oneFACTORplot <- function(res, width = 0.4, fill = "skyblue", y.axis.adjust = 0.
 
   if (show.letters) {
     q1f1 <-q1f1 +
-      geom_text(data = x, aes(label = letters, x = rownames(x), y = RE + se + letter.position.adjust),
+      geom_text(data = x, aes(label = letters, x = rownames(x), y = 2^(log2(RE) + se) + letter.position.adjust),
                 vjust = -0.5, size = fontsizePvalue)
   }
   

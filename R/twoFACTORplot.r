@@ -66,11 +66,11 @@
 #' # Combining FC results of two different genes:
 #' a <- qpcrREPEATED(data_repeated_measure_1,
 #'                   numberOfrefGenes = 1,
-#'                   factor = "time", block = NULL)
+#'                   factor = "time", block = NULL, plot = FALSE)
 #' 
 #' b <- qpcrREPEATED(data_repeated_measure_2,
 #'                   factor = "time",
-#'                   numberOfrefGenes = 1, block = NULL)
+#'                   numberOfrefGenes = 1, block = NULL, plot = FALSE)
 #' 
 #' a1 <- a$FC_statistics_of_the_main_factor
 #' b1 <- b$FC_statistics_of_the_main_factor
@@ -81,7 +81,7 @@
 #' twoFACTORplot(c, x.axis.factor = contrast, 
 #'               group.factor = gene, fill = 'Reds',
 #'               ylab = "FC", axis.text.x.angle = 45,
-#'               errorbar = "se",
+#'               errorbar = "se", y.axis.adjust = 1,
 #'               axis.text.x.hjust = 1)
 #'
 #'
@@ -147,13 +147,13 @@ twoFACTORplot <- function(res, x.axis.factor, group.factor, width = 0.5, fill = 
   
   if (show.errorbars) {
     qq1 <-qq1 +
-    geom_errorbar(aes(ymin = RE, ymax = RE + se), width = 0.2, position = position_dodge(width = 0.5))
+    geom_errorbar(aes(ymin = 2^(log2(RE) - se), ymax =  2^(log2(RE) + se)), width = 0.2, position = position_dodge(width = 0.5))
   }
   
   
   if (show.letters) {
     qq1 <-qq1 + 
-      geom_text(data = b, aes(label = letters, x = {{ x.axis.factor }}, y = RE + se + letter.position.adjust), 
+      geom_text(data = b, aes(label = letters, x = {{ x.axis.factor }}, y = 2^(log2(RE) + se) + letter.position.adjust), 
                 vjust = -0.5, size = fontsizePvalue, position = position_dodge(width = 0.5))
   }
   

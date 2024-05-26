@@ -108,11 +108,11 @@ twoFACTORplot(res,
 # Combining FC results of two different genes:
 a <- qpcrREPEATED(data_repeated_measure_1,
                   numberOfrefGenes = 1,
-                  factor = "time", block = NULL)
+                  factor = "time", block = NULL, plot = FALSE)
 
 b <- qpcrREPEATED(data_repeated_measure_2,
                   factor = "time",
-                  numberOfrefGenes = 1, block = NULL)
+                  numberOfrefGenes = 1, block = NULL, plot = FALSE)
 
 a1 <- a$FC_statistics_of_the_main_factor
 b1 <- b$FC_statistics_of_the_main_factor
@@ -123,7 +123,7 @@ c
 twoFACTORplot(c, x.axis.factor = contrast, 
               group.factor = gene, fill = 'Reds',
               ylab = "FC", axis.text.x.angle = 45,
-              errorbar = "se",
+              errorbar = "se", y.axis.adjust = 1,
               axis.text.x.hjust = 1)
 
 

@@ -60,7 +60,7 @@ threeFACTORplot(
 \item{axis.text.x.hjust}{horizontal justification of x axis text}
 }
 \value{
-Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
+Bar plot of the average fold change for target genes along with the standard error or 95\% confidence interval as error bars.
 }
 \description{
 Bar plot of the relative expression (\eqn{\Delta C_T} method) of a gene along with the confidence interval and significance

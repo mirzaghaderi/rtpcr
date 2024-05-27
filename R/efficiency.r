@@ -8,6 +8,7 @@
 #' @import reshape2
 #' @import ggplot2
 #' @import purrr
+#' @import emmeans
 #' @param df a data frame of dilutions and Ct of genes. First column is dilutions and other columns are Ct values for different genes.
 #' @return A list 3 elements.
 #' \describe{
@@ -65,8 +66,6 @@ efficiency <- function(df) {
   
   
   
-  
-  
   fits <- lapply(df[,-1], function(x) lm(x ~ log10(df[,1])))
   mdat <- melt(df, id="dilutions")
   Ct <- mdat$value
@@ -77,7 +76,13 @@ efficiency <- function(df) {
     geom_smooth(data = mdat,aes(x = log10(dilutions), y = Ct, color = Gene), formula = y ~ x,
                 method = "lm", se = F)
   
+ 
   
+  # Compairing intercepts
+  # emm = emmeans(lm, "variable", at = list(log10(dilutions) == 0))
+  # emmIntercepts <- pairs(emm)
+
+
   
   res <- list(Efficiency = results, Slope_compare = slopes, plot = p)
    return(res)

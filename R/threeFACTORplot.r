@@ -27,7 +27,7 @@
 #' @param show.letters a logical variable. If TRUE, mean grouping letters are added to the bars. 
 #' @param axis.text.x.angle angle of x axis text
 #' @param axis.text.x.hjust horizontal justification of x axis text
-#' @return Bar plot of the average fold change for target genes along with the significance and the 95\% confidence interval as error bars.
+#' @return Bar plot of the average fold change for target genes along with the standard error or 95\% confidence interval as error bars.
 #' @examples
 #' 
 #' #' # See a sample data frame

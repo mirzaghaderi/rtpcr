@@ -559,7 +559,7 @@ a <- qpcrREPEATED(data_repeated_measure_2,
                   numberOfrefGenes = 1, 
                   factor = "time", 
                   block = NULL,
-                  y.axis.adjust = 0.4)
+                  y.axis.adjust = 1.5)
 
 
 residuals(a$lm)
@@ -604,7 +604,7 @@ c
 
 twoFACTORplot(c, x.axis.factor = contrast, 
               group.factor = gene, fill = 'Reds', errorbar = "se",
-              ylab = "FC", axis.text.x.angle = 45,
+              ylab = "FC", axis.text.x.angle = 45, y.axis.adjust = 1.5,
               axis.text.x.hjust = 1, legend.position = c(0.2, 0.8))
 ```
 

@@ -207,9 +207,11 @@ qpcrANOVARE <- function(x, numberOfrefGenes, block, alpha = 0.05, adjust= "none"
   
   xx <- x[, -(ncol(x))] # Removing the last column of T
   
+  Lower.se <- round(2^(log2(Results$RE) - Results$se), 4) 
+  Upper.se <- round(2^(log2(Results$RE) + Results$se), 4)
   Results <- data.frame(Results, 
-                       Lower.se = round(2^(log2(Results$RE) - Results$se), 4), 
-                       Upper.se = round(2^(log2(Results$RE) + Results$se), 4))
+                        Lower.se = Lower.se, 
+                        Upper.se = Upper.se)
   
   Results <- Results %>%
     relocate(Lower.se, Upper.se, .before = letters)

@@ -309,7 +309,7 @@ plot = TRUE
  
   
   
-  pp1 <- emmeans(lm, colnames(x)[1], data = x, adjust = p.adj)
+  pp1 <- emmeans(lm, colnames(x)[1], data = x, adjust = p.adj, mode = "satterthwaite")
   pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
   pp3 <- pp2[1:length(mainFactor.level.order)-1,]
   ci <- as.data.frame(stats::confint(graphics::pairs(pp1)), adjust = p.adj)[1:length(unique(x[,1]))-1,]

@@ -171,7 +171,7 @@ qpcrANOVARE <- function(x, numberOfrefGenes, block, alpha = 0.05, adjust= "none"
   }
   
   
-  emg = emmeans(lm,pairwise ~ T)
+  emg = emmeans(lm,pairwise ~ T, mode = "satterthwaite")
   meanPairs <- cld(emg[[1]], adjust= adjust, alpha = alpha, reversed = FALSE, Letters = letters)
   ROWS <- meanPairs$T
   diffs <- meanPairs$emmean

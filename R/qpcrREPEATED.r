@@ -194,7 +194,7 @@ qpcrREPEATED <- function(x, numberOfrefGenes, factor, block,
   calibrartor <- lvls[1]
   
   warning(paste("The level", calibrartor, " of the selected factor was used as calibrator."))
-  pp1 <- emmeans(lm, factor, data = x, adjust = p.adj)
+  pp1 <- emmeans(lm, factor, data = x, adjust = p.adj, mode = "satterthwaite")
   pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
   if (length(lvls) >= 3){
     pp3 <- pp2[1:length(lvls) - 1,] 

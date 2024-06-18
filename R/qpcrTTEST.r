@@ -67,25 +67,25 @@
 
 
 qpcrTTEST <- function(x,numberOfrefGenes, paired = FALSE, var.equal = TRUE) {
-
+  
   colnames(x)[1] <- "Condition"
   colnames(x)[2] <- "Gene"
   colnames(x)[3] <- "E"
   colnames(x)[4] <- "Ct"
-
-
-
-
+  
+  
+  
+  
   r <- nrow(x)/(2 * length(unique(x$Gene)))
-
+  
   if(!all(r %% 1 == 0)) {
     stop("Error: Replicates are not equal for all Genes!")
   } else {
-
-
-
+    
+    
+    
     x <- data.frame(x, wCt = log2(x$E) * x$Ct)
-
+    
     if(numberOfrefGenes == 1) {
       x <- x
     } else {
@@ -95,47 +95,51 @@ qpcrTTEST <- function(x,numberOfrefGenes, paired = FALSE, var.equal = TRUE) {
       x$wCt[a:b] <- mwCT
       x <- x[-((a+(2*r)):(b+(2*r))),]
     }
-
     
     
     
-
+    
+    
     
     
     GENE <- x$Gene
-
-
+    
+    
     levels_to_compare <- unique(GENE)[-length(unique(GENE))]
     res <- matrix(nrow = length(levels_to_compare), ncol=7)
     colnames(res) <- c("Gene", "dif", "FC", "LCL", "UCL", "pvalue", "se")
-    subset <- matrix(NA, nrow = 2 * r, ncol=length(levels_to_compare))
+    subset_df <- data.frame(group = character(), Gene = character(), wDCt = numeric())
+    
     ttest_result <- vector("list", length(levels_to_compare))
     
-
-
     for (i in 1:length(levels_to_compare)) {
-      subset[,i] <- x[GENE == levels_to_compare[i], "wCt"] - x[GENE == utils::tail(unique(GENE), 1), "wCt"]
-      ttest_result[[i]] <- stats::t.test(subset[(r + 1):(2 * r), i], subset[1:r, i], paired = paired, var.equal = var.equal)
+      subset_df <- rbind(subset_df, 
+                         data.frame(group = x[GENE == levels_to_compare[i], "Condition"],
+                                    Gene = levels_to_compare[i],
+                                    wDCt = x[GENE == levels_to_compare[i], "wCt"] - x[GENE == utils::tail(unique(GENE), 1), "wCt"]))
+      
+      ttest_result[[i]] <- stats::t.test(subset_df$wDCt[(nrow(subset_df) - 2*r + 1):(nrow(subset_df) - r)], 
+                                         subset_df$wDCt[(nrow(subset_df) - r + 1):nrow(subset_df)], 
+                                         paired = paired, var.equal = var.equal)
       
       res[i, ] <- c(levels_to_compare[i],
-                    round(mean(subset[(r+1):(2*r),i]) - mean(subset[1:r, i]), 4),
-                    round(2^-((mean(subset[(r+1):(2*r), i]) - mean(subset[1:r,i]))), 4),
-                    round(2^(-ttest_result[[i]]$conf.int[2]), 4), # Lower error bar point
-                    round(2^(-ttest_result[[i]]$conf.int[1]), 4), # Upper error bar point
+                    round(mean(subset_df$wDCt[(nrow(subset_df) - r + 1):nrow(subset_df)]) - mean(subset_df$wDCt[(nrow(subset_df) - 2*r + 1):(nrow(subset_df) - r)]), 4),
+                    round(2^-((mean(subset_df$wDCt[(nrow(subset_df) - r + 1):nrow(subset_df)]) - mean(subset_df$wDCt[(nrow(subset_df) - 2*r + 1):(nrow(subset_df) - r)]))), 4),
+                    round(2^(-ttest_result[[i]]$conf.int[2]), 4),
+                    round(2^(-ttest_result[[i]]$conf.int[1]), 4),
                     round(ttest_result[[i]]$p.value, 4),
-                    round(stats::sd(subset[(r+1):(2*r),i])/sqrt(r), 4))
-
+                    round(stats::sd(subset_df$wDCt[(nrow(subset_df) - r + 1):nrow(subset_df)]) / sqrt(r), 4))
     }
+    
     res <- as.data.frame(res)
     res$FC <- as.numeric(res$FC)
     res$se <- as.numeric(res$se)
     res$dif <- NULL
-    res <- data.frame(res, 
-                      Lower.se = round(2^(log2(res$FC) - res$se), 4), 
+    res <- data.frame(res,
+                      Lower.se = round(2^(log2(res$FC) - res$se), 4),
                       Upper.se = round(2^(log2(res$FC) + res$se), 4))
     
-    Raw_df <- melt(subset, value.name = "wDCt")[-1]
-    res <- list(Raw_data = Raw_df, Result = res)
+    res <- list(Raw_data = subset_df, Result = res)
     return(res)
   }
 }

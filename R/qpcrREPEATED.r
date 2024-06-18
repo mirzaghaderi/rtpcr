@@ -186,7 +186,6 @@ qpcrREPEATED <- function(x, numberOfrefGenes, factor, block,
   
   
   
-  
   v <- match(colnames(x), factor)
   n <- which(!is.na(v))
   factor <- colnames(x)[n]

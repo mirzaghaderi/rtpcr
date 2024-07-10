@@ -50,40 +50,46 @@ efficiency <- function(df) {
   results <- cbind(gene = colnames(df)[2:ncol(df)], results)
   colnames(results) <- c("Gene", "Slope", "R2", "E")
   rownames(results) <- NULL
+  
+  Ct <- df[,2]
+  p <- ggplot(data = df) + 
+    geom_point(aes(y = Ct, x = log10(dilutions))) +
+    geom_smooth(data = df,aes(x = log10(dilutions), y = Ct), formula = y ~ x,
+                method = "lm", se = F)
 
   
 
   
   # COMPAIRING SLOPES
   # making a long format data
-  e <- melt(df, id = "dilutions")
+  if(ncol(df) > 2){
+    e <- melt(df, id = "dilutions")
+    
+    dilutions <- e$dilutions
+    value <- e$value
+    
+    lm <- lm(value ~ log10(dilutions) * variable, data = e)
+    slopes <- emtrends(lm, pairwise ~ variable, var = "log10(dilutions)")
+    
+    
+    
+    fits <- lapply(df[,-1], function(x) lm(x ~ log10(df[,1])))
+    mdat <- melt(df, id = "dilutions")
+    Ct <- mdat$value
+    Gene <- mdat$variable
+    variable <- mdat$Gene
+    p <- ggplot(data = mdat) + 
+      geom_point(aes(y = Ct, x = log10(dilutions), color = Gene)) +
+      geom_smooth(data = mdat,aes(x = log10(dilutions), y = Ct, color = Gene), formula = y ~ x,
+                  method = "lm", se = F)
+  }
   
-  dilutions <- e$dilutions
-  value <- e$value
-  
-  lm <- lm(value ~ log10(dilutions) * variable, data = e)
-  slopes <- emtrends(lm, pairwise ~ variable, var = "log10(dilutions)")
-  
-  
-  
-  fits <- lapply(df[,-1], function(x) lm(x ~ log10(df[,1])))
-  mdat <- melt(df, id="dilutions")
-  Ct <- mdat$value
-  Gene <- mdat$variable
-  variable <- mdat$Gene
-  p <- ggplot(data = mdat) + 
-    geom_point(aes(y = Ct, x = log10(dilutions), color = Gene)) +
-    geom_smooth(data = mdat,aes(x = log10(dilutions), y = Ct, color = Gene), formula = y ~ x,
-                method = "lm", se = F)
-  
- 
-  
-  # Compairing intercepts
-  # emm = emmeans(lm, "variable", at = list(log10(dilutions) == 0))
-  # emmIntercepts <- pairs(emm)
 
 
-  
-  res <- list(Efficiency = results, Slope_compare = slopes, plot = p)
+  if(ncol(df) == 2){
+    res <- list(Efficiency = results, plot = p)
+  } else {
+    res <- list(Efficiency = results, Slope_compare = slopes, plot = p)
+  }
    return(res)
 }

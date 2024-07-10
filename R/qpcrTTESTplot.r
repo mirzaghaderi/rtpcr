@@ -144,7 +144,7 @@ qpcrTTESTplot <- function(x, order = "none", numberOfrefGenes, paired = FALSE,
     
     if(errorbar == "ci") {
       p <- p +
-        geom_errorbar(aes(Gene, ymin=as.numeric(Lower.Er), ymax = as.numeric(Upper.Er)), width=0.1)
+        geom_errorbar(aes(Gene, ymin=as.numeric(Lower.Er), ymax = as.numeric(Upper.Er)), width = 0.1)
     } else if(errorbar == "se") {
       p <- p +
         geom_errorbar(aes(Gene, ymin = 2^(log2(as.numeric(Fold_Change)) - as.numeric(se)), ymax =  2^(log2(as.numeric(Fold_Change)) + as.numeric(se))), width=0.1)

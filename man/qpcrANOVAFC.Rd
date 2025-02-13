@@ -12,7 +12,7 @@ qpcrANOVAFC(
   mainFactor.level.order = NULL,
   block,
   width = 0.5,
-  fill = "#BFEFFF",
+  fill = "skyblue",
   y.axis.adjust = 2,
   y.axis.by = 1,
   letter.position.adjust = 0.1,
@@ -45,7 +45,7 @@ If \code{ancova} is selected as \code{analysisType}, the remaining factors (if a
 the first level of the \code{mainFactor.column} is used 
 as calibrator. If a vector of main factor levels (in any order) is specified, the first level in the vector is 
 used as calibrator. Calibrator is the reference level or sample that all others are compared to. Examples are untreated 
-of time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.}
+or time 0. The FC value of the reference or calibrator level is 1 because it is not changed compared to itself.}
 
 \item{block}{column name of the block if there is a blocking factor (for correct column arrangement see 
 example data.). When a qPCR experiment is done in multiple qPCR plates, variation resulting from the 
@@ -100,8 +100,8 @@ A list with 7 elements:
 \description{
 Fold change (\eqn{\Delta \Delta C_T} method) analysis of qPCR data can be done using 
 ANOVA (analysis of variance) and ANCOVA (analysis of covariance) by the 
-\code{qpcrANOVAFC} function, for uni- or multi-factorial experiment data. The bar plot of the fold changes (FC) 
-values along with the standard error (se) and confidence interval (ci) is returned by 
+\code{qpcrANOVAFC} function, for uni- or multi-factorial experiment data. The bar plot of the fold change (FC) 
+values along with the standard error (se) and confidence interval (ci) are returned by 
 the \code{qpcrANOVAFC} function.
 }
 \details{
@@ -129,7 +129,7 @@ analysis even there is only one factor (without covariate or factor  variable). 
 
 
 qpcrANOVAFC(data_1factor, numberOfrefGenes = 1, mainFactor.column = 1, block = NULL, 
-fill = c("#CDC673", "#EEDD82"), fontsizePvalue = 5, y.axis.adjust = 0.1)
+fill = c("grey", "skyblue"), fontsizePvalue = 5, y.axis.adjust = 0.1)
 
 
 qpcrANOVAFC(data_2factor, numberOfrefGenes = 1, mainFactor.column = 2, block = NULL, 
@@ -140,12 +140,12 @@ analysisType = "ancova", fontsizePvalue = 5, y.axis.adjust = 1)
 # replicates so we get mean of technical replicates first:
 df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
 qpcrANOVAFC(df, numberOfrefGenes = 1, analysisType = "ancova", block = NULL, 
-mainFactor.column = 2, fill = c("skyblue", "#BFEFFF"), y.axis.adjust = 0.05)
+mainFactor.column = 2, fill = c("grey", "skyblue"), y.axis.adjust = 0.05)
 
 
 qpcrANOVAFC(data_2factorBlock,  numberOfrefGenes = 1, mainFactor.column = 1, 
 mainFactor.level.order = c("S", "R"), block = "block", 
-fill = c("#CDC673", "#EEDD82"), analysisType = "ancova",
+fill = c("grey", "skyblue"), analysisType = "ancova",
 fontsizePvalue = 7, y.axis.adjust = 0.1, width = 0.35)
 
 
@@ -157,7 +157,7 @@ block = NULL, numberOfrefGenes = 1, analysisType = "anova")
 
 addline_format <- function(x,...){gsub('\\\\s','\n',x)}
 qpcrANOVAFC(data_1factor, numberOfrefGenes = 1, mainFactor.column = 1,
-block = NULL, fill = c("skyblue","#79CDCD"), y.axis.by = 1, 
+block = NULL, fill = c("grey", "skyblue"), y.axis.by = 1, 
 letter.position.adjust = 0, y.axis.adjust = 1, ylab = "Fold Change", 
 fontsize = 12, x.axis.labels.rename = addline_format(c("Control", 
                                          "Treatment_1 vs Control", 

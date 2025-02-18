@@ -10,13 +10,10 @@
 ### Author: Ghader Mirzaghaderi
 
 
-*A quick guide in PDF format to use rtpcr package:*
-<a href="man/figures/rtpcr-package.pdf"><img src="man/figures/rtpcr.jpg"/></a>  
 
 
-
-Quantitative real-time polymerase chain reaction (qRT-PCR or qPCR) is widely used in molecular biology researches. Various analysis methods are employed for the analysis of the qPCR data to measure the mRNA rates of a target gene under different experimental conditions. 
-The rtpcr package was developed for amplification efficiency calculation, statistical analysis, and graphical display of te qPCR data in R. The rtpcr package uses a general calculation methodology that accounts for up to two reference genes and amplification efficiency values, covering the Pfaffl method. Based on the experimental conditions, the functions of the rtpcr package use a t-test (for experiments with a two-level factor), analysis of variance (ANOVA), or analysis of covariance (ANCOVA) (where more than two levels or factors exists) to calculate the fold change (FC) or relative expression (RE) of a target gene. The functions also provide standard errors and confidence limits for the means and apply statistical mean comparisons. To facilitate function application, the rtpcr package includes different data sets as examples. The rtpcr package also provides ggplots with various editing arguments, allowing users to customize the graphical output. 
+Quantitative real-time polymerase chain reaction (qRT-PCR or qPCR) is widely used in molecular biology research. Various methods are employed to analyze the qPCR data to measure the mRNA rates of a target gene under different experimental conditions. 
+The rtpcr package was developed for amplification efficiency calculation, statistical analysis, and graphical display of the qPCR data in R. The rtpcr package uses a general calculation methodology that accounts for up to two reference genes and amplification efficiency values, covering the Pfaffl method. Based on the experimental conditions, the functions of the rtpcr package use a t-test (for experiments with a two-level factor), analysis of variance (ANOVA), or analysis of covariance (ANCOVA) (where more than two levels or factors exist) to calculate the fold change (FC) or relative expression (RE) of a target gene. The functions also provide standard errors and confidence limits for the means and apply statistical mean comparisons. The rtpcr package includes different data sets as examples to facilitate function application. The rtpcr package also provides ggplots with various editing arguments, allowing users to customize the graphical output. 
 
 
 # Overview
@@ -52,7 +49,7 @@ From the mean wΔCt values over biological replicates, the expression of a targe
 
 $$\text{Relative Expression (RE)} = 2^{-\overline{w\Delta Ct}}$$
 
-Often, one condition is considered as calibrator condition. Examples are Treatment versus Control where Control is served as the calibrator, or time 0 versus time 1 (e.g. after 1 hour) and time 2 (e.g. after 2 hours) where time 0 is served as the reference or calibrator level. So, calibrator is the reference level or sample that all others are compared to. The fold change (FC) expression of a target gene for the reference or calibrator level is 1 because it is not changed compared to itself. The fold change expression of a target gene due to the treatment can be calculated as follows: 
+Often, one condition is considered as calibrator condition. Examples are Treatment versus Control where Control is served as the calibrator, or time 0 versus time 1 (e.g. after 1 hour) and time 2 (e.g. after 2 hours) where time 0 is served as the reference or calibrator level. So, the calibrator is the reference level or sample that all others are compared to. The fold change (FC) expression of a target gene for the reference or calibrator level is 1 because it is not changed compared to itself. The fold change expression of a target gene due to the treatment can be calculated as follows: 
 
 
 $$\text{Fold Change due to Treatment} = 2^{-(\overline{w\Delta Ct}{Tr}-\overline{w\Delta Ct}{Co})}$$

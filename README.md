@@ -62,7 +62,6 @@ The rtpcr package and source code are available for download from CRAN website (
 
 ```r
 # Installing from CRAN
-
 install.packages("rtpcr")
 
 # Loading the package

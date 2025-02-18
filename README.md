@@ -70,7 +70,6 @@ install.packages("rtpcr")
 
 # Loading the package
 library(rtpcr)
-```
 
 
 # Loading the package

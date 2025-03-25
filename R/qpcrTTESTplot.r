@@ -99,7 +99,7 @@ qpcrTTESTplot <- function(x, order = "none", numberOfrefGenes, paired = FALSE,
 
     return(characters)
   }
-
+  
 
   
   
@@ -135,7 +135,8 @@ qpcrTTESTplot <- function(x, order = "none", numberOfrefGenes, paired = FALSE,
   Fold_Change <- df2$FC
   Lower.Er <- df2$LCL
   Upper.Er <- df2$UCL
-  pvalue <- df2$pvalue
+  pvalue <- as.numeric(df2$pvalue)
+  label <- convert_to_character(pvalue)
   se <- df2$se
 
   p <- ggplot(df2, aes(Gene, as.numeric(Fold_Change))) +
@@ -154,13 +155,13 @@ qpcrTTESTplot <- function(x, order = "none", numberOfrefGenes, paired = FALSE,
   
   if(errorbar == "ci") {
     p <- p +
-      geom_text(aes(label = convert_to_character(pvalue),
+      geom_text(aes(label = label,
                     x = Gene,
                     y = as.numeric(Upper.Er)),
                 vjust = -0.5, size = fontsizePvalue)
   } else if(errorbar == "se") {
     p <- p +
-      geom_text(aes(label = convert_to_character(pvalue),
+      geom_text(aes(label = label,
                     x = Gene,
                     y = 2^(log2(as.numeric(Fold_Change)) + as.numeric(se))),
                 vjust = -0.5, size = fontsizePvalue)
@@ -202,4 +203,3 @@ qpcrTTESTplot <- function(x, order = "none", numberOfrefGenes, paired = FALSE,
   out <- list(plot = p)
   return(out)
 }
-

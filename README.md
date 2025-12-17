@@ -4,7 +4,7 @@
 [![](https://cranlogs.r-pkg.org/badges/grand-total/rtpcr)](https://cran.rstudio.com/web/packages/rtpcr/index.html)
 
   
-#  <a href="https://cran.r-project.org/web/packages/rtpcr/index.html"><img src="man/figures/logo.jpg" align="right" height="120" /></a>
+
 
 # rtpcr: a package for statistical analysis and graphical presentation of qPCR data in R
 ### Author: Ghader Mirzaghaderi

@@ -7,7 +7,6 @@
 
 
 # rtpcr: a package for statistical analysis and graphical presentation of qPCR data in R
-### Author: Ghader Mirzaghaderi
 
 # Overview
 

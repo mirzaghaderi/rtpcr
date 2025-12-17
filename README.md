@@ -28,10 +28,7 @@ library(rtpcr)
 
 Or install the development version from GitHub with:
 ```r
-if(!requireNamespace("pak", quietly = TRUE)){
-  install.packages("pak")
-}
-pak::pkg_install("mirzaghaderi/rtpcr")
+devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
 ```
 
 Further information about how to use rtpcr package can be found 

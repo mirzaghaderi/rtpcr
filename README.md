@@ -26,6 +26,14 @@ library(rtpcr)
 ```
 
 
+Or install the development version from GitHub with:
+```r
+if(!requireNamespace("pak", quietly = TRUE)){
+  install.packages("pak")
+}
+pak::pkg_install("mirzaghaderi/rtpcr")
+```
+
 Further information about how to use rtpcr package can be found 
 <a href="https://cran.r-project.org/web/packages/rtpcr/vignettes/vignette.html">here </a>.
 
@@ -34,20 +42,25 @@ Further information about how to use rtpcr package can be found
 # Contact 
 Email: gh.mirzaghaderi at uok.ac.ir
 
+# Citation
+```r
+citation("rtpcr")
 
-# References
-Livak Kenneth J, and Schmittgen TD. 2001. Analysis of Relative Gene Expression Data Using Real-Time Quantitative PCR and the Double Delta CT Method. Methods 25 (4). <a href="https://doi.org/10.1006/meth.2001.1262">doi.org/10.1006/meth.2001.1262</a>.
+To cite the package ‘rtpcr’ in publications, please use:
 
+  Ghader Mirzaghaderi (2025). rtpcr: A package for statistical analysis and graphical
+  presentation of qPCR data in R. PeerJ 13:e20185. https://doi.org/10.7717/peerj.20185
 
-Ganger MT, Dietz GD, and Ewing SJ. 2017. A common base method for analysis of qPCR data and the application of simple blocking in qPCR experiments. BMC bioinformatics 18, 1-11. <a href="https://doi.org/10.1186/s12859-017-1949-5">doi.org/10.1186/s12859-017-1949-5</a>.
+A BibTeX entry for LaTeX users is
 
-Pfaffl MW, Horgan GW, Dempfle L. 2002. Relative expression software tool (REST©) for group-wise comparison and statistical analysis of relative expression results in real-time PCR. Nucleic acids research 30, e36-e36. <a href="https://doi.org/10.1093/nar/30.9.e36">doi.org/10.1093/nar/30.9.e36</a>.
+  @Article{,
+    title = {rtpcr: A package for statistical analysis and graphical presentation of qPCR data in R},
+    author = {Ghader Mirzaghaderi},
+    journal = {PeerJ},
+    volume = {13},
+    pages = {e20185},
+    year = {2025},
+    doi = {10.7717/peerj.20185},
+  }
+```
 
-
-Taylor SC, Nadeau K, Abbasi M, Lachance C, Nguyen M, Fenrich, J. 2019. The ultimate qPCR experiment: producing publication quality, reproducible data the first time. Trends in Biotechnology, 37(7), 761-774<a href="https://doi.org/10.1016/j.tibtech.2018.12.002">doi.org/10.1016/j.tibtech.2018.12.002</a>.
-
-
-Yuan, Joshua S, Ann Reed, Feng Chen, and Neal Stewart. 2006. Statistical Analysis of Real-Time PCR Data. BMC Bioinformatics 7 (85). <a href="https://doi.org/10.1186/1471-2105-7-85">doi.org/10.1186/1471-2105-7-85</a>.
-
-
-.

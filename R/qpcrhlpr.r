@@ -1,0 +1,191 @@
+# convert_to_character function
+.convert_to_character <- function(numbers) {
+  characters <- character(length(numbers))  # Initialize a character vector to store the results
+  
+  for (i in seq_along(numbers)) {
+    if (numbers[i] < 0.001) {
+      characters[i] <- "***"
+    } else if (numbers[i] < 0.01) {
+      characters[i] <- "**"
+    } else if (numbers[i] < 0.05) {
+      characters[i] <- "*"
+    } else if (numbers[i] < 0.1) {
+      characters[i] <- "."
+    } else {
+      characters[i] <- " "
+    }
+  }
+  
+  return(characters)
+}
+
+
+.wide_to_long <- function(df) {
+  
+  if (ncol(df) < 6) {
+    stop("Data frame must contain at least 6 columns.")
+  }
+  
+  # metadata (first two columns)
+  meta <- df[, 1:2, drop = FALSE]
+  
+  # remaining columns (paired by position)
+  data_cols <- df[, -(1:2), drop = FALSE]
+  
+  if (ncol(data_cols) %% 2 != 0) {
+    stop("After the first two columns, remaining columns must be in pairs.")
+  }
+  
+  n_pairs <- ncol(data_cols) / 2
+  
+  out <- do.call(
+    rbind,
+    lapply(seq_len(n_pairs), function(i) {
+      
+      e_col  <- data_cols[, 2*i - 1]
+      ct_col <- data_cols[, 2*i]
+      
+      gene_name <- colnames(data_cols)[2*i - 1]
+      
+      data.frame(
+        Condition = meta[[1]],
+        Gene = gene_name,
+        E = e_col,
+        Ct = ct_col,
+        stringsAsFactors = FALSE
+      )
+    })
+  )
+  
+  rownames(out) <- NULL
+  out
+}
+
+
+
+.rearrange_repeatedMeasureData <- function(
+    df,
+    column_name,
+    level
+) {
+  
+  if (!column_name %in% names(df)) {
+    stop("column_name not found in data frame")
+  }
+  
+  col_idx <- match(column_name, names(df))
+  if (col_idx == 1) {
+    stop("No previous columns to define groups")
+  }
+  
+  # grouping columns = all columns before column_name
+  group_cols <- seq_len(col_idx - 1)
+  
+  # groups in order of appearance
+  grp <- interaction(df[group_cols], drop = TRUE)
+  grp_levels <- unique(grp)
+  
+  out <- df[0, , drop = FALSE]
+  
+  # safe comparison (numeric / factor / character)
+  level_chr <- as.character(level)
+  
+  for (g in grp_levels) {
+    block <- df[grp == g, , drop = FALSE]
+    
+    is_level <- as.character(block[[column_name]]) == level_chr
+    
+    block <- rbind(block[is_level, , drop = FALSE],
+                   block[!is_level, , drop = FALSE])
+    
+    out <- rbind(out, block)
+  }
+  
+  rownames(out) <- NULL
+  out
+}
+
+
+
+
+
+.compute_wDCt <- function(x,
+                          numberOfrefGenes,
+                          block = NULL) {
+  
+  stopifnot(numberOfrefGenes >= 1)
+  
+  nc   <- ncol(x)
+  nRef <- numberOfrefGenes
+  
+  # core columns: rep + target + refs
+  nTargetCols <- 2
+  nRefCols    <- 2 * nRef
+  nCoreCols   <- 1 + nTargetCols + nRefCols
+  
+  if (!is.null(block)) {
+    nCoreCols <- nCoreCols + 1
+  }
+  
+  # rename from the end
+  idx <- nc
+  
+  # reference genes
+  for (i in nRef:1) {
+    colnames(x)[idx - 1] <- paste0("Eref",  if (i == 1) "" else i)
+    colnames(x)[idx]     <- paste0("Ctref", if (i == 1) "" else i)
+    idx <- idx - 2
+  }
+  
+  # target
+  colnames(x)[idx - 1] <- "Etarget"
+  colnames(x)[idx]     <- "Cttarget"
+  idx <- idx - 2
+  
+  # replicate
+  colnames(x)[idx] <- "rep"
+  idx <- idx - 1
+  
+  # block (optional)
+  if (!is.null(block)) {
+    colnames(x)[idx] <- "block"
+  }
+  
+  #FACTOR CONVERSION
+  if (!is.null(block)) {
+    factor_cols <- seq_len(which(colnames(x) == "block") - 1)
+  } else {
+    factor_cols <- seq_len(which(colnames(x) == "rep") - 1)
+  }
+  x[factor_cols] <- lapply(
+    x[factor_cols],
+    function(z) {
+      if (is.numeric(z)) {
+        stop("Numeric column found among factor columns. Please check input.")
+      }
+      factor(z)
+    }
+  )
+  
+  #wDCt calculation
+  target_term <- log2(x$Etarget) * x$Cttarget
+  
+  ref_terms <- vapply(
+    seq_len(nRef),
+    function(i) {
+      E  <- x[[paste0("Eref",  if (i == 1) "" else i)]]
+      Ct <- x[[paste0("Ctref", if (i == 1) "" else i)]]
+      log2(E) * Ct
+    },
+    numeric(nrow(x))
+  )
+  
+  ref_mean <- rowMeans(ref_terms, na.rm = FALSE)
+  
+  y <- data.frame(
+    x,
+    wDCt = target_term - ref_mean
+  )
+  
+  return(y)
+}

@@ -82,60 +82,45 @@ letters from post hoc statistical comparisons can be displayed.
 }
 \examples{
 
-# Two-factor ANOVA example
-res <- ANOVA_DCt(
-  data_2factorBlock,
-  block = "Block",
-  numberOfrefGenes = 1
-)
+a <- ANOVA_DCt(data_2factorBlock, block = "Block", numberOfrefGenes = 1)
+data <- a$Results
 
-expr_data <- res$Result
-
-plotTwoFactor(
-  data = expr_data,
+p1 <- plotTwoFactor(
+  data = data,
   x_col = 2,
   y_col = 3,
   group_col = 1,
   Lower.se_col = 8,
   Upper.se_col = 9,
-  letters_col = 12
+  letters_col = 12,
+  letters_d = 0.2,
+  fill_colors = c("aquamarine4", "gold2"),
+  alpha = 1,
+  col_width = 0.7,
+  dodge_width = 0.7,
+  base_size = 16, 
+  legend_position = c(0.2, 0.8)
 )
+p1
 
-# Combining fold-change results from two different genes
-a <- REPEATED_DDCt(
-  data_repeated_measure_1,
-  numberOfrefGenes = 1,
-  factor = "time",
-  calibratorLevel = "1",
-  block = NULL,
-  plot = FALSE
+
+p2 <- plotTwoFactor(
+  data = data,
+  x_col = 2,
+  y_col = 4,
+  group_col = 1,
+  Lower.se_col = 10,
+  Upper.se_col = 11,
+  letters_col = 12,
+  letters_d = 0.2,
+  fill_colors = c("aquamarine4", "gold2"),
+  alpha = 1,
+  col_width = 0.7,
+  dodge_width = 0.7,
+  base_size = 16, 
+  legend_position = c(0.2, 0.8)
 )
-
-b <- REPEATED_DDCt(
-  data_repeated_measure_2,
-  numberOfrefGenes = 1,
-  factor = "time",
-  calibratorLevel = "1",
-  block = NULL,
-  plot = FALSE
-)
-
-df_combined <- rbind(
-  a$Relative_Expression_table,
-  b$Relative_Expression_table
-)
-
-df_combined$gene <- factor(rep(c("Gene1", "Gene2"), each = 3))
-
-plotTwoFactor(
-  data = df_combined,
-  x_col = 1,
-  y_col = 2,
-  group_col = 13,
-  Lower.se_col = 9,
-  Upper.se_col = 10,
-  letters_col = 5
-)
+p2
 }
 \author{
 Ghader Mirzaghaderi

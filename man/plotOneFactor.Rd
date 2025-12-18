@@ -12,13 +12,12 @@ plotOneFactor(
   Upper.se_col,
   letters_col = NULL,
   letters_d = 0.2,
-  dodge_width = 0.8,
   col_width = 0.8,
   err_width = 0.15,
-  fill_colors = NULL,
+  fill_colors = "grey40",
   alpha = 1,
   base_size = 12,
-  legend_position = "right",
+  legend_position = "none",
   ...
 )
 }
@@ -36,8 +35,6 @@ plotOneFactor(
 \item{letters_col}{Optional column index for grouping letters}
 
 \item{letters_d}{Numeric. Vertical offset for letters (default 0.2)}
-
-\item{dodge_width}{Numeric. Spacing for bars (default 0.8)}
 
 \item{col_width}{Numeric. Width of bars (default 0.8)}
 
@@ -68,6 +65,33 @@ functions such as \code{ANOVA_DDCt()} or \code{ANOVA_DCt()}.
 Error bars can represent either standard error (SE) or 95\% confidence
 intervals, and optional grouping letters from post hoc statistical
 comparisons can be displayed above the bars.
+}
+\examples{
+
+a <- ANOVA_DCt(
+data_1factor,
+numberOfrefGenes = 1,
+block = NULL
+)
+data <- a$Results
+
+plotOneFactor(
+  data,
+  x_col = 1,
+  y_col = 2,
+  Lower.se_col = 7,
+  Upper.se_col = 8,
+  letters_col = 11,
+  letters_d = 0.1,
+  col_width = 0.7,
+  err_width = 0.15,
+  fill_colors = "skyblue",
+  alpha = 1,
+  base_size = 16
+)
+
+
+
 }
 \author{
 Ghader Mirzaghaderi

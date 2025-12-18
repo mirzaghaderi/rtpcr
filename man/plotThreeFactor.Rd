@@ -92,11 +92,11 @@ res <- ANOVA_DCt(
   block = NULL
 )
 
-expr_data <- res$Result
+data <- res$Result
 
 # Generate three-factor bar plot
-plotThreeFactor(
-  expr_data,
+p <- plotThreeFactor(
+  data,
   x_col = 3,        # x-axis factor
   y_col = 5,        # bar height
   group_col = 1,    # grouping (fill)
@@ -104,11 +104,18 @@ plotThreeFactor(
   Lower.se_col = 11,
   Upper.se_col = 12,
   letters_col = 13,
-  letters_d = 0.4,
-  dodge_width = 0.9,       # controls spacing
+  letters_d = 0.3,
+  col_width = 0.7, 
+  dodge_width = 0.7,# controls spacing
   fill_colors = c("blue", "brown"),
+  base_size = 16, 
   alpha = 1,
   legend_position = c(0.1, 0.2)
+)
+
+library(ggplot2)
+p + theme(
+  panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5)
 )
 }
 \author{

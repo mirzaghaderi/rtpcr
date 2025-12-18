@@ -23,109 +23,75 @@
 #' @import reshape2
 #' @import ggplot2
 #'
-#' @param data
-#' A data frame containing expression results, typically obtained from
-#' \code{ANOVA_DDCt()} or \code{ANOVA_DCt()}.
-#'
-#' @param show.groupingLetters
-#' Logical; if \code{TRUE}, grouping letters from statistical comparisons
-#' are added to the bars.
-#'
-#' @param x_col
-#' Integer specifying the column number used for the x-axis (factor levels).
-#'
-#' @param y_col
-#' Integer specifying the column number used for the y-axis (relative expression or fold change).
-#'
-#' @param Lower.se_col
-#' Integer specifying the column number used for the lower limit of the error bar.
-#'
-#' @param Upper.se_col
-#' Integer specifying the column number used for the upper limit of the error bar.
-#'
-#' @param letters_col
-#' Integer specifying the column number containing grouping letters from
-#' statistical comparisons.
-#'
-#' @return
-#' A \code{ggplot} object showing a bar plot of relative expression values
-#' with error bars and optional significance annotations.
-#'
-#' @examples
-#'
-#' # Extract expression results before plotting
-#' res <- ANOVA_DCt(
-#'   data_1factor,
-#'   numberOfrefGenes = 1,
-#'   block = NULL
-#' )$Result
-#'
-#' # Generate bar plot
-#' plotOneFactor(
-#'   res,
-#'   x_col = 1,
-#'   y_col = 2,
-#'   Lower.se_col = 7,
-#'   Upper.se_col = 8,
-#'   letters_col = 11,
-#'   show.groupingLetters = TRUE
-#' )
-
-
-
-plotOneFactor <- function(data, 
-                          x_col, 
+#' @param data Data frame
+#' @param x_col Numeric. Column index for x-axis
+#' @param y_col Numeric. Column index for bar height
+#' @param Lower.se_col Numeric. Column index for lower SE
+#' @param Upper.se_col Numeric. Column index for upper SE
+#' @param letters_col Optional column index for grouping letters
+#' @param letters_d Numeric. Vertical offset for letters (default 0.2)
+#' @param dodge_width Numeric. Spacing for bars (default 0.8)
+#' @param col_width Numeric. Width of bars (default 0.8)
+#' @param err_width Numeric. Width of error bars (default 0.15)
+#' @param fill_colors Optional vector of fill colors
+#' @param alpha Numeric. Transparency of bars (default 1)
+#' @param base_size Numeric. Base font size for theme (default 12)
+#' @param legend_position Character. Legend position (default "right")
+#' @param ... Additional valid ggplot2 layer arguments
+#' @return ggplot2 plot object
+#' @export
+plotOneFactor <- function(data,
+                          x_col,
                           y_col,
                           Lower.se_col,
                           Upper.se_col,
                           letters_col = NULL,
-                          show.groupingLetters = TRUE) {
-
+                          letters_d = 0.2,
+                          dodge_width = 0.8,
+                          col_width = 0.8,
+                          err_width = 0.15,
+                          fill_colors = NULL,
+                          alpha = 1,
+                          base_size = 12,
+                          legend_position = "right",
+                          ...) {
   
-# column names from index
-  x_name  <- names(data)[x_col]
-  y_name  <- names(data)[y_col]
-  lower   <- names(data)[Lower.se_col]
-  upper   <- names(data)[Upper.se_col]
+  x_name <- names(data)[x_col]
+  y_name <- names(data)[y_col]
+  lower  <- names(data)[Lower.se_col]
+  upper  <- names(data)[Upper.se_col]
   
-# compute ymin and ymax BEFORE ggplot
-  data$ymin <- ifelse(
-    data[[y_name]] < 0,
-    data[[lower]],   # negative bars
-    data[[lower]]    # positive bars
-  )
+  # Precompute ymin/ymax
+  data$ymin <- data[[lower]]
+  data$ymax <- data[[upper]]
   
-  data$ymax <- ifelse(
-    data[[y_name]] < 0,
-    data[[upper]],   # negative bars
-    data[[upper]]    # positive bars
-  )
-  
-  # Base plot
-  p <- ggplot(data, aes(x = .data[[x_name]], y = .data[[y_name]])) +
-    geom_col() +
-    geom_errorbar(aes(ymin = ymin, ymax = ymax), width = 0.1)
-  
-  # Add grouping letters
-  if (show.groupingLetters) {
-    if (is.null(letters_col)) {
-      stop("letters_col must be provided when show.groupingLetters = TRUE")
-    }
-    
+  # Convert letters to character if provided
+  if (!is.null(letters_col)) {
     letters_name <- names(data)[letters_col]
-    
-    p <- p +
-      geom_text(
-        aes(
-          label = .data[[letters_name]],
-          y = ifelse(
-            .data[[y_name]] < 0,
-            .data[[lower]] - 0.2,   # negative bars
-            .data[[upper]] + 0.2   # positive bar
-          )
-        )
-      )
+    data[[letters_name]] <- as.character(data[[letters_name]])
   }
   
-  return(p)
+  p <- ggplot(data, aes(x = .data[[x_name]], y = .data[[y_name]])) +
+    geom_pub_cols(
+      col_width = col_width,
+      err_width = err_width,
+      fill_colors = fill_colors,
+      dodge_width = dodge_width,
+      alpha = alpha,
+      ...
+    )
+  
+  # Add letters
+  if (!is.null(letters_col)) {
+    pos <- position_dodge(width = dodge_width)
+    p <- p + geom_text(
+      aes(
+        label = .data[[letters_name]],
+        y = ifelse(.data[[y_name]] < 0, ymin - letters_d, ymax + letters_d)
+      ),
+      position = pos,
+      ...
+    )
+  }
+  p + theme_pub(base_size = base_size, legend_position = legend_position) 
 }

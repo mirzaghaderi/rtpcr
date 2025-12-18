@@ -46,8 +46,7 @@ p2 <- plotOneFactor(
   y_col = 2,
   Lower.se_col = 7,
   Upper.se_col = 8,
-  letters_col = 11,
-  show.groupingLetters = TRUE
+  letters_col = 11
 )
 
 # Combine plots into a single layout

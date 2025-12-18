@@ -171,7 +171,7 @@ ANOVA_DCt <- function(x,
                         LCL = 2^(-lcl),
                         UCL = 2^(-ucl),
                         se = se_matched,
-                        letters = trimws(letters_grp), 
+                        sig = trimws(letters_grp), 
                         stringsAsFactors = FALSE)
   
   # preserve rownames as a column for splitting
@@ -218,10 +218,8 @@ ANOVA_DCt <- function(x,
                                                   log2(Results_combined$RE[idx_ge1])) / Results_combined$RE[idx_ge1]
   
   # reorder columns: put lower/upper SEs before letters
-  # find current column positions
-  # We'll place Lower.se.RE, Upper.se.RE, Lower.se.log2FC, Upper.se.log2FC before 'letters'
   cols <- colnames(Results_combined)
-  letters_pos <- match("letters", cols)
+  letters_pos <- match("sig", cols)
   new_order <- c(cols[1:(letters_pos - 1)],
                  "Lower.se.RE", "Upper.se.RE", "Lower.se.log2FC", "Upper.se.log2FC",
                  cols[letters_pos:length(cols)])

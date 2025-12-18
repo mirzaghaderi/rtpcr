@@ -13,7 +13,15 @@ plotThreeFactor(
   Lower.se_col,
   Upper.se_col,
   letters_col = NULL,
-  show.groupingLetters = TRUE
+  letters_d = 0.2,
+  dodge_width = 0.9,
+  col_width = 0.8,
+  err_width = 0.15,
+  fill_colors = NULL,
+  alpha = 1,
+  base_size = 12,
+  legend_position = "right",
+  ...
 )
 }
 \arguments{
@@ -39,12 +47,26 @@ of the error bar.}
 \item{letters_col}{Integer specifying the column number containing grouping letters
 from statistical comparisons.}
 
-\item{show.groupingLetters}{Logical; if \code{TRUE}, grouping letters are displayed above the bars.}
+\item{letters_d}{Numeric specifying the distance between sig letters and error bar.}
+
+\item{dodge_width}{Numeric. Width of the dodge position adjustment for grouped bars.}
+
+\item{col_width}{Numeric. Width of bars (default 0.8)}
+
+\item{err_width}{Numeric. Width of error bars (default 0.15)}
+
+\item{fill_colors}{Optional vector of fill colors}
+
+\item{alpha}{Numeric. Transparency of bars (default 1)}
+
+\item{base_size}{Numeric. Base font size (default 12)}
+
+\item{legend_position}{Character or numeric vector. Position of legend (default "right")}
+
+\item{...}{Additional ggplot2 layer arguments (e.g., fill, alpha, color)}
 }
 \value{
-A \code{ggplot} object showing relative expression values arranged
-by three experimental factors, with error bars and optional
-significance annotations.
+A ggplot object
 }
 \description{
 Creates a bar plot of relative gene expression (fold change) values
@@ -82,7 +104,11 @@ plotThreeFactor(
   Lower.se_col = 11,
   Upper.se_col = 12,
   letters_col = 13,
-  show.groupingLetters = TRUE
+  letters_d = 0.4,
+  dodge_width = 0.9,       # controls spacing
+  fill_colors = c("blue", "brown"),
+  alpha = 1,
+  legend_position = c(0.1, 0.2)
 )
 }
 \author{

@@ -189,3 +189,76 @@
   
   return(y)
 }
+
+
+
+
+
+#' Publication-ready column + error-bar layers
+#'
+#' Adds geom_col and geom_errorbar layers with optional fill colors.
+#'
+#' @param col_width Numeric. Width of bars (default 0.8)
+#' @param err_width Numeric. Width of error bars (default 0.15)
+#' @param fill_colors Optional vector of fill colors
+#' @param dodge_width Numeric. Horizontal spacing between groups (default 0.8)
+#' @param alpha Numeric. Transparency of bars (default 1)
+#' @param ... Additional valid ggplot2 geom_col arguments
+#' @return A list of ggplot2 layers
+#' @export
+.geom_pub_cols <- function(col_width = 0.8,
+                           err_width = 0.15,
+                           fill_colors = NULL,
+                           dodge_width = 0.8,
+                           alpha = 1,
+                           ...) {
+  
+  pos <- position_dodge(width = dodge_width)
+  
+  layers <- list(
+    geom_col(width = col_width, position = pos, alpha = alpha, ...),
+    geom_errorbar(aes(ymin = ymin, ymax = ymax), width = err_width, position = pos)
+  )
+  
+  if (!is.null(fill_colors)) {
+    layers <- c(layers, scale_fill_manual(values = fill_colors))
+  }
+  
+  layers
+}
+
+#' Publication-ready ggplot2 theme
+#' @param base_size Numeric. Base font size (default 12)
+#' @param base_family Character. Font family (default "sans")
+#' @param legend_position Character or numeric vector. Position of legend (default "right")
+#' @param ... Additional theme arguments
+#' @return ggplot2 theme object
+#' @export
+.theme_pub <- function(base_size = 12,
+                       base_family = "sans",
+                       legend_position = "right",
+                       ...) {
+  
+  theme_bw(base_size = base_size, base_family = base_family) %+replace%
+    theme(
+      panel.border = element_blank(),
+      axis.line.x = element_line(color = "black"),
+      axis.line.y = element_line(color = "black"),
+      legend.position = legend_position,
+      ...
+    )
+}
+
+#' Wrapper for .geom_pub_cols
+#' @param ... Additional theme arguments
+#' @export
+geom_pub_cols <- function(...) {
+  .geom_pub_cols(...)
+}
+
+#' Wrapper for .theme_pub
+#' @param ... Additional theme arguments
+#' @export
+theme_pub <- function(...) {
+  .theme_pub(...)
+}

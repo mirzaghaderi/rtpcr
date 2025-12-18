@@ -11,30 +11,50 @@ plotOneFactor(
   Lower.se_col,
   Upper.se_col,
   letters_col = NULL,
-  show.groupingLetters = TRUE
+  letters_d = 0.2,
+  dodge_width = 0.8,
+  col_width = 0.8,
+  err_width = 0.15,
+  fill_colors = NULL,
+  alpha = 1,
+  base_size = 12,
+  legend_position = "right",
+  ...
 )
 }
 \arguments{
-\item{data}{A data frame containing expression results, typically obtained from
-\code{ANOVA_DDCt()} or \code{ANOVA_DCt()}.}
+\item{data}{Data frame}
 
-\item{x_col}{Integer specifying the column number used for the x-axis (factor levels).}
+\item{x_col}{Numeric. Column index for x-axis}
 
-\item{y_col}{Integer specifying the column number used for the y-axis (relative expression or fold change).}
+\item{y_col}{Numeric. Column index for bar height}
 
-\item{Lower.se_col}{Integer specifying the column number used for the lower limit of the error bar.}
+\item{Lower.se_col}{Numeric. Column index for lower SE}
 
-\item{Upper.se_col}{Integer specifying the column number used for the upper limit of the error bar.}
+\item{Upper.se_col}{Numeric. Column index for upper SE}
 
-\item{letters_col}{Integer specifying the column number containing grouping letters from
-statistical comparisons.}
+\item{letters_col}{Optional column index for grouping letters}
 
-\item{show.groupingLetters}{Logical; if \code{TRUE}, grouping letters from statistical comparisons
-are added to the bars.}
+\item{letters_d}{Numeric. Vertical offset for letters (default 0.2)}
+
+\item{dodge_width}{Numeric. Spacing for bars (default 0.8)}
+
+\item{col_width}{Numeric. Width of bars (default 0.8)}
+
+\item{err_width}{Numeric. Width of error bars (default 0.15)}
+
+\item{fill_colors}{Optional vector of fill colors}
+
+\item{alpha}{Numeric. Transparency of bars (default 1)}
+
+\item{base_size}{Numeric. Base font size for theme (default 12)}
+
+\item{legend_position}{Character. Legend position (default "right")}
+
+\item{...}{Additional valid ggplot2 layer arguments}
 }
 \value{
-A \code{ggplot} object showing a bar plot of relative expression values
-with error bars and optional significance annotations.
+ggplot2 plot object
 }
 \description{
 Creates a bar plot of relative gene expression (fold change) values
@@ -48,26 +68,6 @@ functions such as \code{ANOVA_DDCt()} or \code{ANOVA_DCt()}.
 Error bars can represent either standard error (SE) or 95\% confidence
 intervals, and optional grouping letters from post hoc statistical
 comparisons can be displayed above the bars.
-}
-\examples{
-
-# Extract expression results before plotting
-res <- ANOVA_DCt(
-  data_1factor,
-  numberOfrefGenes = 1,
-  block = NULL
-)$Result
-
-# Generate bar plot
-plotOneFactor(
-  res,
-  x_col = 1,
-  y_col = 2,
-  Lower.se_col = 7,
-  Upper.se_col = 8,
-  letters_col = 11,
-  show.groupingLetters = TRUE
-)
 }
 \author{
 Ghader Mirzaghaderi

@@ -39,6 +39,20 @@
 #' @param group_col
 #' Integer specifying the column number used for grouping bars
 #' (fill aesthetic).
+#' 
+#' @param col_width 
+#' Numeric. Width of bars (default 0.8)
+#' 
+#' @param err_width 
+#' Numeric. Width of error bars (default 0.15)
+#' 
+#' @param fill_colors 
+#' Optional vector of fill colors
+#' 
+#' @param alpha 
+#' Numeric. Transparency of bars (default 1)
+#' 
+#' @param base_size Numeric. Base font size (default 12)
 #'
 #' @param Lower.se_col
 #' Integer specifying the column number used for the lower limit
@@ -51,14 +65,22 @@
 #' @param letters_col
 #' Integer specifying the column number containing grouping letters
 #' from statistical comparisons.
-#'
-#' @param show.groupingLetters
-#' Logical; if \code{TRUE}, grouping letters are displayed above the bars.
+#' 
+#' @param letters_d
+#' Numeric specifying the distance between sig letters and error bar.
+#' 
+#' @param dodge_width 
+#' Numeric. Width of the dodge position adjustment for grouped bars. 
+#' 
+#' @param legend_position 
+#' Character or numeric vector. Position of legend (default "right")
+#' 
+#' @param ... 
+#' Additional ggplot2 layer arguments (e.g., fill, alpha, color)
 #'
 #' @return
-#' A \code{ggplot} object showing relative expression values arranged
-#' by two experimental factors, with error bars and optional
-#' significance annotations.
+#' A ggplot object
+#' 
 #'
 #' @examples
 #'
@@ -78,8 +100,7 @@
 #'   group_col = 1,
 #'   Lower.se_col = 8,
 #'   Upper.se_col = 9,
-#'   letters_col = 12,
-#'   show.groupingLetters = TRUE
+#'   letters_col = 12
 #' )
 #'
 #' # Combining fold-change results from two different genes
@@ -115,71 +136,62 @@
 #'   group_col = 13,
 #'   Lower.se_col = 9,
 #'   Upper.se_col = 10,
-#'   letters_col = 5,
-#'   show.groupingLetters = TRUE
+#'   letters_col = 5
 #' )
 
 
 
-plotTwoFactor <- function(data, 
-                          x_col,        # x-axis factor
-                          y_col,        # bar height
-                          group_col,    # fill groups
-                          Lower.se_col, # lower SE column
-                          Upper.se_col, # upper SE column
+plotTwoFactor <- function(data,
+                          x_col,
+                          y_col,
+                          group_col,
+                          Lower.se_col,
+                          Upper.se_col,
                           letters_col = NULL,
-                          show.groupingLetters = TRUE){
+                          letters_d = 0.2,
+                          dodge_width = 0.8,
+                          col_width = 0.8,
+                          err_width = 0.15,
+                          fill_colors = NULL,
+                          alpha = 1,
+                          base_size = 12,
+                          legend_position = "right",
+                          ...) {
   
-  # Extract Column Names by Index
-  x_name      <- names(data)[x_col]
-  y_name      <- names(data)[y_col]
-  group_name  <- names(data)[group_col]
-  lower  <- names(data)[Lower.se_col]
-  upper  <- names(data)[Upper.se_col]
-  letter_name <- if (!is.null(letters_col)) names(data)[letters_col] else NULL
+  x_name <- names(data)[x_col]
+  y_name <- names(data)[y_col]
+  group_name <- names(data)[group_col]
+  lower <- names(data)[Lower.se_col]
+  upper <- names(data)[Upper.se_col]
   
-  # compute ymin and ymax BEFORE ggplot
   data$ymin <- data[[lower]]
   data$ymax <- data[[upper]]
-
   
-  #Base ggplot
-  p <- ggplot(data,
-              aes(x = .data[[x_name]],
-                  y = .data[[y_name]],
-                  fill = .data[[group_name]])) +
-    geom_col(position = position_dodge(width = 0.8),
-             width = 0.8)
-  
-
-  
-  
-  #Error Bars
-  p <- p + geom_errorbar(
-    aes(ymin = ymin,
-        ymax = ymax),
-    width = 0.15,
-    position = position_dodge(width = 0.8))
-  
-  #Add Grouping Letters if Provided
-  if (show.groupingLetters & !is.null(letters_col)) {
-
+  if (!is.null(letters_col)) {
     letters_name <- names(data)[letters_col]
-    p <- p +
-      geom_text(
-        aes(
-          label = .data[[letters_name]],
-          y = ifelse(
-            .data[[y_name]] < 0,
-            ymin - 0.3,   # negative bars
-            ymax + 0.3   # positive bar
-          )
-        ), position = position_dodge(width = 0.8)
-      )
-    
-    
+    data[[letters_name]] <- as.character(data[[letters_name]])
   }
   
-  return(p)
+  p <- ggplot(data, aes(x = .data[[x_name]], y = .data[[y_name]], fill = .data[[group_name]])) +
+    geom_pub_cols(
+      col_width = col_width,
+      err_width = err_width,
+      fill_colors = fill_colors,
+      dodge_width = dodge_width,
+      alpha = alpha,
+      ...
+    )
+  
+  if (!is.null(letters_col)) {
+    pos <- position_dodge(width = dodge_width)
+    p <- p + geom_text(
+      aes(
+        label = .data[[letters_name]],
+        y = ifelse(.data[[y_name]] < 0, ymin - letters_d, ymax + letters_d)
+      ),
+      position = pos,
+      ...
+    )
+  }
+  p + theme_pub(base_size = base_size, legend_position = legend_position)
 }
-

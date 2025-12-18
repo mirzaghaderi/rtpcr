@@ -401,47 +401,71 @@ The `rtpcr` package includes dedicated plotting functions for visualizing the re
 
 
 ``` r
-# Before plotting, the result needs to be extracted as below:
-res <- ANOVA_DCt(data_1factor, numberOfrefGenes = 1, block = NULL)$Result
+# Before plotting, the result table needs to be extracted:
+p1 <- TTEST_DDCt(data_1factor_one_ref,
+                 numberOfrefGenes = 1,
+                 paired = FALSE,
+                 var.equal = TRUE,
+                 plotType = "RE")
 ```
 
 ```
-## Analysis of Variance Table
-## 
-## Response: wDCt
-##           Df Sum Sq Mean Sq F value   Pr(>F)   
-## T          2 4.9393 2.46963  12.345 0.007473 **
-## Residuals  6 1.2003 0.20006                    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Relative expression (DCt method)
-##   SA     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE
-## 1 L3 0.9885 -0.0167 1.5318 0.6379 0.0841      0.9325      1.0479
-## 2 L2 0.6271 -0.6733 0.9717 0.4047 0.4388      0.4626      0.8500
-## 3 L1 0.2852 -1.8100 0.4419 0.1840 0.0208      0.2811      0.2893
-##   Lower.se.log2FC Upper.se.log2FC sig
-## 1         -0.0177         -0.0157   a
-## 2         -0.9127         -0.4968   a
-## 3         -1.8363         -1.7841   b
+## *** 3 target(s) using 1 reference gene(s) was analysed!
+## *** The control level was used as calibrator.
 ```
 
 ``` r
-# Bar plot
-plotOneFactor(
-  res,
+p2 <- TTEST_DDCt(data_1factor_one_ref,
+                 numberOfrefGenes = 1,
+                 paired = FALSE,
+                 var.equal = TRUE,
+                 plotType = "log2FC")
+```
+
+```
+## *** 3 target(s) using 1 reference gene(s) was analysed!
+## *** The control level was used as calibrator.
+```
+
+``` r
+d1 <- p1$Result
+
+# preserve order in plot as in data
+d1$Gene <- factor(d1$Gene, levels = unique(d1$Gene))
+
+pl1 <- plotOneFactor(
+  d1,
   x_col = 1,
   y_col = 2,
-  Lower.se_col = 7,
-  Upper.se_col = 8,
-  letters_col = 11,
-  letters_d = 0.1,
-  col_width = 0.7,
+  Lower.se_col = 8,
+  Upper.se_col = 9,
+  letters_col = 10,
+  letters_d = 0.2,
+  col_width = 0.8,
   err_width = 0.15,
-  fill_colors = "skyblue",
+  fill_colors = "cyan",
+  colour = "black",
   alpha = 1,
-  base_size = 16
-)
+  base_size = 12,
+  legend_position = "none")
+
+pl2 <- plotOneFactor(
+  d1,
+  x_col = 1,
+  y_col = 7,
+  Lower.se_col = 11,
+  Upper.se_col = 12,
+  letters_col = 10,
+  letters_d = 0.2,
+  col_width = 0.8,
+  err_width = 0.15,
+  fill_colors = "cyan",
+  colour = "black",
+  alpha = 1,
+  base_size = 12,
+  legend_position = "none")
+
+multiplot(pl1, pl2, cols =  2)
 ```
 
 ![](vignette_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
@@ -696,20 +720,20 @@ Means_DDCt(res$lm_ANOVA, specs = "Conc * Type")
 
 ```
 ##  contrast          FC        SE df       LCL      UCL p.value sig
-##  L R vs H R  0.103187 0.3123981 22  0.065856  0.16168  <.0001 ***
-##  M R vs H R  0.339151 0.3123981 22  0.216453  0.53140  0.0001 ***
-##  H S vs H R  2.996614 0.3123981 22  1.912499  4.69527  <.0001 ***
+##  L R vs H R  0.103187 0.3123981 22  0.065856  0.16168 <0.0001 ***
+##  M R vs H R  0.339151 0.3123981 22  0.216453  0.53140 <0.0001 ***
+##  H S vs H R  2.996614 0.3123981 22  1.912499  4.69527 <0.0001 ***
 ##  L S vs H R  0.842842 0.3123981 22  0.537918  1.32061  0.4382    
 ##  M S vs H R  0.438303 0.3123981 22  0.279734  0.68676  0.0010 ***
-##  M R vs L R  3.286761 0.3123981 22  2.097677  5.14989  <.0001 ***
-##  H S vs L R 29.040613 0.3123981 22 18.534303 45.50251  <.0001 ***
-##  L S vs L R  8.168097 0.3123981 22  5.213044 12.79824  <.0001 ***
-##  M S vs L R  4.247655 0.3123981 22  2.710939  6.65547  <.0001 ***
-##  H S vs M R  8.835632 0.3123981 22  5.639078 13.84418  <.0001 ***
+##  M R vs L R  3.286761 0.3123981 22  2.097677  5.14989 <0.0001 ***
+##  H S vs L R 29.040613 0.3123981 22 18.534303 45.50251 <0.0001 ***
+##  L S vs L R  8.168097 0.3123981 22  5.213044 12.79824 <0.0001 ***
+##  M S vs L R  4.247655 0.3123981 22  2.710939  6.65547 <0.0001 ***
+##  H S vs M R  8.835632 0.3123981 22  5.639078 13.84418 <0.0001 ***
 ##  L S vs M R  2.485151 0.3123981 22  1.586073  3.89388  0.0004 ***
 ##  M S vs M R  1.292353 0.3123981 22  0.824806  2.02493  0.2489    
-##  L S vs H S  0.281265 0.3123981 22  0.179509  0.44070  <.0001 ***
-##  M S vs H S  0.146266 0.3123981 22  0.093350  0.22918  <.0001 ***
+##  L S vs H S  0.281265 0.3123981 22  0.179509  0.44070 <0.0001 ***
+##  M S vs H S  0.146266 0.3123981 22  0.093350  0.22918 <0.0001 ***
 ##  M S vs L S  0.520030 0.3123981 22  0.331894  0.81481  0.0063 ** 
 ## 
 ## Results are averaged over the levels of: SA 
@@ -734,19 +758,19 @@ Means_DDCt(res$lm_ANOVA, specs = "Conc | (Type*SA)")
 ## Type = S, SA = A1:
 ##  contrast       FC        SE df       LCL      UCL p.value sig
 ##  L vs H   0.267943 0.4417977 22 0.1419808 0.505657  0.0003 ***
-##  M vs H   0.139661 0.4417977 22 0.0740051 0.263565  <.0001 ***
+##  M vs H   0.139661 0.4417977 22 0.0740051 0.263565 <0.0001 ***
 ##  M vs L   0.521233 0.4417977 22 0.2761966 0.983660  0.0448 *  
 ## 
 ## Type = R, SA = A2:
 ##  contrast       FC        SE df       LCL      UCL p.value sig
-##  L vs H   0.036906 0.4417977 22 0.0195562 0.069648  <.0001 ***
-##  M vs H   0.181327 0.4417977 22 0.0960836 0.342197  <.0001 ***
-##  M vs L   4.913213 0.4417977 22 2.6034674 9.272118  <.0001 ***
+##  L vs H   0.036906 0.4417977 22 0.0195562 0.069648 <0.0001 ***
+##  M vs H   0.181327 0.4417977 22 0.0960836 0.342197 <0.0001 ***
+##  M vs L   4.913213 0.4417977 22 2.6034674 9.272118 <0.0001 ***
 ## 
 ## Type = S, SA = A2:
 ##  contrast       FC        SE df       LCL      UCL p.value sig
 ##  L vs H   0.295248 0.4417977 22 0.1564494 0.557187  0.0006 ***
-##  M vs H   0.153184 0.4417977 22 0.0811706 0.289085  <.0001 ***
+##  M vs H   0.153184 0.4417977 22 0.0811706 0.289085 <0.0001 ***
 ##  M vs L   0.518830 0.4417977 22 0.2749233 0.979125  0.0434 *  
 ## 
 ## Degrees-of-freedom method: kenward-roger 

@@ -212,24 +212,57 @@ The `rtpcr` package includes dedicated plotting functions for visualizing the re
 *   `plotOneFactor`: Generates a bar plot for single-factor experimental results. It requires column indices specifying the x-axis factor, y-axis value, lower error bar, upper error bar, and optionally, the grouping letters.
 
 ```{r eval= T}
-# Before plotting, the result needs to be extracted as below:
-res <- ANOVA_DCt(data_1factor, numberOfrefGenes = 1, block = NULL)$Result
+# Before plotting, the result table needs to be extracted:
+p1 <- TTEST_DDCt(data_1factor_one_ref,
+                 numberOfrefGenes = 1,
+                 paired = FALSE,
+                 var.equal = TRUE,
+                 plotType = "RE")
 
-# Bar plot
-plotOneFactor(
-  res,
+p2 <- TTEST_DDCt(data_1factor_one_ref,
+                 numberOfrefGenes = 1,
+                 paired = FALSE,
+                 var.equal = TRUE,
+                 plotType = "log2FC")
+
+d1 <- p1$Result
+
+# preserve order in plot as in data
+d1$Gene <- factor(d1$Gene, levels = unique(d1$Gene))
+
+pl1 <- plotOneFactor(
+  d1,
   x_col = 1,
   y_col = 2,
-  Lower.se_col = 7,
-  Upper.se_col = 8,
-  letters_col = 11,
-  letters_d = 0.1,
-  col_width = 0.7,
+  Lower.se_col = 8,
+  Upper.se_col = 9,
+  letters_col = 10,
+  letters_d = 0.2,
+  col_width = 0.8,
   err_width = 0.15,
-  fill_colors = "skyblue",
+  fill_colors = "cyan",
+  colour = "black",
   alpha = 1,
-  base_size = 16
-)
+  base_size = 12,
+  legend_position = "none")
+
+pl2 <- plotOneFactor(
+  d1,
+  x_col = 1,
+  y_col = 7,
+  Lower.se_col = 11,
+  Upper.se_col = 12,
+  letters_col = 10,
+  letters_d = 0.2,
+  col_width = 0.8,
+  err_width = 0.15,
+  fill_colors = "cyan",
+  colour = "black",
+  alpha = 1,
+  base_size = 12,
+  legend_position = "none")
+
+multiplot(pl1, pl2, cols =  2)
 ```
 
 *   `plotTwoFactor`: Creates a bar plot for two-factorial experiment results, using one factor for the x-axis and the second factor for bar fill/grouping.

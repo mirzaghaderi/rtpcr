@@ -11,6 +11,8 @@
 #' For each gene, the function reports the slope of the standard curve,
 #' amplification efficiency (E), and R\eqn{^2} as a measure of goodness of fit.
 #' The function also provides graphical visualization of the standard curves.
+#' 
+#' @import emmeans
 #'
 #' @author Ghader Mirzaghaderi
 #'

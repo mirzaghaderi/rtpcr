@@ -2,35 +2,37 @@
 % Please edit documentation in R/ANOVA_DDCt.r
 \name{ANOVA_DDCt}
 \alias{ANOVA_DDCt}
-\title{Relative expression analysis using the \eqn{\Delta\Delta C_T} method with ANOVA and ANCOVA}
+\title{Multi-target Delta-Delta Ct ANOVA analysis}
 \usage{
 ANOVA_DDCt(
   x,
-  numberOfrefGenes = 1,
-  mainFactor.column = 1,
+  NumOfFactors,
+  numberOfrefGenes,
+  mainFactor.column,
   analysisType = "anova",
   mainFactor.level.order = NULL,
   block = NULL,
   x.axis.labels.rename = "none",
   p.adj = "none",
-  plot = TRUE,
-  plotType = "RE"
+  plot = FALSE,
+  plotType = "RE",
+  analyseAllTarget = TRUE
 )
 }
 \arguments{
-\item{x}{A data frame containing experimental conditions, biological replicates,
-amplification efficiency (E), and Ct values for target and reference genes.
-Each Ct value should represent the mean of technical replicates.
+\item{x}{A data frame containing experimental design columns, target gene
+E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene
+columns must be located at the end of the data frame.}
 
-\strong{NOTE:} Each row corresponds to a different biological individual,
-reflecting a non-repeated-measures experimental design.
-See the package vignette for details on data structure and column arrangement.}
+\item{NumOfFactors}{Integer. Number of experimental factor columns
+(excluding \code{rep} and optional \code{block}).}
 
-\item{numberOfrefGenes}{Integer specifying the number of reference genes used for normalization
-(must be \eqn{\ge 1}).}
+\item{numberOfrefGenes}{Integer. Number of reference genes. Each reference gene
+must be represented by two columns (E and Ct).}
 
 \item{mainFactor.column}{Column index or name of the factor for which relative expression is calculated.
-When \code{analysisType = "ancova"}, remaining factors are treated as covariates.}
+When \code{analysisType = "ancova"}, remaining factors are treated as covariates.
+  If \code{NULL}, no blocking factor is used.}
 
 \item{analysisType}{Character string specifying the analysis type; one of \code{"anova"} (default)
 or \code{"ancova"}.}
@@ -39,10 +41,7 @@ or \code{"ancova"}.}
 If \code{NULL}, the first observed level is used as the calibrator.
 If provided, the first element of the vector is used as the calibrator level.}
 
-\item{block}{Optional column name specifying a blocking factor.
-Blocking is commonly used to account for variation between qPCR plates.
-Block effects are treated as random, and interactions with main effects
-are not considered.}
+\item{block}{Character or \code{NULL}. Name of the blocking factor column.}
 
 \item{x.axis.labels.rename}{Optional character vector used to relabel the x-axis in bar plots.}
 
@@ -52,94 +51,46 @@ are not considered.}
 
 \item{plotType}{Plot scale to use: \code{"RE"} for relative expression or
 \code{"log2FC"} for log2 fold change.}
+
+\item{analyseAllTarget}{Logical or character.
+If \code{TRUE} (default), all detected target genes are analysed.
+Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
+to be analysed.}
 }
 \value{
-A list containing the following components:
-\describe{
-  \item{Final_data}{Input data frame augmented with weighted Delta Ct (wDCt) values.}
-  \item{lm_ANOVA}{Linear model object for ANOVA analysis (if applicable).}
-  \item{lm_ANCOVA}{Linear model object for ANCOVA analysis (if applicable).}
-  \item{ANOVA_table}{ANOVA table.}
-  \item{ANCOVA_table}{ANCOVA table.}
-  \item{Expression_Table}{Table of RE values, log2FC, p-values, significance codes,
-  confidence intervals, standard errors, and lower/upper SE limits.}
-  \item{RE_Plot}{Bar plot of relative expression values for main factor levels.}
-  \item{log2FC_Plot}{Bar plot of log2 fold change values for main factor levels.}
-}
+A data frame combining DDCt method expression tables for all target genes.
 }
 \description{
-The \code{ANOVA_DDCt} function performs relative expression (RE) analysis based on
-the \eqn{\Delta\Delta C_T} method using analysis of variance (ANOVA) or
-analysis of covariance (ANCOVA). It supports uni- and multi-factorial qPCR
-experimental designs.
-
-Bar plots of relative expression (RE) or log2 fold change (log2FC), together
-with standard errors and confidence intervals, are optionally returned.
+Performs Delta-Delta Ct (DDCt) analysis for multiple target genes by
+applying DDCt method to each target gene present
+in the input data frame. Target genes must be provided as paired
+efficiency (E) and Ct columns located between the experimental design
+columns and the reference gene columns.
 }
 \details{
-The function calculates weighted Delta Ct (wDCt) values using as many specified
-reference genes and then performs statistical analysis on the resulting
-relative expression values.
-
-For multi-factorial experiments, relative expression is calculated for the
-levels of the factor specified by \code{mainFactor.column}.
-
-If \code{analysisType = "anova"}, a full factorial ANOVA model is fitted by
-default.
-
-If \code{analysisType = "ancova"}, relative expression is calculated for the
-levels of \code{mainFactor.column}, while the remaining factor(s), if any, are
-treated as covariates. In such cases, the ANCOVA table should be examined
-carefully: a significant interaction between the main factor and a covariate
-indicates that ANCOVA assumptions are violated and the model may be inappropriate.
-
-ANCOVA is typically used when gene expression is influenced by one or more
-uncontrolled quantitative variables. For example, gene expression may depend
-on temperature while the primary interest is in treatment or stress effects.
-
-The function also supports single-factor experiments, in which case ANOVA
-reduces to a one-way analysis.
+Column layout requirements for \code{x}:
+\itemize{
+  \item Target gene columns: E/Ct pairs located between design and reference columns
+  \item Reference gene columns: \code{2 * numberOfrefGenes} columns located at the end
+}
 }
 \examples{
-ANOVA_DDCt(data_1factor,
-  numberOfrefGenes = 1,
-  mainFactor.column = 1,
-  block = NULL
-)
-
-ANOVA_DDCt(data_2factor,
-  numberOfrefGenes = 1,
-  mainFactor.column = 2,
-  analysisType = "ancova",
-  block = NULL
-)
-
-df <- meanTech(Lee_etal2020qPCR, groups = 1:3)
-
-ANOVA_DDCt(df,
-  numberOfrefGenes = 1,
-  analysisType = "ancova",
-  mainFactor.column = 2,
-  plotType = "log2FC",
-  block = NULL
-)
-}
-\references{
-Livak, K. J. and Schmittgen, T. D. (2001).
-Analysis of Relative Gene Expression Data Using Real-Time Quantitative PCR
-and the Double Delta CT Method.
-\emph{Methods}, 25(4), 402–408.
-doi:10.1006/meth.2001.1262
-
-Ganger, M. T., Dietz, G. D., and Ewing, S. J. (2017).
-A common base method for analysis of qPCR data and the application of simple
-blocking in qPCR experiments.
-\emph{BMC Bioinformatics}, 18, 1–11.
-
-Yuan, J. S., Reed, A., Chen, F., and Stewart, N. (2006).
-Statistical Analysis of Real-Time PCR Data.
-\emph{BMC Bioinformatics}, 7, 85.
-}
-\author{
-Ghader Mirzaghaderi
+ANOVA_DDCt(x = data_2factorBlock3ref,
+           NumOfFactors = 2,
+           numberOfrefGenes = 1,
+           block = "block",
+           mainFactor.column = 2,
+           plot = FALSE,
+           p.adj = "none")
+           
+           
+ANOVA_DDCt(
+           x = data_1factor_one_ref,
+           NumOfFactors = 1,
+           numberOfrefGenes = 1,
+           block = NULL,
+           mainFactor.column = 1,
+           plot = FALSE,
+           p.adj = "none"
+           )
 }

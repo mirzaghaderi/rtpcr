@@ -1,5 +1,5 @@
 ---
-title: "rtpcr: a package for statistical analysis of real-time PCR data in R"
+title: "Multi-gene qPCR data analysis using 'rtpcr' package"
 author: Ghader Mirzaghaderi
 output:
   html_document: 
@@ -48,30 +48,51 @@ install.packages("rtpcr")
 library(rtpcr)
 ```
 
-# 2 Preparing dataframe
-## 2.1 Data Structure for Non-Repeated Measures
+## 2 Preparing the Data Frame
 
-To use the functions, input data should be prepared in the wide format with appropriate column arrangement. The correct column arrangement is shown in Table 1 and Table 2. For `TTEST_DDCt`, `ANOVA_DCt` and `ANOVA_DDCt`, each line should represent a separate individual, indicating a non-repeated measure experiment. The general column structure for these methods (assuming one reference gene) includes: condition columns, biological replicates, target gene efficiency ($E_{target}$), target Gene Ct ($Ct_{target}$), reference gene efficiency ($E_{ref}$), and reference gene Ct ($Ct_{ref}$). The package handles as many as specified reference genes.**Reference gene(s) should always be last**.
+### 2.1 Non-Repeated Measures
 
-## 2.2 Data Structure for Repeated Measures
+Input data must be provided in **wide format** with a strict column order (see Tables 1 and 2).  
+For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, **each row represents a single biological replicate**, corresponding to a non-repeated measures design.
 
-The `REPEATED_DDCt` function is used for observations repeatedly taken over time or courses. The input data frame must be structured such that:
-1.  The **first column** is `id` (a unique number assigned to each individual sampled over time).
-2.  This is followed by factor columns (which must include the `time` course levels).
-3.  The remaining columns are efficiency and Ct values of target and reference genes.
+The required column structure is:
 
-## 2.3 Handling Blocking Factors
+1. Experimental condition columns (Factors, and block if available) 
+2. Biological replicate information (if applicable)  
+3. Target genes efficiency and Ct values (a pair column for each target gene)
+5. Reference genes efficiency and Ct values (a pair column for each reference gene)
 
-Variation between different qPCR plates can introduce noise; this can be accounted for using a blocking factor. By defining a `block` factor column, you ensure that at least one replicate of each condition is present on every plate. In the statistical models, the block effect is typically considered random, and its interaction with main effects is ignored.
+The package supports **one or more target gene(s) and reference gene(s)**, supplied as efficiency–Ct column pairs.  
+**Reference gene columns must always appear last.**
+
+---
+
+### 2.2 Repeated Measures
+
+The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data).  
+The input data frame must follow this structure:
+
+1. The **first column** is `id`, a unique identifier for each individual  
+2. Factor and block columns and the `time` variable 
+3. Remaining columns contain efficiency and Ct values for target and reference genes
+
+Each row corresponds to one observation at a specific time point for a given individual.
+
+---
+
+### 2.3 Blocking Factors
+
+Technical variation between qPCR plates can be accounted for by including a **blocking factor** (e.g. `block`).  
+Each block should contain **at least one replicate per condition**. In the statistical models, block effects are typically treated as random, and interactions with main factors are not considered.
 
 
 
-*Table 1. Data structure and column arrangement required for ‘rtpcr’ package.  rep: technical replicate; targetE and refE: amplification efficiency columns for target and reference genes, respectively. targetCt and refCt: target gene and reference gene Ct columns, respectively. factors (up to three factors is allowed): experimental factors.*
+
+*Table 1. Data structure required for ‘rtpcr’ package.  rep: technical replicate; targetE and refE: amplification efficiency columns for target and reference genes, respectively. targetCt and refCt: target gene and reference gene Ct columns, respectively. factors (up to three factors is allowed): experimental factors.*
 
  | Experiment type     |  Column arrangement of the input data   | Example in the package                   |
  |:---------------------|:---------------------------------------|:------------------------------------------|
  |Amplification efficiency             |Dilutions - geneCt ... | data_efficiency |
- |t-test (accepts multiple genes)      |condition (control level first) - rep - E and Ct columns of genes (reference gene(s) last.)| data_1factor_one_ref |
  |Factorial (Up to three factors)      |factor1 - rep - targetE - targetCt - refE - refCt | data_1factor |
  |                                     |factor1 - factor2 - rep - targetE - targetCt - refE - refCt | data_2factor |
  |                                     |factor1 - factor2 - factor3 - rep - targetE - targetCt - refE - refCt | data_3factor |
@@ -79,7 +100,7 @@ Variation between different qPCR plates can introduce noise; this can be account
  |                                     |factor1 - factor2 - block - rep - targetE - targetCt - refE - refCt	 | data_2factorBlock |
  |                                     |factor1 - factor2 - factor3 - block - rep - targetE - targetCt - refE - refCt | |
  |Two reference genes                  |. . . . . .  rep - targetE - targetCt - ref1E - ref1Ct - ref2E - ref2Ct | |
- |calculating biological replicated    |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - Eref - refCt  | data_withTechRep |
+ |calculating technical replicates    |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - Eref - refCt  | data_withTechRep |
  |                |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - ref1E - ref1Ct - ref2E - ref2Ct  | |
  
 
@@ -125,9 +146,16 @@ The `ANOVA_DCt` function performs relative expression analysis using reference g
 ```{r eval= T, fig.cap = "relative expression (DDCt) of two different genes. RE tables of any number of genes can be combined and used as input data frame for `plotTwoFactor` function."}
 
 # Example with three factors and one reference gene, without a blocking factor
-ANOVA_DCt(data_3factor, numberOfrefGenes = 1, block = NULL)
+ANOVA_DCt(data_3factor, 
+          NumOfFactors = 3,
+          numberOfrefGenes = 1, 
+          block = NULL)
+
 # Example with a blocking factor
-ANOVA_DCt(data_2factorBlock, block = "Block", numberOfrefGenes = 1)
+ANOVA_DCt(data_2factorBlock, 
+          NumOfFactors = 2,
+          block = "Block", 
+          numberOfrefGenes = 1)
 ```
 
 ## 4.2 $\Delta \Delta Ct$ Method
@@ -151,11 +179,12 @@ The **calibrator** (reference level) is the sample used for comparison, and its 
 
 ```{r eval= T}
 # Example using two factors with a blocking factor and ANCOVA
-ANOVA_DDCt(data_2factorBlock,
-numberOfrefGenes = 1,
-mainFactor.column = 1,
-block = "block",
-analysisType = "anova")
+ANOVA_DDCt(data_2factorBlock, 
+           NumOfFactors = 2,
+           numberOfrefGenes = 1,
+           mainFactor.column = 1,
+           block = "block",
+           analysisType = "anova")
 ```
 
 ### 4.2.2 Repeated Measure Analysis (`REPEATED_DDCt`)
@@ -167,10 +196,11 @@ The analysis uses a mixed linear model where `id` (individual) is a random effec
 ```{r eval= T}
 # Example for repeated measures data (time is the factor of interest)
 REPEATED_DDCt(data_repeated_measure_1,
-numberOfrefGenes = 1,
-factor = "time", 
-calibratorLevel = "1",
-block = NULL)
+              NumOfFactors = 1,
+              numberOfrefGenes = 1,
+              factor = "time", 
+              calibratorLevel = "1",
+              block = NULL)
 ```
 
 ### 4.2.3 T-Test Analysis (`TTEST_DDCt`)
@@ -268,8 +298,12 @@ multiplot(pl1, pl2, cols =  2)
 *   `plotTwoFactor`: Creates a bar plot for two-factorial experiment results, using one factor for the x-axis and the second factor for bar fill/grouping.
 
 ```{r eval= T, warning = F, fig.height = 7, fig.width = 12.5, fig.align = 'center', warning = F}
-a <- ANOVA_DCt(data_2factorBlock, block = "Block", numberOfrefGenes = 1)
-data <- a$Results
+a <- ANOVA_DCt(data_2factorBlock, 
+               NumOfFactors = 2,
+               block = "Block", 
+               numberOfrefGenes = 1)
+
+data <- a$combinedResults
 
 p1 <- plotTwoFactor(
   data = data,
@@ -340,11 +374,11 @@ The utility function `multiplot` is available to combine multiple `ggplot` objec
 
 ```{r eval= T, fig.height = 7, fig.width = 12.5, fig.align = 'center', warning = F}
 res <- ANOVA_DCt(data_3factor, 
-      numberOfrefGenes = 1, 
-      block = NULL)
-      
-data <- res$Results
+                 NumOfFactors = 3,
+                 numberOfrefGenes = 1, 
+                 block = NULL)
 
+data <- res$combinedResults
 p <- plotThreeFactor(
   data,
   x_col = 3,        # x-axis factor
@@ -370,37 +404,62 @@ p + theme(
 ```
 
 
-# 6. Post-Hoc and Model Interpretation
 
-## `Means_DDCt`
+# How to edit ouptput graphs?
+the rtpcr plot functions (plotOneFactor, plotTwoFactor, and plotThreeFactor) create ggplot objects that can furtherbe edited by adding new layers:
 
-This function facilitates post-hoc analysis by taking a fitted model object (produced by `ANOVA_DDCt` or `REPEATED_DDCt`) and calculating fold change (FC) values for specific effects.
+### Add a horizontal reference line
+```{r eval= F, warning = F}
+p <- plotOneFactor(...)
+p +
+  geom_hline(yintercept = 0, linetype = "dashed")
+```
 
-You specify the effects of interest using the `specs` argument. This allows for the calculation of simple effects, interactions, and slicing, provided an ANOVA model was used. Note that ANCOVA models returned by this package only include simple effects in the `Means_DDCt` output.
+### Change y-axis limits
+```{r eval= F, warning = F}
+p <- plotOneFactor(...)
+p +
+  scale_y_continuous(limits = c(0, 20))
+```
 
-```{r eval= T}
+### Relabel x-axis
+```{r eval= F, warning = F}
+p <- plotTwoFactor(...)
+p +
+  scale_x_discrete(labels = c("A" = "Control", "B" = "Treatment"))
+```
 
-# Returning fold change values of Conc levels sliced by Type
-# Returning fold change values from a fitted model.
-# Firstly, result of `qpcrANOVAFC` or `qpcrREPEATED` is 
-# acquired which includes a model object:
-# Assume 'res' is the result from ANOVA_DDCt
-res <- ANOVA_DDCt(data_3factor, numberOfrefGenes = 1, mainFactor.column = 1, block = NULL)
+### Change fill colors
+```{r eval= F, warning = F}
+p <- plotTwoFactor(...)
+p +
+  scale_fill_brewer(palette = "Set2")
+```
 
-Means_DDCt(res$lm_ANOVA, specs = "Conc * Type")
+### Add a horizontal reference line
+```{r eval= F, warning = F}
+p <- plotOneFactor(...)
+p +
+  geom_hline(yintercept = 0, linetype = "dashed")
+```
 
-res2 <- Means_DDCt(res$lm_ANOVA, specs = "Conc | Type")
-
-# Returning fold change values of Conc levels sliced by Type*SA interaction
-Means_DDCt(res$lm_ANOVA, specs = "Conc | (Type*SA)")
+### Add a horizontal reference line
+```{r eval= F, warning = F}
+plotOneFactor(...) +
+  geom_hline(yintercept = 0, linetype = "dashed")
 ```
 
 
-# How to edit ouptput graphs?
-the rtpcr graphical functions create ggplot objects can easily be edited by adding new layers after calling the ggplot2 package:
 
 ```{r eval= F, warning = F}
-Example 1
+# Example 1
+df <- ANOVA_DCt(data_2factorBlock, 
+      NumOfFactors = 2,
+      block = "block",
+      numberOfrefGenes = 1)
+
+data <- df$combinedResults
+
 p2 <- plotTwoFactor(
   data = data,
   x_col = 2,
@@ -425,6 +484,61 @@ p2 + scale_y_continuous(expand = c(-1.5, +1.5)) +
   theme(legend.text = element_text(colour = "black", size = 14),
         legend.background = element_rect(fill = "transparent"))
 ```
+
+
+# Checking normality of residuals
+
+If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, one could use non-parametric tests such as the Mann-Whitney test (also known as the Wilcoxon rank-sum test), `wilcox.test()`, which is an alternative to `t.test`, or the `kruskal.test()` test which alternative to one-way analysis of variance, to test the difference between medians of the populations using independent samples. However, the `t.test` function (along with the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis. Residuals for `lm` (from `ANOVA_DCt` and `ANOVA_DDCt` functions) and `lmer` (from `REPEATED_DDCt` function) objects can be extracted and plotted as follow:
+
+```{r eval= T, eval= T, fig.height = 5, fig.width = 10, fig.align = 'center', fig.cap = "QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions."}
+
+res <- ANOVA_DCt(data_1factor,
+                 NumOfFactors = 1,
+                 numberOfrefGenes = 1, 
+                 block = NULL)
+
+residuals <-  resid(res$perGene[["E_PO"]]$lmCRD)
+# residuals <-  resid(res$perGene[["E_PO"]]$lm_ANOVA)
+
+shapiro.test(residuals) 
+
+par(mfrow = c(1,2))
+plot(residuals)
+qqnorm(residuals)
+qqline(residuals, col = "red")
+
+res2 <- ANOVA_DCt(data_1factor,
+                 NumOfFactors = 1,
+                 numberOfrefGenes = 1, 
+                 block = NULL)
+resid(res2$perGene[["E_PO"]]$lmCRD)
+
+res3 <- REPEATED_DDCt(
+  data_repeated_measure_1,
+  NumOfFactors = 1,
+  numberOfrefGenes = 1,
+  factor = "time",
+  calibratorLevel = "1",
+  block = NULL
+)
+residuals <- resid(res3$perGene[["E_target"]]$lm)
+```
+
+
+
+# Mean of technical replicates
+Calculating the mean of technical replicates and getting an output table appropriate for subsequent ANOVA analysis can be done using the `meanTech` function. For this, the input data set should follow the column arrangement of the following example data. Grouping columns must be specified under the `groups` argument of the `meanTech` function.
+
+```{r eval= T}
+# See example input data frame:
+data_withTechRep
+
+# Calculating mean of technical replicates
+meanTech(data_withTechRep, groups = 1:4)
+```
+
+
+
 
 # Citation
 

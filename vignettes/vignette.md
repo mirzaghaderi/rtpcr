@@ -1,5 +1,5 @@
 ---
-title: "rtpcr: a package for statistical analysis of real-time PCR data in R"
+title: "Multi-gene qPCR data analysis using 'rtpcr' package"
 author: Ghader Mirzaghaderi
 output:
   html_document: 
@@ -45,30 +45,51 @@ install.packages("rtpcr")
 library(rtpcr)
 ```
 
-# 2 Preparing dataframe
-## 2.1 Data Structure for Non-Repeated Measures
+## 2 Preparing the Data Frame
 
-To use the functions, input data should be prepared in the wide format with appropriate column arrangement. The correct column arrangement is shown in Table 1 and Table 2. For `TTEST_DDCt`, `ANOVA_DCt` and `ANOVA_DDCt`, each line should represent a separate individual, indicating a non-repeated measure experiment. The general column structure for these methods (assuming one reference gene) includes: condition columns, biological replicates, target gene efficiency ($E_{target}$), target Gene Ct ($Ct_{target}$), reference gene efficiency ($E_{ref}$), and reference gene Ct ($Ct_{ref}$). The package handles as many as specified reference genes.**Reference gene(s) should always be last**.
+### 2.1 Non-Repeated Measures
 
-## 2.2 Data Structure for Repeated Measures
+Input data must be provided in **wide format** with a strict column order (see Tables 1 and 2).  
+For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, **each row represents a single biological replicate**, corresponding to a non-repeated measures design.
 
-The `REPEATED_DDCt` function is used for observations repeatedly taken over time or courses. The input data frame must be structured such that:
-1.  The **first column** is `id` (a unique number assigned to each individual sampled over time).
-2.  This is followed by factor columns (which must include the `time` course levels).
-3.  The remaining columns are efficiency and Ct values of target and reference genes.
+The required column structure is:
 
-## 2.3 Handling Blocking Factors
+1. Experimental condition columns (Factors, and block if available) 
+2. Biological replicate information (if applicable)  
+3. Target genes efficiency and Ct values (a pair column for each target gene)
+5. Reference genes efficiency and Ct values (a pair column for each reference gene)
 
-Variation between different qPCR plates can introduce noise; this can be accounted for using a blocking factor. By defining a `block` factor column, you ensure that at least one replicate of each condition is present on every plate. In the statistical models, the block effect is typically considered random, and its interaction with main effects is ignored.
+The package supports **one or more target gene(s) and reference gene(s)**, supplied as efficiency–Ct column pairs.  
+**Reference gene columns must always appear last.**
+
+---
+
+### 2.2 Repeated Measures
+
+The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data).  
+The input data frame must follow this structure:
+
+1. The **first column** is `id`, a unique identifier for each individual  
+2. Factor and block columns and the `time` variable 
+3. Remaining columns contain efficiency and Ct values for target and reference genes
+
+Each row corresponds to one observation at a specific time point for a given individual.
+
+---
+
+### 2.3 Blocking Factors
+
+Technical variation between qPCR plates can be accounted for by including a **blocking factor** (e.g. `block`).  
+Each block should contain **at least one replicate per condition**. In the statistical models, block effects are typically treated as random, and interactions with main factors are not considered.
 
 
 
-*Table 1. Data structure and column arrangement required for ‘rtpcr’ package.  rep: technical replicate; targetE and refE: amplification efficiency columns for target and reference genes, respectively. targetCt and refCt: target gene and reference gene Ct columns, respectively. factors (up to three factors is allowed): experimental factors.*
+
+*Table 1. Data structure required for ‘rtpcr’ package.  rep: technical replicate; targetE and refE: amplification efficiency columns for target and reference genes, respectively. targetCt and refCt: target gene and reference gene Ct columns, respectively. factors (up to three factors is allowed): experimental factors.*
 
  | Experiment type     |  Column arrangement of the input data   | Example in the package                   |
  |:---------------------|:---------------------------------------|:------------------------------------------|
  |Amplification efficiency             |Dilutions - geneCt ... | data_efficiency |
- |t-test (accepts multiple genes)      |condition (control level first) - rep - E and Ct columns of genes (reference gene(s) last.)| data_1factor_one_ref |
  |Factorial (Up to three factors)      |factor1 - rep - targetE - targetCt - refE - refCt | data_1factor |
  |                                     |factor1 - factor2 - rep - targetE - targetCt - refE - refCt | data_2factor |
  |                                     |factor1 - factor2 - factor3 - rep - targetE - targetCt - refE - refCt | data_3factor |
@@ -76,7 +97,7 @@ Variation between different qPCR plates can introduce noise; this can be account
  |                                     |factor1 - factor2 - block - rep - targetE - targetCt - refE - refCt	 | data_2factorBlock |
  |                                     |factor1 - factor2 - factor3 - block - rep - targetE - targetCt - refE - refCt | |
  |Two reference genes                  |. . . . . .  rep - targetE - targetCt - ref1E - ref1Ct - ref2E - ref2Ct | |
- |calculating biological replicated    |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - Eref - refCt  | data_withTechRep |
+ |calculating technical replicates    |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - Eref - refCt  | data_withTechRep |
  |                |. . . . . .  biologicalRep - techcicalRep - Etarget - targetCt - ref1E - ref1Ct - ref2E - ref2Ct  | |
  
 
@@ -153,7 +174,10 @@ The `ANOVA_DCt` function performs relative expression analysis using reference g
 
 ``` r
 # Example with three factors and one reference gene, without a blocking factor
-ANOVA_DCt(data_3factor, numberOfrefGenes = 1, block = NULL)
+ANOVA_DCt(data_3factor, 
+          NumOfFactors = 3,
+          numberOfrefGenes = 1, 
+          block = NULL)
 ```
 
 ```
@@ -193,11 +217,42 @@ ANOVA_DCt(data_3factor, numberOfrefGenes = 1, block = NULL)
 ## 10         -2.0363         -1.3641   f
 ## 11         -1.8363         -1.7841   f
 ## 12         -7.0103         -2.2407   g
+## 
+## Combined Expression Table (all genes)
+##    Type Conc SA     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE
+## 1     S    H A2 5.1934  2.3767 8.1197 3.3217 0.1309      4.7428      5.6867
+## 2     S    H A1 2.9690  1.5700 4.6420 1.8990 0.0551      2.8578      3.0846
+## 3     R    H A2 1.7371  0.7967 2.7159 1.1110 0.0837      1.6391      1.8409
+## 4     S    L A2 1.5333  0.6167 2.3973 0.9807 0.0865      1.4441      1.6280
+## 5     R    H A1 0.9885 -0.0167 1.5455 0.6323 0.0841      0.9325      1.0479
+## 6     S    L A1 0.7955 -0.3300 1.2438 0.5088 0.2128      0.6864      0.9220
+## 7     S    M A2 0.7955 -0.3300 1.2438 0.5088 0.2571      0.6657      0.9507
+## 8     R    M A1 0.6271 -0.6733 0.9804 0.4011 0.4388      0.4626      0.8500
+## 9     S    M A1 0.4147 -1.2700 0.6483 0.2652 0.2540      0.3477      0.4945
+## 10    R    M A2 0.3150 -1.6667 0.4925 0.2015 0.2890      0.2578      0.3848
+## 11    R    L A1 0.2852 -1.8100 0.4459 0.1824 0.0208      0.2811      0.2893
+## 12    R    L A2 0.0641 -3.9633 0.1002 0.0410 0.8228      0.0362      0.1134
+##    Lower.se.log2FC Upper.se.log2FC sig gene
+## 1           2.1705          2.6025   a E_PO
+## 2           1.5112          1.6311  ab E_PO
+## 3           0.7517          0.8443  bc E_PO
+## 4           0.5808          0.6548   c E_PO
+## 5          -0.0177         -0.0157  cd E_PO
+## 6          -0.3825         -0.2847   d E_PO
+## 7          -0.3944         -0.2761   d E_PO
+## 8          -0.9127         -0.4968  de E_PO
+## 9          -1.5145         -1.0650  ef E_PO
+## 10         -2.0363         -1.3641   f E_PO
+## 11         -1.8363         -1.7841   f E_PO
+## 12         -7.0103         -2.2407   g E_PO
 ```
 
 ``` r
 # Example with a blocking factor
-ANOVA_DCt(data_2factorBlock, block = "Block", numberOfrefGenes = 1)
+ANOVA_DCt(data_2factorBlock, 
+          NumOfFactors = 2,
+          block = "Block", 
+          numberOfrefGenes = 1)
 ```
 
 ```
@@ -226,6 +281,22 @@ ANOVA_DCt(data_2factorBlock, block = "Block", numberOfrefGenes = 1)
 ## 4         -0.9223         -0.5020  bc
 ## 5         -1.5230         -1.0709  cd
 ## 6         -1.8435         -1.7911   d
+## 
+## Combined Expression Table (all genes)
+##   factor1 factor2     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE
+## 1       S      L2 2.9545  1.5629 4.2644 2.0470 0.0551      2.8438      3.0695
+## 2       R      L2 0.9837 -0.0238 1.4198 0.6815 0.0841      0.9280      1.0427
+## 3       S      L0 0.7916 -0.3371 1.1426 0.5485 0.2128      0.6831      0.9175
+## 4       R      L1 0.6240 -0.6804 0.9006 0.4323 0.4388      0.4603      0.8458
+## 5       S      L1 0.4126 -1.2771 0.5956 0.2859 0.2540      0.3460      0.4921
+## 6       R      L0 0.2838 -1.8171 0.4096 0.1966 0.0208      0.2797      0.2879
+##   Lower.se.log2FC Upper.se.log2FC sig gene
+## 1          1.5044          1.6237   a E_PO
+## 2         -0.0252         -0.0224   b E_PO
+## 3         -0.3907         -0.2908   b E_PO
+## 4         -0.9223         -0.5020  bc E_PO
+## 5         -1.5230         -1.0709  cd E_PO
+## 6         -1.8435         -1.7911   d E_PO
 ```
 
 ## 4.2 $\Delta \Delta Ct$ Method
@@ -250,11 +321,12 @@ The **calibrator** (reference level) is the sample used for comparison, and its 
 
 ``` r
 # Example using two factors with a blocking factor and ANCOVA
-ANOVA_DDCt(data_2factorBlock,
-numberOfrefGenes = 1,
-mainFactor.column = 1,
-block = "block",
-analysisType = "anova")
+ANOVA_DDCt(data_2factorBlock, 
+           NumOfFactors = 2,
+           numberOfrefGenes = 1,
+           mainFactor.column = 1,
+           block = "block",
+           analysisType = "anova")
 ```
 
 ```
@@ -292,13 +364,15 @@ analysisType = "anova")
 ##   Upper.se.RE Lower.se.log2FC Upper.se.log2FC
 ## 1      1.2243          0.0000          0.0000
 ## 2      2.3819          0.6117          1.1083
-## RE_Plot
-```
-
-![](vignette_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
-
-```
 ## *** The R level was used as calibrator.
+## 
+## Combined Fold-Change Table (all genes)
+##   contrast     RE log2FC pvalue sig    LCL    UCL     se Lower.se.RE
+## 1        R 1.0000 0.0000 1.0000     0.0000 0.0000 0.2920      0.8168
+## 2   S vs R 1.7695 0.8233 0.0013  ** 1.3281 2.3576 0.4288      1.3145
+##   Upper.se.RE Lower.se.log2FC Upper.se.log2FC gene
+## 1      1.2243          0.0000          0.0000 E_PO
+## 2      2.3819          0.6117          1.1083 E_PO
 ```
 
 ### 4.2.2 Repeated Measure Analysis (`REPEATED_DDCt`)
@@ -311,10 +385,11 @@ The analysis uses a mixed linear model where `id` (individual) is a random effec
 ``` r
 # Example for repeated measures data (time is the factor of interest)
 REPEATED_DDCt(data_repeated_measure_1,
-numberOfrefGenes = 1,
-factor = "time", 
-calibratorLevel = "1",
-block = NULL)
+              NumOfFactors = 1,
+              numberOfrefGenes = 1,
+              factor = "time", 
+              calibratorLevel = "1",
+              block = NULL)
 ```
 
 ```
@@ -333,14 +408,17 @@ block = NULL)
 ## 1      2.6483          0.0000          0.0000
 ## 2      1.6840         -0.4391         -0.1136
 ## 3      6.9040          1.5211          3.2791
-## 
-## Expression plot
-```
-
-![](vignette_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
-
-```
 ## The level 1  of the selected factor was used as calibrator.
+## 
+## Combined Relative Expression Table (all genes)
+##         contrast     RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE
+## 1          time1 1.0000  0.0000 1.0000     0.0000  0.0000 1.4051      0.3776
+## 2 time2 vs time1 0.8566 -0.2233 0.8166     0.0923  7.9492 0.9753      0.4357
+## 3 time3 vs time1 4.7022  2.2333 0.0685   . 0.5067 43.6368 0.5541      3.2026
+##   Upper.se.RE Lower.se.log2FC Upper.se.log2FC     gene
+## 1      2.6483          0.0000          0.0000 E_target
+## 2      1.6840         -0.4391         -0.1136 E_target
+## 3      6.9040          1.5211          3.2791 E_target
 ```
 
 ### 4.2.3 T-Test Analysis (`TTEST_DDCt`)
@@ -474,7 +552,10 @@ multiplot(pl1, pl2, cols =  2)
 
 
 ``` r
-a <- ANOVA_DCt(data_2factorBlock, block = "Block", numberOfrefGenes = 1)
+a <- ANOVA_DCt(data_2factorBlock, 
+               NumOfFactors = 2,
+               block = "Block", 
+               numberOfrefGenes = 1)
 ```
 
 ```
@@ -503,10 +584,26 @@ a <- ANOVA_DCt(data_2factorBlock, block = "Block", numberOfrefGenes = 1)
 ## 4         -0.9223         -0.5020  bc
 ## 5         -1.5230         -1.0709  cd
 ## 6         -1.8435         -1.7911   d
+## 
+## Combined Expression Table (all genes)
+##   factor1 factor2     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE
+## 1       S      L2 2.9545  1.5629 4.2644 2.0470 0.0551      2.8438      3.0695
+## 2       R      L2 0.9837 -0.0238 1.4198 0.6815 0.0841      0.9280      1.0427
+## 3       S      L0 0.7916 -0.3371 1.1426 0.5485 0.2128      0.6831      0.9175
+## 4       R      L1 0.6240 -0.6804 0.9006 0.4323 0.4388      0.4603      0.8458
+## 5       S      L1 0.4126 -1.2771 0.5956 0.2859 0.2540      0.3460      0.4921
+## 6       R      L0 0.2838 -1.8171 0.4096 0.1966 0.0208      0.2797      0.2879
+##   Lower.se.log2FC Upper.se.log2FC sig gene
+## 1          1.5044          1.6237   a E_PO
+## 2         -0.0252         -0.0224   b E_PO
+## 3         -0.3907         -0.2908   b E_PO
+## 4         -0.9223         -0.5020  bc E_PO
+## 5         -1.5230         -1.0709  cd E_PO
+## 6         -1.8435         -1.7911   d E_PO
 ```
 
 ``` r
-data <- a$Results
+data <- a$combinedResults
 
 p1 <- plotTwoFactor(
   data = data,
@@ -580,8 +677,9 @@ The utility function `multiplot` is available to combine multiple `ggplot` objec
 
 ``` r
 res <- ANOVA_DCt(data_3factor, 
-      numberOfrefGenes = 1, 
-      block = NULL)
+                 NumOfFactors = 3,
+                 numberOfrefGenes = 1, 
+                 block = NULL)
 ```
 
 ```
@@ -621,11 +719,38 @@ res <- ANOVA_DCt(data_3factor,
 ## 10         -2.0363         -1.3641   f
 ## 11         -1.8363         -1.7841   f
 ## 12         -7.0103         -2.2407   g
+## 
+## Combined Expression Table (all genes)
+##    Type Conc SA     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE
+## 1     S    H A2 5.1934  2.3767 8.1197 3.3217 0.1309      4.7428      5.6867
+## 2     S    H A1 2.9690  1.5700 4.6420 1.8990 0.0551      2.8578      3.0846
+## 3     R    H A2 1.7371  0.7967 2.7159 1.1110 0.0837      1.6391      1.8409
+## 4     S    L A2 1.5333  0.6167 2.3973 0.9807 0.0865      1.4441      1.6280
+## 5     R    H A1 0.9885 -0.0167 1.5455 0.6323 0.0841      0.9325      1.0479
+## 6     S    L A1 0.7955 -0.3300 1.2438 0.5088 0.2128      0.6864      0.9220
+## 7     S    M A2 0.7955 -0.3300 1.2438 0.5088 0.2571      0.6657      0.9507
+## 8     R    M A1 0.6271 -0.6733 0.9804 0.4011 0.4388      0.4626      0.8500
+## 9     S    M A1 0.4147 -1.2700 0.6483 0.2652 0.2540      0.3477      0.4945
+## 10    R    M A2 0.3150 -1.6667 0.4925 0.2015 0.2890      0.2578      0.3848
+## 11    R    L A1 0.2852 -1.8100 0.4459 0.1824 0.0208      0.2811      0.2893
+## 12    R    L A2 0.0641 -3.9633 0.1002 0.0410 0.8228      0.0362      0.1134
+##    Lower.se.log2FC Upper.se.log2FC sig gene
+## 1           2.1705          2.6025   a E_PO
+## 2           1.5112          1.6311  ab E_PO
+## 3           0.7517          0.8443  bc E_PO
+## 4           0.5808          0.6548   c E_PO
+## 5          -0.0177         -0.0157  cd E_PO
+## 6          -0.3825         -0.2847   d E_PO
+## 7          -0.3944         -0.2761   d E_PO
+## 8          -0.9127         -0.4968  de E_PO
+## 9          -1.5145         -1.0650  ef E_PO
+## 10         -2.0363         -1.3641   f E_PO
+## 11         -1.8363         -1.7841   f E_PO
+## 12         -7.0103         -2.2407   g E_PO
 ```
 
 ``` r
-data <- res$Results
-
+data <- res$combinedResults
 p <- plotThreeFactor(
   data,
   x_col = 3,        # x-axis factor
@@ -653,137 +778,69 @@ p + theme(
 <img src="vignette_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
 
 
-# 6. Post-Hoc and Model Interpretation
-
-## `Means_DDCt`
-
-This function facilitates post-hoc analysis by taking a fitted model object (produced by `ANOVA_DDCt` or `REPEATED_DDCt`) and calculating fold change (FC) values for specific effects.
-
-You specify the effects of interest using the `specs` argument. This allows for the calculation of simple effects, interactions, and slicing, provided an ANOVA model was used. Note that ANCOVA models returned by this package only include simple effects in the `Means_DDCt` output.
-
-
-``` r
-# Returning fold change values of Conc levels sliced by Type
-# Returning fold change values from a fitted model.
-# Firstly, result of `qpcrANOVAFC` or `qpcrREPEATED` is 
-# acquired which includes a model object:
-# Assume 'res' is the result from ANOVA_DDCt
-res <- ANOVA_DDCt(data_3factor, numberOfrefGenes = 1, mainFactor.column = 1, block = NULL)
-```
-
-```
-## NOTE: Results may be misleading due to involvement in interactions
-```
-
-```
-## ANOVA table 
-## Type III Analysis of Variance Table with Satterthwaite's method
-##              Sum Sq Mean Sq NumDF DenDF F value    Pr(>F)    
-## Type         24.834 24.8336     1    24 84.8207 2.392e-09 ***
-## Conc         45.454 22.7269     2    24 77.6252 3.319e-11 ***
-## SA            0.032  0.0324     1    24  0.1107 0.7422762    
-## Type:Conc    10.641  5.3203     2    24 18.1718 1.567e-05 ***
-## Type:SA       6.317  6.3168     1    24 21.5756 0.0001024 ***
-## Conc:SA       3.030  1.5150     2    24  5.1747 0.0135366 *  
-## Type:Conc:SA  3.694  1.8470     2    24  6.3086 0.0062852 ** 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## ANCOVA table
-## Type III Analysis of Variance Table with Satterthwaite's method
-##      Sum Sq Mean Sq NumDF DenDF F value    Pr(>F)    
-## SA    0.032  0.0324     1    31  0.0327    0.8577    
-## Conc 45.454 22.7269     2    31 22.9429 7.682e-07 ***
-## Type 24.834 24.8336     1    31 25.0696 2.105e-05 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Expression table
-##   contrast     RE log2FC pvalue sig    LCL    UCL     se Lower.se.RE
-## 1        R 1.0000 0.0000      1     0.0000 0.0000 0.3939      0.7611
-## 2   S vs R 3.1626 1.6611      0 *** 2.4433 4.0936 0.3064      2.5575
-##   Upper.se.RE Lower.se.log2FC Upper.se.log2FC
-## 1      1.3139          0.0000          0.0000
-## 2      3.9109          1.3433          2.0542
-## RE_Plot
-```
-
-![](vignette_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
-
-```
-## *** The R level was used as calibrator.
-```
-
-``` r
-Means_DDCt(res$lm_ANOVA, specs = "Conc * Type")
-```
-
-```
-##  contrast          FC        SE df       LCL      UCL p.value sig
-##  L R vs H R  0.103187 0.3123981 22  0.065856  0.16168 <0.0001 ***
-##  M R vs H R  0.339151 0.3123981 22  0.216453  0.53140 <0.0001 ***
-##  H S vs H R  2.996614 0.3123981 22  1.912499  4.69527 <0.0001 ***
-##  L S vs H R  0.842842 0.3123981 22  0.537918  1.32061  0.4382    
-##  M S vs H R  0.438303 0.3123981 22  0.279734  0.68676  0.0010 ***
-##  M R vs L R  3.286761 0.3123981 22  2.097677  5.14989 <0.0001 ***
-##  H S vs L R 29.040613 0.3123981 22 18.534303 45.50251 <0.0001 ***
-##  L S vs L R  8.168097 0.3123981 22  5.213044 12.79824 <0.0001 ***
-##  M S vs L R  4.247655 0.3123981 22  2.710939  6.65547 <0.0001 ***
-##  H S vs M R  8.835632 0.3123981 22  5.639078 13.84418 <0.0001 ***
-##  L S vs M R  2.485151 0.3123981 22  1.586073  3.89388  0.0004 ***
-##  M S vs M R  1.292353 0.3123981 22  0.824806  2.02493  0.2489    
-##  L S vs H S  0.281265 0.3123981 22  0.179509  0.44070 <0.0001 ***
-##  M S vs H S  0.146266 0.3123981 22  0.093350  0.22918 <0.0001 ***
-##  M S vs L S  0.520030 0.3123981 22  0.331894  0.81481  0.0063 ** 
-## 
-## Results are averaged over the levels of: SA 
-## Degrees-of-freedom method: kenward-roger 
-## Confidence level used: 0.95
-```
-
-``` r
-res2 <- Means_DDCt(res$lm_ANOVA, specs = "Conc | Type")
-
-# Returning fold change values of Conc levels sliced by Type*SA interaction
-Means_DDCt(res$lm_ANOVA, specs = "Conc | (Type*SA)")
-```
-
-```
-## Type = R, SA = A1:
-##  contrast       FC        SE df       LCL      UCL p.value sig
-##  L vs H   0.288505 0.4417977 22 0.1528761 0.544460  0.0005 ***
-##  M vs H   0.634342 0.4417977 22 0.3361323 1.197118  0.1514    
-##  M vs L   2.198724 0.4417977 22 1.1650843 4.149389  0.0174 *  
-## 
-## Type = S, SA = A1:
-##  contrast       FC        SE df       LCL      UCL p.value sig
-##  L vs H   0.267943 0.4417977 22 0.1419808 0.505657  0.0003 ***
-##  M vs H   0.139661 0.4417977 22 0.0740051 0.263565 <0.0001 ***
-##  M vs L   0.521233 0.4417977 22 0.2761966 0.983660  0.0448 *  
-## 
-## Type = R, SA = A2:
-##  contrast       FC        SE df       LCL      UCL p.value sig
-##  L vs H   0.036906 0.4417977 22 0.0195562 0.069648 <0.0001 ***
-##  M vs H   0.181327 0.4417977 22 0.0960836 0.342197 <0.0001 ***
-##  M vs L   4.913213 0.4417977 22 2.6034674 9.272118 <0.0001 ***
-## 
-## Type = S, SA = A2:
-##  contrast       FC        SE df       LCL      UCL p.value sig
-##  L vs H   0.295248 0.4417977 22 0.1564494 0.557187  0.0006 ***
-##  M vs H   0.153184 0.4417977 22 0.0811706 0.289085 <0.0001 ***
-##  M vs L   0.518830 0.4417977 22 0.2749233 0.979125  0.0434 *  
-## 
-## Degrees-of-freedom method: kenward-roger 
-## Confidence level used: 0.95
-```
-
 
 # How to edit ouptput graphs?
-the rtpcr graphical functions create ggplot objects can easily be edited by adding new layers after calling the ggplot2 package:
+the rtpcr plot functions (plotOneFactor, plotTwoFactor, and plotThreeFactor) create ggplot objects that can furtherbe edited by adding new layers:
+
+### Add a horizontal reference line
+
+``` r
+p <- plotOneFactor(...)
+p +
+  geom_hline(yintercept = 0, linetype = "dashed")
+```
+
+### Change y-axis limits
+
+``` r
+p <- plotOneFactor(...)
+p +
+  scale_y_continuous(limits = c(0, 20))
+```
+
+### Relabel x-axis
+
+``` r
+p <- plotTwoFactor(...)
+p +
+  scale_x_discrete(labels = c("A" = "Control", "B" = "Treatment"))
+```
+
+### Change fill colors
+
+``` r
+p <- plotTwoFactor(...)
+p +
+  scale_fill_brewer(palette = "Set2")
+```
+
+### Add a horizontal reference line
+
+``` r
+p <- plotOneFactor(...)
+p +
+  geom_hline(yintercept = 0, linetype = "dashed")
+```
+
+### Add a horizontal reference line
+
+``` r
+plotOneFactor(...) +
+  geom_hline(yintercept = 0, linetype = "dashed")
+```
+
+
 
 
 ``` r
-Example 1
+# Example 1
+df <- ANOVA_DCt(data_2factorBlock, 
+      NumOfFactors = 2,
+      block = "block",
+      numberOfrefGenes = 1)
+
+data <- df$combinedResults
+
 p2 <- plotTwoFactor(
   data = data,
   x_col = 2,
@@ -808,6 +865,221 @@ p2 + scale_y_continuous(expand = c(-1.5, +1.5)) +
   theme(legend.text = element_text(colour = "black", size = 14),
         legend.background = element_rect(fill = "transparent"))
 ```
+
+
+# Checking normality of residuals
+
+If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, one could use non-parametric tests such as the Mann-Whitney test (also known as the Wilcoxon rank-sum test), `wilcox.test()`, which is an alternative to `t.test`, or the `kruskal.test()` test which alternative to one-way analysis of variance, to test the difference between medians of the populations using independent samples. However, the `t.test` function (along with the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis. Residuals for `lm` (from `ANOVA_DCt` and `ANOVA_DDCt` functions) and `lmer` (from `REPEATED_DDCt` function) objects can be extracted and plotted as follow:
+
+
+``` r
+res <- ANOVA_DCt(data_1factor,
+                 NumOfFactors = 1,
+                 numberOfrefGenes = 1, 
+                 block = NULL)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: wDCt
+##           Df Sum Sq Mean Sq F value   Pr(>F)   
+## T          2 4.9393 2.46963  12.345 0.007473 **
+## Residuals  6 1.2003 0.20006                    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Relative expression (DCt method)
+##   SA     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE
+## 1 L3 0.9885 -0.0167 1.5318 0.6379 0.0841      0.9325      1.0479
+## 2 L2 0.6271 -0.6733 0.9717 0.4047 0.4388      0.4626      0.8500
+## 3 L1 0.2852 -1.8100 0.4419 0.1840 0.0208      0.2811      0.2893
+##   Lower.se.log2FC Upper.se.log2FC sig
+## 1         -0.0177         -0.0157   a
+## 2         -0.9127         -0.4968   a
+## 3         -1.8363         -1.7841   b
+## 
+## Combined Expression Table (all genes)
+##   SA     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE
+## 1 L3 0.9885 -0.0167 1.5318 0.6379 0.0841      0.9325      1.0479
+## 2 L2 0.6271 -0.6733 0.9717 0.4047 0.4388      0.4626      0.8500
+## 3 L1 0.2852 -1.8100 0.4419 0.1840 0.0208      0.2811      0.2893
+##   Lower.se.log2FC Upper.se.log2FC sig gene
+## 1         -0.0177         -0.0157   a E_PO
+## 2         -0.9127         -0.4968   a E_PO
+## 3         -1.8363         -1.7841   b E_PO
+```
+
+``` r
+residuals <-  resid(res$perGene[["E_PO"]]$lmCRD)
+# residuals <-  resid(res$perGene[["E_PO"]]$lm_ANOVA)
+
+shapiro.test(residuals) 
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  residuals
+## W = 0.84232, p-value = 0.06129
+```
+
+``` r
+par(mfrow = c(1,2))
+plot(residuals)
+qqnorm(residuals)
+qqline(residuals, col = "red")
+```
+
+<div class="figure" style="text-align: center">
+<img src="vignette_files/figure-html/unnamed-chunk-17-1.png" alt="QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions."  />
+<p class="caption">QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions.</p>
+</div>
+
+``` r
+res2 <- ANOVA_DCt(data_1factor,
+                 NumOfFactors = 1,
+                 numberOfrefGenes = 1, 
+                 block = NULL)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: wDCt
+##           Df Sum Sq Mean Sq F value   Pr(>F)   
+## T          2 4.9393 2.46963  12.345 0.007473 **
+## Residuals  6 1.2003 0.20006                    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Relative expression (DCt method)
+##   SA     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE
+## 1 L3 0.9885 -0.0167 1.5318 0.6379 0.0841      0.9325      1.0479
+## 2 L2 0.6271 -0.6733 0.9717 0.4047 0.4388      0.4626      0.8500
+## 3 L1 0.2852 -1.8100 0.4419 0.1840 0.0208      0.2811      0.2893
+##   Lower.se.log2FC Upper.se.log2FC sig
+## 1         -0.0177         -0.0157   a
+## 2         -0.9127         -0.4968   a
+## 3         -1.8363         -1.7841   b
+## 
+## Combined Expression Table (all genes)
+##   SA     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE
+## 1 L3 0.9885 -0.0167 1.5318 0.6379 0.0841      0.9325      1.0479
+## 2 L2 0.6271 -0.6733 0.9717 0.4047 0.4388      0.4626      0.8500
+## 3 L1 0.2852 -1.8100 0.4419 0.1840 0.0208      0.2811      0.2893
+##   Lower.se.log2FC Upper.se.log2FC sig gene
+## 1         -0.0177         -0.0157   a E_PO
+## 2         -0.9127         -0.4968   a E_PO
+## 3         -1.8363         -1.7841   b E_PO
+```
+
+``` r
+resid(res2$perGene[["E_PO"]]$lmCRD)
+```
+
+```
+##            1            2            3            4            5            6 
+## -0.040000000  0.010000000  0.030000000  0.756666667 -0.763333333  0.006666667 
+##            7            8            9 
+##  0.163333333 -0.116666667 -0.046666667
+```
+
+``` r
+res3 <- REPEATED_DDCt(
+  data_repeated_measure_1,
+  NumOfFactors = 1,
+  numberOfrefGenes = 1,
+  factor = "time",
+  calibratorLevel = "1",
+  block = NULL
+)
+```
+
+```
+## Type III Analysis of Variance Table with Satterthwaite's method
+##      Sum Sq Mean Sq NumDF DenDF F value  Pr(>F)  
+## time 11.073  5.5364     2     4  4.5382 0.09357 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Expression table
+##         contrast     RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE
+## 1          time1 1.0000  0.0000 1.0000     0.0000  0.0000 1.4051      0.3776
+## 2 time2 vs time1 0.8566 -0.2233 0.8166     0.0923  7.9492 0.9753      0.4357
+## 3 time3 vs time1 4.7022  2.2333 0.0685   . 0.5067 43.6368 0.5541      3.2026
+##   Upper.se.RE Lower.se.log2FC Upper.se.log2FC
+## 1      2.6483          0.0000          0.0000
+## 2      1.6840         -0.4391         -0.1136
+## 3      6.9040          1.5211          3.2791
+## The level 1  of the selected factor was used as calibrator.
+## 
+## Combined Relative Expression Table (all genes)
+##         contrast     RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE
+## 1          time1 1.0000  0.0000 1.0000     0.0000  0.0000 1.4051      0.3776
+## 2 time2 vs time1 0.8566 -0.2233 0.8166     0.0923  7.9492 0.9753      0.4357
+## 3 time3 vs time1 4.7022  2.2333 0.0685   . 0.5067 43.6368 0.5541      3.2026
+##   Upper.se.RE Lower.se.log2FC Upper.se.log2FC     gene
+## 1      2.6483          0.0000          0.0000 E_target
+## 2      1.6840         -0.4391         -0.1136 E_target
+## 3      6.9040          1.5211          3.2791 E_target
+```
+
+``` r
+residuals <- resid(res3$perGene[["E_target"]]$lm)
+```
+
+
+
+# Mean of technical replicates
+Calculating the mean of technical replicates and getting an output table appropriate for subsequent ANOVA analysis can be done using the `meanTech` function. For this, the input data set should follow the column arrangement of the following example data. Grouping columns must be specified under the `groups` argument of the `meanTech` function.
+
+
+``` r
+# See example input data frame:
+data_withTechRep
+```
+
+```
+##    factor1 factor2 factor3 biolrep techrep E_target Ct_target E_ref Ct_ref
+## 1    Line1    Heat    Ctrl       1       1        2    33.346     2 31.520
+## 2    Line1    Heat    Ctrl       1       2        2    28.895     2 29.905
+## 3    Line1    Heat    Ctrl       1       3        2    28.893     2 29.454
+## 4    Line1    Heat    Ctrl       2       1        2    30.411     2 28.798
+## 5    Line1    Heat    Ctrl       2       2        2    33.390     2 31.574
+## 6    Line1    Heat    Ctrl       2       3        2    33.211     2 31.326
+## 7    Line1    Heat    Ctrl       3       1        2    33.845     2 31.759
+## 8    Line1    Heat    Ctrl       3       2        2    33.345     2 31.548
+## 9    Line1    Heat    Ctrl       3       3        2    32.500     2 31.477
+## 10   Line1    Heat   Treat       1       1        2    33.006     2 31.483
+## 11   Line1    Heat   Treat       1       2        2    32.588     2 31.902
+## 12   Line1    Heat   Treat       1       3        2    33.370     2 31.196
+## 13   Line1    Heat   Treat       2       1        2    36.820     2 31.440
+## 14   Line1    Heat   Treat       2       2        2    32.750     2 31.300
+## 15   Line1    Heat   Treat       2       3        2    32.450     2 32.597
+## 16   Line1    Heat   Treat       3       1        2    35.238     2 31.461
+## 17   Line1    Heat   Treat       3       2        2    28.532     2 30.651
+## 18   Line1    Heat   Treat       3       3        2    28.285     2 30.745
+```
+
+``` r
+# Calculating mean of technical replicates
+meanTech(data_withTechRep, groups = 1:4)
+```
+
+```
+##   factor1 factor2 factor3 biolrep E_target Ct_target E_ref   Ct_ref
+## 1   Line1    Heat    Ctrl       1        2  30.37800     2 30.29300
+## 2   Line1    Heat    Ctrl       2        2  32.33733     2 30.56600
+## 3   Line1    Heat    Ctrl       3        2  33.23000     2 31.59467
+## 4   Line1    Heat   Treat       1        2  32.98800     2 31.52700
+## 5   Line1    Heat   Treat       2        2  34.00667     2 31.77900
+## 6   Line1    Heat   Treat       3        2  30.68500     2 30.95233
+```
+
+
+
 
 # Citation
 

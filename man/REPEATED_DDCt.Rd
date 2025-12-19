@@ -2,27 +2,30 @@
 % Please edit documentation in R/REPEATED_DDCt.r
 \name{REPEATED_DDCt}
 \alias{REPEATED_DDCt}
-\title{Fold change (\eqn{\Delta\Delta C_T}) analysis of repeated-measure qPCR data}
+\title{Multi-target Delta-Delta Ct ANOVA analysis}
 \usage{
 REPEATED_DDCt(
   x,
+  NumOfFactors,
   numberOfrefGenes,
   factor,
   calibratorLevel,
-  block,
+  block = NULL,
   x.axis.labels.rename = "none",
   p.adj = "none",
-  plot = TRUE,
-  plotType = "RE"
+  plot = FALSE,
+  analyseAllTarget = TRUE
 )
 }
 \arguments{
-\item{x}{A data frame in which the first column is the individual identifier (\code{id}),
-followed by one or more factor columns (including \code{time}).
-Expression-related columns (time, target gene, reference gene(s)) must appear
-at the end of the data frame in the required order.}
+\item{x}{A data frame containing experimental design columns, target gene
+E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene
+columns must be located at the end of the data frame.}
 
-\item{numberOfrefGenes}{Integer specifying the number of reference genes (must be \eqn{\ge 1}).}
+\item{NumOfFactors}{Integer. Number of experimental factor columns.}
+
+\item{numberOfrefGenes}{Integer. Number of reference genes. Each reference gene
+must be represented by two columns (E and Ct).}
 
 \item{factor}{Character string specifying the factor for which fold changes are analysed
 (commonly \code{"time"}).}
@@ -34,60 +37,38 @@ as random effects.}
 
 \item{x.axis.labels.rename}{Optional character vector used to replace x-axis labels in the bar plot.}
 
-\item{p.adj}{Method for p-value adjustment (passed to \code{emmeans}).}
+\item{p.adj}{Method for p-value adjustment.}
 
 \item{plot}{Logical; if \code{FALSE}, plots are not produced.}
 
-\item{plotType}{Either \code{"RE"} (relative expression) or \code{"log2FC"} (log2 fold change).}
+\item{analyseAllTarget}{Logical or character.
+If \code{TRUE} (default), all detected target genes are analysed.
+Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
+to be analysed.}
 }
 \value{
-A list with the following components:
-\describe{
-  \item{Final_data}{Input data frame augmented with weighted \eqn{\Delta C_T} values.}
-  \item{lm}{Fitted linear mixed-effects model object.}
-  \item{ANOVA_table}{ANOVA table for fixed effects.}
-  \item{Relative_Expression_table}{Table containing RE values, log2FC, p-values,
-  significance codes, confidence intervals, and standard errors.}
-  \item{RE_Plot}{Bar plot of relative expression values (if requested).}
-  \item{log2FC_Plot}{Bar plot of log2 fold change values (if requested).}
-}
+A data frame combining DCt method expression tables for all target genes.
+The output includes all columns.
 }
 \description{
-The \code{REPEATED_DDCt} function performs fold change (FC) analysis using the
-\eqn{\Delta\Delta C_T} method for qPCR data obtained from repeated measurements
-over time. Data may originate from uni- or multi-factorial experimental designs.
-
-In addition to numerical results, bar plots of relative expression (RE) or log2
-fold change values with associated uncertainty are optionally produced.
+Performs Delta-Delta Ct (DCt) analysis for multiple target genes by
+applying DCt method to each target gene. Target genes must be provided as paired
+efficiency (E) and Ct columns followed by the columns and the reference gene columns.
 }
 \details{
-The analysis is carried out using a linear mixed-effects model in which repeated
-measurements are accounted for by a random effect of individual (\code{id}).
-The factor of interest (e.g. time or treatment) is specified via the
-\code{factor} argument. The first level of this factor (or the level specified
-by \code{calibratorLevel}) is used as the calibrator.
-
-The function supports one or more reference genes. When multiple reference genes
-are supplied, their contributions are averaged when computing weighted
-\eqn{\Delta C_T} values.
+Column layout requirements for \code{x}:
+\itemize{
+  \item Target gene columns: E/Ct pairs located between design and reference columns
+  \item Reference gene columns: columns located at the end
+}
 }
 \examples{
 REPEATED_DDCt(
   data_repeated_measure_1,
+  NumOfFactors = 1,
   numberOfrefGenes = 1,
   factor = "time",
   calibratorLevel = "1",
   block = NULL
 )
-
-REPEATED_DDCt(
-  data_repeated_measure_2,
-  numberOfrefGenes = 1,
-  factor = "time",
-  calibratorLevel = "1",
-  block = NULL
-)
-}
-\author{
-Ghader Mirzaghaderi
 }

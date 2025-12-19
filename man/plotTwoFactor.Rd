@@ -82,11 +82,15 @@ letters from post hoc statistical comparisons can be displayed.
 }
 \examples{
 
-a <- ANOVA_DCt(data_2factorBlock, block = "Block", numberOfrefGenes = 1)
-data <- a$Results
+res <- ANOVA_DCt(data_2factorBlock, 
+    NumOfFactors = 2,
+    block = "block",
+    numberOfrefGenes = 1)
+    
+df <- res$combinedResults
 
 p1 <- plotTwoFactor(
-  data = data,
+  data = df,
   x_col = 2,
   y_col = 3,
   group_col = 1,
@@ -105,7 +109,7 @@ p1
 
 
 p2 <- plotTwoFactor(
-  data = data,
+  data = df,
   x_col = 2,
   y_col = 4,
   group_col = 1,

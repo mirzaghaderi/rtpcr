@@ -84,11 +84,15 @@
 #'
 #' @examples
 #'
-#' a <- ANOVA_DCt(data_2factorBlock, block = "Block", numberOfrefGenes = 1)
-#' data <- a$Results
+#' res <- ANOVA_DCt(data_2factorBlock, 
+#'     NumOfFactors = 2,
+#'     block = "block",
+#'     numberOfrefGenes = 1)
+#'     
+#' df <- res$combinedResults
 #' 
 #' p1 <- plotTwoFactor(
-#'   data = data,
+#'   data = df,
 #'   x_col = 2,
 #'   y_col = 3,
 #'   group_col = 1,
@@ -107,7 +111,7 @@
 #' 
 #' 
 #' p2 <- plotTwoFactor(
-#'   data = data,
+#'   data = df,
 #'   x_col = 2,
 #'   y_col = 4,
 #'   group_col = 1,
@@ -148,6 +152,12 @@ plotTwoFactor <- function(data,
   group_name <- names(data)[group_col]
   lower <- names(data)[Lower.se_col]
   upper <- names(data)[Upper.se_col]
+  
+  # preserve order as in data
+  # data[[x_name]]     <- factor(data[[x_name]],
+  #                              levels = unique(data[[x_name]]))
+  # data[[group_name]] <- factor(data[[group_name]],
+  #                              levels = unique(data[[group_name]]))
   
   data$ymin <- data[[lower]]
   data$ymax <- data[[upper]]

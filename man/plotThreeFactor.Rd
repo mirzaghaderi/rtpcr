@@ -88,15 +88,16 @@ post hoc statistical comparisons can be displayed.
 # Perform analysis first
 res <- ANOVA_DCt(
   data_3factor,
+  NumOfFactors = 3,
   numberOfrefGenes = 1,
   block = NULL
 )
+df <- res$combinedResults
 
-data <- res$Result
 
 # Generate three-factor bar plot
 p <- plotThreeFactor(
-  data,
+  df,
   x_col = 3,        # x-axis factor
   y_col = 5,        # bar height
   group_col = 1,    # grouping (fill)

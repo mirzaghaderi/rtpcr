@@ -2,94 +2,61 @@
 % Please edit documentation in R/ANOVA_DCt.r
 \name{ANOVA_DCt}
 \alias{ANOVA_DCt}
-\title{Relative expression analysis using the \eqn{\Delta C_T} method with ANOVA}
+\title{Multi-target Delta-Delta Ct ANOVA analysis}
 \usage{
-ANOVA_DCt(x, numberOfrefGenes, block, alpha = 0.05, adjust = "none")
+ANOVA_DCt(
+  x,
+  NumOfFactors,
+  numberOfrefGenes,
+  block = NULL,
+  alpha = 0.05,
+  adjust = "none",
+  analyseAllTarget = TRUE
+)
 }
 \arguments{
-\item{x}{A data frame structured as described in the package vignette, containing
-experimental condition columns, amplification efficiency (E) and Ct values
-for target and reference genes. Each Ct value should represent the mean of
-technical replicates.
+\item{x}{A data frame containing experimental design columns, target gene
+E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene
+columns must be located at the end of the data frame.}
 
-\strong{NOTE:} Each row corresponds to a separate biological individual,
-reflecting a non-repeated-measures experimental design.}
+\item{NumOfFactors}{Integer. Number of experimental factor columns
+(excluding \code{rep} and optional \code{block}).}
 
-\item{numberOfrefGenes}{Integer specifying the number of reference genes used for normalization
-(must be \eqn{\ge 1}).}
+\item{numberOfrefGenes}{Integer. Number of reference genes. Each reference gene
+must be represented by two columns (E and Ct).}
 
-\item{block}{Character string or \code{NULL}. If provided, this specifies the column name
-in \code{x} corresponding to a blocking factor (e.g. qPCR plate).
-Blocking is used to reduce technical variation arising from experimental
-conditions such as plate-to-plate differences.}
+\item{block}{Character or \code{NULL}. Name of the blocking factor column.}
 
-\item{alpha}{Significance level used for compact letter display (CLD);
-default is \code{0.05}.}
+\item{alpha}{statistical level for comparisons}
 
-\item{adjust}{P-value adjustment method passed to \code{emmeans} and \code{cld}.}
+\item{adjust}{Method for p-value adjustment.}
+
+\item{analyseAllTarget}{Logical or character.
+If \code{TRUE} (default), all detected target genes are analysed.
+Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
+to be analysed.}
 }
 \value{
-A list containing the following components:
-\describe{
-  \item{Final_data}{Input data frame augmented with weighted Delta Ct (wDCt) values.}
-  \item{lm}{Fitted linear model object, including ANOVA results.}
-  \item{ANOVA}{ANOVA table based on a completely randomized design (CRD).}
-  \item{Result}{Result table containing treatment and factor levels, relative
-  expression (RE), log2 fold change (log2FC), confidence limits (LCL, UCL),
-  compact letter display for pairwise comparisons, and standard errors with
-  corresponding lower and upper limits.}
-}
+A data frame combining DCt method expression tables for all target genes.
+The output includes all columns.
 }
 \description{
-The \code{ANOVA_DCt} function performs analysis of variance (ANOVA) on
-relative expression values calculated using the \eqn{\Delta C_T} method.
-Expression levels are normalized using one or more reference genes and
-analyzed across all combinations of experimental factor levels.
+Performs Delta-Delta Ct (DCt) analysis for multiple target genes by
+applying DCt method to each target gene. Target genes must be provided as paired
+efficiency (E) and Ct columns followed by the columns and the reference gene columns.
 }
 \details{
-Relative expression (RE) values are calculated using the \eqn{\Delta C_T}
-method, where Ct values of target genes are normalized to reference gene(s).
-The resulting weighted Delta Ct (wDCt) values are then analyzed using ANOVA.
-
-The function supports uni- and multi-factorial experimental designs.
-Blocking factors (e.g. qPCR plates) can optionally be included to account
-for technical variation. Each row of the input data represents an independent
-biological individual, corresponding to a non-repeated-measures experiment.
+Column layout requirements for \code{x}:
+\itemize{
+  \item Target gene columns: E/Ct pairs located between design and reference columns
+  \item Reference gene columns: \code{2 * numberOfrefGenes} columns located at the end
+}
 }
 \examples{
-# If the data include technical replicates, calculate means first:
-# df <- meanTech(data_3factor, groups = 1:3)
-
-# One-factor or multi-factor ANOVA without blocking
-ANOVA_DCt(
+res <- ANOVA_DCt(
   data_3factor,
+  NumOfFactors = 3,
   numberOfrefGenes = 1,
   block = NULL
 )
-
-# ANOVA with blocking factor
-ANOVA_DCt(
-  data_2factorBlock,
-  numberOfrefGenes = 1,
-  block = "Block"
-)
-}
-\references{
-Livak, K. J. and Schmittgen, T. D. (2001).
-Analysis of Relative Gene Expression Data Using Real-Time Quantitative PCR
-and the Double Delta CT Method.
-\emph{Methods}, 25(4), 402–408.
-doi:10.1006/meth.2001.1262
-
-Ganger, M. T., Dietz, G. D., and Ewing, S. J. (2017).
-A common base method for analysis of qPCR data and the application of simple
-blocking in qPCR experiments.
-\emph{BMC Bioinformatics}, 18, 1–11.
-
-Yuan, J. S., Reed, A., Chen, F., and Stewart, N. (2006).
-Statistical Analysis of Real-Time PCR Data.
-\emph{BMC Bioinformatics}, 7, 85.
-}
-\author{
-Ghader Mirzaghaderi
 }

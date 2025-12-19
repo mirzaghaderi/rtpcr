@@ -39,12 +39,14 @@
 #' # Example using output from ANOVA_DCt
 #' out2 <- ANOVA_DCt(
 #'   data_1factor,
+#'   NumOfFactors = 1,
 #'   numberOfrefGenes = 1,
 #'   block = NULL
-#' )$Result
+#' )
+#' df <- out2$combinedResults
 #'
 #' p2 <- plotOneFactor(
-#'   out2,
+#'   df,
 #'   x_col = 1,
 #'   y_col = 2,
 #'   Lower.se_col = 7,

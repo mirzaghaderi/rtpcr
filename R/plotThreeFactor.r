@@ -89,15 +89,16 @@
 #' # Perform analysis first
 #' res <- ANOVA_DCt(
 #'   data_3factor,
+#'   NumOfFactors = 3,
 #'   numberOfrefGenes = 1,
 #'   block = NULL
 #' )
+#' df <- res$combinedResults
 #'
-#' data <- res$Result
 #'
 #' # Generate three-factor bar plot
 #' p <- plotThreeFactor(
-#'   data,
+#'   df,
 #'   x_col = 3,        # x-axis factor
 #'   y_col = 5,        # bar height
 #'   group_col = 1,    # grouping (fill)
@@ -145,6 +146,14 @@ plotThreeFactor <- function(data,
   facet_name <- names(data)[facet_col]
   lower <- names(data)[Lower.se_col]
   upper <- names(data)[Upper.se_col]
+  
+  # preserve order as in data
+  # data[[x_name]]     <- factor(data[[x_name]],
+  #                              levels = unique(data[[x_name]]))
+  # data[[group_name]] <- factor(data[[group_name]],
+  #                              levels = unique(data[[group_name]]))
+  # data[[facet_name]] <- factor(data[[facet_name]],
+  #                              levels = unique(data[[facet_name]]))
   
   data$ymin <- data[[lower]]
   data$ymax <- data[[upper]]

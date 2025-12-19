@@ -69,28 +69,27 @@ comparisons can be displayed above the bars.
 \examples{
 
 res <- ANOVA_DCt(
-data_1factor,
-NumOfFactors = 1,
-numberOfrefGenes = 1,
-block = NULL
+  data_1factor,
+  NumOfFactors = 1,
+  numberOfrefGenes = 1,
+  block = NULL
 )
 
 df <- res$combinedResults
 
 plotOneFactor(
   df,
-  x_col = 1,
-  y_col = 2,
-  Lower.se_col = 7,
-  Upper.se_col = 8,
-  letters_col = 11,
+  x_col = "SA",
+  y_col = "RE",
+  Lower.se_col = "Lower.se.RE",
+  Upper.se_col = "Upper.se.RE",
+  letters_col = "sig",
   letters_d = 0.1,
   col_width = 0.7,
   err_width = 0.15,
   fill_colors = "skyblue",
   alpha = 1,
-  base_size = 16
-)
+  base_size = 16)
 
 
 

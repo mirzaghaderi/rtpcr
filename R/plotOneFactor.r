@@ -42,28 +42,27 @@
 #' @examples
 #' 
 #' res <- ANOVA_DCt(
-#' data_1factor,
-#' NumOfFactors = 1,
-#' numberOfrefGenes = 1,
-#' block = NULL
+#'   data_1factor,
+#'   NumOfFactors = 1,
+#'   numberOfrefGenes = 1,
+#'   block = NULL
 #' )
 #' 
 #' df <- res$combinedResults
 #' 
 #' plotOneFactor(
 #'   df,
-#'   x_col = 1,
-#'   y_col = 2,
-#'   Lower.se_col = 7,
-#'   Upper.se_col = 8,
-#'   letters_col = 11,
+#'   x_col = "SA",
+#'   y_col = "RE",
+#'   Lower.se_col = "Lower.se.RE",
+#'   Upper.se_col = "Upper.se.RE",
+#'   letters_col = "sig",
 #'   letters_d = 0.1,
 #'   col_width = 0.7,
 #'   err_width = 0.15,
 #'   fill_colors = "skyblue",
 #'   alpha = 1,
-#'   base_size = 16
-#' )
+#'   base_size = 16)
 #' 
 #'
 #' 
@@ -82,33 +81,37 @@ plotOneFactor <- function(data,
                           legend_position = "none",
                           ...) {
   
-  # Column names
-  x_name <- names(data)[x_col]
-  y_name <- names(data)[y_col]
-  lower  <- names(data)[Lower.se_col]
-  upper  <- names(data)[Upper.se_col]
+  # ---- checks ----
+  required_cols <- c(x_col, y_col, Lower.se_col, Upper.se_col)
   
-  # preserve x order as in data
-  # data[[x_name]] <- factor(data[[x_name]], levels = unique(data[[x_name]]))
-  
-  # Precompute error limits
-  data$ymin <- data[[lower]]
-  data$ymax <- data[[upper]]
-  
-  # Letters as character
-  if (!is.null(letters_col)) {
-    letters_name <- names(data)[letters_col]
-    data[[letters_name]] <- as.character(data[[letters_name]])
+  if (!all(required_cols %in% colnames(data))) {
+    stop("One or more specified columns do not exist in `data`.")
   }
   
-  # Base plot
+  if (!is.null(letters_col) && !letters_col %in% colnames(data)) {
+    stop("`letters_col` does not exist in `data`.")
+  }
+  
+  # ---- error bar columns ----
+  data$ymin <- data[[Lower.se_col]]
+  data$ymax <- data[[Upper.se_col]]
+  
+  # ---- letters ----
+  if (!is.null(letters_col)) {
+    data[[letters_col]] <- as.character(data[[letters_col]])
+  }
+  
+  # ---- base plot ----
   p <- ggplot(
     data,
-    aes(x = .data[[x_name]], y = .data[[y_name]])
+    aes(
+      x = .data[[x_col]],
+      y = .data[[y_col]]
+    )
   ) +
     geom_col(
       width = col_width,
-      fill  = fill_colors[1],  
+      fill  = fill_colors[1],
       alpha = alpha,
       ...
     ) +
@@ -117,14 +120,14 @@ plotOneFactor <- function(data,
       width = err_width
     )
   
-  # Add letters
+  # ---- add letters ----
   if (!is.null(letters_col)) {
     p <- p +
       geom_text(
         aes(
-          label = .data[[letters_name]],
+          label = .data[[letters_col]],
           y = ifelse(
-            .data[[y_name]] < 0,
+            .data[[y_col]] < 0,
             ymin - letters_d,
             ymax + letters_d
           )
@@ -132,7 +135,10 @@ plotOneFactor <- function(data,
       )
   }
   
-  # Final styling
+  # ---- final styling ----
   p +
-    .theme_pub() 
+    .theme_pub(
+      base_size       = base_size,
+      legend_position = legend_position
+    )
 }

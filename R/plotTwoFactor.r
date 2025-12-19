@@ -93,39 +93,39 @@
 #' 
 #' p1 <- plotTwoFactor(
 #'   data = df,
-#'   x_col = 2,
-#'   y_col = 3,
-#'   group_col = 1,
-#'   Lower.se_col = 8,
-#'   Upper.se_col = 9,
-#'   letters_col = 12,
+#'   x_col = "factor2",
+#'   y_col = "RE",
+#'   group_col = "factor1",
+#'   Lower.se_col = "Lower.se.RE",
+#'   Upper.se_col = "Upper.se.RE",
+#'   letters_col = "sig",
 #'   letters_d = 0.2,
 #'   fill_colors = c("aquamarine4", "gold2"),
 #'   alpha = 1,
 #'   col_width = 0.7,
 #'   dodge_width = 0.7,
 #'   base_size = 16, 
-#'   legend_position = c(0.2, 0.8)
-#' )
+#'   legend_position = c(0.2, 0.8))
+#'   
 #' p1
 #' 
 #' 
 #' p2 <- plotTwoFactor(
 #'   data = df,
-#'   x_col = 2,
-#'   y_col = 4,
-#'   group_col = 1,
-#'   Lower.se_col = 10,
-#'   Upper.se_col = 11,
-#'   letters_col = 12,
+#'   x_col = "factor2",
+#'   y_col = "log2FC",
+#'   group_col = "factor1",
+#'   Lower.se_col = "Lower.se.log2FC",
+#'   Upper.se_col = "Upper.se.log2FC",
+#'   letters_col = "sig",
 #'   letters_d = 0.2,
 #'   fill_colors = c("aquamarine4", "gold2"),
 #'   alpha = 1,
 #'   col_width = 0.7,
 #'   dodge_width = 0.7,
 #'   base_size = 16, 
-#'   legend_position = c(0.2, 0.8)
-#' )
+#'   legend_position = c(0.2, 0.8))
+#'   
 #' p2
 
 
@@ -147,46 +147,66 @@ plotTwoFactor <- function(data,
                           legend_position = "right",
                           ...) {
   
-  x_name <- names(data)[x_col]
-  y_name <- names(data)[y_col]
-  group_name <- names(data)[group_col]
-  lower <- names(data)[Lower.se_col]
-  upper <- names(data)[Upper.se_col]
+  # ---- checks ----
+  required_cols <- c(
+    x_col, y_col, group_col,
+    Lower.se_col, Upper.se_col
+  )
   
-  # preserve order as in data
-  # data[[x_name]]     <- factor(data[[x_name]],
-  #                              levels = unique(data[[x_name]]))
-  # data[[group_name]] <- factor(data[[group_name]],
-  #                              levels = unique(data[[group_name]]))
-  
-  data$ymin <- data[[lower]]
-  data$ymax <- data[[upper]]
-  
-  if (!is.null(letters_col)) {
-    letters_name <- names(data)[letters_col]
-    data[[letters_name]] <- as.character(data[[letters_name]])
+  if (!all(required_cols %in% colnames(data))) {
+    stop("One or more specified columns do not exist in `data`.")
   }
   
-  p <- ggplot(data, aes(x = .data[[x_name]], y = .data[[y_name]], fill = .data[[group_name]])) +
+  if (!is.null(letters_col) && !letters_col %in% colnames(data)) {
+    stop("`letters_col` does not exist in `data`.")
+  }
+  
+  # ---- error bar columns ----
+  data$ymin <- data[[Lower.se_col]]
+  data$ymax <- data[[Upper.se_col]]
+  
+  if (!is.null(letters_col)) {
+    data[[letters_col]] <- as.character(data[[letters_col]])
+  }
+  
+  # ---- plot ----
+  p <- ggplot(
+    data,
+    aes(
+      x    = .data[[x_col]],
+      y    = .data[[y_col]],
+      fill = .data[[group_col]]
+    )
+  ) +
     .geom_pub_cols(
-      col_width = col_width,
-      err_width = err_width,
+      col_width   = col_width,
+      err_width   = err_width,
       fill_colors = fill_colors,
       dodge_width = dodge_width,
-      alpha = alpha,
+      alpha       = alpha,
       ...
     )
   
+  # ---- letters ----
   if (!is.null(letters_col)) {
     pos <- position_dodge(width = dodge_width)
+    
     p <- p + geom_text(
       aes(
-        label = .data[[letters_name]],
-        y = ifelse(.data[[y_name]] < 0, ymin - letters_d, ymax + letters_d)
+        label = .data[[letters_col]],
+        y = ifelse(
+          .data[[y_col]] < 0,
+          ymin - letters_d,
+          ymax + letters_d
+        )
       ),
       position = pos,
       ...
     )
   }
-  p + .theme_pub(base_size = base_size, legend_position = legend_position)
+  
+  p + .theme_pub(
+    base_size       = base_size,
+    legend_position = legend_position
+  )
 }

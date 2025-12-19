@@ -91,39 +91,39 @@ df <- res$combinedResults
 
 p1 <- plotTwoFactor(
   data = df,
-  x_col = 2,
-  y_col = 3,
-  group_col = 1,
-  Lower.se_col = 8,
-  Upper.se_col = 9,
-  letters_col = 12,
+  x_col = "factor2",
+  y_col = "RE",
+  group_col = "factor1",
+  Lower.se_col = "Lower.se.RE",
+  Upper.se_col = "Upper.se.RE",
+  letters_col = "sig",
   letters_d = 0.2,
   fill_colors = c("aquamarine4", "gold2"),
   alpha = 1,
   col_width = 0.7,
   dodge_width = 0.7,
   base_size = 16, 
-  legend_position = c(0.2, 0.8)
-)
+  legend_position = c(0.2, 0.8))
+  
 p1
 
 
 p2 <- plotTwoFactor(
   data = df,
-  x_col = 2,
-  y_col = 4,
-  group_col = 1,
-  Lower.se_col = 10,
-  Upper.se_col = 11,
-  letters_col = 12,
+  x_col = "factor2",
+  y_col = "log2FC",
+  group_col = "factor1",
+  Lower.se_col = "Lower.se.log2FC",
+  Upper.se_col = "Upper.se.log2FC",
+  letters_col = "sig",
   letters_d = 0.2,
   fill_colors = c("aquamarine4", "gold2"),
   alpha = 1,
   col_width = 0.7,
   dodge_width = 0.7,
   base_size = 16, 
-  legend_position = c(0.2, 0.8)
-)
+  legend_position = c(0.2, 0.8))
+  
 p2
 }
 \author{

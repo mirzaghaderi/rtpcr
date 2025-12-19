@@ -86,39 +86,37 @@
 #'
 #' @examples
 #'
-#' # Perform analysis first
+#' #Perform analysis first
 #' res <- ANOVA_DCt(
 #'   data_3factor,
 #'   NumOfFactors = 3,
 #'   numberOfrefGenes = 1,
-#'   block = NULL
-#' )
+#'   block = NULL)
+#'   
 #' df <- res$combinedResults
-#'
-#'
-#' # Generate three-factor bar plot
-#' p <- plotThreeFactor(
+#'  df
+#'  # Generate three-factor bar plot
+#'  p <- plotThreeFactor(
 #'   df,
-#'   x_col = 3,        # x-axis factor
-#'   y_col = 5,        # bar height
-#'   group_col = 1,    # grouping (fill)
-#'   facet_col = 2,    # faceting factor
-#'   Lower.se_col = 11,
-#'   Upper.se_col = 12,
-#'   letters_col = 13,
+#'   x_col = "SA",       
+#'   y_col = "log2FC",       
+#'   group_col = "Type",   
+#'   facet_col = "Conc",    
+#'   Lower.se_col = "Lower.se.log2FC",
+#'   Upper.se_col = "Upper.se.log2FC",
+#'   letters_col = "sig",
 #'   letters_d = 0.3,
 #'   col_width = 0.7, 
-#'   dodge_width = 0.7,# controls spacing
+#'   dodge_width = 0.7,
 #'   fill_colors = c("blue", "brown"),
-#'   base_size = 16, 
+#'   base_size = 14, 
 #'   alpha = 1,
-#'   legend_position = c(0.1, 0.2)
-#' )
-#' 
+#'   legend_position = c(0.1, 0.2))
+#' p
 #' library(ggplot2)
 #' p + theme(
-#'   panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5)
-#' )
+#'   panel.border = element_rect(color = "black", linewidth = 0.5))
+
 
 
 
@@ -140,52 +138,67 @@ plotThreeFactor <- function(data,
                             legend_position = "right",
                             ...) {
   
-  x_name <- names(data)[x_col]
-  y_name <- names(data)[y_col]
-  group_name <- names(data)[group_col]
-  facet_name <- names(data)[facet_col]
-  lower <- names(data)[Lower.se_col]
-  upper <- names(data)[Upper.se_col]
+  # ---- checks ----
+  required_cols <- c(
+    x_col, y_col, group_col, facet_col,
+    Lower.se_col, Upper.se_col
+  )
   
-  # preserve order as in data
-  # data[[x_name]]     <- factor(data[[x_name]],
-  #                              levels = unique(data[[x_name]]))
-  # data[[group_name]] <- factor(data[[group_name]],
-  #                              levels = unique(data[[group_name]]))
-  # data[[facet_name]] <- factor(data[[facet_name]],
-  #                              levels = unique(data[[facet_name]]))
-  
-  data$ymin <- data[[lower]]
-  data$ymax <- data[[upper]]
-  
-  if (!is.null(letters_col)) {
-    letters_name <- names(data)[letters_col]
-    data[[letters_name]] <- as.character(data[[letters_name]])
+  if (!all(required_cols %in% colnames(data))) {
+    stop("One or more specified columns do not exist in `data`.")
   }
   
-  p <- ggplot(data, aes(x = .data[[x_name]],
-                        y = .data[[y_name]],
-                        fill = .data[[group_name]])) +
-    .geom_pub_cols(
-      col_width = col_width,
-      err_width = err_width,
-      fill_colors = fill_colors,
-      dodge_width = dodge_width,
-      alpha = alpha,
-      ...
-    ) +
-    facet_wrap(vars(.data[[facet_name]]))
+  if (!is.null(letters_col) && !letters_col %in% colnames(data)) {
+    stop("`letters_col` does not exist in `data`.")
+  }
+  
+  # ---- error bar columns ----
+  data$ymin <- data[[Lower.se_col]]
+  data$ymax <- data[[Upper.se_col]]
   
   if (!is.null(letters_col)) {
+    data[[letters_col]] <- as.character(data[[letters_col]])
+  }
+  
+  # ---- plot ----
+  p <- ggplot(
+    data,
+    aes(
+      x    = .data[[x_col]],
+      y    = .data[[y_col]],
+      fill = .data[[group_col]]
+    )
+  ) +
+    .geom_pub_cols(
+      col_width   = col_width,
+      err_width   = err_width,
+      fill_colors = fill_colors,
+      dodge_width = dodge_width,
+      alpha       = alpha,
+      ...
+    ) +
+    facet_wrap(vars(.data[[facet_col]]))
+  
+  # ---- letters ----
+  if (!is.null(letters_col)) {
     pos <- position_dodge(width = dodge_width)
+    
     p <- p + geom_text(
       aes(
-        label = .data[[letters_name]],
-        y = ifelse(.data[[y_name]] < 0, ymin - letters_d, ymax + letters_d)
+        label = .data[[letters_col]],
+        y = ifelse(
+          .data[[y_col]] < 0,
+          ymin - letters_d,
+          ymax + letters_d
+        )
       ),
       position = pos,
       ...
     )
   }
-  p + .theme_pub(base_size = base_size, legend_position = legend_position)
+  
+  p + .theme_pub(
+    base_size       = base_size,
+    legend_position = legend_position
+  )
 }

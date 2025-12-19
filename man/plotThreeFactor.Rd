@@ -85,39 +85,36 @@ post hoc statistical comparisons can be displayed.
 }
 \examples{
 
-# Perform analysis first
+#Perform analysis first
 res <- ANOVA_DCt(
   data_3factor,
   NumOfFactors = 3,
   numberOfrefGenes = 1,
-  block = NULL
-)
+  block = NULL)
+  
 df <- res$combinedResults
-
-
-# Generate three-factor bar plot
-p <- plotThreeFactor(
+ df
+ # Generate three-factor bar plot
+ p <- plotThreeFactor(
   df,
-  x_col = 3,        # x-axis factor
-  y_col = 5,        # bar height
-  group_col = 1,    # grouping (fill)
-  facet_col = 2,    # faceting factor
-  Lower.se_col = 11,
-  Upper.se_col = 12,
-  letters_col = 13,
+  x_col = "SA",       
+  y_col = "log2FC",       
+  group_col = "Type",   
+  facet_col = "Conc",    
+  Lower.se_col = "Lower.se.log2FC",
+  Upper.se_col = "Upper.se.log2FC",
+  letters_col = "sig",
   letters_d = 0.3,
   col_width = 0.7, 
-  dodge_width = 0.7,# controls spacing
+  dodge_width = 0.7,
   fill_colors = c("blue", "brown"),
-  base_size = 16, 
+  base_size = 14, 
   alpha = 1,
-  legend_position = c(0.1, 0.2)
-)
-
+  legend_position = c(0.1, 0.2))
+p
 library(ggplot2)
 p + theme(
-  panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5)
-)
+  panel.border = element_rect(color = "black", linewidth = 0.5))
 }
 \author{
 Ghader Mirzaghaderi

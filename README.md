@@ -17,7 +17,7 @@ https://CRAN.R-project.org/package=rtpcr
 
 'rtpcr' handles amplification efficiency calculation, statistical analysis, and graphical representation of quantitative real-time PCR (qPCR) data using any number of references for any number of target genes. By accounting for amplification efficiency values, 'rtpcr' was developed using a general calculation method described by Ganger et al. (2017) and Taylor et al. (2019), covering the Livak and Pfaffl methods. Based on the experimental conditions, the functions of the 'rtpcr' package use t-test (for experiments with a two-level factor), analysis of variance (ANOVA), analysis of covariance (ANCOVA) or analysis of repeated measure data to analyse the relative expression (Delta Delta Ct method or Delta Ct method). The functions also provide standard errors and confidence intervals for means, apply statistical mean comparisons, and present significance.
 
-## Improvement in the current version 2.1.1:
+## Improvement in the current GitHub version rtpcr_v2.1.1:
 
 ### Same data structure for all functions.
 ### No restriction for the number of target and reference genes in data.

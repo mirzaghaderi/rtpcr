@@ -82,6 +82,8 @@ S	L3	2	4	2	27.81	2	29.34	2	30.11	2	27.24
 ```
 
 ```r
+
+Different functions for DDCt and DCt analysis, and efficiency calculation!
 res <- ANOVA_DDCt(
   x = data,
   mainFactor.column = 1,
@@ -93,7 +95,7 @@ res <- ANOVA_DDCt(
 df <- res$combinedFoldChange
 ```
 
-
+As output, a lot of outputs including lm models, ANOVA table, residuals, raw ans expression tables are returned.
 ```r
 Relative Expression
   contrast      RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  gene
@@ -131,48 +133,7 @@ data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpc
    base_size = 16, 
    legend_position = c(0.2, 0.8))
  
- library(ggplot2)
- p1 <- p1 + scale_y_continuous(breaks = seq(0, 3.6, by = 1),
-                               limits = c(0, 3.6),
-                               expand = c(0, 0)) + 
-   theme(axis.text.x = element_text(size = 14, color = "black", angle = 45),
-         axis.text.y = element_text(size = 14,color = "black", angle = 0, hjust = 0.5)) +
-   theme(legend.text = element_text(colour = "black", size = 14),
-         legend.background = element_rect(fill = "transparent")) +
-   ylab("Relative Expression (DCt method)")
- 
- 
- p2 <- plotTwoFactor(
-   data = df,
-   x_col = "factor2",
-   y_col = "log2FC",
-   group_col = "factor1",
-   Lower.se_col = "Lower.se.log2FC",
-   Upper.se_col = "Upper.se.log2FC",
-   letters_col = "sig",
-   letters_d = 0.2,
-   fill_colors = c("aquamarine4", "gold2"),
-   color = "black",
-   alpha = 1,
-   col_width = 0.7,
-   dodge_width = 0.7,
-   base_size = 16, 
-   legend_position = c(0.2, 0.8))
- 
- 
- p2 <- p2 + 
-   scale_y_continuous(expand = c(-1.44, +1.5)) + 
-   theme(axis.text.x = element_text(size = 14, color = "black", angle = 45),
-         axis.text.y = element_text(size = 14,color = "black", angle = 0, hjust = 0.5)) +
-   theme(legend.text = element_text(colour = "black", size = 14),
-         legend.background = element_rect(fill = "transparent")) +
-   #geom_hline(yintercept = 0, color = "black",  linewidth = 0.6, linetype = "solid") +
-   theme(
-     panel.grid.major.x = element_blank(),
-     panel.grid.minor.x = element_blank()) +
-   ylab("Log2 fold change (DCt method)")
- 
- multiplot(p1, p2, cols =  2)
+p1
 ```
 
 ![My Plot](inst/Rplot01.png)

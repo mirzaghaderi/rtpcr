@@ -26,9 +26,6 @@ https://CRAN.R-project.org/package=rtpcr
 
 
 
-![My Plot](inst/Rplot01.png)
-
-![My Plot](inst/Rplot02.png)
 
 # Installing and loading
 
@@ -51,7 +48,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
 Further information about how to use rtpcr package can be found 
 <a href="https://cran.r-project.org/web/packages/rtpcr/vignettes/vignette.html">here </a>.
 
-Sample data structure
+### Sample data structure
 ```r
 library(rtpcr)
 data <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
@@ -84,6 +81,103 @@ S	L3	2	3	2	28.84	2	30.49	2	30.11	2	28.29
 S	L3	2	4	2	27.81	2	29.34	2	30.11	2	27.24
 ```
 
+```r
+res <- ANOVA_DDCt(
+  x = data,
+  mainFactor.column = 1,
+  NumOfFactors = 2,
+  numberOfrefGenes = 1,
+  block = "block",
+  analyseAllTarget = TRUE)
+
+df <- res$combinedFoldChange
+```
+
+
+```r
+Relative Expression
+  contrast      RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  gene
+1        R  1.0000  0.0000 1.0000     0.0000  0.0000 0.5506      0.6828      1.4647          0.0000          0.0000    PO
+2   S vs R 11.6130  3.5377 0.0001 *** 4.4233 30.4888 0.2286      9.9115     13.6066          3.0193          4.1450    PO
+3        R  1.0000  0.0000 1.0000     0.0000  0.0000 0.4815      0.7162      1.3962          0.0000          0.0000 GAPDH
+4   S vs R  6.6852  2.7410 0.0001 *** 3.0687 14.5641 0.3820      5.1301      8.7118          2.1034          3.5719 GAPDH
+5        R  1.0000  0.0000 1.0000     0.0000  0.0000 0.6928      0.6186      1.6164          0.0000          0.0000  ref2
+6   S vs R  0.9372 -0.0936 0.9005     0.3145  2.7929 0.2414      0.7927      1.1079         -0.1107         -0.0792  ref2
+```
+
+### Sample plot output
+```r
+data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
+ a <- ANOVA_DCt(data, 
+                NumOfFactors = 2,
+                block = "Block", 
+                numberOfrefGenes = 1)
+ df <- a$combinedResults
+ 
+ p1 <- plotTwoFactor(
+   data = df,
+   x_col = "factor2",
+   y_col = "RE",
+   group_col = "factor1",
+   Lower.se_col = "Lower.se.RE",
+   Upper.se_col = "Upper.se.RE",
+   letters_col = "sig",
+   letters_d = 0.2,
+   fill_colors = c("aquamarine4", "gold2"),
+   color = "black",
+   alpha = 1,
+   col_width = 0.7,
+   dodge_width = 0.7,
+   base_size = 16, 
+   legend_position = c(0.2, 0.8))
+ 
+ library(ggplot2)
+ p1 <- p1 + scale_y_continuous(breaks = seq(0, 3.6, by = 1),
+                               limits = c(0, 3.6),
+                               expand = c(0, 0)) + 
+   theme(axis.text.x = element_text(size = 14, color = "black", angle = 45),
+         axis.text.y = element_text(size = 14,color = "black", angle = 0, hjust = 0.5)) +
+   theme(legend.text = element_text(colour = "black", size = 14),
+         legend.background = element_rect(fill = "transparent")) +
+   ylab("Relative Expression (DCt method)")
+ 
+ 
+ p2 <- plotTwoFactor(
+   data = df,
+   x_col = "factor2",
+   y_col = "log2FC",
+   group_col = "factor1",
+   Lower.se_col = "Lower.se.log2FC",
+   Upper.se_col = "Upper.se.log2FC",
+   letters_col = "sig",
+   letters_d = 0.2,
+   fill_colors = c("aquamarine4", "gold2"),
+   color = "black",
+   alpha = 1,
+   col_width = 0.7,
+   dodge_width = 0.7,
+   base_size = 16, 
+   legend_position = c(0.2, 0.8))
+ 
+ 
+ p2 <- p2 + 
+   scale_y_continuous(expand = c(-1.44, +1.5)) + 
+   theme(axis.text.x = element_text(size = 14, color = "black", angle = 45),
+         axis.text.y = element_text(size = 14,color = "black", angle = 0, hjust = 0.5)) +
+   theme(legend.text = element_text(colour = "black", size = 14),
+         legend.background = element_rect(fill = "transparent")) +
+   #geom_hline(yintercept = 0, color = "black",  linewidth = 0.6, linetype = "solid") +
+   theme(
+     panel.grid.major.x = element_blank(),
+     panel.grid.minor.x = element_blank()) +
+   ylab("Log2 fold change (DCt method)")
+ 
+ multiplot(p1, p2, cols =  2)
+```
+
+![My Plot](inst/Rplot01.png)
+
+![My Plot](inst/Rplot02.png)
 
 
 # Contact 

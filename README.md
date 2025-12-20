@@ -19,31 +19,31 @@ https://CRAN.R-project.org/package=rtpcr
 
 ## Improvement in the current GitHub version rtpcr_v2.1.1:
 
-### Same data structure for all functions.
-### No restriction for the number of target and reference genes in data.
-### Analysis of all or a subset of genes.
-### Graphic enhancement.
+#### Same data structure for all functions.
+#### No restriction for the number of target and reference genes in data.
+#### Analysis of all or a subset of genes.
+#### Graphic enhancement.
 
 
 
 
 # Installing and loading
 
-The rtpcr package and source code are available for download from CRAN website (https://www.r-project.org) under GPL-3 license. The `rtpcr` package can be installed by running the following code in R:
+The current version of the `rtpcr` package can be installed from GitHub by running the following code in R:
 
 ```r
-# Installing from CRAN
-install.packages("rtpcr")
+devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)
 
 # Loading the package
 library(rtpcr)
 ```
 
-
-Or install the development version from GitHub with:
+Or from CRAN which may install the previous version.
 ```r
-devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
+# Installing from CRAN
+install.packages("rtpcr")
 ```
+
 
 Further information about how to use rtpcr package can be found 
 <a href="https://cran.r-project.org/web/packages/rtpcr/vignettes/vignette.html">here </a>.

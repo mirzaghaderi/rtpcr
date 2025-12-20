@@ -19,14 +19,13 @@ https://CRAN.R-project.org/package=rtpcr
 
 ## Improvement in the current GitHub version rtpcr_v2.1.1:
 
- **Same data structure for all functions.**
+ <strong><span style="color: green;">Same data structure for all functions.</span></strong>
  
- **No restriction for the number of target and reference genes in data.** 
+ <strong><span style="color: green;">No restriction for the number of target and reference genes in data.</span></strong>
 
- **Analysis of all or a subset of genes.** 
-
- **Graphic enhancement.** 
-
+ <strong><span style="color: green;">Analysis of all or a subset of genes.</span></strong>
+ 
+ <strong><span style="color: green;">Graphic enhancement.</span></strong>
 
 
 # Quick start

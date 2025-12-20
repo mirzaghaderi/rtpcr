@@ -192,8 +192,9 @@ data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpc
 p1
 ```
 
-
-<img src="inst/Rplot01.png" width="80%">
+<p align="center">
+<img src="inst/Rplot01.png" width="85%">
+</p>
 
 ![My Plot](inst/Rplot02.png)
 

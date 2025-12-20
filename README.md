@@ -49,7 +49,7 @@ Further information about how to use rtpcr package can be found
 <a href="https://cran.r-project.org/web/packages/rtpcr/vignettes/vignette.html">here </a>.
 
 
-### Data structure
+## Data structure
 Input data structure is important and should be in wide format:
 For analysis using `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, the required column structure is:
 
@@ -101,11 +101,32 @@ The `REPEATED_DDCt` function is intended for experiments with repeated observati
 The input data frame for `REPEATED_DDCt` must follow this structure:
 
 1. The **first column** is `id`, a unique identifier for each individual  
-2. Factor and block columns and the `time` variable 
+2. Factor and block columns (if available), and the `time` variable 
 3. Remaining columns contain efficiency and Ct values for target and reference genes.
 
 Each row corresponds to one observation at a specific time point for a given individual.
-
+### Sample input data for `REPEATED_DDCt` function
+```r
+id	treatment	time	Target	Ct_target	E_Ref	Ct_Ref
+1	untreated	1	2	19.24	2	33.73
+1	untreated	2	2	19.95	2	34.2
+1	untreated	3	2	19.16	2	33.9
+2	untreated	1	2	20.11	2	32.56
+2	untreated	2	2	20.91	2	33.98
+2	untreated	3	2	20.91	2	33.16
+3	untreated	1	2	20.63	2	33.72
+3	untreated	2	2	19.16	2	34.51
+3	untreated	3	2	19.91	2	34.33
+4	treated	1	2	18.92	2	32.77
+4	treated	2	2	19.46	2	33.03
+4	treated	3	2	15.73	2	32.95
+5	treated	1	2	15.82	2	32.45
+5	treated	2	2	17.56	2	33.24
+5	treated	3	2	17.21	2	33.64
+6	treated	1	2	19.84	2	31.62
+6	treated	2	2	19.74	2	32.08
+6	treated	3	2	18.09	2	33.4
+```
 
 ### Functions
 Different functions for DDCt and DCt analysis, and efficiency calculation!

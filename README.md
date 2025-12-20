@@ -26,7 +26,7 @@ https://CRAN.R-project.org/package=rtpcr
 
 
 
-
+# Quick start
 # Installing and loading
 
 The current version of the `rtpcr` package can be installed from GitHub by running the following code in R:
@@ -48,9 +48,22 @@ install.packages("rtpcr")
 Further information about how to use rtpcr package can be found 
 <a href="https://cran.r-project.org/web/packages/rtpcr/vignettes/vignette.html">here </a>.
 
-# Quick start
-### Sample data structure
+
+### Data structure
+Input data structure is important and should be in wide format:
+For analysis using `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, the required column structure is:
+
+1. Experimental condition columns (Factors, and block if available) 
+2. Biological replicate information (if applicable)  
+3. Target genes efficiency and Ct values (a pair column for each target gene)
+5. Reference genes efficiency and Ct values (a pair column for each reference gene)
+
+The package supports **one or more target gene(s) and reference gene(s)**, supplied as efficiency–Ct column pairs.  
+**Reference gene columns must always appear last.** Each row represents a single biological replicate, corresponding to a non-repeated measures design.
+
+### Sample input data
 ```r
+
 library(rtpcr)
 data <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
 data
@@ -82,9 +95,21 @@ S	L3	2	3	2	28.84	2	30.49	2	30.11	2	28.29
 S	L3	2	4	2	27.81	2	29.34	2	30.11	2	27.24
 ```
 
+### Data structure for `REPEATED_DDCt` function
+
+The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data).  
+The input data frame for `REPEATED_DDCt` must follow this structure:
+
+1. The **first column** is `id`, a unique identifier for each individual  
+2. Factor and block columns and the `time` variable 
+3. Remaining columns contain efficiency and Ct values for target and reference genes.
+
+Each row corresponds to one observation at a specific time point for a given individual.
+
 
 ### Functions
 Different functions for DDCt and DCt analysis, and efficiency calculation!
+
 ```r
 # Example
 

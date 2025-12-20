@@ -1,8 +1,9 @@
-#' Multi-target Delta-Delta Ct ANOVA analysis
+#' \eqn{\Delta C_T} ANOVA analysis
 #'
-#' Performs Delta-Delta Ct (DCt) analysis for multiple target genes by
-#' applying DCt method to each target gene. Target genes must be provided as paired
-#' efficiency (E) and Ct columns followed by the columns and the reference gene columns.
+#' Performs \eqn{\Delta C_T} analysis for target genes by
+#' applying \eqn{\Delta C_T} method to each target gene. Target genes must be provided as paired
+#' efficiency (E) and Ct columns followed by the the reference gene(s) columns. See example data sets or refer \href{../doc/vignette.html}{\code{vignette}}, 
+#' section "data structure and column arrangement" for details about data structure.
 #'
 #' @param x A data frame containing experimental design columns, target gene
 #'   E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene

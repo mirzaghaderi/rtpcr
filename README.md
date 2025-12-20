@@ -86,6 +86,8 @@ S	L3	2	4	2	27.81	2	29.34	2	30.11	2	27.24
 ### Functions
 Different functions for DDCt and DCt analysis, and efficiency calculation!
 ```r
+# Example
+
 res <- ANOVA_DDCt(
   x = data,
   mainFactor.column = 1,

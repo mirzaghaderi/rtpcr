@@ -107,6 +107,9 @@ The input data frame for `REPEATED_DDCt` must follow this structure:
 Each row corresponds to one observation at a specific time point for a given individual.
 ### Sample input data for `REPEATED_DDCt` function
 ```r
+data <- read.csv(system.file("extdata", "data_repeated_measure_2.csv", package = "rtpcr"))
+data
+
 id	treatment	time	Target	Ct_target	E_Ref	Ct_Ref
 1	untreated	1	2	19.24	2	33.73
 1	untreated	2	2	19.95	2	34.2

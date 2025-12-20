@@ -48,6 +48,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
 Further information about how to use rtpcr package can be found 
 <a href="https://cran.r-project.org/web/packages/rtpcr/vignettes/vignette.html">here </a>.
 
+# Quick start
 ### Sample data structure
 ```r
 library(rtpcr)

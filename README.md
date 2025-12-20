@@ -196,7 +196,9 @@ p1
 <img src="inst/Rplot01.png" width="85%">
 </p>
 
-![My Plot](inst/Rplot02.png)
+<p align="center">
+<img src="inst/Rplot02.png" width="199%">
+</p>
 
 
 # Contact 

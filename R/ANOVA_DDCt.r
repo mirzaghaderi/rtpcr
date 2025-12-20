@@ -1,6 +1,6 @@
 #' Multi-target Delta-Delta Ct ANOVA analysis
 #'
-#' Performs Delta-Delta Ct (DDCt) analysis for multiple target genes by
+#' Performs Delta-Delta Ct (DDCt) analysis for target genes by
 #' applying DDCt method to each target gene present
 #' in the input data frame. Target genes must be provided as paired
 #' efficiency (E) and Ct columns located between the experimental design

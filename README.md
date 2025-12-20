@@ -112,8 +112,8 @@ data
 
 id	treatment	time	Target	Ct_target	E_Ref	Ct_Ref
 1	untreated	1	2	19.24	2	33.73
-1	untreated	2	2	19.95	2	34.2
-1	untreated	3	2	19.16	2	33.9
+1	untreated	2	2	19.95	2	34.20
+1	untreated	3	2	19.16	2	33.90
 2	untreated	1	2	20.11	2	32.56
 2	untreated	2	2	20.91	2	33.98
 2	untreated	3	2	20.91	2	33.16
@@ -128,7 +128,7 @@ id	treatment	time	Target	Ct_target	E_Ref	Ct_Ref
 5	treated		3	2	17.21	2	33.64
 6	treated		1	2	19.84	2	31.62
 6	treated		2	2	19.74	2	32.08
-6	treated		3	2	18.09	2	33.4
+6	treated		3	2	18.09	2	33.40
 ```
 
 ### Functions

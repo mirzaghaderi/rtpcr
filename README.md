@@ -23,7 +23,7 @@ https://CRAN.R-project.org/package=rtpcr
  
 <span style="color: green;">**No restriction for the number of target and reference genes in data.**</span>
 
-<span style="color: green;">**Analysis of all or a subset of genes.**</span>
+<span style="color: green;">**Expression analysis of all or a subset of genes.**</span>
  
 <span style="color: green;">**Graphic enhancement.**</span>
 

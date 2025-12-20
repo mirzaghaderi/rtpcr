@@ -149,8 +149,8 @@ res <- ANOVA_DDCt(
 
 df <- res$combinedFoldChange
 ```
-### Data output
-As output, a lot of outputs including lm models, ANOVA table, residuals, raw ans expression tables are returned.
+### Output
+As lot of outputs including lm models, ANOVA table, residuals, raw and expression tables are returned.
 ```r
 Relative Expression
   contrast      RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  gene

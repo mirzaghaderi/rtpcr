@@ -497,8 +497,8 @@ res <- ANOVA_DCt(data1,
                  numberOfrefGenes = 1, 
                  block = NULL)
 
-residuals <-  resid(res$perGene[["E_PO"]]$lmCRD)
-# residuals <-  resid(res$perGene[["E_PO"]]$lm_ANOVA)
+residuals <-  resid(res$perGene[["PO"]]$lmCRD)
+# residuals <-  resid(res$perGene[["PO"]]$lm_ANOVA)
 
 shapiro.test(residuals) 
 
@@ -512,7 +512,7 @@ res2 <- ANOVA_DCt(data2,
                  NumOfFactors = 1,
                  numberOfrefGenes = 1, 
                  block = NULL)
-resid(res2$perGene[["E_PO"]]$lmCRD)
+resid(res2$perGene[["PO"]]$lmCRD)
 
 data3 <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 res3 <- REPEATED_DDCt(
@@ -523,7 +523,7 @@ res3 <- REPEATED_DDCt(
   calibratorLevel = "1",
   block = NULL
 )
-residuals <- resid(res3$perGene[["E_target"]]$lm)
+residuals <- resid(res3$perGene[["Target"]]$lm)
 ```
 
 

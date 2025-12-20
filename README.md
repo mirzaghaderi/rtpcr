@@ -3,7 +3,10 @@
 
 [![](https://cranlogs.r-pkg.org/badges/grand-total/rtpcr)](https://cran.rstudio.com/web/packages/rtpcr/index.html)
 
-![R package version](https://img.shields.io/github/r-package/v/mirzaghaderi/rtpcr) 
+[![R package version](https://img.shields.io/github/r-package/v/mirzaghaderi/rtpcr)](
+https://github.com/mirzaghaderi/rtpcr
+)
+
 
 
 # Multi-target multi-reference qPCR data analysis using 'rtpcr' package

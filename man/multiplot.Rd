@@ -26,15 +26,17 @@ The function uses the \code{grid} package to control the layout.
 \examples{
 
 # Example using output from TTEST_DDCt
+data1 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))
 a <- TTEST_DDCt(
-  data_1factor_one_ref,
+  data1,
   numberOfrefGenes = 1,
   plotType = "log2FC")
 p1 <- a$plot
 
 # Example using output from ANOVA_DCt
+data2 <- read.csv(system.file("extdata", "data_1factor.csv", package = "rtpcr"))
 out2 <- ANOVA_DCt(
-  data_1factor,
+  data2,
   NumOfFactors = 1,
   numberOfrefGenes = 1,
   block = NULL)

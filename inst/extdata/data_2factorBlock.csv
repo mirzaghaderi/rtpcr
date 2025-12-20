@@ -1,4 +1,4 @@
-factor1,factor2,block,Rep,E_PO,Ct_PO,E_GAPDH,Ct_GAPDH
+factor1,factor2,block,Rep,PO,PO,GAPDH,GAPDH
 R,L0,1,1,2,33.3,2,31.53
 R,L0,1,2,2,33.39,2,31.57
 R,L0,2,3,2,33.34,2,31.5

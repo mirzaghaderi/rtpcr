@@ -40,9 +40,9 @@
 #' @return ggplot2 plot object
 #' 
 #' @examples
-#' 
+#' data <- read.csv(system.file("extdata", "data_1factor.csv", package = "rtpcr"))
 #' res <- ANOVA_DCt(
-#'   data_1factor,
+#'   data,
 #'   NumOfFactors = 1,
 #'   numberOfrefGenes = 1,
 #'   block = NULL
@@ -81,7 +81,7 @@ plotOneFactor <- function(data,
                           legend_position = "none",
                           ...) {
   
-  # ---- checks ----
+  # checks
   required_cols <- c(x_col, y_col, Lower.se_col, Upper.se_col)
   
   if (!all(required_cols %in% colnames(data))) {
@@ -92,16 +92,16 @@ plotOneFactor <- function(data,
     stop("`letters_col` does not exist in `data`.")
   }
   
-  # ---- error bar columns ----
+  # error bar columns
   data$ymin <- data[[Lower.se_col]]
   data$ymax <- data[[Upper.se_col]]
   
-  # ---- letters ----
+  # letters
   if (!is.null(letters_col)) {
     data[[letters_col]] <- as.character(data[[letters_col]])
   }
   
-  # ---- base plot ----
+  # base plot
   p <- ggplot(
     data,
     aes(
@@ -120,7 +120,7 @@ plotOneFactor <- function(data,
       width = err_width
     )
   
-  # ---- add letters ----
+  # add letters
   if (!is.null(letters_col)) {
     p <- p +
       geom_text(
@@ -135,7 +135,7 @@ plotOneFactor <- function(data,
       )
   }
   
-  # ---- final styling ----
+  # final styling
   p +
     .theme_pub(
       base_size       = base_size,

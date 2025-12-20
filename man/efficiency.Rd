@@ -35,10 +35,10 @@ The function also provides graphical visualization of the standard curves.
 \examples{
 
 # Load example efficiency data
-data_efficiency
+data <- read.csv(system.file("extdata", "data_efficiency.csv", package = "rtpcr"))
 
 # Calculate amplification efficiency and generate standard curves
-efficiency(data_efficiency)
+efficiency(data)
 }
 \author{
 Ghader Mirzaghaderi

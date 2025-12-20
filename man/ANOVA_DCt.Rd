@@ -53,10 +53,10 @@ Column layout requirements for \code{x}:
 }
 }
 \examples{
+data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 res <- ANOVA_DCt(
-  data_3factor,
+  data,
   NumOfFactors = 3,
   numberOfrefGenes = 1,
-  block = NULL
-)
+  block = NULL)
 }

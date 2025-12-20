@@ -63,12 +63,12 @@ Column layout requirements for \code{x}:
 }
 }
 \examples{
+data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 REPEATED_DDCt(
-  data_repeated_measure_1,
+  data,
   NumOfFactors = 1,
   numberOfrefGenes = 1,
   factor = "time",
   calibratorLevel = "1",
-  block = NULL
-)
+  block = NULL)
 }

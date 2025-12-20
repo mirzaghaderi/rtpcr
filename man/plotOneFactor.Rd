@@ -67,9 +67,9 @@ intervals, and optional grouping letters from post hoc statistical
 comparisons can be displayed above the bars.
 }
 \examples{
-
+data <- read.csv(system.file("extdata", "data_1factor.csv", package = "rtpcr"))
 res <- ANOVA_DCt(
-  data_1factor,
+  data,
   NumOfFactors = 1,
   numberOfrefGenes = 1,
   block = NULL

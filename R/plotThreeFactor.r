@@ -85,10 +85,10 @@
 #' A ggplot object
 #'
 #' @examples
-#'
+#' data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 #' #Perform analysis first
 #' res <- ANOVA_DCt(
-#'   data_3factor,
+#'   data,
 #'   NumOfFactors = 3,
 #'   numberOfrefGenes = 1,
 #'   block = NULL)
@@ -138,7 +138,7 @@ plotThreeFactor <- function(data,
                             legend_position = "right",
                             ...) {
   
-  # ---- checks ----
+  # checks
   required_cols <- c(
     x_col, y_col, group_col, facet_col,
     Lower.se_col, Upper.se_col
@@ -152,7 +152,7 @@ plotThreeFactor <- function(data,
     stop("`letters_col` does not exist in `data`.")
   }
   
-  # ---- error bar columns ----
+  # error bar columns
   data$ymin <- data[[Lower.se_col]]
   data$ymax <- data[[Upper.se_col]]
   
@@ -160,7 +160,7 @@ plotThreeFactor <- function(data,
     data[[letters_col]] <- as.character(data[[letters_col]])
   }
   
-  # ---- plot ----
+  # plot
   p <- ggplot(
     data,
     aes(
@@ -179,7 +179,7 @@ plotThreeFactor <- function(data,
     ) +
     facet_wrap(vars(.data[[facet_col]]))
   
-  # ---- letters ----
+  # letters
   if (!is.null(letters_col)) {
     pos <- position_dodge(width = dodge_width)
     

@@ -83,8 +83,8 @@
 #' 
 #'
 #' @examples
-#'
-#' res <- ANOVA_DCt(data_2factorBlock, 
+#' data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
+#' res <- ANOVA_DCt(data, 
 #'     NumOfFactors = 2,
 #'     block = "block",
 #'     numberOfrefGenes = 1)
@@ -147,7 +147,7 @@ plotTwoFactor <- function(data,
                           legend_position = "right",
                           ...) {
   
-  # ---- checks ----
+  # checks
   required_cols <- c(
     x_col, y_col, group_col,
     Lower.se_col, Upper.se_col
@@ -161,7 +161,7 @@ plotTwoFactor <- function(data,
     stop("`letters_col` does not exist in `data`.")
   }
   
-  # ---- error bar columns ----
+  # error bar columns
   data$ymin <- data[[Lower.se_col]]
   data$ymax <- data[[Upper.se_col]]
   
@@ -169,7 +169,7 @@ plotTwoFactor <- function(data,
     data[[letters_col]] <- as.character(data[[letters_col]])
   }
   
-  # ---- plot ----
+  # plot
   p <- ggplot(
     data,
     aes(
@@ -187,7 +187,7 @@ plotTwoFactor <- function(data,
       ...
     )
   
-  # ---- letters ----
+  # letters
   if (!is.null(letters_col)) {
     pos <- position_dodge(width = dodge_width)
     

@@ -71,33 +71,31 @@ relative expression (RE) or log2 fold change (log2FC).
 }
 \examples{
 # Example data structure
-data_1factor_one_ref
+data1 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))
 
 # Unpaired t-test
 TTEST_DDCt(
-  data_1factor_one_ref,
+  data1,
   paired = FALSE,
   var.equal = TRUE,
-  numberOfrefGenes = 1
-)
+  numberOfrefGenes = 1)
 
 # With amplification efficiencies
-data_1factor_one_ref_Eff
+data2 <- read.csv(system.file("extdata", "data_1factor_one_ref_Eff.csv", package = "rtpcr"))
 
 TTEST_DDCt(
-  data_1factor_one_ref_Eff,
+  data2,
   paired = FALSE,
   var.equal = TRUE,
-  numberOfrefGenes = 1
-)
+  numberOfrefGenes = 1)
 
 # Two reference genes
+data3 <- read.csv(system.file("extdata", "data_1factor_Two_ref.csv", package = "rtpcr"))
 TTEST_DDCt(
-  data_1factor_Two_ref,
+  data3,
   numberOfrefGenes = 2,
   var.equal = TRUE,
-  p.adj = "BH"
-)
+  p.adj = "BH")
 }
 \references{
 Livak, K. J. and Schmittgen, T. D. (2001).

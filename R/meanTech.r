@@ -33,13 +33,14 @@
 #' @examples
 #'
 #' # Example input data frame with technical replicates
-#' data_withTechRep
+#' data1 <- read.csv(system.file("extdata", "data_withTechRep.csv", package = "rtpcr"))
 #'
 #' # Calculate mean of technical replicates using first four columns as groups
-#' meanTech(data_withTechRep, groups = 1:4)
-#'
+#' meanTech(data1, groups = 1:4)
+#' 
 #' # Another example using different dataset and grouping columns
-#' meanTech(Lee_etal2020qPCR, groups = 1:3)
+#' data2 <- read.csv(system.file("extdata", "Lee_etal2020qPCR.csv", package = "rtpcr"))
+#' meanTech(data2, groups = 1:3)
 
 
 meanTech <- function(x, groups){

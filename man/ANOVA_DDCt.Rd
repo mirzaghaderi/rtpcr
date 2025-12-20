@@ -75,7 +75,8 @@ Column layout requirements for \code{x}:
 }
 }
 \examples{
-ANOVA_DDCt(x = data_2factorBlock3ref,
+data1 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
+ANOVA_DDCt(x = data1,
            NumOfFactors = 2,
            numberOfrefGenes = 1,
            block = "block",
@@ -83,9 +84,9 @@ ANOVA_DDCt(x = data_2factorBlock3ref,
            plot = FALSE,
            p.adj = "none")
            
-           
+data2 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))          
 ANOVA_DDCt(
-           x = data_1factor_one_ref,
+           x = data2,
            NumOfFactors = 1,
            numberOfrefGenes = 1,
            block = NULL,

@@ -48,14 +48,14 @@
 #' 
 #'
 #' @examples
+#' data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 #' REPEATED_DDCt(
-#'   data_repeated_measure_1,
+#'   data,
 #'   NumOfFactors = 1,
 #'   numberOfrefGenes = 1,
 #'   factor = "time",
 #'   calibratorLevel = "1",
-#'   block = NULL
-#' )
+#'   block = NULL)
 
 
 
@@ -73,9 +73,8 @@ REPEATED_DDCt <- function(
     analyseAllTarget = TRUE
 ) {
   
-  # -----------------------------
+
   # Basic checks
-  # -----------------------------
   if (!is.data.frame(x)) stop("x must be a data.frame")
   if (!is.numeric(NumOfFactors) || NumOfFactors < 1) stop("NumOfFactors must be a positive integer")
   if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1) stop("numberOfrefGenes must be a positive integer")
@@ -87,24 +86,21 @@ REPEATED_DDCt <- function(
   
   n <- ncol(x)
   
-  # -----------------------------
+
   # Design columns
-  # -----------------------------
   # id + NumOfFactors + time (+ block if present)
   nDesign <- if (is.null(block)) NumOfFactors + 1 else NumOfFactors + 2
   if (nDesign >= n) stop("Not enough columns for target and reference genes")
   designCols <- seq_len(nDesign)
   
-  # -----------------------------
+
   # Reference gene columns
-  # -----------------------------
   nRefCols <- 2 * numberOfrefGenes
   if (nRefCols >= n) stop("Not enough columns for reference genes")
   refCols <- (n - nRefCols + 1):n
   
-  # -----------------------------
+
   # Target gene columns
-  # -----------------------------
   targetCols <- setdiff(seq_len(n), c(designCols, refCols))
   if (length(targetCols) == 0 || length(targetCols) %% 2 != 0) {
     stop("Target gene columns must be provided as E/Ct pairs")
@@ -113,9 +109,8 @@ REPEATED_DDCt <- function(
   targetPairs <- split(targetCols, ceiling(seq_along(targetCols) / 2))
   targetNames <- vapply(targetPairs, function(tc) colnames(x)[tc[1]], character(1))
   
-  # -----------------------------
+
   # Subset target genes if requested
-  # -----------------------------
   if (!isTRUE(analyseAllTarget)) {
     keep <- targetNames %in% analyseAllTarget
     if (!any(keep)) stop("None of the specified target genes were found in the data.")
@@ -123,9 +118,8 @@ REPEATED_DDCt <- function(
     targetNames <- targetNames[keep]
   }
   
-  # -----------------------------
+
   # Analyse each target gene
-  # -----------------------------
   perGene <- lapply(seq_along(targetPairs), function(i) {
     
     tc <- targetPairs[[i]]
@@ -159,21 +153,18 @@ REPEATED_DDCt <- function(
   perGene <- Filter(Negate(is.null), perGene)
   if (length(perGene) == 0) stop("No target genes could be analysed")
   
-  # -----------------------------
+
   # Combine Relative Expression tables
-  # -----------------------------
   combinedFoldChange <- do.call(rbind, lapply(perGene, function(g) g$Relative_Expression_table))
   rownames(combinedFoldChange) <- NULL
   
-  # -----------------------------
+
   # Print combined Fold Change / RE table automatically
-  # -----------------------------
   cat("\nCombined Relative Expression Table (all genes)\n")
   print(combinedFoldChange)
   
-  # -----------------------------
+
   # Return full structured object invisibly
-  # -----------------------------
   invisible(list(
     perGene = setNames(perGene, targetNames),   # All individual gene outputs with models
     combinedFoldChange = combinedFoldChange     # Combined table

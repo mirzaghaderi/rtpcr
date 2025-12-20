@@ -81,8 +81,8 @@ error (SE) or 95\% confidence intervals (CI). Optional grouping
 letters from post hoc statistical comparisons can be displayed.
 }
 \examples{
-
-res <- ANOVA_DCt(data_2factorBlock, 
+data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
+res <- ANOVA_DCt(data, 
     NumOfFactors = 2,
     block = "block",
     numberOfrefGenes = 1)

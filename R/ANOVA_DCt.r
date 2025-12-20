@@ -37,12 +37,12 @@
 #' @export
 #' 
 #' @examples
+#' data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 #' res <- ANOVA_DCt(
-#'   data_3factor,
+#'   data,
 #'   NumOfFactors = 3,
 #'   numberOfrefGenes = 1,
-#'   block = NULL
-#' )
+#'   block = NULL)
 
 
 
@@ -56,9 +56,8 @@ ANOVA_DCt <- function(
     analyseAllTarget = TRUE
 ) {
   
-  # -----------------------------
+
   # Basic checks
-  # -----------------------------
   if (!is.data.frame(x)) stop("x must be a data.frame")
   if (!is.numeric(NumOfFactors) || NumOfFactors < 1) stop("NumOfFactors must be a positive integer")
   if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1) stop("numberOfrefGenes must be a positive integer")
@@ -68,22 +67,19 @@ ANOVA_DCt <- function(
   
   n <- ncol(x)
   
-  # -----------------------------
+
   # Design columns
-  # -----------------------------
   nDesign <- if (is.null(block)) NumOfFactors + 1 else NumOfFactors + 2
   if (nDesign >= n) stop("Not enough columns for target and reference genes")
   designCols <- seq_len(nDesign)
   
-  # -----------------------------
+
   # Reference gene columns
-  # -----------------------------
   nRefCols <- 2 * numberOfrefGenes
   refCols  <- (n - nRefCols + 1):n
   
-  # -----------------------------
+
   # Target gene columns
-  # -----------------------------
   targetCols <- setdiff(seq_len(n), c(designCols, refCols))
   if (length(targetCols) == 0 || length(targetCols) %% 2 != 0) {
     stop("Target genes must be supplied as E/Ct column pairs")
@@ -92,9 +88,8 @@ ANOVA_DCt <- function(
   targetPairs <- split(targetCols, ceiling(seq_along(targetCols) / 2))
   targetNames <- vapply(targetPairs, function(tc) colnames(x)[tc[1]], character(1))
   
-  # -----------------------------
+
   # Subset target genes if requested
-  # -----------------------------
   if (!isTRUE(analyseAllTarget)) {
     keep <- targetNames %in% analyseAllTarget
     if (!any(keep)) stop("None of the specified target genes were found in the data.")

@@ -1,4 +1,4 @@
-Condition,Rep,C2H2_26_E,C2H2_26_Ct,C2H2_01_E,C2H2_01_Ct,C2H2_12_E,C2H2_12_Ct,ref_E,ref_Ct
+Condition,Rep,C2H2_26,C2H2_26,C2H2_01,C2H2_01,C2H2_12,C2H2_12,ref,ref
 control,1,2,31.26,2,31.06,2,28.5,2,28.87
 control,2,2,31.01,2,30.41,2,28.4,2,28.42
 control,3,2,30.97,2,30.97,2,28.8,2,28.53

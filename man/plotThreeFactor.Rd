@@ -84,10 +84,10 @@ or 95\% confidence intervals, and optional grouping letters from
 post hoc statistical comparisons can be displayed.
 }
 \examples{
-
+data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 #Perform analysis first
 res <- ANOVA_DCt(
-  data_3factor,
+  data,
   NumOfFactors = 3,
   numberOfrefGenes = 1,
   block = NULL)

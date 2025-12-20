@@ -24,11 +24,11 @@
 #' @import ggplot2
 #'
 #' @param data Data frame
-#' @param x_col Numeric. Column index for x-axis
-#' @param y_col Numeric. Column index for bar height
-#' @param Lower.se_col Numeric. Column index for lower SE
-#' @param Upper.se_col Numeric. Column index for upper SE
-#' @param letters_col Optional column index for grouping letters
+#' @param x_col Character. Column name for x-axis
+#' @param y_col Character. Column name for bar height
+#' @param Lower.se_col Character. Column name for lower SE
+#' @param Upper.se_col Character. Column name for upper SE
+#' @param letters_col Optional column name for grouping letters
 #' @param letters_d Numeric. Vertical offset for letters (default 0.2)
 #' @param col_width Numeric. Width of bars (default 0.8)
 #' @param err_width Numeric. Width of error bars (default 0.15)

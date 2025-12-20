@@ -27,7 +27,7 @@ https://CRAN.R-project.org/package=rtpcr
 
 
 # Quick start
-# Installing and loading
+### Installing and loading
 
 The current version of the `rtpcr` package can be installed from GitHub by running the following code in R:
 
@@ -49,7 +49,7 @@ Further information about how to use rtpcr package can be found
 <a href="https://cran.r-project.org/web/packages/rtpcr/vignettes/vignette.html">here </a>.
 
 
-## Data structure
+### Data structure
 Input data structure is important and should be in wide format:
 For analysis using `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, the required column structure is:
 

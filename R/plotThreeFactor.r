@@ -30,10 +30,10 @@
 #' \code{ANOVA_DDCt()} or \code{ANOVA_DCt()}.
 #'
 #' @param x_col
-#' Integer specifying the column number used for the x-axis factor.
+#' The column name used for the x-axis factor.
 #'
 #' @param y_col
-#' Integer specifying the column number used for the bar height
+#' The column name used for the bar height
 #' (relative expression or fold change).
 #' 
 #' @param col_width 
@@ -51,22 +51,22 @@
 #' @param base_size Numeric. Base font size (default 12)
 #'
 #' @param group_col
-#' Integer specifying the column number used for grouping bars
+#' The column name used for grouping bars
 #' (fill aesthetic).
 #'
 #' @param facet_col
-#' Integer specifying the column number used for faceting the plot.
+#' The column name used for faceting the plot.
 #'
 #' @param Lower.se_col
-#' Integer specifying the column number used for the lower limit
+#' The column name used for the lower limit
 #' of the error bar.
 #'
 #' @param Upper.se_col
-#' Integer specifying the column number used for the upper limit
+#' The column name used for the upper limit
 #' of the error bar.
 #'
 #' @param letters_col
-#' Integer specifying the column number containing grouping letters
+#' The column name containing grouping letters
 #' from statistical comparisons.
 #' 
 #' @param letters_d

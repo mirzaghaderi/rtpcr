@@ -193,7 +193,7 @@ p1
 ```
 
 <p align="center">
-<img src="inst/Rplot01.png" width="85%">
+<img src="inst/Rplot01.png" width="100%">
 </p>
 
 <p align="center">

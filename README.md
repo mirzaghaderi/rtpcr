@@ -94,7 +94,7 @@ res <- ANOVA_DDCt(
 
 df <- res$combinedFoldChange
 ```
-
+### Data output
 As output, a lot of outputs including lm models, ANOVA table, residuals, raw ans expression tables are returned.
 ```r
 Relative Expression

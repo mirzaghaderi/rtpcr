@@ -117,15 +117,15 @@ id	treatment	time	Target	Ct_target	E_Ref	Ct_Ref
 3	untreated	1	2	20.63	2	33.72
 3	untreated	2	2	19.16	2	34.51
 3	untreated	3	2	19.91	2	34.33
-4	treated	1	2	18.92	2	32.77
-4	treated	2	2	19.46	2	33.03
-4	treated	3	2	15.73	2	32.95
-5	treated	1	2	15.82	2	32.45
-5	treated	2	2	17.56	2	33.24
-5	treated	3	2	17.21	2	33.64
-6	treated	1	2	19.84	2	31.62
-6	treated	2	2	19.74	2	32.08
-6	treated	3	2	18.09	2	33.4
+4	treated		1	2	18.92	2	32.77
+4	treated		2	2	19.46	2	33.03
+4	treated		3	2	15.73	2	32.95
+5	treated		1	2	15.82	2	32.45
+5	treated		2	2	17.56	2	33.24
+5	treated		3	2	17.21	2	33.64
+6	treated		1	2	19.84	2	31.62
+6	treated		2	2	19.74	2	32.08
+6	treated		3	2	18.09	2	33.4
 ```
 
 ### Functions

@@ -28,6 +28,21 @@ https://CRAN.R-project.org/package=rtpcr
 <span style="color: green;">**Graphic enhancement.**</span>
 
 
+# Functions (A brief explanations)
+
+`ANOVA_DCt`		ΔCt  ANOVA analysis
+`ANOVA_DDCt`		ΔΔCt ANOVA analysis
+`REPEATED_DDCt`		ΔΔCt ANOVA analysis on repeated measure data
+`TTEST_DDCt`		ΔΔCt method t-test analysis
+`plotOneFactor`		Bar plot of gene expression for single-factor experiments
+`plotThreeFactor`	Bar plot of gene expression for three-factor experiments
+`plotTwoFactor`		Bar plot of gene expression for two-factor experiments
+`efficiency`		Amplification efficiency statistics and standard curves
+`meanTech`		Calculate mean of technical replicates
+`multiplot`		Combine multiple ggplot objects into a single layout
+
+
+
 # Quick start
 ### Installing and loading
 

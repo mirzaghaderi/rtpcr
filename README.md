@@ -208,10 +208,6 @@ p1
 ```
 
 <p align="center">
-<img src="inst/Rplot01.png" width="100%">
-</p>
-
-<p align="center">
 <img src="inst/Rplot02.png" width="100%">
 </p>
 
@@ -230,7 +226,7 @@ the rtpcr plot functions (plotOneFactor, plotTwoFactor, and plotThreeFactor) cre
 | **Add horizontal reference line (alternative)** | `P + geom_hline(yintercept = 0, linetype = "dashed")` |
 
 
-## A full Example
+## A full graph Example
 ```{r eval= F, warning = F}
 # Example 1
 data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
@@ -259,12 +255,16 @@ p1 <- plotTwoFactor(
   legend_position = c(0.2, 0.8))
 
 library(ggplot2)
-p2 + scale_y_continuous(expand = c(-1.5, +1.5)) + 
+p1 + scale_y_continuous(expand = c(-1.5, +1.5)) + 
   theme(axis.text.x = element_text(size = 14, color = "black", angle = 45),
         axis.text.y = element_text(size = 14,color = "black", angle = 0, hjust = 0.5)) +
   theme(legend.text = element_text(colour = "black", size = 14),
         legend.background = element_rect(fill = "transparent"))
 ```
+
+<p align="center">
+<img src="inst/Rplot01.png" width="100%">
+</p>
 
 
 # Checking normality of residuals

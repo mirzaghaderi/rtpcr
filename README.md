@@ -132,7 +132,7 @@ id	treatment	time	Target	Ct_target	E_Ref	Ct_Ref
 ```
 
 ### Functions
-Different functions for DDCt and DCt analysis, and efficiency calculation!
+Different functions for ΔΔCt and ΔCt analysis, and efficiency calculation!
 
 ```r
 # Example

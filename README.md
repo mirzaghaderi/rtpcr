@@ -65,38 +65,52 @@ install.packages("rtpcr")
 ```
 
 
-# Amplification Efficiency
+### Amplification Efficiency
 
-The `efficiency` function calculates the amplification efficiency (E), slope, and $R^2$ statistics for genes. It takes a data frame where the first column contains the dilutions followed by the Ct valye columns fo genes.
+The `efficiency` function calculates the amplification efficiency (E), slope, and $R^2$ statistics for genes. It takes a data frame where the first column contains the dilution ratios followed by the Ct value columns of genes.
 
 ```{r eval= T}
 # Applying the efficiency function
 data <- read.csv(system.file("extdata", "data_efficiency.csv", package = "rtpcr"))
 data
+dilutions	Gene1	Gene2	Gene3
+1.00	25.58	24.25	22.61
+1.00	25.54	24.13	22.68
+1.00	25.50	24.04	22.63
+0.50	26.71	25.56	23.67
+0.50	26.73	25.43	23.65
+0.50	26.87	26.01	23.70
+0.20	28.17	27.37	25.11
+0.20	28.07	26.94	25.12
+0.20	28.11	27.14	25.11
+0.10	29.20	28.05	26.17
+0.10	29.49	28.89	26.15
+0.10	29.07	28.32	26.15
+0.05	30.17	29.50	27.12
+0.05	30.14	29.93	27.14
+0.05	30.12	29.71	27.16
+0.02	31.35	30.69	28.52
+0.02	31.35	30.54	28.57
+0.02	31.35	30.04	28.53
+0.01	32.55	31.12	29.49
+0.01	32.45	31.29	29.48
+0.01	32.28	31.15	29.26
+
+# Analysis
 efficiency(data)
 
 $Efficiency
-     Gene     Slope        R2        E
-1 C2H2.26 -3.388094 0.9965504 1.973110
-2 C2H2.01 -3.528125 0.9713914 1.920599
-3   GAPDH -3.414551 0.9990278 1.962747
+   Gene     Slope        R2        E
+1 Gene1 -3.388094 0.9965504 1.973110
+2 Gene2 -3.528125 0.9713914 1.920599
+3 Gene3 -3.414551 0.9990278 1.962747
 
 $Slope_compare
-$emtrends
- variable log10(dilutions).trend     SE df lower.CL upper.CL
- C2H2.26                   -3.39 0.0856 57    -3.56    -3.22
- C2H2.01                   -3.53 0.0856 57    -3.70    -3.36
- GAPDH                     -3.41 0.0856 57    -3.59    -3.24
-
-Confidence level used: 0.95
- 
 $contrasts
  contrast          estimate    SE df t.ratio p.value
  C2H2.26 - C2H2.01   0.1400 0.121 57   1.157  0.4837
  C2H2.26 - GAPDH     0.0265 0.121 57   0.219  0.9740
  C2H2.01 - GAPDH    -0.1136 0.121 57  -0.938  0.6186
-
-P value adjustment: tukey method for comparing a family of 3 estimates 
 ```
 
 

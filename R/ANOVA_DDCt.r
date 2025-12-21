@@ -161,7 +161,7 @@ ANOVA_DDCt <- function(
   combinedFoldChange <- do.call(rbind, lapply(perGene, function(g) g$Fold_Change))
   rownames(combinedFoldChange) <- NULL
   
-  
+  combinedFoldChange <- combinedFoldChange[, c(ncol(combinedFoldChange), 1:(ncol(combinedFoldChange) - 1))]
   
   # Print automatically
   cat("\nRelative Expression\n")

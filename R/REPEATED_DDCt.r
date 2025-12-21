@@ -165,6 +165,7 @@ REPEATED_DDCt <- function(
   combinedFoldChange <- do.call(rbind, lapply(perGene, function(g) g$Relative_Expression_table))
   rownames(combinedFoldChange) <- NULL
   
+  combinedFoldChange <- combinedFoldChange[, c(ncol(combinedFoldChange), 1:(ncol(combinedFoldChange) - 1))]
 
   # Print combined Fold Change / RE table automatically
   cat("\nCombined Relative Expression Table (all genes)\n")

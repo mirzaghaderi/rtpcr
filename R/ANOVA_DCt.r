@@ -125,6 +125,10 @@ ANOVA_DCt <- function(
   combinedResults <- do.call(rbind, lapply(perGene, function(g) g$Results))
   rownames(combinedResults) <- NULL
   
+  re_col <- which(names(combinedResults) == "RE")
+  
+  combinedResults <- combinedResults[, c(ncol(combinedResults), 1:(ncol(combinedResults) - 1))]
+  
 
   # Print combined results automatically
   cat("\nCombined Expression Table (all genes)\n")

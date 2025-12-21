@@ -230,7 +230,6 @@ the rtpcr plot functions (plotOneFactor, plotTwoFactor, and plotThreeFactor) cre
 | **Change y-axis limits** | `p + scale_y_continuous(limits = c(0, 20))` |
 | **Relabel x-axis** | `p + scale_x_discrete(labels = c("A" = "Control", "B" = "Treatment"))` |
 | **Change fill colors** | `p + scale_fill_brewer(palette = "Set2")` |
-| **Add horizontal reference line (alternative)** | `P + geom_hline(yintercept = 0, linetype = "dashed")` |
 
 
 ## A full graph Example

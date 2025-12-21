@@ -279,7 +279,7 @@ res <- ANOVA_DCt(data1,
                  block = NULL)
 
 residuals <-  resid(res$perGene[["PO"]]$lmCRD)
-# residuals <-  resid(res$perGene[["PO"]]$lm_ANOVA)
+residuals <-  resid(res$perGene[["PO"]]$lm_ANOVA)
 
 shapiro.test(residuals) 
 

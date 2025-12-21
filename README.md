@@ -234,7 +234,7 @@ p + theme(
 
 
 # How to edit ouptput graphs?
-the rtpcr plot functions (plotOneFactor, plotTwoFactor, and plotThreeFactor) create ggplot objects that can furtherbe edited by adding new layers:
+the `rtpcr` plot functions (`plotOneFactor`, `plotTwoFactor`, and `plotThreeFactor`) create ggplot objects that can furtherbe edited by adding new layers:
 
 | Task | Example Code |
 |------|--------------|

@@ -380,7 +380,7 @@ p + theme(
 
 ```
 <p align="center">
-<img src="inst/Rplot03.png" width="90%">
+<img src="inst/Rplot03.png" width="80%">
 </p>
 
 

@@ -149,7 +149,7 @@ id	treatment	time	Target	Ct_target	E_Ref	Ct_Ref
 6	treated		3	2	18.09	2	33.40
 ```
 
-### Functions
+### Analysis 
 Different functions for ΔΔCt and ΔCt analysis, and efficiency calculation!
 
 ```r

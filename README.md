@@ -375,11 +375,12 @@ p + theme(
   panel.border = element_rect(color = "black", linewidth = 0.5)) +
   theme(axis.text.x = element_text(size = 14, color = "black", angle = 45, hjust = 1)) +
   theme(legend.position = "none") +
-  xlab(NULL)
+  xlab(NULL) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
 
 ```
 <p align="center">
-<img src="inst/Rplot03.png" width="100%">
+<img src="inst/Rplot03.png" width="90%">
 </p>
 
 

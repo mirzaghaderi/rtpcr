@@ -154,6 +154,7 @@ Different functions for ΔΔCt and ΔCt analysis, and efficiency calculation!
 
 ```r
 # Example
+data <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
 
 res <- ANOVA_DDCt(
   x = data,
@@ -162,12 +163,14 @@ res <- ANOVA_DDCt(
   numberOfrefGenes = 1,
   block = "block",
   analyseAllTarget = TRUE)
-
-df <- res$combinedFoldChange
 ```
+
+
 ### Output
-As lot of outputs including lm models, ANOVA table, residuals, raw and expression tables are returned.
+As lot of outputs including relative expression table (`res$combinedFoldChange`), lm models (`res3$perGene[["Target"]]$lm`), residuals (`resid(res3$perGene[["Target"]]$lm)`), raw data of each gene (i.e. `res$perGene[["PO"]]$Final_data`)and ANOVA table of each gene (i.e. `res$perGene[["PO"]]$ANOVA_table`) are returned.
 ```r
+df <- res$combinedFoldChange
+
 Relative Expression
 gene   contrast	      RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC
 PO            R	  1.0000  0.0000 1.0000     0.0000  0.0000 0.5506      0.6828      1.4647          0.0000          0.0000

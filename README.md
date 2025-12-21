@@ -220,6 +220,13 @@ p1
 # How to edit ouptput graphs?
 the rtpcr plot functions (plotOneFactor, plotTwoFactor, and plotThreeFactor) create ggplot objects that can furtherbe edited by adding new layers:
 
+### Change y-axis label
+```{r eval= F, warning = F}
+p <- plotOneFactor(...)
+p +
+  ylab("Relative expression (ΔΔCt method)")
+```
+
 ### Add a horizontal reference line
 ```{r eval= F, warning = F}
 p <- plotOneFactor(...)

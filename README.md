@@ -196,7 +196,7 @@ id	treatment	time	Target	Ct_target	E_Ref	Ct_Ref
 ```
 
 ### Analysis 
-Different functions for ΔΔCt and ΔCt analysis, and efficiency calculation!
+Different functions for ΔΔCt and ΔCt analysis, and efficiency calculation! Below is an example of expression analysis using ΔΔCt method.
 
 ```r
 # Example

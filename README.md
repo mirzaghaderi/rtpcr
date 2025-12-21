@@ -61,9 +61,8 @@ For analysis using `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, the required col
 5. Reference genes efficiency and Ct values (a pair column for each reference gene)
 
 The package supports **one or more target gene(s) and reference gene(s)**, supplied as efficiency–Ct column pairs.  
-**Reference gene columns must always appear last.** Each row represents a single biological replicate, corresponding to a non-repeated measures design.
+**Reference gene columns must always appear last.** Each row represents a single biological replicate, corresponding to a non-repeated measures design. A sample input data is presented below.
 
-### Sample input data
 ```r
 
 library(rtpcr)
@@ -106,8 +105,7 @@ The input data frame for `REPEATED_DDCt` must follow this structure:
 2. Factor and block columns (if available), and the `time` variable 
 3. Remaining columns contain efficiency and Ct values for target and reference genes.
 
-Each row corresponds to one observation at a specific time point for a given individual.
-### Sample input data for `REPEATED_DDCt` function
+Each row corresponds to one observation at a specific time point for a given individual. Below is an example:
 ```r
 data <- read.csv(system.file("extdata", "data_repeated_measure_2.csv", package = "rtpcr"))
 data

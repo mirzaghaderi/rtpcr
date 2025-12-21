@@ -28,7 +28,7 @@ https://CRAN.R-project.org/package=rtpcr
 <span style="color: green;">**Graphic enhancement.**</span>
 
 
-# Functions (A brief explanations)
+# Functions (Brief explanations)
 
 | Function            | Description                                                  |
 |---------------------|--------------------------------------------------------------|

@@ -167,7 +167,18 @@ res <- ANOVA_DDCt(
 
 
 ### Output
-As lot of outputs including relative expression table (`res$combinedFoldChange`), lm models (`res3$perGene[["Target"]]$lm`), residuals (`resid(res3$perGene[["Target"]]$lm)`), raw data of each gene (i.e. `res$perGene[["PO"]]$Final_data`)and ANOVA table of each gene (i.e. `res$perGene[["PO"]]$ANOVA_table`) are returned.
+A lot of outputs including relative expression table, lm models, residuals, raw data and ANOVA table of each gene are returned.
+
+| Output name        | R object                              |
+|--------------------|------------------------------------------------------|
+| Expression table   | `res$combinedFoldChange`                              |
+| ANOVA table        | `res$perGene[["PO"]]$ANOVA_table`                     |
+| lm ANOVA           | `res$perGene[["PO"]]$lm_ANOVA`                        |
+| Residuals          | `resid(res$perGene[["PO"]]$lm_ANOVA)`                 |
+| lm ANCOVA          | `res$perGene[["PO"]]$lm_ANCOVA`                       |
+| RE plot            | `res$perGene[["PO"]]$RE_Plot`                         |
+| log2FC plot        | `res$perGene[["PO"]]$log2FC_Plot`                     |
+
 ```r
 df <- res$combinedFoldChange
 

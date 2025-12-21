@@ -181,7 +181,7 @@ A lot of outputs including relative expression table, lm models, residuals, raw 
 
 ```r
 df <- res$combinedFoldChange
-
+df
 Relative Expression
 gene   contrast	      RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC
 PO            R	  1.0000  0.0000 1.0000     0.0000  0.0000 0.5506      0.6828      1.4647          0.0000          0.0000

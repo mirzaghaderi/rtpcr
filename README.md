@@ -67,7 +67,7 @@ install.packages("rtpcr")
 
 ### Amplification Efficiency
 
-The `efficiency` function calculates the amplification efficiency (E), slope, and $R^2$ statistics for genes. It takes a data frame where the first column contains the dilution ratios followed by the Ct value columns of genes.
+The `efficiency` function calculates the amplification efficiency (E), slope, and $R^2$ statistics for genes. It takes a data frame where the first column contains the dilution ratios followed by the $C_t$ value columns of genes.
 
 ```{r eval= T}
 # Applying the efficiency function

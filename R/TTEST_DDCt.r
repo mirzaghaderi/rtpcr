@@ -121,7 +121,7 @@ TTEST_DDCt <- function(x,
                        Factor.level.order = NULL,
                        paired = FALSE, 
                        var.equal = TRUE, 
-                       p.adj = "BH",
+                       p.adj = "none",
                        order = "none", 
                        plotType = "RE") {
   

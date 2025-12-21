@@ -180,31 +180,38 @@ ref2     S vs R	  0.9372 -0.0936 0.9005     0.3145  2.7929 0.2414      0.7927   
 
 ### Sample plot output
 ```r
-data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
- a <- ANOVA_DCt(data, 
-                NumOfFactors = 2,
-                block = "Block", 
-                numberOfrefGenes = 1)
- df <- a$combinedResults
- 
- p1 <- plotTwoFactor(
-   data = df,
-   x_col = "factor2",
-   y_col = "RE",
-   group_col = "factor1",
-   Lower.se_col = "Lower.se.RE",
-   Upper.se_col = "Upper.se.RE",
-   letters_col = "sig",
-   letters_d = 0.2,
-   fill_colors = c("aquamarine4", "gold2"),
-   color = "black",
-   alpha = 1,
-   col_width = 0.7,
-   dodge_width = 0.7,
-   base_size = 16, 
-   legend_position = c(0.2, 0.8))
- 
-p1
+data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
+#Perform analysis first
+res <- ANOVA_DCt(
+  data,
+  NumOfFactors = 3,
+  numberOfrefGenes = 1,
+  block = NULL)
+  
+df <- res$combinedResults
+ df
+ # Generate three-factor bar plot
+ p <- plotThreeFactor(
+  df,
+  x_col = "SA",       
+  y_col = "log2FC",       
+  group_col = "Type",   
+  facet_col = "Conc",    
+  Lower.se_col = "Lower.se.log2FC",
+  Upper.se_col = "Upper.se.log2FC",
+  letters_col = "sig",
+  letters_d = 0.3,
+  col_width = 0.7, 
+  dodge_width = 0.7,
+  fill_colors = c("palegreen3", "skyblue"),
+  color = "black",
+  base_size = 14, 
+  alpha = 1,
+  legend_position = c(0.1, 0.2))
+
+library(ggplot2)
+p + theme(
+  panel.border = element_rect(color = "black", linewidth = 0.5))
 ```
 
 <p align="center">

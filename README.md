@@ -331,6 +331,57 @@ p1 + scale_y_continuous(expand = c(-1.5, +1.5)) +
 <img src="inst/Rplot01.png" width="100%">
 </p>
 
+```r
+# Heffer et al., 2020, PlosOne
+library(dplyr)
+df <- read.csv("E:/Dropbox/rtpcr manuscript/rtpcr/inst/extdata/Heffer2020PlosOne.csv")
+
+res <- ANOVA_DDCt(
+  df,
+  NumOfFactors = 1,
+  mainFactor.column = 1,
+  numberOfrefGenes = 1,
+  block = NULL)
+
+data <- res$combinedFoldChange
+data$gene <- factor(data$gene, levels = unique(data$gene))
+
+data$contrast <- c("Uninjected", "SNC only", "DMSO/RPE", "SNC/RPE",
+                   "Uninjected", "SNC only", "DMSO/RPE", "SNC/RPE",
+                   "Uninjected", "SNC only", "DMSO/RPE", "SNC/RPE",
+                   "Uninjected", "SNC only", "DMSO/RPE", "SNC/RPE",
+                   "Uninjected", "SNC only", "DMSO/RPE", "SNC/RPE",
+                   "Uninjected", "SNC only", "DMSO/RPE", "SNC/RPE")
+data$contrast <- factor(data$contrast, levels = unique(data$contrast))
+p <- plotThreeFactor(
+  data = data,
+  x_col = "contrast",
+  y_col = "RE",
+  group_col = "contrast",
+  facet_col = "gene",
+  Lower.se_col = "Lower.se.RE",
+  Upper.se_col = "Upper.se.RE",
+  letters_col = "sig",
+  letters_d = 0.2,
+  alpha = 1,
+  fill_colors = palette.colors(4, recycle = TRUE),
+  col_width = 0.5,
+  dodge_width = 0.5,
+  base_size = 16, 
+  legend_position = c(0.15, 0.3))
+
+library(ggplot2)
+p + theme(
+  panel.border = element_rect(color = "black", linewidth = 0.5)) +
+  theme(axis.text.x = element_text(size = 14, color = "black", angle = 45, hjust = 1)) +
+  theme(legend.position = "none") +
+  xlab(NULL)
+
+```
+<p align="center">
+<img src="inst/Rplot03.png" width="100%">
+</p>
+
 
 # Checking normality of residuals
 

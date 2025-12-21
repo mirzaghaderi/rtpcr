@@ -220,56 +220,17 @@ p1
 # How to edit ouptput graphs?
 the rtpcr plot functions (plotOneFactor, plotTwoFactor, and plotThreeFactor) create ggplot objects that can furtherbe edited by adding new layers:
 
-### Change y-axis label
-```{r eval= F, warning = F}
-p <- plotOneFactor(...)
-p +
-  ylab("Relative expression (ΔΔCt method)")
-```
-
-### Add a horizontal reference line
-```{r eval= F, warning = F}
-p <- plotOneFactor(...)
-p +
-  geom_hline(yintercept = 0, linetype = "dashed")
-```
-
-### Change y-axis limits
-```{r eval= F, warning = F}
-p <- plotOneFactor(...)
-p +
-  scale_y_continuous(limits = c(0, 20))
-```
-
-### Relabel x-axis
-```{r eval= F, warning = F}
-p <- plotTwoFactor(...)
-p +
-  scale_x_discrete(labels = c("A" = "Control", "B" = "Treatment"))
-```
-
-### Change fill colors
-```{r eval= F, warning = F}
-p <- plotTwoFactor(...)
-p +
-  scale_fill_brewer(palette = "Set2")
-```
-
-### Add a horizontal reference line
-```{r eval= F, warning = F}
-p <- plotOneFactor(...)
-p +
-  geom_hline(yintercept = 0, linetype = "dashed")
-```
-
-### Add a horizontal reference line
-```{r eval= F, warning = F}
-plotOneFactor(...) +
-  geom_hline(yintercept = 0, linetype = "dashed")
-```
+| Task | Example Code |
+|------|--------------|
+| **Change y-axis label** | `p <- plotOneFactor(...)\np + ylab("Relative expression (ΔΔCt method)")` |
+| **Add a horizontal reference line** | `p <- plotOneFactor(...)\np + geom_hline(yintercept = 0, linetype = "dashed")` |
+| **Change y-axis limits** | `p <- plotOneFactor(...)\np + scale_y_continuous(limits = c(0, 20))` |
+| **Relabel x-axis** | `p <- plotTwoFactor(...)\np + scale_x_discrete(labels = c("A" = "Control", "B" = "Treatment"))` |
+| **Change fill colors** | `p <- plotTwoFactor(...)\np + scale_fill_brewer(palette = "Set2")` |
+| **Add horizontal reference line (alternative)** | `plotOneFactor(...) +\n  geom_hline(yintercept = 0, linetype = "dashed")` |
 
 
-
+## A full Exampne
 ```{r eval= F, warning = F}
 # Example 1
 data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))

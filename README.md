@@ -8,7 +8,7 @@ https://github.com/mirzaghaderi/rtpcr
 [![CRAN version](https://www.r-pkg.org/badges/version/rtpcr)](
 https://CRAN.R-project.org/package=rtpcr
 )
-![GitHub Downloads](https://img.shields.io/github/downloads/ghader-mirzaghaderi/rtpcr/total.svg)
+![GitHub Downloads](https://img.shields.io/github/downloads/mirzaghaderi/rtpcr/total.svg)
 
 
 # Multi-target multi-reference qPCR data analysis using 'rtpcr' package

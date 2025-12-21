@@ -222,12 +222,12 @@ the rtpcr plot functions (plotOneFactor, plotTwoFactor, and plotThreeFactor) cre
 
 | Task | Example Code |
 |------|--------------|
-| **Change y-axis label** | `p <- plotOneFactor(...)\n p + ylab("Relative expression (ΔΔCt method)")` |
-| **Add a horizontal reference line** | `p <- plotOneFactor(...)\n p + geom_hline(yintercept = 0, linetype = "dashed")` |
-| **Change y-axis limits** | `p <- plotOneFactor(...)\n p + scale_y_continuous(limits = c(0, 20))` |
-| **Relabel x-axis** | `p <- plotTwoFactor(...)\n p + scale_x_discrete(labels = c("A" = "Control", "B" = "Treatment"))` |
-| **Change fill colors** | `p <- plotTwoFactor(...)\n p + scale_fill_brewer(palette = "Set2")` |
-| **Add horizontal reference line (alternative)** | `plotOneFactor(...) +\n  geom_hline(yintercept = 0, linetype = "dashed")` |
+| **Change y-axis label** | `p + ylab("Relative expression (ΔΔCt method)")` |
+| **Add a horizontal reference line** | `p + geom_hline(yintercept = 0, linetype = "dashed")` |
+| **Change y-axis limits** | `p + scale_y_continuous(limits = c(0, 20))` |
+| **Relabel x-axis** | `p <- `p + scale_x_discrete(labels = c("A" = "Control", "B" = "Treatment"))` |
+| **Change fill colors** | `p + scale_fill_brewer(palette = "Set2")` |
+| **Add horizontal reference line (alternative)** | `P + geom_hline(yintercept = 0, linetype = "dashed")` |
 
 
 ## A full Example

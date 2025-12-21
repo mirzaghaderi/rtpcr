@@ -216,6 +216,144 @@ p1
 </p>
 
 
+
+# How to edit ouptput graphs?
+the rtpcr plot functions (plotOneFactor, plotTwoFactor, and plotThreeFactor) create ggplot objects that can furtherbe edited by adding new layers:
+
+### Add a horizontal reference line
+```{r eval= F, warning = F}
+p <- plotOneFactor(...)
+p +
+  geom_hline(yintercept = 0, linetype = "dashed")
+```
+
+### Change y-axis limits
+```{r eval= F, warning = F}
+p <- plotOneFactor(...)
+p +
+  scale_y_continuous(limits = c(0, 20))
+```
+
+### Relabel x-axis
+```{r eval= F, warning = F}
+p <- plotTwoFactor(...)
+p +
+  scale_x_discrete(labels = c("A" = "Control", "B" = "Treatment"))
+```
+
+### Change fill colors
+```{r eval= F, warning = F}
+p <- plotTwoFactor(...)
+p +
+  scale_fill_brewer(palette = "Set2")
+```
+
+### Add a horizontal reference line
+```{r eval= F, warning = F}
+p <- plotOneFactor(...)
+p +
+  geom_hline(yintercept = 0, linetype = "dashed")
+```
+
+### Add a horizontal reference line
+```{r eval= F, warning = F}
+plotOneFactor(...) +
+  geom_hline(yintercept = 0, linetype = "dashed")
+```
+
+
+
+```{r eval= F, warning = F}
+# Example 1
+data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
+res <- ANOVA_DCt(data, 
+      NumOfFactors = 2,
+      block = "block",
+      numberOfrefGenes = 1)
+
+df <- res$combinedResults
+
+p1 <- plotTwoFactor(
+  data = df,
+  x_col = "factor2",
+  y_col = "RE",
+  group_col = "factor1",
+  Lower.se_col = "Lower.se.RE",
+  Upper.se_col = "Upper.se.RE",
+  letters_col = "sig",
+  letters_d = 0.2,
+  fill_colors = c("aquamarine4", "gold2"),
+  color = "black",
+  alpha = 1,
+  col_width = 0.7,
+  dodge_width = 0.7,
+  base_size = 16, 
+  legend_position = c(0.2, 0.8))
+
+library(ggplot2)
+p2 + scale_y_continuous(expand = c(-1.5, +1.5)) + 
+  theme(axis.text.x = element_text(size = 14, color = "black", angle = 45),
+        axis.text.y = element_text(size = 14,color = "black", angle = 0, hjust = 0.5)) +
+  theme(legend.text = element_text(colour = "black", size = 14),
+        legend.background = element_rect(fill = "transparent"))
+```
+
+
+# Checking normality of residuals
+
+If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, one could use non-parametric tests such as the Mann-Whitney test (also known as the Wilcoxon rank-sum test), `wilcox.test()`, which is an alternative to `t.test`, or the `kruskal.test()` test which alternative to one-way analysis of variance, to test the difference between medians of the populations using independent samples. However, the `t.test` function (along with the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis. Residuals for `lm` (from `ANOVA_DCt` and `ANOVA_DDCt` functions) and `lmer` (from `REPEATED_DDCt` function) objects can be extracted and plotted as follow:
+
+```{r eval= T, eval= T, fig.height = 5, fig.width = 10, fig.align = 'center', fig.cap = "QQ-plot for the normality assessment of the residuals derived from `t.test` or `lm` functions."}
+data1 <- read.csv(system.file("extdata", "data_1factor.csv", package = "rtpcr"))
+res <- ANOVA_DCt(data1,
+                 NumOfFactors = 1,
+                 numberOfrefGenes = 1, 
+                 block = NULL)
+
+residuals <-  resid(res$perGene[["PO"]]$lmCRD)
+# residuals <-  resid(res$perGene[["PO"]]$lm_ANOVA)
+
+shapiro.test(residuals) 
+
+par(mfrow = c(1,2))
+plot(residuals)
+qqnorm(residuals)
+qqline(residuals, col = "red")
+
+data2 <- read.csv(system.file("extdata", "data_1factor.csv", package = "rtpcr"))
+res2 <- ANOVA_DCt(data2,
+                 NumOfFactors = 1,
+                 numberOfrefGenes = 1, 
+                 block = NULL)
+resid(res2$perGene[["PO"]]$lmCRD)
+
+data3 <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
+res3 <- REPEATED_DDCt(
+  data3,
+  NumOfFactors = 1,
+  numberOfrefGenes = 1,
+  factor = "time",
+  calibratorLevel = "1",
+  block = NULL
+)
+residuals <- resid(res3$perGene[["Target"]]$lm)
+```
+
+
+
+# Mean of technical replicates
+Calculating the mean of technical replicates and getting an output table appropriate for subsequent ANOVA analysis can be done using the `meanTech` function. For this, the input data set should follow the column arrangement of the following example data. Grouping columns must be specified under the `groups` argument of the `meanTech` function.
+
+```{r eval= T}
+# See example input data frame:
+data <- read.csv(system.file("extdata", "data_withTechRep.csv", package = "rtpcr"))
+data
+
+# Calculating mean of technical replicates
+meanTech(data, groups = 1:4)
+```
+
+
 # Contact 
 Email: gh.mirzaghaderi at uok.ac.ir
 

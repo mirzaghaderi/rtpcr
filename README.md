@@ -51,7 +51,7 @@ Further information about how to use rtpcr package can be found
 <a href="https://cran.r-project.org/web/packages/rtpcr/vignettes/vignette.html">here </a>.
 
 
-### Data structure
+### Data structure for `ANOVA_DDCt`, `ANOVA_DCt` and `TTEST_DDCt` functions
 Input data structure is important and should be in wide format:
 For analysis using `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, the required column structure is:
 

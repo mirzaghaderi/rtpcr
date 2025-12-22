@@ -286,7 +286,7 @@ the `rtpcr` plot functions (`plotOneFactor`, `plotTwoFactor`, and `plotThreeFact
 |------|--------------|
 | **Change y-axis label** | `p + ylab("Relative expression (ΔΔCt method)")` |
 | **Add a horizontal reference line** | `p + geom_hline(yintercept = 0, linetype = "dashed")` |
-| **Change y-axis limits** | `p + scale_y_continuous(limits = c(0, 20))` |
+| **Change y-axis limits** | `p + scale_y_continuous(expand = expansion(mult = c(0, 0.1)))` |
 | **Relabel x-axis** | `p + scale_x_discrete(labels = c("A" = "Control", "B" = "Treatment"))` |
 | **Change fill colors** | `p + scale_fill_brewer(palette = "Set2")` |
 

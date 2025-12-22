@@ -453,28 +453,69 @@
   factors <- names(x)[vapply(x, is.factor, logical(1))]
 
   
+  # # Check if there is block
+  # if (is.null(block)) {
+  #   
+  #   # ANOVA based on factorial design
+  #   formula_ANOVA <- paste("wDCt ~", paste(factors, collapse = " * "), "+ (1 | rep)")
+  #   base::suppressMessages(lmf <- lmerTest::lmer(formula_ANOVA, data = x))
+  #   ANOVA <- stats::anova(lmf)
+  #   # ANCOVA 
+  #   formula_ANCOVA <- paste("wDCt ~", paste(rev(factors), collapse = " + "), "+ (1 | rep)")
+  #   base::suppressMessages(lmc <- lmerTest::lmer(formula_ANCOVA, data = x))
+  #   ANCOVA <- stats::anova(lmc)
+  #   
+  # } else {
+  #   # If ANOVA based on factorial design was desired with blocking factor:
+  #   formula_ANOVA <- paste("wDCt ~ block +", paste(factors, collapse = " * "), "+ (1 | rep)")
+  #   lmfb <- lmerTest::lmer(formula_ANOVA, data = x)
+  #   ANOVA <- stats::anova(lmfb)
+  #   # ANCOVA 
+  #   formula_ANCOVA <- paste("wDCt ~ block +", paste(rev(factors), collapse = " + "), "+ (1 | rep)")
+  #   lmcb <- lmerTest::lmer(formula_ANCOVA, data = x)
+  #   ANCOVA <- stats::anova(lmcb)
+  # }
+  
+  
+  
   # Check if there is block
   if (is.null(block)) {
     
     # ANOVA based on factorial design
-    formula_ANOVA <- paste("wDCt ~", paste(factors, collapse = " * "), "+ (1 | rep)")
-    base::suppressMessages(lmf <- lmerTest::lmer(formula_ANOVA, data = x))
+    formula_ANOVA <- as.formula(
+      paste("wDCt ~", paste(factors, collapse = " * "))
+    )
+    lmf <- lm(formula_ANOVA, data = x)
     ANOVA <- stats::anova(lmf)
-    # ANCOVA 
-    formula_ANCOVA <- paste("wDCt ~", paste(rev(factors), collapse = " + "), "+ (1 | rep)")
-    base::suppressMessages(lmc <- lmerTest::lmer(formula_ANCOVA, data = x))
+    
+    # ANCOVA (other factors as covariates)
+    formula_ANCOVA <- as.formula(
+      paste("wDCt ~", paste(rev(factors), collapse = " + "))
+    )
+    lmc <- lm(formula_ANCOVA, data = x)
     ANCOVA <- stats::anova(lmc)
     
   } else {
-    # If ANOVA based on factorial design was desired with blocking factor:
-    formula_ANOVA <- paste("wDCt ~ block +", paste(factors, collapse = " * "), "+ (1 | rep)")
-    lmfb <- lmerTest::lmer(formula_ANOVA, data = x)
+    
+    # ANOVA with blocking factor (block treated as fixed)
+    formula_ANOVA <- as.formula(
+      paste("wDCt ~ block +", paste(factors, collapse = " * "))
+    )
+    lmfb <- lm(formula_ANOVA, data = x)
     ANOVA <- stats::anova(lmfb)
-    # ANCOVA 
-    formula_ANCOVA <- paste("wDCt ~ block +", paste(rev(factors), collapse = " + "), "+ (1 | rep)")
-    lmcb <- lmerTest::lmer(formula_ANCOVA, data = x)
+    
+    # ANCOVA with blocking factor
+    formula_ANCOVA <- as.formula(
+      paste("wDCt ~ block +", paste(rev(factors), collapse = " + "))
+    )
+    lmcb <- lm(formula_ANCOVA, data = x)
     ANCOVA <- stats::anova(lmcb)
+    
   }
+  
+  
+  
+  
   
   
   # Type of analysis: ancova or anova
@@ -1110,6 +1151,31 @@
     x[[i]] <- factor(x[[i]], levels = unique(x[[i]]))
   }
   
+  
+  
+  
+  # # model formula 
+  # if (is.null(block)) {
+  #   if (is.null(factors)) {
+  #     formula <- wDCt ~ time + (1 | id)
+  #   } else {
+  #     formula <- as.formula(
+  #       paste("wDCt ~ time *", paste(factors, collapse = " * "), "+ (1 | id)")
+  #     )
+  #   }
+  # } else {
+  #   if (is.null(factors)) {
+  #     formula <- wDCt ~ time + (1 | id) + (1 | block/id)
+  #   } else {
+  #     formula <- as.formula(
+  #       paste("wDCt ~ time *", paste(factors, collapse = " * "),
+  #             "+ (1 | id) + (1 | block/id)")
+  #     )
+  #   }
+  # }
+  
+  
+  
   # model formula 
   if (is.null(block)) {
     if (is.null(factors)) {
@@ -1121,11 +1187,11 @@
     }
   } else {
     if (is.null(factors)) {
-      formula <- wDCt ~ time + (1 | id) + (1 | block/id)
+      formula <- wDCt ~ time + (1 | id) + (1 | block)
     } else {
       formula <- as.formula(
         paste("wDCt ~ time *", paste(factors, collapse = " * "),
-              "+ (1 | id) + (1 | block/id)")
+              "+ (1 | id) + (1 | block)")
       )
     }
   }

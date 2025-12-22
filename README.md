@@ -168,7 +168,7 @@ S	L3	2	4	2	27.81	2	29.34	2	30.11	2	27.24
 The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data).  
 The input data frame for `REPEATED_DDCt` must follow this structure:
 
-1. The **first column** is `id`, a unique identifier for each individual  
+1. The **first column** is `id`, a unique identifier for each individual (subject)  
 2. Factor and block columns (if available), and the `time` variable 
 3. Remaining columns contain efficiency and Ct values for target and reference genes.
 

@@ -11,7 +11,7 @@ https://CRAN.R-project.org/package=rtpcr
 
 
 
-# Multi-target multi-reference qPCR data analysis using `rtpcr` package
+# Multi-target multi-reference qPCR data analysis using **`rtpcr`** package
 
 # Overview
 
@@ -70,7 +70,7 @@ install.packages("rtpcr")
 
 ### Amplification Efficiency
 
-The `efficiency` function calculates the amplification efficiency (E), slope, and R² statistics for genes. It takes a data frame in which the first column contains the dilution ratios, followed by the Ct value columns for each gene.
+The `efficiency` function calculates the amplification efficiency (E), slope, and R² statistics for genes, and performs pairwise comparisons of slopes. It takes a data frame in which the first column contains the dilution ratios, followed by the Ct value columns for each gene.
 
 ```{r eval= T}
 # Applying the efficiency function

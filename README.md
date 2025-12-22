@@ -379,7 +379,10 @@ p + theme(
   panel.border = element_rect(color = "black", linewidth = 0.5)) +
   theme(axis.text.x = element_text(size = 14, color = "black", angle = 45, hjust = 1)) +
   xlab(NULL) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
+  theme(
+    strip.background = element_blank(),  # removes the faceting gray background
+    strip.text = element_text(face = "bold")) # optional: keeps the text visible
 ```
 <p align="center">
 <img src="inst/Rplot03.png" width="80%">

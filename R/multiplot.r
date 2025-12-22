@@ -46,7 +46,7 @@
 #'   
 #' df <- out2$combinedResults
 #'
-#' p2 <- plotOneFactor(
+#' p2 <- plotFactor(
 #'   df,
 #'   x_col = "SA",
 #'   y_col = "RE",

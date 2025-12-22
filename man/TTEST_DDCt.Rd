@@ -2,7 +2,7 @@
 % Please edit documentation in R/TTEST_DDCt.r
 \name{TTEST_DDCt}
 \alias{TTEST_DDCt}
-\title{Expression analysis of target genes using the \eqn{\Delta\Delta C_T} method and t-test}
+\title{\eqn{\Delta\Delta C_T} method t-test analysis}
 \usage{
 TTEST_DDCt(
   x,
@@ -10,7 +10,7 @@ TTEST_DDCt(
   Factor.level.order = NULL,
   paired = FALSE,
   var.equal = TRUE,
-  p.adj = "BH",
+  p.adj = "none",
   order = "none",
   plotType = "RE"
 )
@@ -57,7 +57,7 @@ of one or more target genes evaluated under two experimental conditions
 (e.g. control vs treatment).
 }
 \details{
-Fold change values are computed using one or more reference genes for normalization.
+Relative expression values are computed using one or more reference genes for normalization.
 Both paired and unpaired experimental designs are supported.
 
 Paired samples in quantitative PCR refer to measurements collected from the same

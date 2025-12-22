@@ -2,7 +2,7 @@
 % Please edit documentation in R/REPEATED_DDCt.r
 \name{REPEATED_DDCt}
 \alias{REPEATED_DDCt}
-\title{Multi-target Delta-Delta Ct ANOVA analysis}
+\title{\eqn{\Delta\Delta C_T} ANOVA analysis on repeated measure data}
 \usage{
 REPEATED_DDCt(
   x,
@@ -18,11 +18,17 @@ REPEATED_DDCt(
 )
 }
 \arguments{
-\item{x}{A data frame containing experimental design columns, target gene
-E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene
-columns must be located at the end of the data frame.}
+\item{x}{input data frame in which the first column is id, 
+followed by the factor column(s) which include at least time. 
+The first level of time in data frame is used as calibrator or reference level.
+Additional factor(s) may also be present. Other columns are efficiency and Ct values of target and reference genes.
+ \strong{NOTE:} In the "id" column, a unique number is assigned to each individual from which samples have been taken over time, 
+for example see \code{data_repeated_measure_1}, 
+all the three number 1 indicate one individual which has been sampled over three different time courses.
+See example data sets or refer \href{../doc/vignette.html}{\code{vignette}}, section "data structure and column arrangement" for details.}
 
-\item{NumOfFactors}{Integer. Number of experimental factor columns.}
+\item{NumOfFactors}{Integer. Number of experimental factor columns
+(excluding optional \code{block}).}
 
 \item{numberOfrefGenes}{Integer. Number of reference genes. Each reference gene
 must be represented by two columns (E and Ct).}
@@ -30,7 +36,8 @@ must be represented by two columns (E and Ct).}
 \item{factor}{Character string specifying the factor for which fold changes are analysed
 (commonly \code{"time"}).}
 
-\item{calibratorLevel}{A level of \code{factor} to be used as the calibrator (reference level).}
+\item{calibratorLevel}{A level of \code{factor} to be used as the calibrator (reference level) which is the reference level or sample that all others are compared to. Examples are untreated 
+or time 0.}
 
 \item{block}{Optional blocking factor column name. If supplied, block effects are treated
 as random effects.}
@@ -51,8 +58,9 @@ A data frame combining DCt method expression tables for all target genes.
 The output includes all columns.
 }
 \description{
-Performs Delta-Delta Ct (DCt) analysis for multiple target genes by
-applying DCt method to each target gene. Target genes must be provided as paired
+\code{REPEATED_DDCt} function performs \eqn{\Delta \Delta C_T} method
+analysis of observations repeatedly taken over different time courses. 
+Data may be obtained over time from a uni- or multi-factorial experiment. Target genes must be provided as paired
 efficiency (E) and Ct columns followed by the columns and the reference gene columns.
 }
 \details{

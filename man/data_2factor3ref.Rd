@@ -10,14 +10,14 @@ A data frame with 18 observations and 8 variables:
   \item{factor1}{First experimental factor}
   \item{factor2}{Second experimental factor}
   \item{Rep}{Biological replicates}
-  \item{E_PO}{Mean amplification efficiency of PO gene}
+  \item{PO}{Mean amplification efficiency of PO gene}
   \item{Ct_PO}{Ct values of PO gene. Each is the mean of technical replicates}
-  \item{E_GAPDH}{Mean amplification efficiency of GAPDH gene}
+  \item{GAPDH}{Mean amplification efficiency of GAPDH gene}
   \item{Ct_GAPDH}{Ct values of GAPDH gene. Each is the mean of technical replicates}
-  \item{ref2E}{Mean amplification efficiency of ref2 gene}
-  \item{ref2Ct}{Ct values of ref2 gene. Each is the mean of technical replicates}
-  \item{ref3E}{Mean amplification efficiency of ref3 gene}
-  \item{ref3Ct}{Ct values of GAPDH gene. Each is the mean of technical replicates}
+  \item{ref2}{Mean amplification efficiency of ref2 gene}
+  \item{Ct_ref2}{Ct values of ref2 gene. Each is the mean of technical replicates}
+  \item{ref3}{Mean amplification efficiency of ref3 gene}
+  \item{Ct_ref3}{Ct values of GAPDH gene. Each is the mean of technical replicates}
 }
 }
 \source{

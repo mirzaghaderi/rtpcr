@@ -2,7 +2,7 @@
 % Please edit documentation in R/ANOVA_DDCt.r
 \name{ANOVA_DDCt}
 \alias{ANOVA_DDCt}
-\title{Multi-target Delta-Delta Ct ANOVA analysis}
+\title{\eqn{\Delta\Delta C_T} ANOVA analysis}
 \usage{
 ANOVA_DDCt(
   x,
@@ -58,21 +58,29 @@ Alternatively, a character vector specifying the names (names of their Efficienc
 to be analysed.}
 }
 \value{
-A data frame combining DDCt method expression tables for all target genes.
+A data frame combining \eqn{\Delta\Delta C_T} expression tables for all target genes.
 }
 \description{
-Performs Delta-Delta Ct (DDCt) analysis for multiple target genes by
-applying DDCt method to each target gene present
+Apply \eqn{\Delta\Delta C_T} analysis to each target gene
 in the input data frame. Target genes must be provided as paired
 efficiency (E) and Ct columns located between the experimental design
 columns and the reference gene columns.
 }
 \details{
-Column layout requirements for \code{x}:
-\itemize{
-  \item Target gene columns: E/Ct pairs located between design and reference columns
-  \item Reference gene columns: \code{2 * numberOfrefGenes} columns located at the end
-}
+\eqn{\Delta\Delta C_T} analysis is performed for 
+the `mainFactor.column` based on a full model factorial 
+experiment by default. However, if `ancova`, the `analysisType` argument,
+analysis of covariance is performed for the levels of the `mainFactor.column` and the other factors are 
+treated as covariates. However in ANCOVA table, if the interaction between the main factor and the covariate is significant, ANCOVA is not appropriate. 
+ANCOVA is basically used when a factor is affected by uncontrolled quantitative covariate(s). 
+For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may 
+also be affected by drought. Since we already know that temperature affects the target gene, we are 
+interested to know if the gene expression is also altered by the drought levels. We can design an 
+experiment to understand the gene behavior at both temperature and drought levels at the same time. 
+The drought is another factor (the covariate) that may affect the expression of our gene under the 
+levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA 
+or using ANOVA based on a factorial experiment. ANCOVA is done  
+even there is only one factor (without covariate or factor  variable).
 }
 \examples{
 data1 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))

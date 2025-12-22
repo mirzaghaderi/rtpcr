@@ -36,9 +36,7 @@ https://CRAN.R-project.org/package=rtpcr
 | `ANOVA_DDCt`        | ΔΔCt ANOVA analysis                                          |
 | `REPEATED_DDCt`     | ΔΔCt ANOVA analysis for repeated-measures data               |
 | `TTEST_DDCt`        | ΔΔCt method *t*-test analysis                                |
-| `plotOneFactor`     | Bar plot of gene expression for single-factor experiments    |
-| `plotTwoFactor`     | Bar plot of gene expression for two-factor experiments       |
-| `plotThreeFactor`   | Bar plot of gene expression for three-factor experiments     |
+| `plotFactor`        | Bar plot of gene expression for one-, two- or three-factor experiments    |
 | `efficiency`        | Amplification efficiency statistics and standard curves      |
 | `meanTech`          | Calculate mean of technical replicates                       |
 | `multiplot`         | Combine multiple ggplot objects into a single layout          |
@@ -250,7 +248,7 @@ res <- ANOVA_DCt(
 df <- res$combinedResults
  df
  # Generate three-factor bar plot
- p <- plotThreeFactor(
+ p <- plotFactor(
   df,
   x_col = "SA",       
   y_col = "log2FC",       
@@ -280,7 +278,7 @@ p + theme(
 
 
 # How to edit ouptput graphs?
-the `rtpcr` plot functions (`plotOneFactor`, `plotTwoFactor`, and `plotThreeFactor`) create ggplot objects that can furtherbe edited by adding new layers:
+the `rtpcr` plotFactor function create ggplot objects for one to three factor table that can furtherbe edited by adding new layers:
 
 | Task | Example Code |
 |------|--------------|
@@ -302,7 +300,7 @@ res <- ANOVA_DCt(data,
 
 df <- res$combinedResults
 
-p1 <- plotTwoFactor(
+p1 <- plotFactor(
   data = df,
   x_col = "factor2",
   y_col = "RE",
@@ -320,11 +318,12 @@ p1 <- plotTwoFactor(
   legend_position = c(0.2, 0.8))
 
 library(ggplot2)
-p1 + scale_y_continuous(expand = c(-1.5, +1.5)) + 
+p1 + 
   theme(axis.text.x = element_text(size = 14, color = "black", angle = 45),
         axis.text.y = element_text(size = 14,color = "black", angle = 0, hjust = 0.5)) +
   theme(legend.text = element_text(colour = "black", size = 14),
-        legend.background = element_rect(fill = "transparent"))
+        legend.background = element_rect(fill = "transparent")) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
 ```
 
 <p align="center">
@@ -334,7 +333,7 @@ p1 + scale_y_continuous(expand = c(-1.5, +1.5)) +
 ```r
 # Heffer et al., 2020, PlosOne
 library(dplyr)
-df <- read.csv("E:/Dropbox/rtpcr manuscript/rtpcr/inst/extdata/Heffer2020PlosOne.csv")
+df <- read.csv(system.file("extdata", "Heffer2020PlosOne.csv", package = "rtpcr"))
 
 res <- ANOVA_DDCt(
   df,
@@ -352,7 +351,7 @@ data$contrast <- sub(" .*", "", data$contrast)
 # Converting the 'contrast' column as factor and fix the current level order
 data$contrast <- factor(data$contrast, levels = unique(data$contrast))
 
-p <- plotThreeFactor(
+p <- plotFactor(
   data = data,
   x_col = "contrast",
   y_col = "RE",

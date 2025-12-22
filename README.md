@@ -11,7 +11,7 @@ https://CRAN.R-project.org/package=rtpcr
 
 
 
-# Multi-target multi-reference qPCR data analysis using 'rtpcr' package
+# Multi-target multi-reference qPCR data analysis using `rtpcr` package
 
 # Overview
 
@@ -21,7 +21,7 @@ publication-ready visualizations. The package implements a general calculation
 framework described by Ganger et al. (2017) and Taylor et al. (2019), covering
 both the Livak and Pfaffl methods.
 
-## Improvement in the current GitHub version rtpcr_v2.1.1:
+## Improvement in the current GitHub version `rtpcr_v2.1.1`:
 
 <span style="color: green;">**Same data structure for all functions.**</span>
  

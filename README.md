@@ -371,8 +371,9 @@ library(ggplot2)
 p + theme(
   panel.border = element_rect(color = "black", linewidth = 0.5)) +
   theme(axis.text.x = element_text(size = 14, color = "black", angle = 45, hjust = 1)) +
-  theme(legend.position = "none") +
-  xlab(NULL) 
+  theme(legend.position = "none")  +
+  xlab(NULL) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
 
 ```
 <p align="center">

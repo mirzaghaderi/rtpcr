@@ -346,9 +346,12 @@ res <- ANOVA_DDCt(
 data <- res$combinedFoldChange
 data$gene <- factor(data$gene, levels = unique(data$gene))
 
-# Selecting only the first words in 'contrast' column.
+# Selecting only the first words in 'contrast' column to be used as the x-axis labels.
 data$contrast <- sub(" .*", "", data$contrast)
+
+# Converting the 'contrast' column as factor and fix the current level order
 data$contrast <- factor(data$contrast, levels = unique(data$contrast))
+
 p <- plotThreeFactor(
   data = data,
   x_col = "contrast",

@@ -346,12 +346,8 @@ res <- ANOVA_DDCt(
 data <- res$combinedFoldChange
 data$gene <- factor(data$gene, levels = unique(data$gene))
 
-data$contrast <- c("Uninjected", "SNC only", "DMSO/RPE", "SNC/RPE",
-                   "Uninjected", "SNC only", "DMSO/RPE", "SNC/RPE",
-                   "Uninjected", "SNC only", "DMSO/RPE", "SNC/RPE",
-                   "Uninjected", "SNC only", "DMSO/RPE", "SNC/RPE",
-                   "Uninjected", "SNC only", "DMSO/RPE", "SNC/RPE",
-                   "Uninjected", "SNC only", "DMSO/RPE", "SNC/RPE")
+# Selecting only the first words in 'contrast' column.
+data$contrast <- sub(" .*", "", data$contrast)
 data$contrast <- factor(data$contrast, levels = unique(data$contrast))
 p <- plotThreeFactor(
   data = data,
@@ -365,6 +361,7 @@ p <- plotThreeFactor(
   letters_d = 0.2,
   alpha = 1,
   fill_colors = palette.colors(4, recycle = TRUE),
+  color = "black",
   col_width = 0.5,
   dodge_width = 0.5,
   base_size = 16, 
@@ -375,8 +372,7 @@ p + theme(
   panel.border = element_rect(color = "black", linewidth = 0.5)) +
   theme(axis.text.x = element_text(size = 14, color = "black", angle = 45, hjust = 1)) +
   theme(legend.position = "none") +
-  xlab(NULL) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
+  xlab(NULL) 
 
 ```
 <p align="center">

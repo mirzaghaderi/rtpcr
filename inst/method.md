@@ -1,4 +1,4 @@
-# Basic analysis method
+# Basic analysis method of qPCR data
 
 
 Real-time polymerase chain reaction (real-time PCR) is widely used in biological studies. Various analysis methods are employed on the real-time PCR data to measure the mRNA levels under different experimental conditions. 

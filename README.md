@@ -140,19 +140,19 @@ The package supports **one or more target gene(s) and reference gene(s)**, suppl
 The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the rep column contains identifiers for each individual (id or subject). For example, all rows with a `1` correspond to a single individual, all rows with a `2` correspond to another individual, and so on. Each row represents one observation at a specific time point for a given individual. Below is an example of a properly arranged dataset from a repeated-measures experiment:
 
 ```r
-data <- read.csv(system.file("extdata", "data_repeated_measure_2.csv", package = "rtpcr"))
+data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 data
 
-time	id	E_Target	Ct_target	E_Ref	Ct_Ref
-1	1	2	18.92	2	32.77
-1	2	2	15.82	2	32.45
-1	3	2	19.84	2	31.62
-2	1	2	19.46	2	33.03
-2	2	2	17.56	2	33.24
-2	3	2	19.74	2	32.08
-3	1	2	15.73	2	32.95
-3	2	2	17.21	2	33.64
-3	3	2	18.09	2	33.40
+time	id  E_Target	Ct_target   E_Ref      Ct_Ref
+   1	 1	   2	    18.92	2	32.77
+   1	 2	   2	    15.82	2	32.45
+   1	 3	   2	    19.84	2	31.62
+   2	 1	   2	    19.46	2	33.03
+   2	 2	   2	    17.56	2	33.24
+   2	 3	   2	    19.74	2	32.08
+   3	 1	   2	    15.73	2	32.95
+   3	 2	   2	    17.21	2	33.64
+   3	 3	   2	    18.09	2	33.40
 
 res <- REPEATED_DDCt(
   x,
@@ -163,7 +163,6 @@ res <- REPEATED_DDCt(
   block = NULL)
 
 
-x$time <- factor(x$time)
 ANOVA_DDCt(
   x,
   mainFactor.column = 1,

@@ -157,15 +157,22 @@ time	id  E_Target	Ct_target   E_Ref      Ct_Ref
    3	 2	  	2	    17.21	2	33.64
    3	 3	   	2	    18.09	2	33.40
 
-res <- REPEATED_DDCt(
-  x,
+# Repeated measure analysis
+REPEATED_DDCt(
+  data,
   NumOfFactors = 1,
   numberOfrefGenes = 1,
   factor = "time",
   calibratorLevel = "1",
   block = NULL)
 
+# Paired t.test
+TTEST_DDCt(
+  data, 
+  numberOfrefGenes = 1, 
+  paired = T)
 
+# Anova analysis
 ANOVA_DDCt(
   x,
   mainFactor.column = 1,

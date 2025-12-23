@@ -166,11 +166,13 @@ REPEATED_DDCt(
   calibratorLevel = "1",
   block = NULL)
 
+
 # Paired t.test
 TTEST_DDCt(
   data, 
   numberOfrefGenes = 1, 
   paired = T)
+
 
 # Anova analysis
 ANOVA_DDCt(

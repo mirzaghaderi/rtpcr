@@ -175,12 +175,12 @@ ANOVA_DDCt(
   numberOfrefGenes = 1,
   block = NULL)
 
+
 # Paired t.test (equivalent to repeated measure analusis)
 TTEST_DDCt(
   data[1:6,], 
   numberOfrefGenes = 1, 
   paired = T)
-
 
 
 # Anova analysis

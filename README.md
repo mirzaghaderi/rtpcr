@@ -161,15 +161,15 @@ untreated	2	3	2	19.16	2	34.51
 untreated	3	1	2	19.16	2	33.9
 untreated	3	2	2	20.91	2	33.16
 untreated	3	3	2	19.91	2	34.33
-treated	1	4	2	18.92	2	32.77
-treated	1	5	2	15.82	2	32.45
-treated	1	6	2	19.84	2	31.62
-treated	2	4	2	19.46	2	33.03
-treated	2	5	2	17.56	2	33.24
-treated	2	6	2	19.74	2	32.08
-treated	3	4	2	15.73	2	32.95
-treated	3	5	2	17.21	2	33.64
-treated	3	6	2	18.09	2	33.4
+treated		1	4	2	18.92	2	32.77
+treated		1	5	2	15.82	2	32.45
+treated		1	6	2	19.84	2	31.62
+treated		2	4	2	19.46	2	33.03
+treated		2	5	2	17.56	2	33.24
+treated		2	6	2	19.74	2	32.08
+treated		3	4	2	15.73	2	32.95
+treated		3	5	2	17.21	2	33.64
+treated		3	6	2	18.09	2	33.4
 
 ```
 

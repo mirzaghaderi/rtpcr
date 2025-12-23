@@ -17,8 +17,8 @@ https://CRAN.R-project.org/package=rtpcr
 
 Tools for analysis of RT-qPCR gene expression data using ΔCt and ΔΔCt methods,
 including t-tests, ANOVA, ANCOVA, repeated-measures models, and
-publication-ready visualizations. The package implements a general calculation
-framework described by Ganger et al. (2017) and Taylor et al. (2019), covering
+publication-ready visualizations. The package implements a  [general calculation
+method](inst/method.md) described by Ganger et al. (2017) and Taylor et al. (2019), covering
 both the Livak and Pfaffl methods.
 
 ## Improvement in the current GitHub version `rtpcr_v2.1.1`:
@@ -34,6 +34,7 @@ both the Livak and Pfaffl methods.
 
 
 # Functions (Brief explanations)
+The `rtpcr` package gets efficiency (E) the Ct values of genes and performs different analyses using the following functions.
 
 | Function            | Description                                                  |
 |---------------------|--------------------------------------------------------------|

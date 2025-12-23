@@ -6,17 +6,40 @@ Real-time polymerase chain reaction (real-time PCR) is widely used in biological
 and <a href="https://doi.org/10.1016/j.tibtech.2018.12.002">Taylor et al. (2019)</a>, matching both <a href="https://doi.org/10.1006/meth.2001.1262">Livak and Schmittgen (2001)</a> and <a href="https://doi.org/10.1093/nar/30.9.e36">Pfaffl et al. (2002) </a> methods  was used. Based on the experimental conditions, the functions of the ‘rtpcr’ package use t-test (for experiments with a two-level factor), analysis of variance, analysis of covariance (ANCOVA) or analysis of repeated measure data to calculate the fold change (FC, ${\Delta\Delta C_t}$ method) or relative expression (RE, ${\Delta C_t}$ method). The functions further provide standard errors and confidence interval for means, apply statistical mean comparisons and present significance. To facilitate function application, different data sets were used as examples and the outputs were explained. An outstanding feature of ‘rtpcr’ package is providing publication-ready bar plots with various controlling arguments for experiments with up to three different factors which are further editable by ggplot2 functions.
 
 # Calculation methods
-The basic method for expression estimation of a gene between conditions relies on the calculation of fold differences by applying the PCR amplification efficiency (E) and the threshold cycle (syn. crossing point or Ct). Among the various approaches developed for data analysis in real-time PCR, the Livak approach, also known as the $2^{-\Delta\Delta C_t}$ method, stands out for its simplicity and widespread use where the fold change (FC) exoression $(2^{-\Delta\Delta C_t})$ in Treatment (Tr) compared to Control (Co) condition is calculated according to equation:
+The basic method for expression estimation of a gene between conditions relies on the calculation of fold differences by applying the PCR amplification efficiency (E) and the threshold cycle (syn. crossing point or Ct). Among the various approaches developed for data analysis in real-time PCR, the Livak approach, also known as the $2^{-\Delta\Delta C_t}$ method, stands out for its simplicity and widespread use where the fold change (FC) exoression $(2^{-\Delta\Delta C_t})$ in Treatment (Tr) compared to Control (Co) condition is calculated according to follw:
 
 
-$$\begin{align*}
-\text{Fold change} & = 2^{-\Delta\Delta C_t} \\
-& = \frac{2^{-(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{Tr}}}
-{2^{-(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{Co}}} \\ 
-& =2^{-[(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{\text{Tr}}-
-{(C_{t_{\text{target}}}-C_{t_{\text{ref}}})}_{\text{Co}}]} \\ 
-& = 2^{-[{(\Delta C_t)_{Tr} - (\Delta C_t)_{Co}}]}
-\end{align*}$$
+\[
+\text{Fold Change} = 2^{-\Delta\Delta C_t}
+\]
+
+Where \(\Delta\Delta C_t\) is defined as:
+
+\[
+\Delta\Delta C_t = (C_{t_{\text{target}}} - C_{t_{\text{ref}}})_{\text{Tr}} - (C_{t_{\text{target}}} - C_{t_{\text{ref}}})_{\text{Co}}
+\]
+
+This can be broken down into the following steps:
+
+1. **Calculate the \(\Delta C_t\) for the treatment and control:**
+   \[
+   \Delta C_t = C_{t_{\text{target}}} - C_{t_{\text{ref}}}
+   \]
+
+2. **Substitute into the Fold Change formula:**
+   \[
+   \text{Fold Change} = \frac{2^{-(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{\text{Tr}}} {2^{-(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{\text{Co}}}
+   \]
+
+3. **Simplify the expression:**
+   \[
+   \text{Fold Change} = 2^{-[(C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{\text{Tr}} - (C_{t_{\text{target}}}-C_{t_{\text{ref}}})_{\text{Co}}]}
+   \]
+
+4. **Final expression:**
+   \[
+   \text{Fold Change} = 2^{-[{(\Delta C_t)_{\text{Tr}} - (\Delta C_t)_{\text{Co}}}]}
+   \]
 
 
 Here, $\Delta C_t$ is the difference between target Ct and reference Ct values for a given sample. Livak method assumes that both the target and reference genes are amplified with efficiencies close to 100%, allowing for the relative quantification of gene expression levels.

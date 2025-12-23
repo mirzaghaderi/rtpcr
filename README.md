@@ -392,7 +392,7 @@ p + theme(
 
 
 # Post-hoc analysis
-`Means_DDCt` function performs post-hoc analysis by taking a fitted model object (produced by ANOVA_DDCt or REPEATED_DDCt) and calculating RE values for any interested effects. The effects of interest is specified using the specs argument. The specified effect can be simple, interactions, and slicing, provided an ANOVA model was used. The ANCOVA models returned by this package only include simple effects in the Means_DDCt output.
+`Means_DDCt` function performs post-hoc analysis by taking a fitted model object (produced by ANOVA_DDCt or REPEATED_DDCt) and applying pairwise comparisons of RE values for any interested effects. The effects of interest is specified using the specs argument. The specified effect can be simple, interactions, and slicing, provided an ANOVA model was used. The ANCOVA models returned by this package only include simple effects in the Means_DDCt output.
 
 ```r
 res <- ANOVA_DDCt(

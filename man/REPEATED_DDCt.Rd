@@ -8,7 +8,7 @@ REPEATED_DDCt(
   x,
   NumOfFactors,
   numberOfrefGenes,
-  factor,
+  repeatedFactor,
   calibratorLevel,
   block = NULL,
   x.axis.labels.rename = "none",
@@ -33,10 +33,10 @@ See example data sets or refer \href{../doc/vignette.html}{\code{vignette}}, sec
 \item{numberOfrefGenes}{Integer. Number of reference genes. Each reference gene
 must be represented by two columns (E and Ct).}
 
-\item{factor}{Character string specifying the factor for which fold changes are analysed
+\item{repeatedFactor}{Character string specifying the factor for which fold changes are analysed
 (commonly \code{"time"}).}
 
-\item{calibratorLevel}{A level of \code{factor} to be used as the calibrator (reference level) which is the reference level or sample that all others are compared to. Examples are untreated 
+\item{calibratorLevel}{A level of \code{repeatedFactor} to be used as the calibrator (reference level) which is the reference level or sample that all others are compared to. Examples are untreated 
 or time 0.}
 
 \item{block}{Optional blocking factor column name. If supplied, block effects are treated
@@ -83,7 +83,7 @@ REPEATED_DDCt(
   data,
   NumOfFactors = 1,
   numberOfrefGenes = 1,
-  factor = "time",
+  repeatedFactor = "time",
   calibratorLevel = "1",
   block = NULL)
 }

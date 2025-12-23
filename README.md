@@ -137,7 +137,7 @@ The package supports **one or more target gene(s) and reference gene(s)**, suppl
 </p>
 
 
-The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Rep column contains identifiers for each individual (id or subject). For example, all rows with a `1` correspond to a single individual, all rows with a `2` correspond to another individual, and so on. Each row represents one observation at a specific time point for a given individual. 
+**NOTE:** The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Rep column contains identifiers for each individual (id or subject). For example, all rows with a `1` correspond to a single individual, all rows with a `2` correspond to another individual, and so on. Each row represents one observation at a specific time point for a given individual. 
 
 ### Analysis 
 Different functions for ΔΔCt and ΔCt analysis, and efficiency calculation! Below is an example of expression analysis using ΔΔCt method.

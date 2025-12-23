@@ -958,7 +958,7 @@
 # #' The analysis is carried out using a linear mixed-effects model in which repeated
 # #' measurements are accounted for by a random effect of individual (\code{id}).
 # #' The factor of interest (e.g. time or treatment) is specified via the
-# #' \code{factor} argument. The first level of this factor (or the level specified
+# #' \code{repeatedFactor} argument. The first level of this factor (or the level specified
 # #' by \code{calibratorLevel}) is used as the calibrator.
 #'
 # #' The function supports one or more reference genes. When multiple reference genes
@@ -1040,7 +1040,7 @@
 
 .REPEATED_DDCt_uniTarget <- function(x, 
                           numberOfrefGenes,
-                          factor, 
+                          repeatedFactor, 
                           calibratorLevel,
                           block,
                           x.axis.labels.rename,
@@ -1050,14 +1050,14 @@
   
   # basic checks
   if (!is.data.frame(x)) stop("`x` must be a data.frame")
-  if (missing(factor)) stop("argument 'factor' is missing")
+  if (missing(repeatedFactor)) stop("argument 'repeatedFactor' is missing")
   if (missing(calibratorLevel)) stop("argument 'calibratorLevel' is missing")
   if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1)
     stop("`numberOfrefGenes` must be >= 1")
   if (missing(block)) stop("argument 'block' is missing")
   
   # rearrange_repeatedMeasureData
-  x <- .rearrange_repeatedMeasureData(x, column_name = factor, level = calibratorLevel)  
+  x <- .rearrange_repeatedMeasureData(x, column_name = repeatedFactor, level = calibratorLevel)  
   
   
   ## validate number of target genes
@@ -1203,14 +1203,14 @@
   ANOVA <- stats::anova(lm)
   
   #post hoc
-  v <- match(colnames(x), factor)
+  v <- match(colnames(x), repeatedFactor)
   n <- which(!is.na(v))
-  factor <- colnames(x)[n]
+  repeatedFactor <- colnames(x)[n]
   lvls <- unique(x[,n])
   calibrartor <- lvls[1]
   
   on.exit(cat(paste("The level", calibrartor, " of the selected factor was used as calibrator.\n")))
-  pp1 <- emmeans(lm, factor, data = x, adjust = p.adj, mode = "satterthwaite")
+  pp1 <- emmeans(lm, repeatedFactor, data = x, adjust = p.adj, mode = "satterthwaite")
   pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
   if (length(lvls) >= 3){
     pp3 <- pp2[1:length(lvls) - 1,] 
@@ -1222,7 +1222,7 @@
   
   bwDCt <- x$wDCt   
   se <- summarise(
-    group_by(data.frame(factor = x[n], bwDCt = bwDCt), x[n]),
+    group_by(data.frame(repeatedFactor = x[n], bwDCt = bwDCt), x[n]),
     se = stats::sd(bwDCt, na.rm = TRUE)/sqrt(length(bwDCt)))  
   
   

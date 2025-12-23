@@ -16,13 +16,13 @@
 #' 
 #' @param NumOfFactors Integer. Number of experimental factor columns
 #'   (excluding optional \code{block}).
-#' @param factor
+#' @param repeatedFactor
 #' Character string specifying the factor for which fold changes are analysed
 #' (commonly \code{"time"}).
 #' @param numberOfrefGenes Integer. Number of reference genes. Each reference gene
 #'   must be represented by two columns (E and Ct).
 #' @param calibratorLevel
-#' A level of \code{factor} to be used as the calibrator (reference level) which is the reference level or sample that all others are compared to. Examples are untreated 
+#' A level of \code{repeatedFactor} to be used as the calibrator (reference level) which is the reference level or sample that all others are compared to. Examples are untreated 
 #' or time 0.
 #' @param block
 #' Optional blocking factor column name. If supplied, block effects are treated
@@ -67,7 +67,7 @@
 #'   data,
 #'   NumOfFactors = 1,
 #'   numberOfrefGenes = 1,
-#'   factor = "time",
+#'   repeatedFactor = "time",
 #'   calibratorLevel = "1",
 #'   block = NULL)
 
@@ -78,7 +78,7 @@
 #     x,
 #     NumOfFactors,
 #     numberOfrefGenes,
-#     factor, 
+#     repeatedFactor, 
 #     calibratorLevel,
 #     block = NULL,
 #     x.axis.labels.rename = "none",
@@ -150,7 +150,7 @@
 #     res <- .REPEATED_DDCt_uniTarget(
 #       x = gene_df,
 #       numberOfrefGenes = numberOfrefGenes,
-#       factor = factor,
+#       repeatedFactor = repeatedFactor,
 #       block = block,
 #       calibratorLevel = calibratorLevel,
 #       x.axis.labels.rename = x.axis.labels.rename,
@@ -189,7 +189,7 @@ REPEATED_DDCt <- function(
     x,
     NumOfFactors,
     numberOfrefGenes,
-    factor,
+    repeatedFactor,
     calibratorLevel,
     block = NULL,
     x.axis.labels.rename = "none",
@@ -207,7 +207,7 @@ REPEATED_DDCt <- function(
     stop("numberOfrefGenes must be a positive integer")
   if (!(isTRUE(analyseAllTarget) || is.character(analyseAllTarget)))
     stop("analyseAllTarget must be TRUE or a character vector")
-  if (!factor %in% colnames(x))
+  if (!repeatedFactor %in% colnames(x))
     stop("The specified time/factor column was not found in x")
   if (!is.null(block) && !block %in% colnames(x))
     stop("The specified block column was not found in x")
@@ -313,7 +313,7 @@ REPEATED_DDCt <- function(
     res <- .REPEATED_DDCt_uniTarget(
       x = gene_df,
       numberOfrefGenes = numberOfrefGenes,
-      factor = factor,
+      repeatedFactor = repeatedFactor,
       block = block,
       calibratorLevel = calibratorLevel,
       x.axis.labels.rename = x.axis.labels.rename,

@@ -120,7 +120,7 @@ $contrasts
 
 
 
-### Data structure for `ANOVA_DDCt`, `ANOVA_DCt` and `TTEST_DDCt` functions
+### Data structure 
 Input data structure is important and should be in wide format:
 For analysis using `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, the required column structure is:
 
@@ -130,23 +130,15 @@ For analysis using `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, the required col
 5. Reference genes efficiency and Ct values (a pair column for each gene)
 
 The package supports **one or more target gene(s) and reference gene(s)**, supplied as efficiency–Ct column pairs.  
-**Reference gene columns must always appear last.** Each row represents a single biological replicate, corresponding to a non-repeated measures design. A sample input data is presented below.
+**Reference gene columns must always appear last.** For `ANOVA_DDCt`, `ANOVA_DCt` and `TTEST_DDCt` functions, each row represents a single biological replicate, corresponding to a non-repeated measures design. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For REPEATED_DDCt, the rep column contains identifiers for each individual (id or subject). For example, all rows with a 1 correspond to a single individual, all rows with a 2 correspond to another individual, and so on. Each row represents one observation at a specific time point for a given individual.
+A sample input data is presented below.
 
 <p align="center">
 <img src="inst/dataStructure1.png" width="100%">
 </p>
 
 
-### Data structure for `REPEATED_DDCt` function
-
-The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data).  
-The input data frame for `REPEATED_DDCt` must follow this structure:
-
-1. The **first column** is `id`, a unique identifier for each individual (subject)  
-2. Factor and block columns (if available), and the `time` variable 
-3. Remaining columns contain efficiency and Ct values for target and reference genes.
-
-Each row corresponds to one observation at a specific time point for a given individual. Below is an example:
+Below is an example of a properly arranged dataset from a repeated-measures experiment:
 ```r
 data <- read.csv(system.file("extdata", "data_repeated_measure_2.csv", package = "rtpcr"))
 data

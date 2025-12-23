@@ -52,11 +52,11 @@
 #' An object containing expression table, lm models, residuals, raw data and ANOVA table for each gene.
 #' \describe{ 
 #' \item{\eqn{\Delta\Delta C_T} combined expression table}{\code{object$Relative_Expression_table}}
-#' \item{ANOVA table}{\code{object$perGene[["gene_name"]]$ANOVA_table}}
-#' \item{lm ANOVA}{\code{object$perGene[["gene_name"]]$lm}}
-#' \item{Residuals}{\code{resid(object$perGene[["gene_name"]]$lm)}}
-#' \item{log2FC_Plot}{\code{object$perGene[["gene_name"]]$log2FC_Plot}}
-#' \item{RE_Plot}{\code{object$perGene[["gene_name"]]$RE_Plot}}
+#' \item{ANOVA table}{\code{object$perGene$gene_name$ANOVA_table}}
+#' \item{lm ANOVA}{\code{object$perGene$gene_name$lm}}
+#' \item{Residuals}{\code{resid(object$perGene$gene_name$lm)}}
+#' \item{log2FC_Plot}{\code{object$perGene$gene_name$log2FC_Plot}}
+#' \item{RE_Plot}{\code{object$perGene$gene_name$RE_Plot}}
 #' }
 #' @export
 #' 

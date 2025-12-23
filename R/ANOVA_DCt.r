@@ -28,9 +28,9 @@
 #' An object containing expression table, lm models, residuals, raw data and ANOVA table for each gene. 
 #' \describe{
 #' \item{\eqn{\Delta C_T} combined expression table}{\code{object$combinedResults}}
-#' \item{ANOVA table}{\code{object$perGene[["gene_name"]]$ANOVA}}
-#' \item{lm ANOVA}{\code{object$perGene[["gene_name"]]$lmCRD}}
-#' \item{Residuals}{\code{resid(object$perGene[["gene_name"]]$lmCRD)}}
+#' \item{ANOVA table}{\code{object$perGene$gene_nameANOVA}}
+#' \item{lm ANOVA}{\code{object$perGene$gene_name$lmCRD}}
+#' \item{Residuals}{\code{resid(object$perGene$gene_name$lmCRD)}}
 #' }
 #' @export
 #' 

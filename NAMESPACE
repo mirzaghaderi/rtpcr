@@ -2,6 +2,7 @@
 
 export(ANOVA_DCt)
 export(ANOVA_DDCt)
+export(Means_DDCt)
 export(REPEATED_DDCt)
 export(TTEST_DDCt)
 export(efficiency)

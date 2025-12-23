@@ -1,4 +1,4 @@
-# Basic analysis method of qPCR data
+# Mathematical basis of qPCR data analysis
 
 
 Real-time polymerase chain reaction (real-time PCR) is widely used in biological studies. Various analysis methods are employed on the real-time PCR data to measure the mRNA levels under different experimental conditions. 
@@ -40,8 +40,8 @@ Relative expression is only calibrated for the reference gene(s) and not for a c
 
 $$\text{Fold Change due to Treatment}=2^{-(\overline{w\Delta Ct}_{\text{Tr}}-{\overline{w\Delta Ct}_{\text{Co}}})}$$
 
-`qpcrTTEST` and `qpcrTTESTplot` functions calculate FC for multi-genes-two conditional cases, `qpcrANOVAFC` represents FC for single-gene-factorial (single- or multi-factor) experiments, and `qpcrREPEATED` calculates FC for the repeated measure data. If $w \Delta C_t$ values is calculated from the E values, the calculations match the formula of Pfaffl while if 2 (complete efficiency) be used instead, the result match the $2^{-\Delta\Delta C_t}$ method. In any case we called these as Fold Change in the outputs of `rtpcr`. Under factorial experiments where the calculation of the expression of the target gene relative to the reference gene (called Relative Expression) in each condition is desired, `qpcrANOVARE`, `oneFACTORplot`, `twoFACTORplot` and `threeFACTORplot` functions were developed for ANOVA analysis, and representing the plots from single, double or triple factor experiments, respectively. The last three functions generate `ggplot2`-derived graphs based on the output of the `qpcrANOVARE` function. If available, the blocking factor can also be handled by `qpcrANOVARE`, `qpcrANOVAFC` and `qpcrREPEATED` functions. Standard error of the FC and RE means is calculated according to <a href="https://doi.org/10.1016/j.tibtech.2018.12.002">Taylor et al. (2019)</a> in `rtpcr` package.
-Here, a brief methodology is presented but details about the $w\Delta C_t$  calculations and statistical analysis are available in <a href="https://doi.org/10.1186/s12859-017-1949-5">Ganger et al. (2017)</a>. Importantly, because both the RE or FC gene expression values follow a lognormal distribution, a normal distribution is expected for the $w \Delta C_t$ values making it possible to apply t-test or analysis of variance to them. Following analysis, $w\Delta C_t$ values are statistically compared and standard deviations and confidence interval are calculated, but the transformation $y = 2^{-x}$ is applied in the final step in order to report the results.
+Standard error of the FC and RE means is calculated according to <a href="https://doi.org/10.1016/j.tibtech.2018.12.002">Taylor et al. (2019)</a> in `rtpcr` package.
+Here, a brief methodology is presented but details about the $w\Delta C_t$  calculations and statistical analysis are available in <a href="https://doi.org/10.1186/s12859-017-1949-5">Ganger et al. (2017)</a>. Importantly, because relative expression values follow a lognormal distribution, a normal distribution is expected for the $w \Delta C_t$ values making it possible to apply t-test or analysis of variance. Following analysis, $w\Delta C_t$ values are statistically compared and standard deviations and confidence interval are calculated, but the transformation $y = 2^{-x}$ is applied in the final step in order to report the results.
 
 
 # References

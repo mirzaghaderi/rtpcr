@@ -275,7 +275,7 @@ the `rtpcr` plotFactor function create ggplot objects for one to three factor ta
 | **Change fill colors** | `p + scale_fill_brewer(palette = "Set2")` |
 
 
-## ### Plot output: Example 2
+### Plot output: Example 2
 ```{r eval= F, warning = F}
 data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
 res <- ANOVA_DCt(data, 

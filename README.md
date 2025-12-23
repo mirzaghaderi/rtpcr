@@ -142,7 +142,7 @@ The `REPEATED_DDCt` function is intended for experiments with repeated observati
 ### Analysis 
 Different functions for ΔΔCt and ΔCt analysis, and efficiency calculation! Below is an example of expression analysis using ΔΔCt method.
 ```r
-# Below is an example of a properly arranged dataset from a repeated-measures experiment:
+# An example of a properly arranged dataset from a repeated-measures experiment.
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 data
 
@@ -174,7 +174,7 @@ ANOVA_DDCt(
   block = NULL)
 
 
-# Example
+# Example 2
 data <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
 
 res <- ANOVA_DDCt(

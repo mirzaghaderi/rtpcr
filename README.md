@@ -130,39 +130,46 @@ For analysis using `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, the required col
 5. Reference genes efficiency and Ct values (a pair column for each gene)
 
 The package supports **one or more target gene(s) and reference gene(s)**, supplied as efficiency–Ct column pairs.  
-**Reference gene columns must always appear last.** For `ANOVA_DDCt`, `ANOVA_DCt` and `TTEST_DDCt` functions, each row represents a single biological replicate, corresponding to a non-repeated measures design. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For REPEATED_DDCt, the rep column contains identifiers for each individual (id or subject). For example, all rows with a 1 correspond to a single individual, all rows with a 2 correspond to another individual, and so on. Each row represents one observation at a specific time point for a given individual.
-A sample input data is presented below.
+**Reference gene columns must always appear last.** For `ANOVA_DDCt`, `ANOVA_DCt` and `TTEST_DDCt` functions, each row represents a single biological replicate, corresponding to a non-repeated measures design. A sample input data is presented below.
 
 <p align="center">
 <img src="inst/dataStructure1.png" width="100%">
 </p>
 
 
-Below is an example of a properly arranged dataset from a repeated-measures experiment:
+The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the rep column contains identifiers for each individual (id or subject). For example, all rows with a `1` correspond to a single individual, all rows with a `2` correspond to another individual, and so on. Each row represents one observation at a specific time point for a given individual. Below is an example of a properly arranged dataset from a repeated-measures experiment:
+
 ```r
 data <- read.csv(system.file("extdata", "data_repeated_measure_2.csv", package = "rtpcr"))
 data
 
-treatment	time	id	Target	Target	Ref	Ref
-untreated	1	1	2	19.24	2	33.73
-untreated	1	2	2	20.11	2	32.56
-untreated	1	3	2	20.63	2	33.72
-untreated	2	1	2	19.95	2	34.2
-untreated	2	2	2	20.91	2	33.98
-untreated	2	3	2	19.16	2	34.51
-untreated	3	1	2	19.16	2	33.9
-untreated	3	2	2	20.91	2	33.16
-untreated	3	3	2	19.91	2	34.33
-treated		1	4	2	18.92	2	32.77
-treated		1	5	2	15.82	2	32.45
-treated		1	6	2	19.84	2	31.62
-treated		2	4	2	19.46	2	33.03
-treated		2	5	2	17.56	2	33.24
-treated		2	6	2	19.74	2	32.08
-treated		3	4	2	15.73	2	32.95
-treated		3	5	2	17.21	2	33.64
-treated		3	6	2	18.09	2	33.4
+time	id	E_Target	Ct_target	E_Ref	Ct_Ref
+1	1	2	18.92	2	32.77
+1	2	2	15.82	2	32.45
+1	3	2	19.84	2	31.62
+2	1	2	19.46	2	33.03
+2	2	2	17.56	2	33.24
+2	3	2	19.74	2	32.08
+3	1	2	15.73	2	32.95
+3	2	2	17.21	2	33.64
+3	3	2	18.09	2	33.40
 
+res <- REPEATED_DDCt(
+  x,
+  NumOfFactors = 1,
+  numberOfrefGenes = 1,
+  factor = "time",
+  calibratorLevel = "1",
+  block = NULL)
+
+
+x$time <- factor(x$time)
+ANOVA_DDCt(
+  x,
+  mainFactor.column = 1,
+  NumOfFactors = 1,
+  numberOfrefGenes = 1,
+  block = NULL)
 ```
 
 ### Analysis 

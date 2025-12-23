@@ -42,7 +42,7 @@ both the Livak and Pfaffl methods.
 | `REPEATED_DDCt`     | ΔΔCt ANOVA analysis for repeated-measures data               |
 | `TTEST_DDCt`        | ΔΔCt method *t*-test analysis                                |
 | `plotFactor`        | Bar plot of gene expression for one-, two- or three-factor experiments    |
-| `Means_DDCt`        | Post hoc analysis of RE for any interested combination effect in a model  |
+| `Means_DDCt`        | Pairwise comparison of RE values for any user-specified effect |
 | `efficiency`        | Amplification efficiency statistics and standard curves      |
 | `meanTech`          | Calculate mean of technical replicates                       |
 | `multiplot`         | Combine multiple ggplot objects into a single layout          |
@@ -392,7 +392,7 @@ p + theme(
 
 
 # Post-hoc analysis
-`Means_DDCt` function performs post-hoc analysis by taking a fitted model object (produced by ANOVA_DDCt or REPEATED_DDCt) and applying pairwise statistical comparisons of RE values for any interested effects. The effects of interest is specified using the specs argument. The specified effect can be simple, interactions, and slicing, provided an ANOVA model was used. The ANCOVA models returned by this package only include simple effects in the Means_DDCt output.
+The `Means_DDCt` function performs post-hoc comparisons using a fitted model object produced by `ANOVA_DDCt` or `REPEATED_DDCt`. It applies pairwise statistical comparisons of relative expression (RE) values for user-specified effects via the `specs` argument. Supported effects include simple effects, interactions, and slicing, provided the underlying model is an ANOVA. For ANCOVA models returned by this package, the `Means_DDCt` output is limited to simple effects only.
 
 ```r
 res <- ANOVA_DDCt(
@@ -403,10 +403,10 @@ res <- ANOVA_DDCt(
   block = NULL)
 
 
-# Fold change values for Concentration main effect
+# Relative expression values for Concentration main effect
 Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc")
 
- contrast        FC        SE df       LCL       UCL p.value sig
+ contrast        RE        SE df       LCL       UCL p.value sig
  L vs H   0.1703610 0.2208988 24 0.1242014 0.2336757 <0.0001 ***
  M vs H   0.2227247 0.2208988 24 0.1623772 0.3055004 <0.0001 ***
  M vs L   1.3073692 0.2208988 24 0.9531359 1.7932535  0.0928 .  
@@ -414,17 +414,17 @@ Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc")
 Results are averaged over the levels of: Type, SA 
 Confidence level used: 0.95 
 
-# Fold change values for Concentration sliced by Type
+# Relative expression values for Concentration sliced by Type
 Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type")
 
 Type = R:
- contrast       FC        SE df       LCL      UCL p.value sig
+ contrast       RE        SE df       LCL      UCL p.value sig
  L vs H   0.103187 0.3123981 24 0.0659984 0.161331 <0.0001 ***
  M vs H   0.339151 0.3123981 24 0.2169210 0.530255 <0.0001 ***
  M vs L   3.286761 0.3123981 24 2.1022126 5.138776 <0.0001 ***
 
 Type = S:
- contrast       FC        SE df       LCL      UCL p.value sig
+ contrast       RE        SE df       LCL      UCL p.value sig
  L vs H   0.281265 0.3123981 24 0.1798969 0.439751 <0.0001 ***
  M vs H   0.146266 0.3123981 24 0.0935518 0.228684 <0.0001 ***
  M vs L   0.520030 0.3123981 24 0.3326112 0.813055  0.0059 ** 
@@ -432,7 +432,7 @@ Type = S:
 Results are averaged over the levels of: SA 
 Confidence level used: 0.95 
 
-# Fold change values for Concentration sliced by Type and SA
+# Relative expression values for Concentration sliced by Type and SA
 Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type * SA")
 ```
 

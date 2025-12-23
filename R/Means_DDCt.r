@@ -30,7 +30,7 @@
 #'
 #' @param specs
 #' A character string or character vector specifying the predictors or
-#' combinations of predictors over which fold change values are desired.
+#' combinations of predictors over which relative expression values are desired.
 #' This argument follows the specification syntax used by
 #' \code{emmeans::emmeans()} (e.g., \code{"Factor"},
 #' \code{"Factor1 | Factor2"}).
@@ -40,7 +40,7 @@
 #' See \code{\link[stats]{p.adjust}} for available options.
 #'
 #' @return
-#' A data frame containing estimated fold change values, confidence
+#' A data frame containing estimated relative expression values, confidence
 #' intervals, p-values, and significance levels derived from the fitted
 #' model.
 #'
@@ -54,16 +54,16 @@
 #'   mainFactor.column = 1,
 #'   block = NULL)
 #'
-#' # Fold change values for Type main effect
+#' # Relative expression values for Type main effect
 #' Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Type")
 #'
-#' # Fold change values for Concentration main effect
+#' # Relative expression values for Concentration main effect
 #' Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc")
 #'
-#' # Fold change values for Concentration sliced by Type
+#' # Relative expression values for Concentration sliced by Type
 #' Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type")
 #'
-#' # Fold change values for Concentration sliced by Type and SA
+#' # Relative expression values for Concentration sliced by Type and SA
 #' Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type * SA")
 
 
@@ -87,7 +87,7 @@ emm2$contrast <- as.character(emm2$contrast)
 emm2$contrast <- sapply(strsplit(emm2$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))
 colnames(emm2)[which(names(emm2) == "lower.CL")] <- "LCL"
 colnames(emm2)[which(names(emm2) == "upper.CL")] <- "UCL"
-colnames(emm2)[which(names(emm2) == "estimate")] <- "FC"
+colnames(emm2)[which(names(emm2) == "estimate")] <- "RE"
 #emm2$se = (emm2$UCL - emm2$LCL)/(2*stats::qt(0.975, emm2$df))
 emm2$sig <- .convert_to_character(emm2$p.value)
 return(emm2)

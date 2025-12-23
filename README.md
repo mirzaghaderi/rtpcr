@@ -223,8 +223,8 @@ The expression table of all genes is returned by `res$combinedFoldChange`. Other
 | Per_gene Output    | Code                                              |
 |--------------------|-------------------------------------------------------|
 | ANOVA table        | `res$perGene$gene_name$ANOVA_table`                     |
-| lm ANOVA           | `res$perGene$gene_name$lm_ANOVA`                        |
-| lm ANCOVA          | `res$perGene$gene_name$lm_ANCOVA`                       |
+| ANOVA lm            | `res$perGene$gene_name$lm_ANOVA`                        |
+| ANCOVA lm           | `res$perGene$gene_name$lm_ANCOVA`                       |
 | Residuals          | `resid(res$perGene$gene_name$lm_ANOVA)`                 |
 
 

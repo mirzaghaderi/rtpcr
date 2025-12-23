@@ -151,25 +151,26 @@ Each row corresponds to one observation at a specific time point for a given ind
 data <- read.csv(system.file("extdata", "data_repeated_measure_2.csv", package = "rtpcr"))
 data
 
-id	treatment	time	Target	Ct_target	E_Ref	Ct_Ref
-1	untreated	1	2	19.24	2	33.73
-1	untreated	2	2	19.95	2	34.20
-1	untreated	3	2	19.16	2	33.90
-2	untreated	1	2	20.11	2	32.56
-2	untreated	2	2	20.91	2	33.98
-2	untreated	3	2	20.91	2	33.16
-3	untreated	1	2	20.63	2	33.72
-3	untreated	2	2	19.16	2	34.51
-3	untreated	3	2	19.91	2	34.33
-4	treated		1	2	18.92	2	32.77
-4	treated		2	2	19.46	2	33.03
-4	treated		3	2	15.73	2	32.95
-5	treated		1	2	15.82	2	32.45
-5	treated		2	2	17.56	2	33.24
-5	treated		3	2	17.21	2	33.64
-6	treated		1	2	19.84	2	31.62
-6	treated		2	2	19.74	2	32.08
-6	treated		3	2	18.09	2	33.40
+treatment	time	id	Target	Target	Ref	Ref
+untreated	1	1	2	19.24	2	33.73
+untreated	1	2	2	20.11	2	32.56
+untreated	1	3	2	20.63	2	33.72
+untreated	2	1	2	19.95	2	34.2
+untreated	2	2	2	20.91	2	33.98
+untreated	2	3	2	19.16	2	34.51
+untreated	3	1	2	19.16	2	33.9
+untreated	3	2	2	20.91	2	33.16
+untreated	3	3	2	19.91	2	34.33
+treated	1	4	2	18.92	2	32.77
+treated	1	5	2	15.82	2	32.45
+treated	1	6	2	19.84	2	31.62
+treated	2	4	2	19.46	2	33.03
+treated	2	5	2	17.56	2	33.24
+treated	2	6	2	19.74	2	32.08
+treated	3	4	2	15.73	2	32.95
+treated	3	5	2	17.21	2	33.64
+treated	3	6	2	18.09	2	33.4
+
 ```
 
 ### Analysis 

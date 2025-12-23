@@ -1,4 +1,4 @@
-#' @title Pairwise comparisons of relative expression values fo all combinations (\eqn{\Delta \Delta C_T}) using a fitted model
+#' @title Pairwise comparisons of relative expression values (\eqn{\Delta \Delta C_T}) using a fitted model
 #'
 #' @description
 #' Performs relative expression (fold change) analysis based on the
@@ -87,9 +87,10 @@ emm2$contrast <- as.character(emm2$contrast)
 emm2$contrast <- sapply(strsplit(emm2$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))
 colnames(emm2)[which(names(emm2) == "lower.CL")] <- "LCL"
 colnames(emm2)[which(names(emm2) == "upper.CL")] <- "UCL"
-colnames(emm2)[which(names(emm2) == "estimate")] <- "RE"
 #emm2$se = (emm2$UCL - emm2$LCL)/(2*stats::qt(0.975, emm2$df))
 emm2$sig <- .convert_to_character(emm2$p.value)
+colnames(emm2)[which(names(emm2) == "estimate")] <- "RE"
+colnames(emm2)[which(names(emm2) == "FC")] <- "RE"
 return(emm2)
 }
 

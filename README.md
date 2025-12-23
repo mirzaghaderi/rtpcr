@@ -229,6 +229,7 @@ The expression table of all genes is returned by `res$combinedFoldChange`. Other
 
 
 ```r
+# Relative expression table for the specified column in the input data:
 df <- res$combinedFoldChange
 df
 Relative Expression
@@ -241,7 +242,7 @@ ref2          R	  1.0000  0.0000 1.0000     0.0000  0.0000 0.6928      0.6186   
 ref2     S vs R	  0.9372 -0.0936 0.9005     0.3145  2.7929 0.2414      0.7927      1.1079         -0.1107         -0.0792
 ```
 
-### Sample plot output
+### Plot output: Example 1
 ```r
 data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 #Perform analysis first
@@ -295,7 +296,7 @@ the `rtpcr` plotFactor function create ggplot objects for one to three factor ta
 | **Change fill colors** | `p + scale_fill_brewer(palette = "Set2")` |
 
 
-## A full graph Example
+## ### Plot output: Example 2
 ```{r eval= F, warning = F}
 # Example 1
 data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
@@ -335,6 +336,8 @@ p1 +
 <p align="center">
 <img src="inst/Rplot01.png" width="100%">
 </p>
+
+### Plot output: Example 3
 
 ```r
 # Heffer et al., 2020, PlosOne

@@ -31,7 +31,9 @@
 #' @param x
 #' A data frame containing experimental conditions, biological replicates, and
 #' amplification efficiency and Ct values for target and reference genes.
-#' The number of biological replicates must be equal across genes.
+#' The number of biological replicates must be equal across genes. If this 
+#' is not true, or there are \code{NA} values use \code{ANODA_DDCt} function 
+#' for independent samples or \code{REPEATED_DDCt} for paired samples.
 #' See the package vignette for details on the required data structure.
 #'
 #' @param paired

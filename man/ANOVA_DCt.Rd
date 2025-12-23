@@ -37,21 +37,19 @@ Alternatively, a character vector specifying the names (names of their Efficienc
 to be analysed.}
 }
 \value{
-A data frame combining DCt method expression tables for all target genes.
-The output includes all columns.
+An object containing expression table, lm models, residuals, raw data and ANOVA table for each gene. 
+\describe{
+\item{\eqn{\Delta C_T} combined expression table}{\code{object$combinedResults}}
+\item{ANOVA table}{\code{object$perGene$gene_nameANOVA}}
+\item{lm ANOVA}{\code{object$perGene$gene_name$lmCRD}}
+\item{Residuals}{\code{resid(object$perGene$gene_name$lmCRD)}}
+}
 }
 \description{
 Performs \eqn{\Delta C_T} analysis for target genes by
 applying \eqn{\Delta C_T} method to each target gene. Target genes must be provided as paired
 efficiency (E) and Ct columns followed by the the reference gene(s) columns. See example data sets or refer \href{../doc/vignette.html}{\code{vignette}}, 
 section "data structure and column arrangement" for details about data structure.
-}
-\details{
-Column layout requirements for \code{x}:
-\itemize{
-  \item Target gene columns: E/Ct pairs located between design and reference columns
-  \item Reference gene columns: \code{2 * numberOfrefGenes} columns located at the end
-}
 }
 \examples{
 data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))

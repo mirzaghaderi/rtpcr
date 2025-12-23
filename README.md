@@ -42,7 +42,7 @@ both the Livak and Pfaffl methods.
 | `REPEATED_DDCt`     | ΔΔCt ANOVA analysis for repeated-measures data               |
 | `TTEST_DDCt`        | ΔΔCt method *t*-test analysis                                |
 | `plotFactor`        | Bar plot of gene expression for one-, two- or three-factor experiments    |
-| `Means_DDCt'        | Post hoc analysis of RE for any interested combination effect in a model  |
+| `Means_DDCt`        | Post hoc analysis of RE for any interested combination effect in a model  |
 | `efficiency`        | Amplification efficiency statistics and standard curves      |
 | `meanTech`          | Calculate mean of technical replicates                       |
 | `multiplot`         | Combine multiple ggplot objects into a single layout          |

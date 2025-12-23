@@ -137,7 +137,7 @@ The package supports **one or more target gene(s) and reference gene(s)**, suppl
 </p>
 
 
-The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the rep column contains identifiers for each individual (id or subject). For example, all rows with a `1` correspond to a single individual, all rows with a `2` correspond to another individual, and so on. Each row represents one observation at a specific time point for a given individual. 
+The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Rep column contains identifiers for each individual (id or subject). For example, all rows with a `1` correspond to a single individual, all rows with a `2` correspond to another individual, and so on. Each row represents one observation at a specific time point for a given individual. 
 
 ### Analysis 
 Different functions for ΔΔCt and ΔCt analysis, and efficiency calculation! Below is an example of expression analysis using ΔΔCt method.
@@ -175,8 +175,14 @@ ANOVA_DDCt(
   numberOfrefGenes = 1,
   block = NULL)
 
+# Paired t.test (equivalent to repeated measure analusis)
+TTEST_DDCt(
+  data[1:6,], 
+  numberOfrefGenes = 1, 
+  paired = T)
 
-# Example 2
+
+# Anova analysis
 data <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
 
 res <- ANOVA_DDCt(

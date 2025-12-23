@@ -123,10 +123,10 @@ $contrasts
 Input data structure is important and should be in wide format:
 For analysis using `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, the required column structure is:
 
-1. Experimental condition columns (Up to 3 factors, and one block if available) 
-2. Biological replicate information (if applicable)  
-3. Target genes efficiency and Ct values (a pair column for each target gene)
-5. Reference genes efficiency and Ct values (a pair column for each reference gene)
+1. Experimental condition columns (up to 3 factors, and one block if available) 
+2. Biological replicate information (rows are separate biological replicates)  
+3. Target genes efficiency and Ct values (a pair column for each gene)
+5. Reference genes efficiency and Ct values (a pair column for each gene)
 
 The package supports **one or more target gene(s) and reference gene(s)**, supplied as efficiency–Ct column pairs.  
 **Reference gene columns must always appear last.** Each row represents a single biological replicate, corresponding to a non-repeated measures design. A sample input data is presented below.

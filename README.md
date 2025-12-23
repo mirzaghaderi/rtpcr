@@ -23,7 +23,7 @@ both the Livak and Pfaffl methods.
 
 ## Improvement in the current GitHub version `rtpcr_v2.1.1`:
 
-✔️ <span style="color: green;">**A unified data structure across all functions.**</span>
+✔️ <span style="color: green;">**A unified data structure across all expression analysis functions.**</span>
  
 ✔️ <span style="color: green;">**No restriction on the number of target or reference genes.**</span>
 

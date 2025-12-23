@@ -74,11 +74,122 @@
 
 
 
+# REPEATED_DDCt <- function(
+#     x,
+#     NumOfFactors,
+#     numberOfrefGenes,
+#     factor, 
+#     calibratorLevel,
+#     block = NULL,
+#     x.axis.labels.rename = "none",
+#     p.adj = "none",
+#     plot = FALSE,
+#     analyseAllTarget = TRUE
+# ) {
+#   
+# 
+#   # Basic checks
+#   if (!is.data.frame(x)) stop("x must be a data.frame")
+#   if (!is.numeric(NumOfFactors) || NumOfFactors < 1) stop("NumOfFactors must be a positive integer")
+#   if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1) stop("numberOfrefGenes must be a positive integer")
+#   if (!(isTRUE(analyseAllTarget) || is.character(analyseAllTarget))) {
+#     stop("analyseAllTarget must be TRUE or a character vector of target gene names")
+#   }
+#   if (!factor %in% colnames(x)) stop("The specified time factor column was not found in x")
+#   if (!is.null(block) && !block %in% colnames(x)) stop("The specified block column was not found in x")
+#   
+#   n <- ncol(x)
+#   
+# 
+#   # Design columns
+#   # id + NumOfFactors + time (+ block if present)
+#   nDesign <- if (is.null(block)) NumOfFactors + 1 else NumOfFactors + 2
+#   if (nDesign >= n) stop("Not enough columns for target and reference genes")
+#   designCols <- seq_len(nDesign)
+#   
+# 
+#   # Reference gene columns
+#   nRefCols <- 2 * numberOfrefGenes
+#   if (nRefCols >= n) stop("Not enough columns for reference genes")
+#   refCols <- (n - nRefCols + 1):n
+#   
+# 
+#   # Target gene columns
+#   targetCols <- setdiff(seq_len(n), c(designCols, refCols))
+#   if (length(targetCols) == 0 || length(targetCols) %% 2 != 0) {
+#     stop("Target gene columns must be provided as E/Ct pairs")
+#   }
+#   
+#   targetPairs <- split(targetCols, ceiling(seq_along(targetCols) / 2))
+#   targetNames <- vapply(targetPairs, function(tc) colnames(x)[tc[1]], character(1))
+#   
+# 
+#   # Subset target genes if requested
+#   if (!isTRUE(analyseAllTarget)) {
+#     keep <- targetNames %in% analyseAllTarget
+#     if (!any(keep)) stop("None of the specified target genes were found in the data.")
+#     targetPairs <- targetPairs[keep]
+#     targetNames <- targetNames[keep]
+#   }
+#   
+# 
+#   # Analyse each target gene
+#   perGene <- lapply(seq_along(targetPairs), function(i) {
+#     
+#     tc <- targetPairs[[i]]
+#     gene_name <- targetNames[i]
+#     
+#     gene_df <- x[, c(designCols, tc, refCols), drop = FALSE]
+#     
+#     # Skip genes with no usable data
+#     if (all(is.na(gene_df[, tc]))) {
+#       warning("Skipping target gene ", gene_name, " (all values are NA)")
+#       return(NULL)
+#     }
+#     
+#     res <- .REPEATED_DDCt_uniTarget(
+#       x = gene_df,
+#       numberOfrefGenes = numberOfrefGenes,
+#       factor = factor,
+#       block = block,
+#       calibratorLevel = calibratorLevel,
+#       x.axis.labels.rename = x.axis.labels.rename,
+#       p.adj = p.adj,
+#       plot = plot
+#     )
+#     
+#     # Add gene name to Relative Expression table
+#     res$Relative_Expression_table$gene <- gene_name
+#     res
+#   })
+#   
+#   # Remove skipped genes
+#   perGene <- Filter(Negate(is.null), perGene)
+#   if (length(perGene) == 0) stop("No target genes could be analysed")
+#   
+# 
+#   # Combine Relative Expression tables
+#   combinedFoldChange <- do.call(rbind, lapply(perGene, function(g) g$Relative_Expression_table))
+#   rownames(combinedFoldChange) <- NULL
+#   
+#   combinedFoldChange <- combinedFoldChange[, c(ncol(combinedFoldChange), 1:(ncol(combinedFoldChange) - 1))]
+# 
+#   # Print combined Fold Change / RE table automatically
+#   cat("\nCombined Relative Expression Table (all genes)\n")
+#   print(combinedFoldChange)
+#   
+# 
+#   # Return full structured object invisibly
+#   invisible(list(
+#     perGene = setNames(perGene, targetNames),   # All individual gene outputs with models
+#     combinedFoldChange = combinedFoldChange     # Combined table
+#   ))
+# }
 REPEATED_DDCt <- function(
     x,
     NumOfFactors,
     numberOfrefGenes,
-    factor, 
+    factor,
     calibratorLevel,
     block = NULL,
     x.axis.labels.rename = "none",
@@ -88,52 +199,103 @@ REPEATED_DDCt <- function(
 ) {
   
 
-  # Basic checks
+# Basic checks
   if (!is.data.frame(x)) stop("x must be a data.frame")
-  if (!is.numeric(NumOfFactors) || NumOfFactors < 1) stop("NumOfFactors must be a positive integer")
-  if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1) stop("numberOfrefGenes must be a positive integer")
-  if (!(isTRUE(analyseAllTarget) || is.character(analyseAllTarget))) {
-    stop("analyseAllTarget must be TRUE or a character vector of target gene names")
-  }
-  if (!factor %in% colnames(x)) stop("The specified time factor column was not found in x")
-  if (!is.null(block) && !block %in% colnames(x)) stop("The specified block column was not found in x")
+  if (!is.numeric(NumOfFactors) || NumOfFactors < 1)
+    stop("NumOfFactors must be a positive integer")
+  if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1)
+    stop("numberOfrefGenes must be a positive integer")
+  if (!(isTRUE(analyseAllTarget) || is.character(analyseAllTarget)))
+    stop("analyseAllTarget must be TRUE or a character vector")
+  if (!factor %in% colnames(x))
+    stop("The specified time/factor column was not found in x")
+  if (!is.null(block) && !block %in% colnames(x))
+    stop("The specified block column was not found in x")
   
   n <- ncol(x)
   
 
-  # Design columns
-  # id + NumOfFactors + time (+ block if present)
-  nDesign <- if (is.null(block)) NumOfFactors + 1 else NumOfFactors + 2
-  if (nDesign >= n) stop("Not enough columns for target and reference genes")
-  designCols <- seq_len(nDesign)
-  
-
-  # Reference gene columns
+# Reference gene columns (ALWAYS last)
   nRefCols <- 2 * numberOfrefGenes
-  if (nRefCols >= n) stop("Not enough columns for reference genes")
+  if (nRefCols >= n)
+    stop("Not enough columns for reference genes")
+  
   refCols <- (n - nRefCols + 1):n
   
-
-  # Target gene columns
-  targetCols <- setdiff(seq_len(n), c(designCols, refCols))
-  if (length(targetCols) == 0 || length(targetCols) %% 2 != 0) {
-    stop("Target gene columns must be provided as E/Ct pairs")
+# Target gene columns (just before ref genes)
+  preRefCols <- seq_len(min(refCols) - 1)
+  
+  # number of target columns must be even (E/Ct pairs)
+  nTargetCols <- length(preRefCols) - (NumOfFactors + 1)
+  if (nTargetCols <= 0 || nTargetCols %% 2 != 0) {
+    stop(
+      "Target gene columns must be provided as E/Ct pairs ",
+      "and placed immediately before reference genes.",
+      call. = FALSE
+    )
   }
   
-  targetPairs <- split(targetCols, ceiling(seq_along(targetCols) / 2))
-  targetNames <- vapply(targetPairs, function(tc) colnames(x)[tc[1]], character(1))
+  targetCols <- tail(preRefCols, nTargetCols)
   
 
-  # Subset target genes if requested
+# Design columns (everything before target pairs)
+
+  designCols <- setdiff(seq_len(n), c(targetCols, refCols))
+  
+  expectedDesign <- NumOfFactors + 1 + !is.null(block)
+  if (length(designCols) != expectedDesign) {
+    stop(
+      "Mismatch between NumOfFactors and detected design columns.\n",
+      "Expected: ", expectedDesign,
+      " | Found: ", length(designCols),
+      call. = FALSE
+    )
+  }
+  
+
+    move_col <- targetCols[1] - 1
+  
+  # columns before target genes
+  before_target <- seq_len(move_col)
+  
+  # reorder columns: moved column first, then remaining before-target columns,
+  # then target + reference columns unchanged
+  new_order <- c(
+    move_col,
+    setdiff(before_target, move_col),
+    (targetCols[1]):ncol(x)
+  )
+  
+  x <- x[, new_order, drop = FALSE]
+  
+  # arrange rows based on columns before target genes
+  ord <- do.call(order, x[, seq_len(length(before_target)), drop = FALSE])
+  x <- x[ord, , drop = FALSE]
+  
+  rownames(x) <- NULL
+    
+
+# Target gene pairing and names
+
+  targetPairs <- split(targetCols, ceiling(seq_along(targetCols) / 2))
+  targetNames <- vapply(
+    targetPairs,
+    function(tc) colnames(x)[tc[1]],
+    character(1)
+  )
+
+
+# Subset target genes if requested
   if (!isTRUE(analyseAllTarget)) {
     keep <- targetNames %in% analyseAllTarget
-    if (!any(keep)) stop("None of the specified target genes were found in the data.")
+    if (!any(keep))
+      stop("None of the specified target genes were found.")
     targetPairs <- targetPairs[keep]
     targetNames <- targetNames[keep]
   }
   
-
-  # Analyse each target gene
+  
+  ## Analyse each target gene
   perGene <- lapply(seq_along(targetPairs), function(i) {
     
     tc <- targetPairs[[i]]
@@ -141,9 +303,10 @@ REPEATED_DDCt <- function(
     
     gene_df <- x[, c(designCols, tc, refCols), drop = FALSE]
     
-    # Skip genes with no usable data
-    if (all(is.na(gene_df[, tc]))) {
-      warning("Skipping target gene ", gene_name, " (all values are NA)")
+    target_in_gene_df <- (length(designCols) + 1):(length(designCols) + length(tc))
+    
+    if (all(is.na(gene_df[, target_in_gene_df]))) {
+      warning("Skipping target gene ", gene_name, " (all NA)")
       return(NULL)
     }
     
@@ -158,30 +321,33 @@ REPEATED_DDCt <- function(
       plot = plot
     )
     
-    # Add gene name to Relative Expression table
     res$Relative_Expression_table$gene <- gene_name
     res
   })
   
-  # Remove skipped genes
   perGene <- Filter(Negate(is.null), perGene)
-  if (length(perGene) == 0) stop("No target genes could be analysed")
+  if (length(perGene) == 0)
+    stop("No target genes could be analysed")
   
 
-  # Combine Relative Expression tables
-  combinedFoldChange <- do.call(rbind, lapply(perGene, function(g) g$Relative_Expression_table))
+# Combine Relative Expression tables
+  combinedFoldChange <- do.call(
+    rbind,
+    lapply(perGene, function(g) g$Relative_Expression_table)
+  )
+  
   rownames(combinedFoldChange) <- NULL
+  combinedFoldChange <- combinedFoldChange[
+    , c(ncol(combinedFoldChange), 1:(ncol(combinedFoldChange) - 1))
+  ]
   
-  combinedFoldChange <- combinedFoldChange[, c(ncol(combinedFoldChange), 1:(ncol(combinedFoldChange) - 1))]
-
-  # Print combined Fold Change / RE table automatically
   cat("\nCombined Relative Expression Table (all genes)\n")
   print(combinedFoldChange)
   
 
-  # Return full structured object invisibly
+# Return object
   invisible(list(
-    perGene = setNames(perGene, targetNames),   # All individual gene outputs with models
-    combinedFoldChange = combinedFoldChange     # Combined table
+    perGene = setNames(perGene, targetNames),
+    combinedFoldChange = combinedFoldChange
   ))
 }

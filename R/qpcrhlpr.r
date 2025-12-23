@@ -157,13 +157,16 @@
   } else {
     factor_cols <- seq_len(which(colnames(x) == "rep") - 1)
   }
+  
   x[factor_cols] <- lapply(
     x[factor_cols],
     function(z) {
       if (is.numeric(z)) {
-        stop("Numeric column found among factor columns. Please check input.")
+        z <- as.factor(z)
+      } else {
+        z <- factor(z)
       }
-      factor(z)
+      z
     }
   )
   

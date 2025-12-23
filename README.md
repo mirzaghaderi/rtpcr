@@ -162,7 +162,7 @@ res <- REPEATED_DDCt(
   data,
   NumOfFactors = 1,
   numberOfrefGenes = 1,
-  factor = "time",
+  repeatedFactor = "time",
   calibratorLevel = "1",
   block = NULL)
 
@@ -182,9 +182,9 @@ TTEST_DDCt(
   paired = T)
 
 
+
 # Anova analysis
 data <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
-
 res <- ANOVA_DDCt(
   x = data,
   mainFactor.column = 1,
@@ -443,7 +443,7 @@ res3 <- REPEATED_DDCt(
   data2,
   NumOfFactors = 1,
   numberOfrefGenes = 1,
-  factor = "time",
+  repeatedFactor = "time",
   calibratorLevel = "1",
   block = NULL
 )

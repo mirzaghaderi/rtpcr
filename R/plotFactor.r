@@ -38,7 +38,7 @@
 #' @examples
 #' data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
 #' res <- ANOVA_DCt(data, 
-#'     NumOfFactors = 2,
+#'     numOfFactors = 2,
 #'     block = "block",
 #'     numberOfrefGenes = 1)
 #'     
@@ -68,7 +68,7 @@
 #' #Perform analysis first
 #' res <- ANOVA_DCt(
 #'   data,
-#'   NumOfFactors = 3,
+#'   numOfFactors = 3,
 #'   numberOfrefGenes = 1,
 #'   block = NULL)
 #'   

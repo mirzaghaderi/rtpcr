@@ -6,7 +6,7 @@
 \usage{
 ANOVA_DDCt(
   x,
-  NumOfFactors,
+  numOfFactors,
   numberOfrefGenes,
   mainFactor.column,
   analysisType = "anova",
@@ -24,7 +24,7 @@ ANOVA_DDCt(
 E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene
 columns must be located at the end of the data frame.}
 
-\item{NumOfFactors}{Integer. Number of experimental factor columns
+\item{numOfFactors}{Integer. Number of experimental factor columns
 (excluding \code{rep} and optional \code{block}).}
 
 \item{numberOfrefGenes}{Integer. Number of reference genes. Each reference gene
@@ -94,7 +94,7 @@ even there is only one factor (without covariate or factor  variable).
 \examples{
 data1 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
 ANOVA_DDCt(x = data1,
-           NumOfFactors = 2,
+           numOfFactors = 2,
            numberOfrefGenes = 1,
            block = "block",
            mainFactor.column = 2,
@@ -104,7 +104,7 @@ ANOVA_DDCt(x = data1,
 data2 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))          
 ANOVA_DDCt(
            x = data2,
-           NumOfFactors = 1,
+           numOfFactors = 1,
            numberOfrefGenes = 1,
            block = NULL,
            mainFactor.column = 1,

@@ -8,7 +8,7 @@
 #' @param x A data frame containing experimental design columns, target gene
 #'   E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene
 #'   columns must be located at the end of the data frame. 
-#' @param NumOfFactors Integer. Number of experimental factor columns
+#' @param numOfFactors Integer. Number of experimental factor columns
 #'   (excluding \code{rep} and optional \code{block}).
 #' @param numberOfrefGenes Integer. Number of reference genes. Each reference gene
 #'   must be represented by two columns (E and Ct).
@@ -73,7 +73,7 @@
 #' @examples
 #' data1 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
 #' ANOVA_DDCt(x = data1,
-#'            NumOfFactors = 2,
+#'            numOfFactors = 2,
 #'            numberOfrefGenes = 1,
 #'            block = "block",
 #'            mainFactor.column = 2,
@@ -83,7 +83,7 @@
 #' data2 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))          
 #' ANOVA_DDCt(
 #'            x = data2,
-#'            NumOfFactors = 1,
+#'            numOfFactors = 1,
 #'            numberOfrefGenes = 1,
 #'            block = NULL,
 #'            mainFactor.column = 1,
@@ -95,7 +95,7 @@
 
 ANOVA_DDCt <- function(
     x,
-    NumOfFactors,
+    numOfFactors,
     numberOfrefGenes,
     mainFactor.column,
     analysisType = "anova",
@@ -111,14 +111,14 @@ ANOVA_DDCt <- function(
 
   # Basic checks
   if (!is.data.frame(x)) stop("x must be a data.frame")
-  if (!is.numeric(NumOfFactors) || NumOfFactors < 1) stop("NumOfFactors must be a positive integer")
+  if (!is.numeric(numOfFactors) || numOfFactors < 1) stop("numOfFactors must be a positive integer")
   if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1) stop("numberOfrefGenes must be a positive integer")
   if (!(isTRUE(analyseAllTarget) || is.character(analyseAllTarget))) {
     stop("analyseAllTarget must be TRUE or a character vector of target names")
   }
   
   n <- ncol(x)
-  nDesign <- if (is.null(block)) NumOfFactors + 1 else NumOfFactors + 2
+  nDesign <- if (is.null(block)) numOfFactors + 1 else numOfFactors + 2
   designCols <- seq_len(nDesign)
   nRefCols <- 2 * numberOfrefGenes
   refCols <- (n - nRefCols + 1):n

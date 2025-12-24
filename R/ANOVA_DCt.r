@@ -8,7 +8,7 @@
 #' @param x A data frame containing experimental design columns, target gene
 #'   E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene
 #'   columns must be located at the end of the data frame.
-#' @param NumOfFactors Integer. Number of experimental factor columns
+#' @param numOfFactors Integer. Number of experimental factor columns
 #'   (excluding \code{rep} and optional \code{block}).
 #' @param numberOfrefGenes Integer. Number of reference genes. Each reference gene
 #'   must be represented by two columns (E and Ct).
@@ -38,7 +38,7 @@
 #' data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 #' res <- ANOVA_DCt(
 #'   data,
-#'   NumOfFactors = 3,
+#'   numOfFactors = 3,
 #'   numberOfrefGenes = 1,
 #'   block = NULL)
 
@@ -46,7 +46,7 @@
 
 ANOVA_DCt <- function(
     x,
-    NumOfFactors,
+    numOfFactors,
     numberOfrefGenes,
     block = NULL,
     alpha = 0.05,
@@ -57,7 +57,7 @@ ANOVA_DCt <- function(
 
   # Basic checks
   if (!is.data.frame(x)) stop("x must be a data.frame")
-  if (!is.numeric(NumOfFactors) || NumOfFactors < 1) stop("NumOfFactors must be a positive integer")
+  if (!is.numeric(numOfFactors) || numOfFactors < 1) stop("numOfFactors must be a positive integer")
   if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1) stop("numberOfrefGenes must be a positive integer")
   if (!(isTRUE(analyseAllTarget) || is.character(analyseAllTarget))) {
     stop("analyseAllTarget must be TRUE or a character vector of target gene names")
@@ -67,7 +67,7 @@ ANOVA_DCt <- function(
   
 
   # Design columns
-  nDesign <- if (is.null(block)) NumOfFactors + 1 else NumOfFactors + 2
+  nDesign <- if (is.null(block)) numOfFactors + 1 else numOfFactors + 2
   if (nDesign >= n) stop("Not enough columns for target and reference genes")
   designCols <- seq_len(nDesign)
   

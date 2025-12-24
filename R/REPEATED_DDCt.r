@@ -14,7 +14,7 @@
 #' all the three number 1 indicate one individual which has been sampled over three different time courses.
 #' See example data sets or refer \href{../doc/vignette.html}{\code{vignette}}, section "data structure and column arrangement" for details.
 #' 
-#' @param NumOfFactors Integer. Number of experimental factor columns
+#' @param numOfFactors Integer. Number of experimental factor columns
 #'   (excluding optional \code{block}).
 #' @param repeatedFactor
 #' Character string specifying the factor for which fold changes are analysed
@@ -65,7 +65,7 @@
 #' data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 #' REPEATED_DDCt(
 #'   data,
-#'   NumOfFactors = 1,
+#'   numOfFactors = 1,
 #'   numberOfrefGenes = 1,
 #'   repeatedFactor = "time",
 #'   calibratorLevel = "1",
@@ -76,7 +76,7 @@
 
 # REPEATED_DDCt <- function(
 #     x,
-#     NumOfFactors,
+#     numOfFactors,
 #     numberOfrefGenes,
 #     repeatedFactor, 
 #     calibratorLevel,
@@ -90,7 +90,7 @@
 # 
 #   # Basic checks
 #   if (!is.data.frame(x)) stop("x must be a data.frame")
-#   if (!is.numeric(NumOfFactors) || NumOfFactors < 1) stop("NumOfFactors must be a positive integer")
+#   if (!is.numeric(numOfFactors) || numOfFactors < 1) stop("numOfFactors must be a positive integer")
 #   if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1) stop("numberOfrefGenes must be a positive integer")
 #   if (!(isTRUE(analyseAllTarget) || is.character(analyseAllTarget))) {
 #     stop("analyseAllTarget must be TRUE or a character vector of target gene names")
@@ -102,8 +102,8 @@
 #   
 # 
 #   # Design columns
-#   # id + NumOfFactors + time (+ block if present)
-#   nDesign <- if (is.null(block)) NumOfFactors + 1 else NumOfFactors + 2
+#   # id + numOfFactors + time (+ block if present)
+#   nDesign <- if (is.null(block)) numOfFactors + 1 else numOfFactors + 2
 #   if (nDesign >= n) stop("Not enough columns for target and reference genes")
 #   designCols <- seq_len(nDesign)
 #   
@@ -187,7 +187,7 @@
 # }
 REPEATED_DDCt <- function(
     x,
-    NumOfFactors,
+    numOfFactors,
     numberOfrefGenes,
     repeatedFactor,
     calibratorLevel,
@@ -201,8 +201,8 @@ REPEATED_DDCt <- function(
 
 # Basic checks
   if (!is.data.frame(x)) stop("x must be a data.frame")
-  if (!is.numeric(NumOfFactors) || NumOfFactors < 1)
-    stop("NumOfFactors must be a positive integer")
+  if (!is.numeric(numOfFactors) || numOfFactors < 1)
+    stop("numOfFactors must be a positive integer")
   if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1)
     stop("numberOfrefGenes must be a positive integer")
   if (!(isTRUE(analyseAllTarget) || is.character(analyseAllTarget)))
@@ -226,7 +226,7 @@ REPEATED_DDCt <- function(
   preRefCols <- seq_len(min(refCols) - 1)
   
   # number of target columns must be even (E/Ct pairs)
-  nTargetCols <- length(preRefCols) - (NumOfFactors + 1)
+  nTargetCols <- length(preRefCols) - (numOfFactors + 1)
   if (nTargetCols <= 0 || nTargetCols %% 2 != 0) {
     stop(
       "Target gene columns must be provided as E/Ct pairs ",
@@ -242,10 +242,10 @@ REPEATED_DDCt <- function(
 
   designCols <- setdiff(seq_len(n), c(targetCols, refCols))
   
-  expectedDesign <- NumOfFactors + 1 + !is.null(block)
+  expectedDesign <- numOfFactors + 1 + !is.null(block)
   if (length(designCols) != expectedDesign) {
     stop(
-      "Mismatch between NumOfFactors and detected design columns.\n",
+      "Mismatch between numOfFactors and detected design columns.\n",
       "Expected: ", expectedDesign,
       " | Found: ", length(designCols),
       call. = FALSE

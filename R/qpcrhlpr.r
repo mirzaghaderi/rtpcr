@@ -354,17 +354,17 @@
 # #' Livak, K. J. and Schmittgen, T. D. (2001).
 # #' Analysis of Relative Gene Expression Data Using Real-Time Quantitative PCR
 # #' and the Double Delta CT Method.
-# #' \emph{Methods}, 25(4), 402–408.
+# #' Methods, 25(4), 402–408.
 # #' doi:10.1006/meth.2001.1262
 # #' 
 # #' Ganger, M. T., Dietz, G. D., and Ewing, S. J. (2017).
 # #' A common base method for analysis of qPCR data and the application of simple
 # #' blocking in qPCR experiments.
-# #' \emph{BMC Bioinformatics}, 18, 1–11.
+# #' BMC Bioinformatics, 18, 1–11.
 # #' 
 # #' Yuan, J. S., Reed, A., Chen, F., and Stewart, N. (2006).
 # #' Statistical Analysis of Real-Time PCR Data.
-# #' \emph{BMC Bioinformatics}, 7, 85.
+# #' BMC Bioinformatics, 7, 85.
 # #' 
 # #' @examples
 # #' ANOVA_DDCt_uniTarget(data_1factor,
@@ -755,17 +755,17 @@
 # #' Livak, K. J. and Schmittgen, T. D. (2001).
 # #' Analysis of Relative Gene Expression Data Using Real-Time Quantitative PCR
 # #' and the Double Delta CT Method.
-# #' \emph{Methods}, 25(4), 402–408.
+# #' Methods, 25(4), 402–408.
 # #' doi:10.1006/meth.2001.1262
 #'
 # #' Ganger, M. T., Dietz, G. D., and Ewing, S. J. (2017).
 # #' A common base method for analysis of qPCR data and the application of simple
 # #' blocking in qPCR experiments.
-# #' \emph{BMC Bioinformatics}, 18, 1–11.
+# #' BMC Bioinformatics, 18, 1–11.
 #'
 # #' Yuan, J. S., Reed, A., Chen, F., and Stewart, N. (2006).
 # #' Statistical Analysis of Real-Time PCR Data.
-# #' \emph{BMC Bioinformatics}, 7, 85.
+# #' BMC Bioinformatics, 7, 85.
 #'
 # #' @examples
 # #' # If the data include technical replicates, calculate means first:

@@ -6,7 +6,7 @@
 \usage{
 REPEATED_DDCt(
   x,
-  NumOfFactors,
+  numOfFactors,
   numberOfrefGenes,
   repeatedFactor,
   calibratorLevel,
@@ -27,7 +27,7 @@ for example see \code{data_repeated_measure_1},
 all the three number 1 indicate one individual which has been sampled over three different time courses.
 See example data sets or refer \href{../doc/vignette.html}{\code{vignette}}, section "data structure and column arrangement" for details.}
 
-\item{NumOfFactors}{Integer. Number of experimental factor columns
+\item{numOfFactors}{Integer. Number of experimental factor columns
 (excluding optional \code{block}).}
 
 \item{numberOfrefGenes}{Integer. Number of reference genes. Each reference gene
@@ -81,7 +81,7 @@ Column layout requirements for \code{x}:
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 REPEATED_DDCt(
   data,
-  NumOfFactors = 1,
+  numOfFactors = 1,
   numberOfrefGenes = 1,
   repeatedFactor = "time",
   calibratorLevel = "1",

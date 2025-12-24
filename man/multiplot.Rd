@@ -37,7 +37,7 @@ p1 <- a$plot
 data2 <- read.csv(system.file("extdata", "data_1factor.csv", package = "rtpcr"))
 out2 <- ANOVA_DCt(
   data2,
-  NumOfFactors = 1,
+  numOfFactors = 1,
   numberOfrefGenes = 1,
   block = NULL)
   

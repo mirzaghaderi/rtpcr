@@ -46,7 +46,7 @@ to fold change values using the \eqn{\Delta \Delta C_T} framework.
 # Obtain a fitted model from ANOVA_DDCt
 res <- ANOVA_DDCt(
   data_3factor,
-  NumOfFactors = 3,
+  numOfFactors = 3,
   numberOfrefGenes = 1,
   mainFactor.column = 1,
   block = NULL)

@@ -6,7 +6,7 @@
 \usage{
 ANOVA_DCt(
   x,
-  NumOfFactors,
+  numOfFactors,
   numberOfrefGenes,
   block = NULL,
   alpha = 0.05,
@@ -19,7 +19,7 @@ ANOVA_DCt(
 E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene
 columns must be located at the end of the data frame.}
 
-\item{NumOfFactors}{Integer. Number of experimental factor columns
+\item{numOfFactors}{Integer. Number of experimental factor columns
 (excluding \code{rep} and optional \code{block}).}
 
 \item{numberOfrefGenes}{Integer. Number of reference genes. Each reference gene
@@ -55,7 +55,7 @@ section "data structure and column arrangement" for details about data structure
 data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 res <- ANOVA_DCt(
   data,
-  NumOfFactors = 3,
+  numOfFactors = 3,
   numberOfrefGenes = 1,
   block = NULL)
 }

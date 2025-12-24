@@ -160,7 +160,7 @@ time	id  E_Target	Ct_target   E_Ref      Ct_Ref
 # Repeated measure analysis
 res <- REPEATED_DDCt(
   data,
-  NumOfFactors = 1,
+  numOfFactors = 1,
   numberOfrefGenes = 1,
   repeatedFactor = "time",
   calibratorLevel = "1",
@@ -171,7 +171,7 @@ res <- REPEATED_DDCt(
 ANOVA_DDCt(
   data,
   mainFactor.column = 1,
-  NumOfFactors = 1,
+  numOfFactors = 1,
   numberOfrefGenes = 1,
   block = NULL)
 
@@ -188,7 +188,7 @@ data <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "
 res <- ANOVA_DDCt(
   x = data,
   mainFactor.column = 1,
-  NumOfFactors = 2,
+  numOfFactors = 2,
   numberOfrefGenes = 1,
   block = "block",
   analyseAllTarget = TRUE)
@@ -227,7 +227,7 @@ data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 #Perform analysis first
 res <- ANOVA_DCt(
   data,
-  NumOfFactors = 3,
+  numOfFactors = 3,
   numberOfrefGenes = 1,
   block = NULL)
   
@@ -279,7 +279,7 @@ the `rtpcr` plotFactor function create ggplot objects for one to three factor ta
 ```{r eval= F, warning = F}
 data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
 res <- ANOVA_DCt(data, 
-      NumOfFactors = 2,
+      numOfFactors = 2,
       block = "block",
       numberOfrefGenes = 1)
 
@@ -324,7 +324,7 @@ df <- read.csv(system.file("extdata", "Heffer2020PlosOne.csv", package = "rtpcr"
 
 res <- ANOVA_DDCt(
   df,
-  NumOfFactors = 1,
+  numOfFactors = 1,
   mainFactor.column = 1,
   numberOfrefGenes = 1,
   block = NULL)
@@ -378,7 +378,7 @@ The `Means_DDCt` function performs post-hoc comparisons using a fitted model obj
 ```r
 res <- ANOVA_DDCt(
   data_3factor,
-  NumOfFactors = 3,
+  numOfFactors = 3,
   numberOfrefGenes = 1,
   mainFactor.column = 1,
   block = NULL)
@@ -424,7 +424,7 @@ If the residuals from a `t.test` or an `lm` or and `lmer` object are not normall
 ```r
 data1 <- read.csv(system.file("extdata", "data_1factor.csv", package = "rtpcr"))
 res <- ANOVA_DCt(data1,
-                 NumOfFactors = 1,
+                 numOfFactors = 1,
                  numberOfrefGenes = 1, 
                  block = NULL)
 
@@ -441,7 +441,7 @@ qqline(residuals, col = "red")
 data2 <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 res3 <- REPEATED_DDCt(
   data2,
-  NumOfFactors = 1,
+  numOfFactors = 1,
   numberOfrefGenes = 1,
   repeatedFactor = "time",
   calibratorLevel = "1",

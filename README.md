@@ -139,7 +139,7 @@ $contrasts
 ```
 
 ### Relative expression
-Relative expression analysis can be done ΔΔCt or ΔCt methids. Below is an example of expression analysis using ΔΔCt method.
+Relative expression analysis can be done using ΔΔCt or ΔCt methods. Below is an example of expression analysis using ΔΔCt method.
 ```{r eval= T}
 # An example of a properly arranged dataset from a repeated-measures experiment.
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))

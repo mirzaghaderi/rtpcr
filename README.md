@@ -176,7 +176,7 @@ ANOVA_DDCt(
   block = NULL)
 
 
-# Paired t.test (equivalent to repeated measure analusis)
+# Paired t.test (equivalent to repeated measure analysis, but not always the same results, due to different calculation methods!)
 TTEST_DDCt(
   data[1:6,], 
   numberOfrefGenes = 1, 

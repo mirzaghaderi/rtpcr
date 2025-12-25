@@ -56,7 +56,7 @@ The `rtpcr` package gets efficiency (E) the Ct values of genes and performs diff
 
 The current version of the `rtpcr` package can be installed from GitHub by running the following code in R:
 
-```r
+```{r eval = F}
 devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)
 
 # Loading the package
@@ -64,7 +64,7 @@ library(rtpcr)
 ```
 
 Or from CRAN which may install the previous version.
-```r
+```{r eval = F}
 # Installing from CRAN
 install.packages("rtpcr")
 ```
@@ -85,6 +85,10 @@ The package supports **one or more target or reference gene(s)**, supplied as ef
 </p>
 
 
+<details>
+![Workflow of the analysis](figures/dataStructure1.png)
+</details>
+
 #### NOTE 1
 For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and uniq biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a `1` at Rep column correspond to a single individual, all rows with a `2` correspond to another individual, and so on, which have been sampled at specific time points. 
 
@@ -93,7 +97,7 @@ For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and
 ### Amplification Efficiency 
 The `efficiency` function calculates the amplification efficiency (E), slope, and R² statistics for genes, and performs pairwise comparisons of slopes. It takes a data frame in which the first column contains the dilution ratios, followed by the Ct value columns for each gene.
 
-```{r eval= T}
+```{r eval= F}
 # Applying the efficiency function
 data <- read.csv(system.file("extdata", "data_efficiency.csv", package = "rtpcr"))
 data
@@ -139,7 +143,7 @@ $contrasts
 
 ### Relative expression
 Relative expression analysis can be done using ΔΔCt or ΔCt methods. Below is an example of expression analysis using ΔΔCt method.
-```{r eval= T}
+```{r eval= F}
 # An example of a properly arranged dataset from a repeated-measures experiment.
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 data
@@ -206,7 +210,7 @@ The expression table of all genes is returned by `res$combinedFoldChange`. Other
 | Residuals          | `resid(res$perGene$gene_name$lm_ANOVA)`                 |
 
 
-```{r eval= T}
+```{r eval= F}
 # Relative expression table for the specified column in the input data:
 df <- res$combinedFoldChange
 df

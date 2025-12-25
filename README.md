@@ -70,9 +70,8 @@ install.packages("rtpcr")
 ```
 
 
-# Data structure 
-Input data structure is important and should be in wide format:
-For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt` functions), the required column structure of the input data is:
+# Input data structure 
+Input data structure is important and should be in wide format. For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt` functions), the required column structure of the input data is:
 
 1. Experimental condition columns (up to 3 factors, and one block if available) 
 2. Replicates information (biological replicates or subjects; see [NOTE 1](#note-1))  

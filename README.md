@@ -92,9 +92,9 @@ The package supports **one or more target or reference gene(s)**, supplied as ef
 #### NOTE 1
 For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and uniq biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a `1` at Rep column correspond to a single individual, all rows with a `2` correspond to another individual, and so on, which have been sampled at specific time points. 
 
-# Data Analysis 
+# Data analysis 
 
-### Amplification Efficiency 
+### Amplification efficiency 
 The `efficiency` function calculates the amplification efficiency (E), slope, and R² statistics for genes, and performs pairwise comparisons of slopes. It takes a data frame in which the first column contains the dilution ratios, followed by the Ct value columns for each gene.
 
 ```{r eval= F}
@@ -285,7 +285,7 @@ the `rtpcr` plotFactor function create ggplot objects for one to three factor ta
 | **Change fill colors** | `p + scale_fill_brewer(palette = "Set2")` |
 
 
-### Plot output: Example 2
+### Plot output: example 2
 ```{r eval= F, fig.height = 7, fig.width = 12.5, fig.align = 'center', warning = F}
 data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
 res <- ANOVA_DCt(data, 
@@ -329,7 +329,7 @@ p1 +
 ![Workflow of the analysis](figures/Rplot01.png)
 </details>
 
-### Plot output: Example 3
+### Plot output: example 3
 
 ```{r eval= F, warning = F}
 # Heffer et al., 2020, PlosOne

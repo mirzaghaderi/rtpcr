@@ -221,7 +221,11 @@ ref2          R	  1.0000  0.0000 1.0000     0.0000  0.0000 0.6928      0.6186   
 ref2     S vs R	  0.9372 -0.0936 0.9005     0.3145  2.7929 0.2414      0.7927      1.1079         -0.1107         -0.0792
 ```
 
-### Plot output: Example 1
+# Plot output
+A single function of `plotFactor` is used to produce barplots for one- to three-factor expression tables. 
+
+### Example 1
+
 ```{r eval= F, warning = F, fig.height = 7, fig.width = 12.5, fig.align = 'center', warning = F}
 data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 #Perform analysis first

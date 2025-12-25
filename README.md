@@ -125,7 +125,7 @@ Input data structure is important and should be in wide format:
 For analysis using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt`, the required column structure is:
 
 1. Experimental condition columns (up to 3 factors, and one block if available) 
-2. Biological replicate information (Replicates or subjects [NOTE 1](#NOTE 1))  
+2. Biological replicate information (Replicates or subjects [NOTE 1](#note-1))  
 3. Target genes efficiency and Ct values (a pair column for each gene)
 5. Reference genes efficiency and Ct values (a pair column for each gene)
 
@@ -138,7 +138,7 @@ The package supports **one or more target gene(s) and reference gene(s)**, suppl
 
 
 #### NOTE 1
-For ``TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and uniq biological replicate. For example, a datafram with 12 rows has come from an experiment with 12 individuals. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Rep column contains identifiers for each individual (id or subject). For example, all rows with a `1` correspond to a single individual, all rows with a `2` correspond to another individual, and so on. Each row represents one observation at a specific time point for a given individual. 
+For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and uniq biological replicate. For example, a datafram with 12 rows has come from an experiment with 12 individuals. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Rep column contains identifiers for each individual (id or subject). For example, all rows with a `1` correspond to a single individual, all rows with a `2` correspond to another individual, and so on. Each row represents one observation at a specific time point for a given individual. 
 
 ### Analysis 
 Different functions for ΔΔCt and ΔCt analysis, and efficiency calculation! Below is an example of expression analysis using ΔΔCt method.

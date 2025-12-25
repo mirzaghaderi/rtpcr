@@ -202,12 +202,13 @@ res <- ANOVA_DDCt(
 A lot of outputs including relative expression table, lm models, residuals, raw data and ANOVA table for each gene can be accessed.
 The expression table of all genes is returned by `res$combinedFoldChange`. Other outpus for each gene can be obtained as follow:
 
-| Per_gene Output    | Code                                              |
+| Per_gene Output    | Code                                                  |
 |--------------------|-------------------------------------------------------|
-| ANOVA table        | `res$perGene$gene_name$ANOVA_table`                     |
-| ANOVA lm            | `res$perGene$gene_name$lm_ANOVA`                        |
-| ANCOVA lm           | `res$perGene$gene_name$lm_ANCOVA`                       |
-| Residuals          | `resid(res$perGene$gene_name$lm_ANOVA)`                 |
+| expression table   | `res$combinedFoldChange`                              |
+| ANOVA table        | `res$perGene$gene_name$ANOVA_table`                   |
+| ANOVA lm           | `res$perGene$gene_name$lm_ANOVA`                      |
+| ANCOVA lm          | `res$perGene$gene_name$lm_ANCOVA`                     |
+| Residuals          | `resid(res$perGene$gene_name$lm_ANOVA)`               |
 
 
 ```{r eval= F}

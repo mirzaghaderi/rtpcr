@@ -317,7 +317,7 @@ p1 +
 <img src="inst/Rplot01.png" width="100%">
 </p>
 
-</details>
+<details>
 ![Workflow of the analysis](figures/Rplot01.png)
 </details>
 

@@ -141,7 +141,7 @@ For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and
 
 ### Analysis 
 Different functions for ΔΔCt and ΔCt analysis, and efficiency calculation! Below is an example of expression analysis using ΔΔCt method.
-```r
+```{r eval= T}
 # An example of a properly arranged dataset from a repeated-measures experiment.
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 data
@@ -197,7 +197,7 @@ res <- ANOVA_DDCt(
 
 ### Output
 A lot of outputs including relative expression table, lm models, residuals, raw data and ANOVA table for each gene can be accessed.
-The expression table of all genes is returned by `res$combinedFoldChange`. Other outpus for each gene can be obtained as followe:
+The expression table of all genes is returned by `res$combinedFoldChange`. Other outpus for each gene can be obtained as follow:
 
 | Per_gene Output    | Code                                              |
 |--------------------|-------------------------------------------------------|
@@ -207,7 +207,7 @@ The expression table of all genes is returned by `res$combinedFoldChange`. Other
 | Residuals          | `resid(res$perGene$gene_name$lm_ANOVA)`                 |
 
 
-```r
+```{r eval= T}
 # Relative expression table for the specified column in the input data:
 df <- res$combinedFoldChange
 df
@@ -222,7 +222,7 @@ ref2     S vs R	  0.9372 -0.0936 0.9005     0.3145  2.7929 0.2414      0.7927   
 ```
 
 ### Plot output: Example 1
-```r
+```{r eval= F, warning = F, fig.height = 7, fig.width = 12.5, fig.align = 'center', warning = F}
 data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 #Perform analysis first
 res <- ANOVA_DCt(
@@ -276,7 +276,7 @@ the `rtpcr` plotFactor function create ggplot objects for one to three factor ta
 
 
 ### Plot output: Example 2
-```{r eval= F, warning = F}
+```{r eval= F, fig.height = 7, fig.width = 12.5, fig.align = 'center', warning = F}
 data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
 res <- ANOVA_DCt(data, 
       numOfFactors = 2,
@@ -317,7 +317,7 @@ p1 +
 
 ### Plot output: Example 3
 
-```r
+```{r eval= F, warning = F}
 # Heffer et al., 2020, PlosOne
 library(dplyr)
 df <- read.csv(system.file("extdata", "Heffer2020PlosOne.csv", package = "rtpcr"))
@@ -375,7 +375,7 @@ p + theme(
 # Post-hoc analysis
 The `Means_DDCt` function performs post-hoc comparisons using a fitted model object produced by `ANOVA_DDCt` or `REPEATED_DDCt`. It applies pairwise statistical comparisons of relative expression (RE) values for user-specified effects via the `specs` argument. Supported effects include simple effects, interactions, and slicing, provided the underlying model is an ANOVA. For ANCOVA models returned by this package, the `Means_DDCt` output is limited to simple effects only.
 
-```r
+```{r eval= F}
 res <- ANOVA_DDCt(
   data_3factor,
   numOfFactors = 3,
@@ -421,14 +421,14 @@ Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type * SA")
 
 If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test (also known as the Wilcoxon rank-sum test), implemented via `wilcox.test()`, is an alternative to t.test, and `kruskal.test()` is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the `t.test` function (along with the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis. Residuals for `lm` (from `ANOVA_DCt` and `ANOVA_DDCt` functions) and `lmer` (from `REPEATED_DDCt` function) objects can be extracted and plotted as follow:
 
-```r
+```{r eval= F}
 data1 <- read.csv(system.file("extdata", "data_1factor.csv", package = "rtpcr"))
 res <- ANOVA_DCt(data1,
                  numOfFactors = 1,
                  numberOfrefGenes = 1, 
                  block = NULL)
 
-Extracting residuals
+# Extracting residuals
 residuals <-  resid(res$perGene[["PO"]]$lmCRD)
 
 shapiro.test(residuals) 

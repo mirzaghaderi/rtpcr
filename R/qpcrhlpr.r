@@ -1057,7 +1057,7 @@
   # if (missing(block)) stop("argument 'block' is missing")
   
   # rearrange_repeatedMeasureData
-  x <- .rearrange_repeatedMeasureData(x, column_name = "time", level = calibratorLevel)  #repeatedFactor
+  x <- .rearrange_repeatedMeasureData(x, column_name = "time", level = calibratorLevel) 
   
   
   ## validate number of target genes
@@ -1125,8 +1125,8 @@
     n_expr <- 4 + 2 * numberOfrefGenes
     factors <- if ((ncol(x) - n_expr) <= 1) NULL else colnames(x)[2:(ncol(x) - n_expr)]
     
-    colnames(x)[(ncol(x) - n_expr + 1)] <- "block"
-    colnames(x)[(ncol(x) - n_expr + 2)] <- "time"
+    colnames(x)[(ncol(x) - n_expr + 1)] <- "time"
+    colnames(x)[(ncol(x) - n_expr + 2)] <- "block"
     colnames(x)[(ncol(x) - n_expr + 3)] <- "Etarget"
     colnames(x)[(ncol(x) - n_expr + 4)] <- "Cttarget"
     
@@ -1203,7 +1203,7 @@
   ANOVA <- stats::anova(lm)
   
   #post hoc
-  v <- match(colnames(x), "time") #########################
+  v <- match(colnames(x), "time") 
   n <- which(!is.na(v))
   repeatedFactor <- colnames(x)[n]
   lvls <- unique(x[,n])
@@ -1252,10 +1252,7 @@
                           se = se$se[1])
   
   tableC  <- rbind(reference, post_hoc_test)
-  
-  #round tableC to 4 decimal places
-  #tableC[, sapply(tableC, is.numeric)] <- lapply(tableC[, sapply(tableC, is.numeric)], function(x) round(x, 4))
-  
+
   FINALDATA <- x
   
   tableC$contrast <- sapply(strsplit(tableC$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))

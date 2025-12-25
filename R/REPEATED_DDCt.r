@@ -212,11 +212,12 @@ REPEATED_DDCt <- function(
   if (!(isTRUE(analyseAllTarget) || is.character(analyseAllTarget)))
     stop("analyseAllTarget must be TRUE or a character vector")
   if (!repeatedFactor %in% colnames(x))
-    stop("The specified time/factor column was not found in x")
+    stop("The specified repeatedFactor is not in x; Or numOfFactors is not correct.")
   if (!is.null(block) && !block %in% colnames(x))
     stop("The specified block column was not found in x")
   
   colnames(x)[colnames(x) == repeatedFactor] <- "time"
+  
   n <- ncol(x)
   
 
@@ -225,22 +226,22 @@ REPEATED_DDCt <- function(
   if (nRefCols >= n)
     stop("Not enough columns for reference genes")
   
-  refCols <- (n - nRefCols + 1):n
+  #refCols <- (n - nRefCols + 1):n
+  refCols <- (n - nRefCols - numOfFactors + 2 + !is.null(block)):n
   
 # Target gene columns (just before ref genes)
   preRefCols <- seq_len(min(refCols) - 1)
   
   # number of target columns must be even (E/Ct pairs)
-  nTargetCols <- length(preRefCols) - (numOfFactors + 1)
+  nTargetCols <- length(preRefCols) - (numOfFactors + 1) - !is.null(block) 
   if (nTargetCols <= 0 || nTargetCols %% 2 != 0) {
     stop(
-      "Target gene columns must be provided as E/Ct pairs ",
-      "and placed immediately before reference genes.",
+      "Gene columns must be provided as E/Ct pairs",
       call. = FALSE
     )
   }
   
-  targetCols <- tail(preRefCols, nTargetCols)
+  targetCols <- tail(preRefCols, nTargetCols) ###ok
   
 
 # Design columns (everything before target pairs)

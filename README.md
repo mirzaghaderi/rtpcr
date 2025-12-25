@@ -269,7 +269,7 @@ p + theme(
 ![Workflow of the analysis](figures/Rplot02.png)
 </details>
 
-# How to edit ouptput graphs?
+# How to edit ouptput plots?
 the `rtpcr` plotFactor function create ggplot objects for one to three factor table that can furtherbe edited by adding new layers:
 
 | Task | Example Code |

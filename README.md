@@ -125,7 +125,7 @@ Input data structure is important and should be in wide format:
 For analysis using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt`, the required column structure is:
 
 1. Experimental condition columns (up to 3 factors, and one block if available) 
-2. Biological replicate information (Replicates or subjects [NOTE 1](#note-1))  
+2. Biological replicate information (Replicates or subjects; see [NOTE 1](#note-1))  
 3. Target genes efficiency and Ct values (a pair column for each gene)
 5. Reference genes efficiency and Ct values (a pair column for each gene)
 

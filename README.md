@@ -70,8 +70,28 @@ install.packages("rtpcr")
 ```
 
 
-### Amplification Efficiency
+# Data structure 
+Input data structure is important and should be in wide format:
+For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt` functions), the required column structure of the input data is:
 
+1. Experimental condition columns (up to 3 factors, and one block if available) 
+2. Replicates information (biological replicates or subjects; see [NOTE 1](#note-1))  
+3. Target genes efficiency and Ct values (a pair column for each gene)
+5. Reference genes efficiency and Ct values (a pair column for each gene)
+
+The package supports **one or more target or reference gene(s)**, supplied as efficiency–Ct column pairs. Reference gene columns must always appear last. A sample input data is presented below.
+
+<p align="center">
+<img src="inst/dataStructure1.png" width="100%">
+</p>
+
+
+#### NOTE 1
+For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and uniq biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a `1` at Rep column correspond to a single individual, all rows with a `2` correspond to another individual, and so on, which have been sampled at specific time points. 
+
+# Data Analysis 
+
+### Amplification Efficiency 
 The `efficiency` function calculates the amplification efficiency (E), slope, and R² statistics for genes, and performs pairwise comparisons of slopes. It takes a data frame in which the first column contains the dilution ratios, followed by the Ct value columns for each gene.
 
 ```{r eval= T}
@@ -118,29 +138,8 @@ $contrasts
  C2H2.01 - GAPDH    -0.1136 0.121 57  -0.938  0.6186
 ```
 
-
-
-### Data structure 
-Input data structure is important and should be in wide format:
-For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt` functions), the required column structure of the input data is:
-
-1. Experimental condition columns (up to 3 factors, and one block if available) 
-2. Replicates information (biological replicates or subjects; see [NOTE 1](#note-1))  
-3. Target genes efficiency and Ct values (a pair column for each gene)
-5. Reference genes efficiency and Ct values (a pair column for each gene)
-
-The package supports **one or more target or reference gene(s)**, supplied as efficiency–Ct column pairs. Reference gene columns must always appear last. A sample input data is presented below.
-
-<p align="center">
-<img src="inst/dataStructure1.png" width="100%">
-</p>
-
-
-#### NOTE 1
-For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and uniq biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a `1` at Rep column correspond to a single individual, all rows with a `2` correspond to another individual, and so on, which have been sampled at specific time points. 
-
-### Analysis 
-Different functions for ΔΔCt and ΔCt analysis, and efficiency calculation! Below is an example of expression analysis using ΔΔCt method.
+### Relative expression
+Relative expression analysis can be done ΔΔCt or ΔCt methids. Below is an example of expression analysis using ΔΔCt method.
 ```{r eval= T}
 # An example of a properly arranged dataset from a repeated-measures experiment.
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
@@ -195,7 +194,8 @@ res <- ANOVA_DDCt(
 ```
 
 
-### Output
+# Output
+## Data output
 A lot of outputs including relative expression table, lm models, residuals, raw data and ANOVA table for each gene can be accessed.
 The expression table of all genes is returned by `res$combinedFoldChange`. Other outpus for each gene can be obtained as follow:
 
@@ -221,10 +221,10 @@ ref2          R	  1.0000  0.0000 1.0000     0.0000  0.0000 0.6928      0.6186   
 ref2     S vs R	  0.9372 -0.0936 0.9005     0.3145  2.7929 0.2414      0.7927      1.1079         -0.1107         -0.0792
 ```
 
-# Plot output
+## Plot output
 A single function of `plotFactor` is used to produce barplots for one- to three-factor expression tables. 
 
-### Example 1
+### Plot output: example 1
 
 ```{r eval= F, warning = F, fig.height = 7, fig.width = 12.5, fig.align = 'center', warning = F}
 data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))

@@ -23,7 +23,7 @@ both the Livak and Pfaffl methods.
 
 ## Improvement in the current GitHub version `rtpcr_v2.1.1`:
 
-🔴 <span style="color: green;">**A unified data structure across all expression analysis functions.**</span>
+🔴 <span style="color: green;">**A unified data structure as input for all functions.**</span>
  
 🔴 <span style="color: green;">**No restriction on the number of target or reference genes.**</span>
 
@@ -122,7 +122,7 @@ $contrasts
 
 ### Data structure 
 Input data structure is important and should be in wide format:
-For analysis using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt`, the required column structure is:
+For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt` functions), the required column structure of the input data is:
 
 1. Experimental condition columns (up to 3 factors, and one block if available) 
 2. Replicates information (biological replicates or subjects; see [NOTE 1](#note-1))  
@@ -431,25 +431,9 @@ Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type * SA")
 If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test (also known as the Wilcoxon rank-sum test), implemented via `wilcox.test()`, is an alternative to t.test, and `kruskal.test()` is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the `t.test` function (along with the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis. Residuals for `lm` (from `ANOVA_DCt` and `ANOVA_DDCt` functions) and `lmer` (from `REPEATED_DDCt` function) objects can be extracted and plotted as follow:
 
 ```{r eval= F}
-data1 <- read.csv(system.file("extdata", "data_1factor.csv", package = "rtpcr"))
-res <- ANOVA_DCt(data1,
-                 numOfFactors = 1,
-                 numberOfrefGenes = 1, 
-                 block = NULL)
-
-# Extracting residuals
-residuals <-  resid(res$perGene[["PO"]]$lmCRD)
-
-shapiro.test(residuals) 
-par(mfrow = c(1,2))
-plot(residuals)
-qqnorm(residuals)
-qqline(residuals, col = "red")
-
-
-data2 <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
+data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 res3 <- REPEATED_DDCt(
-  data2,
+  data,
   numOfFactors = 1,
   numberOfrefGenes = 1,
   repeatedFactor = "time",
@@ -457,6 +441,11 @@ res3 <- REPEATED_DDCt(
   block = NULL
 )
 residuals <- resid(res3$perGene$Target$lm)
+shapiro.test(residuals) 
+par(mfrow = c(1,2))
+plot(residuals)
+qqnorm(residuals)
+qqline(residuals, col = "red")
 ```
 
 # Mean of technical replicates

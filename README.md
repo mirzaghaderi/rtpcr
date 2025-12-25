@@ -33,7 +33,7 @@ both the Livak and Pfaffl methods.
 
 
 
-# Functions (Brief explanations)
+# Functions (brief explanations)
 The `rtpcr` package gets efficiency (E) the Ct values of genes and performs different analyses using the following functions.
 
 | Function            | Description                                                  |

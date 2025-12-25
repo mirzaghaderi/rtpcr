@@ -354,17 +354,17 @@
 # #' Livak, K. J. and Schmittgen, T. D. (2001).
 # #' Analysis of Relative Gene Expression Data Using Real-Time Quantitative PCR
 # #' and the Double Delta CT Method.
-# #' Methods, 25(4), 402–408.
+# #' \emph{Methods}, 25(4), 402–408.
 # #' doi:10.1006/meth.2001.1262
 # #' 
 # #' Ganger, M. T., Dietz, G. D., and Ewing, S. J. (2017).
 # #' A common base method for analysis of qPCR data and the application of simple
 # #' blocking in qPCR experiments.
-# #' BMC Bioinformatics, 18, 1–11.
+# #' \emph{BMC Bioinformatics}, 18, 1–11.
 # #' 
 # #' Yuan, J. S., Reed, A., Chen, F., and Stewart, N. (2006).
 # #' Statistical Analysis of Real-Time PCR Data.
-# #' BMC Bioinformatics, 7, 85.
+# #' \emph{BMC Bioinformatics}, 7, 85.
 # #' 
 # #' @examples
 # #' ANOVA_DDCt_uniTarget(data_1factor,
@@ -755,17 +755,17 @@
 # #' Livak, K. J. and Schmittgen, T. D. (2001).
 # #' Analysis of Relative Gene Expression Data Using Real-Time Quantitative PCR
 # #' and the Double Delta CT Method.
-# #' Methods, 25(4), 402–408.
+# #' \emph{Methods}, 25(4), 402–408.
 # #' doi:10.1006/meth.2001.1262
 #'
 # #' Ganger, M. T., Dietz, G. D., and Ewing, S. J. (2017).
 # #' A common base method for analysis of qPCR data and the application of simple
 # #' blocking in qPCR experiments.
-# #' BMC Bioinformatics, 18, 1–11.
+# #' \emph{BMC Bioinformatics}, 18, 1–11.
 #'
 # #' Yuan, J. S., Reed, A., Chen, F., and Stewart, N. (2006).
 # #' Statistical Analysis of Real-Time PCR Data.
-# #' BMC Bioinformatics, 7, 85.
+# #' \emph{BMC Bioinformatics}, 7, 85.
 #'
 # #' @examples
 # #' # If the data include technical replicates, calculate means first:
@@ -1049,15 +1049,15 @@
                           plotType){
   
   # basic checks
-  if (!is.data.frame(x)) stop("`x` must be a data.frame")
-  if (missing(repeatedFactor)) stop("argument 'repeatedFactor' is missing")
-  if (missing(calibratorLevel)) stop("argument 'calibratorLevel' is missing")
-  if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1)
-    stop("`numberOfrefGenes` must be >= 1")
-  if (missing(block)) stop("argument 'block' is missing")
+  # if (!is.data.frame(x)) stop("`x` must be a data.frame")
+  # if (missing(repeatedFactor)) stop("argument 'repeatedFactor' is missing")
+  # if (missing(calibratorLevel)) stop("argument 'calibratorLevel' is missing")
+  # if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1)
+  #   stop("`numberOfrefGenes` must be >= 1")
+  # if (missing(block)) stop("argument 'block' is missing")
   
   # rearrange_repeatedMeasureData
-  x <- .rearrange_repeatedMeasureData(x, column_name = repeatedFactor, level = calibratorLevel)  
+  x <- .rearrange_repeatedMeasureData(x, column_name = "time", level = calibratorLevel)  #repeatedFactor
   
   
   ## validate number of target genes
@@ -1203,7 +1203,7 @@
   ANOVA <- stats::anova(lm)
   
   #post hoc
-  v <- match(colnames(x), repeatedFactor)
+  v <- match(colnames(x), "time") #########################
   n <- which(!is.na(v))
   repeatedFactor <- colnames(x)[n]
   lvls <- unique(x[,n])

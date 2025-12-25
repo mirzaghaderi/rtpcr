@@ -198,7 +198,11 @@ REPEATED_DDCt <- function(
     analyseAllTarget = TRUE
 ) {
   
+  
+  col_to_rename <- if (is.null(block)) numOfFactors + 1 else numOfFactors + 2
+  colnames(x)[col_to_rename] <- "id"
 
+  
 # Basic checks
   if (!is.data.frame(x)) stop("x must be a data.frame")
   if (!is.numeric(numOfFactors) || numOfFactors < 1)
@@ -212,6 +216,7 @@ REPEATED_DDCt <- function(
   if (!is.null(block) && !block %in% colnames(x))
     stop("The specified block column was not found in x")
   
+  colnames(x)[colnames(x) == repeatedFactor] <- "time"
   n <- ncol(x)
   
 

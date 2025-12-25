@@ -370,6 +370,9 @@ p + theme(
 <img src="inst/Rplot03.png" width="80%">
 </p>
 
+<details>
+![Workflow of the analysis](figures/Rplot03.png)
+</details>
 
 
 # Post-hoc analysis

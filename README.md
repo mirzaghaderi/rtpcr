@@ -261,7 +261,7 @@ p + theme(
 <img src="inst/Rplot02.png" width="100%">
 </p>
 
-</details>
+<details>
 ![Workflow of the analysis](figures/Rplot02.png)
 </details>
 

@@ -467,7 +467,7 @@ meanTech(data, groups = 1:4)
 Email: gh.mirzaghaderi at uok.ac.ir
 
 # Citation
-```r
+```md
 citation("rtpcr")
 
 To cite the package ‘rtpcr’ in publications, please use:

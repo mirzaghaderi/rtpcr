@@ -130,7 +130,7 @@ For analysis using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt`, 
 5. Reference genes efficiency and Ct values (a pair column for each gene)
 
 The package supports **one or more target gene(s) and reference gene(s)**, supplied as efficiency–Ct column pairs.  
-**Reference gene columns must always appear last.** For `ANOVA_DDCt`, `ANOVA_DCt` and `TTEST_DDCt` functions, each row represents a single biological replicate, corresponding to a non-repeated measures design. A sample input data is presented below.
+**Reference gene columns must always appear last. A sample input data is presented below.
 
 <p align="center">
 <img src="inst/dataStructure1.png" width="100%">

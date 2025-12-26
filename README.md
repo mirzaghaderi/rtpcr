@@ -93,7 +93,7 @@ The package supports **one or more target or reference gene(s)**, supplied as ef
 For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and uniq biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a `1` at Rep column correspond to a single individual, all rows with a `2` correspond to another individual, and so on, which have been sampled at specific time points. 
 
 # Handling missing Ct values
-The `rtpcr` package does not automatically handle missing Ct values. However, NA can be used to represent missing Ct measurements in the input data. In such cases, NA is returned for the corresponding sample ΔCt and passed along to downstream statistical analyses. If more sophisticated handling of missing Ct values is desired, qPCR imputation tools can be used in advance of analysis with rtpcr.
+The `rtpcr` package does not automatically handle missing Ct values. However, NA can be used to represent missing Ct measurements in the input data. In such cases, NA is returned for the corresponding individual ΔCt and passed along to downstream statistical analyses. If more sophisticated handling of missing Ct values (fixed value of 40 for target genes, mean Ct alues of other replicates, or imputation) is desired, qPCR imputation tools can be used in advance of analysis with rtpcr.
 
 # Data analysis 
 

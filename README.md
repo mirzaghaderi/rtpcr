@@ -13,6 +13,33 @@ https://CRAN.R-project.org/package=rtpcr
 
 # Multi-target multi-reference qPCR data analysis using **`rtpcr`** package
 
+
+- [Overview](#overview)
+- [Improvement in the current GitHub version `rtpcr_v2.1.1`](#improvement-in-the-current-github-version-rtpcr_v211)
+- [Functions (brief explanations)](#functions-brief-explanations)
+- [Quick start](#quick-start)
+  - [Installing and loading](#installing-and-loading)
+- [Input data structure](#input-data-structure)
+  - [NOTE 1](#note-1)
+- [Handling missing Ct values](#handling-missing-ct-values)
+- [Data analysis](#data-analysis)
+  - [Amplification efficiency](#amplification-efficiency)
+  - [Relative expression](#relative-expression)
+- [Output](#output)
+  - [Data output](#data-output)
+  - [Plot output](#plot-output)
+    - [Plot output: example 1](#plot-output-example-1)
+    - [Plot output: example 2](#plot-output-example-2)
+    - [Plot output: example 3](#plot-output-example-3)
+- [Post-hoc analysis](#post-hoc-analysis)
+- [Checking normality of residuals](#checking-normality-of-residuals)
+- [Mean of technical replicates](#mean-of-technical-replicates)
+- [Contact](#contact)
+- [Citation](#citation)
+- [References](#references)
+
+
+
 # Overview
 
 Tools for analysis of RT-qPCR gene expression data using ΔCt and ΔΔCt methods,

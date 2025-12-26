@@ -16,11 +16,10 @@ https://CRAN.R-project.org/package=rtpcr
 
 - [Overview](#overview)
 - [Improvement in the current GitHub version `rtpcr_v2.1.1`](#improvement-in-the-current-github-version-rtpcr_v211)
-- [Functions (brief explanations)](#functions-brief-explanations)
+- [Functions](#functions)
 - [Quick start](#quick-start)
   - [Installing and loading](#installing-and-loading)
 - [Input data structure](#input-data-structure)
-  - [NOTE 1](#note-1)
 - [Handling missing Ct values](#handling-missing-ct-values)
 - [Data analysis](#data-analysis)
   - [Amplification efficiency](#amplification-efficiency)
@@ -508,7 +507,7 @@ citation("rtpcr")
 
 To cite the package ‘rtpcr’ in publications, please use:
 
-  Ghader Mirzaghaderi (2025). rtpcr: A package for statistical analysis and graphical
+  Ghader Mirzaghaderi (2025). rtpcr: a package for statistical analysis and graphical
   presentation of qPCR data in R. PeerJ 13:e20185. https://doi.org/10.7717/peerj.20185
 
 A BibTeX entry for LaTeX users is
@@ -531,7 +530,7 @@ Livak, Kenneth J, and Thomas D Schmittgen. 2001. Analysis of Relative Gene Expre
 
 Ganger, MT, Dietz GD, Ewing SJ. 2017. A common base method for analysis of qPCR data and the application of simple blocking in qPCR experiments. BMC bioinformatics 18, 1-11. <a href="https://doi.org/10.1186/s12859-017-1949-5">doi.org/10.1186/s12859-017-1949-5</a>.
 
-Mirzaghaderi G. 2025. rtpcr: A package for statistical analysis and graphical presentation of qPCR data in R. PeerJ 13, e20185. <a href="https://doi.org/10.7717/peerj.20185">doi.org/10.7717/peerj.20185</a>.
+Mirzaghaderi G. 2025. rtpcr: a package for statistical analysis and graphical presentation of qPCR data in R. PeerJ 13, e20185. <a href="https://doi.org/10.7717/peerj.20185">doi.org/10.7717/peerj.20185</a>.
 
 Pfaffl MW, Horgan GW, Dempfle L. 2002. Relative expression software tool (REST©) for group-wise comparison and statistical analysis of relative expression results in real-time PCR. Nucleic acids research 30, e36-e36. <a href="https://doi.org/10.1093/nar/30.9.e36">doi.org/10.1093/nar/30.9.e36</a>.
 

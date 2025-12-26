@@ -1,6 +1,6 @@
 bibentry(
   bibtype = "Article",
-  title = "rtpcr: A package for statistical analysis and graphical presentation of qPCR data in R",
+  title = "rtpcr: a package for statistical analysis and graphical presentation of qPCR data in R",
   author = person("Ghader", "Mirzaghaderi"),
   journal = "PeerJ",
   volume = "13",
@@ -9,6 +9,6 @@ bibentry(
   doi = "10.7717/peerj.20185",
   textVersion =
     paste("Ghader Mirzaghaderi (2025).",
-          "rtpcr: A package for statistical analysis and graphical presentation of qPCR data in R.",
+          "rtpcr: a package for statistical analysis and graphical presentation of qPCR data in R.",
           "PeerJ 13:e20185. https://doi.org/10.7717/peerj.20185")
 )

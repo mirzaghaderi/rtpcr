@@ -486,7 +486,7 @@ qqline(residuals, col = "red")
 ```
 
 # Mean of technical replicates
-Calculating the mean of technical replicates and generating an output table suitable for subsequent ANOVA analysis can be accomplished using the `meanTech` function. The input dataset must follow the column structure illustrated in the example data below. Columns used for grouping should be explicitly specified via the `groups` argument of the `meanTech` function.
+The `meanTech` function calculates the mean of technical replicates by collapsing them into a single value, producing an output dataset that is ready for subsequent analyses. The input data must follow the column structure illustrated in the example below. Columns used to define technical replicate groupings should be specified using the `groups` argument of the `meanTech` function.
 
 ```{r eval= F}
 # See example input data frame:

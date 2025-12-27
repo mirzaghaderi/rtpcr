@@ -419,16 +419,16 @@ p + theme(
 
 
 # Apply expression analysis per level of upper factor
-
+<details>
 ```{r eval= F}
 library(rtpcr)
 df <- read.csv("E:/Dropbox/rtpcr manuscript/rtpcr/inst/extdata/farokh_et_al_2025.csv")
-<details>
 
-## split by levels of the first column
+
+# Split by levels of the first column
 df_split <- split(df, df[[1]])
 
-## apply ANOVA_DDCt per level
+# Apply ANOVA_DDCt per level
 res_list <- lapply(names(df_split), function(lv) {
   
   df <- df_split[[lv]]
@@ -443,7 +443,7 @@ res_list <- lapply(names(df_split), function(lv) {
     block = NULL
   )
   
-  ## add level name as FIRST column
+  # Add level name as FIRST column
   out <- cbind(
     Level = lv,
     out$combinedFoldChange
@@ -452,10 +452,10 @@ res_list <- lapply(names(df_split), function(lv) {
   out
 })
 
-## name list elements
+# Name list elements
 names(res_list) <- names(df_split)
 
-## combine all tables
+# Combine all tables
 final_table_1 <- do.call(rbind, res_list)
 rownames(final_table_1) <- NULL
 ```

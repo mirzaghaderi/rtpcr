@@ -343,6 +343,7 @@ p1 <- plotFactor(
 
 library(ggplot2)
 p1 + 
+  theme(axis.text.y = element_text(size = 14, color = "black")) +
   theme(axis.text.x = element_text(size = 14, color = "black", angle = 45, hjust = 1)) +
   theme(legend.text = element_text(colour = "black", size = 14),
         legend.background = element_rect(fill = "transparent")) +

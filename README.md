@@ -419,7 +419,9 @@ p + theme(
 
 
 # Apply expression analysis per level of upper factor
+
 <details>
+
 ```{r eval= F}
 library(rtpcr)
 df <- read.csv("E:/Dropbox/rtpcr manuscript/rtpcr/inst/extdata/farokh_et_al_2025.csv")

@@ -343,8 +343,7 @@ p1 <- plotFactor(
 
 library(ggplot2)
 p1 + 
-  theme(axis.text.x = element_text(size = 14, color = "black", angle = 45),
-        axis.text.y = element_text(size = 14,color = "black", angle = 0, hjust = 0.5)) +
+  theme(axis.text.x = element_text(size = 14, color = "black", angle = 45, hjust = 1)) +
   theme(legend.text = element_text(colour = "black", size = 14),
         legend.background = element_rect(fill = "transparent")) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))

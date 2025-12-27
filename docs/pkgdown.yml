@@ -1,0 +1,34 @@
+pandoc: '3.2'
+pkgdown: 2.2.0
+pkgdown_sha: ~
+articles: {}
+last_built: 2025-12-27T18:09Z
+
+url: https://mirzaghaderi.github.io/rtpcr
+
+template:
+  bootstrap: 5
+
+home:
+  title: "rtpcr: RT-qPCR Analysis in R"
+  description: >
+    Tools for RT-qPCR data processing, ΔCt / ΔΔCt analysis,
+    repeated-measures designs, and visualization.
+
+navbar:
+  structure:
+    left: [home, reference, articles]
+    right: [github]
+
+reference:
+- title: "Data input & preprocessing"
+  contents:
+  -`ANOVA_DCt`
+  -`ANOVA_DDCt`
+  -`REPEATED_DDCt`
+  -`TTEST_DDCt`
+  -`plotFactor`
+  -`Means_DDCt`
+  -`efficiency`
+  `meanTech`
+  `multiplot`

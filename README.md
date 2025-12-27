@@ -419,8 +419,10 @@ p + theme(
 
 
 # Apply expression analysis per level of upper factor
+When the dataset contains two factor columns, and the expression analysis is intended to be performed on the second factor within each level of the first factor, this can be achieved by looping over the levels of the first factor, as demonstrated in the following example.
 
 <details>
+<summary><strong>See details</strong></summary>
 
 ```{r eval= F}
 library(rtpcr)

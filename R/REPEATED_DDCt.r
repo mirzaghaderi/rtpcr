@@ -27,8 +27,6 @@
 #' @param block
 #' Optional blocking factor column name. If supplied, block effects are treated
 #' as random effects.
-#' @param x.axis.labels.rename
-#' Optional character vector used to replace x-axis labels in the bar plot.
 #' @param analyseAllTarget Logical or character.
 #'   If \code{TRUE} (default), all detected target genes are analysed.
 #'   Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
@@ -81,7 +79,6 @@
 #     repeatedFactor, 
 #     calibratorLevel,
 #     block = NULL,
-#     x.axis.labels.rename = "none",
 #     p.adj = "none",
 #     plot = FALSE,
 #     analyseAllTarget = TRUE
@@ -153,7 +150,6 @@
 #       repeatedFactor = repeatedFactor,
 #       block = block,
 #       calibratorLevel = calibratorLevel,
-#       x.axis.labels.rename = x.axis.labels.rename,
 #       p.adj = p.adj,
 #       plot = plot
 #     )
@@ -192,7 +188,6 @@ REPEATED_DDCt <- function(
     repeatedFactor,
     calibratorLevel,
     block = NULL,
-    x.axis.labels.rename = "none",
     p.adj = "none",
     plot = FALSE,
     analyseAllTarget = TRUE
@@ -216,7 +211,7 @@ REPEATED_DDCt <- function(
   if (!is.null(block) && !block %in% colnames(x))
     stop("The specified block column was not found in x")
   
-  colnames(x)[colnames(x) == repeatedFactor] <- "time"
+  colnames(x)[colnames(x) == repeatedFactor] <- "Time_"
   
   n <- ncol(x)
   
@@ -322,7 +317,6 @@ REPEATED_DDCt <- function(
       repeatedFactor = repeatedFactor,
       block = block,
       calibratorLevel = calibratorLevel,
-      x.axis.labels.rename = x.axis.labels.rename,
       p.adj = p.adj,
       plot = plot
     )

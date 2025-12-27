@@ -397,7 +397,6 @@
     analysisType = "anova",
     mainFactor.level.order = NULL, 
     block = NULL, 
-    x.axis.labels.rename = "none",
     p.adj = "none",  
     plot = TRUE,
     plotType = "RE", 
@@ -578,13 +577,6 @@
   
   tableC$contrast <- as.character(tableC$contrast)
   tableC$contrast <- sapply(strsplit(tableC$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))
-  
-  if(any(x.axis.labels.rename == "none")){
-    tableC
-  }else{
-    tableC$contrast <- x.axis.labels.rename
-  }
-  
   
   
   
@@ -1043,7 +1035,6 @@
                           repeatedFactor, 
                           calibratorLevel,
                           block,
-                          x.axis.labels.rename,
                           p.adj,
                           plot,
                           plotType){
@@ -1057,7 +1048,7 @@
   # if (missing(block)) stop("argument 'block' is missing")
   
   # rearrange_repeatedMeasureData
-  x <- .rearrange_repeatedMeasureData(x, column_name = "time", level = calibratorLevel) 
+  x <- .rearrange_repeatedMeasureData(x, column_name = "Time_", level = calibratorLevel) 
   
   
   ## validate number of target genes
@@ -1113,7 +1104,7 @@
     n_expr <- 3 + 2 * numberOfrefGenes
     factors <- if ((ncol(x) - n_expr) <= 1) NULL else colnames(x)[2:(ncol(x) - n_expr)]
     
-    colnames(x)[(ncol(x) - n_expr + 1)] <- "time"
+    colnames(x)[(ncol(x) - n_expr + 1)] <- "Time_"
     colnames(x)[(ncol(x) - n_expr + 2)] <- "Etarget"
     colnames(x)[(ncol(x) - n_expr + 3)] <- "Cttarget"
     
@@ -1125,7 +1116,7 @@
     n_expr <- 4 + 2 * numberOfrefGenes
     factors <- if ((ncol(x) - n_expr) <= 1) NULL else colnames(x)[2:(ncol(x) - n_expr)]
     
-    colnames(x)[(ncol(x) - n_expr + 1)] <- "time"
+    colnames(x)[(ncol(x) - n_expr + 1)] <- "Time_"
     colnames(x)[(ncol(x) - n_expr + 2)] <- "block"
     colnames(x)[(ncol(x) - n_expr + 3)] <- "Etarget"
     colnames(x)[(ncol(x) - n_expr + 4)] <- "Cttarget"
@@ -1150,7 +1141,7 @@
   x <- data.frame(x, wDCt = target_part - ref_part)
   
   # convert factors
-  for (i in 2:which(names(x) == "time")) {
+  for (i in 2:which(names(x) == "Time_")) {
     x[[i]] <- factor(x[[i]], levels = unique(x[[i]]))
   }
   
@@ -1182,18 +1173,18 @@
   # model formula 
   if (is.null(block)) {
     if (is.null(factors)) {
-      formula <- wDCt ~ time + (1 | id)
+      formula <- wDCt ~ Time_ + (1 | id)
     } else {
       formula <- as.formula(
-        paste("wDCt ~ time *", paste(factors, collapse = " * "), "+ (1 | id)")
+        paste("wDCt ~ Time_ *", paste(factors, collapse = " * "), "+ (1 | id)")
       )
     }
   } else {
     if (is.null(factors)) {
-      formula <- wDCt ~ time + (1 | id) + (1 | block)
+      formula <- wDCt ~ Time_ + (1 | id) + (1 | block)
     } else {
       formula <- as.formula(
-        paste("wDCt ~ time *", paste(factors, collapse = " * "),
+        paste("wDCt ~ Time_ *", paste(factors, collapse = " * "),
               "+ (1 | id) + (1 | block)")
       )
     }
@@ -1203,7 +1194,7 @@
   ANOVA <- stats::anova(lm)
   
   #post hoc
-  v <- match(colnames(x), "time") 
+  v <- match(colnames(x), "Time_") 
   n <- which(!is.na(v))
   repeatedFactor <- colnames(x)[n]
   lvls <- unique(x[,n])
@@ -1256,13 +1247,6 @@
   FINALDATA <- x
   
   tableC$contrast <- sapply(strsplit(tableC$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))
-  
-  if(any(x.axis.labels.rename == "none")){
-    tableC
-  }else{
-    tableC$contrast <- x.axis.labels.rename
-  }
-  
   
   
   

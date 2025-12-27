@@ -28,8 +28,6 @@
 #' @param analysisType
 #' Character string specifying the analysis type; one of \code{"anova"} (default)
 #' or \code{"ancova"}.
-#' @param x.axis.labels.rename
-#' Optional character vector used to relabel the x-axis in bar plots.
 #' @param p.adj
 #' Method for p-value adjustment.
 #' @param plot
@@ -101,7 +99,6 @@ ANOVA_DDCt <- function(
     analysisType = "anova",
     mainFactor.level.order = NULL,
     block = NULL,
-    x.axis.labels.rename = "none",
     p.adj = "none",
     plot = FALSE,
     plotType = "RE",
@@ -155,7 +152,6 @@ ANOVA_DDCt <- function(
       analysisType = analysisType,
       mainFactor.level.order = mainFactor.level.order,
       block = block,
-      x.axis.labels.rename = x.axis.labels.rename,
       p.adj = p.adj,
       plot = plot,
       plotType = plotType

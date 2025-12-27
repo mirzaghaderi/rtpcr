@@ -424,6 +424,7 @@ p + theme(
 library(rtpcr)
 df <- read.csv("E:/Dropbox/rtpcr manuscript/rtpcr/inst/extdata/farokh_et_al_2025.csv")
 <details>
+
 ## split by levels of the first column
 df_split <- split(df, df[[1]])
 
@@ -458,6 +459,7 @@ names(res_list) <- names(df_split)
 final_table_1 <- do.call(rbind, res_list)
 rownames(final_table_1) <- NULL
 ```
+
 </details>
 
 # Post-hoc analysis

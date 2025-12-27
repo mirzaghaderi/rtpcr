@@ -418,6 +418,48 @@ p + theme(
 </details>
 
 
+# Apply expression analysis per level of upper factor
+
+```{r eval= F}
+library(rtpcr)
+df <- read.csv("E:/Dropbox/rtpcr manuscript/rtpcr/inst/extdata/farokh_et_al_2025.csv")
+<details>
+## split by levels of the first column
+df_split <- split(df, df[[1]])
+
+## apply ANOVA_DDCt per level
+res_list <- lapply(names(df_split), function(lv) {
+  
+  df <- df_split[[lv]]
+  
+  out <- ANOVA_DDCt(
+    df[, -1, drop = FALSE],
+    numOfFactors = 1,
+    numberOfrefGenes = 1,
+    mainFactor.column = 1,
+    analysisType = "anova",
+    mainFactor.level.order = NULL,
+    block = NULL
+  )
+  
+  ## add level name as FIRST column
+  out <- cbind(
+    Level = lv,
+    out$combinedFoldChange
+  )
+  
+  out
+})
+
+## name list elements
+names(res_list) <- names(df_split)
+
+## combine all tables
+final_table_1 <- do.call(rbind, res_list)
+rownames(final_table_1) <- NULL
+```
+</details>
+
 # Post-hoc analysis
 The `Means_DDCt` function performs post-hoc comparisons using a fitted model object produced by `ANOVA_DDCt` or `REPEATED_DDCt`. It applies pairwise statistical comparisons of relative expression (RE) values for user-specified effects via the `specs` argument. Supported effects include simple effects, interactions, and slicing, provided the underlying model is an ANOVA. For ANCOVA models returned by this package, the `Means_DDCt` output is limited to simple effects only.
 
@@ -496,6 +538,10 @@ data
 # Calculating mean of technical replicates
 meanTech(data, groups = 1:4)
 ```
+
+
+
+
 
 
 # Contact 

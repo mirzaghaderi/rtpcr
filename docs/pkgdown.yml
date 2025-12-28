@@ -3,8 +3,13 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles: {}
 last_built: 2025-12-28T02:40Z
+<<<<<<< HEAD
 
 template:
+=======
+template:
+  template:
+>>>>>>> acf27307d98172645065fca22ac3c3215c5dd92a
   bootstrap: 5
   bslib:
     primary: "#0054AD"

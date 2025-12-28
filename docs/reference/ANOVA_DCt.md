@@ -1,8 +1,9 @@
-# ΔCT ANOVA analysis
+# ΔCt ANOVA analysis
 
-Performs ΔCT ANOVA analysis for target genes by applying ΔCT method to each target gene. Target genes must be provided as
-paired efficiency (E) and Ct columns followed by the the reference
-gene(s) columns. See example data sets or refer
+Performs ΔCt analysis for target genes by applying ΔCt method to each
+target gene. Target genes must be provided as paired efficiency (E) and
+Ct columns followed by the the reference gene(s) columns. See example
+data sets or refer
 [`vignette`](https://mirzaghaderi.github.io/rtpcr/doc/vignette.md),
 section "data structure and column arrangement" for details about data
 structure.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ANOVA_DCt.r
 \name{ANOVA_DCt}
 \alias{ANOVA_DCt}
-\title{\eqn{\Delta C_T} ANOVA analysis}
+\title{ΔCt ANOVA analysis}
 \usage{
 ANOVA_DCt(
   x,
@@ -39,15 +39,15 @@ to be analysed.}
 \value{
 An object containing expression table, lm models, residuals, raw data and ANOVA table for each gene. 
 \describe{
-\item{\eqn{\Delta C_T} combined expression table}{\code{object$combinedResults}}
+\item{ΔCt combined expression table}{\code{object$combinedResults}}
 \item{ANOVA table}{\code{object$perGene$gene_nameANOVA}}
 \item{lm ANOVA}{\code{object$perGene$gene_name$lmCRD}}
 \item{Residuals}{\code{resid(object$perGene$gene_name$lmCRD)}}
 }
 }
 \description{
-Performs \eqn{\Delta C_T} analysis for target genes by
-applying \eqn{\Delta C_T} method to each target gene. Target genes must be provided as paired
+Performs ΔCt analysis for target genes by
+applying ΔCt method to each target gene. Target genes must be provided as paired
 efficiency (E) and Ct columns followed by the the reference gene(s) columns. See example data sets or refer \href{../doc/vignette.html}{\code{vignette}}, 
 section "data structure and column arrangement" for details about data structure.
 }

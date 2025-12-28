@@ -305,7 +305,7 @@ p + theme(
   panel.border = element_rect(color = "black", linewidth = 0.5))
 ```
 
-![](../inst/Rplot02.png)
+![](inst/Rplot02.png)
 
 # How to edit ouptput plots?
 

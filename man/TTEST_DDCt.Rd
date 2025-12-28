@@ -2,7 +2,7 @@
 % Please edit documentation in R/TTEST_DDCt.r
 \name{TTEST_DDCt}
 \alias{TTEST_DDCt}
-\title{\eqn{\Delta\Delta C_T} method t-test analysis}
+\title{ΔΔCt method t-test analysis}
 \usage{
 TTEST_DDCt(
   x,
@@ -23,8 +23,7 @@ is not true, or there are \code{NA} values use \code{ANODA_DDCt} function
 for independent samples or \code{REPEATED_DDCt} for paired samples.
 See the package vignette for details on the required data structure.}
 
-\item{numberOfrefGenes}{Integer specifying the number of reference genes used for normalization
-(must be \eqn{\ge 1}).}
+\item{numberOfrefGenes}{Integer specifying the number of reference genes used for normalization.}
 
 \item{Factor.level.order}{Optional character vector specifying the order of factor levels.
 If \code{NULL}, the first level of the factor column is used as the calibrator.}
@@ -54,7 +53,7 @@ A list with the following components:
 }
 \description{
 The \code{TTEST_DDCt} function performs fold change expression analysis based on
-the \eqn{\Delta\Delta C_T} method using Student's t-test. It supports analysis
+the ΔΔCt method using Student's t-test. It supports analysis
 of one or more target genes evaluated under two experimental conditions
 (e.g. control vs treatment).
 }

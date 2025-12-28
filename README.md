@@ -46,7 +46,7 @@ both the Livak and Pfaffl methods.
 
 ## Improvement in the current GitHub version `rtpcr_v2.1.1`:
 
-🔴 <span style="color: green;">**A unified data structure as input for all functions.**</span>
+✔️ **A unified data structure as input for all functions.**
  
 🔴 <span style="color: green;">**No restriction on the number of target or reference genes.**</span>
 
@@ -79,7 +79,7 @@ The `rtpcr` package takes a table of efficiency (E) the Ct values of genes and p
 
 The current version of the `rtpcr` package can be installed from GitHub by running the following code in R:
 
-```{r eval = F}
+```{r
 devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)
 
 # Loading the package
@@ -87,7 +87,7 @@ library(rtpcr)
 ```
 
 Or from CRAN which may install the previous version.
-```{r eval = F}
+```{r
 # Installing from CRAN
 install.packages("rtpcr")
 ```

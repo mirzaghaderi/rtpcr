@@ -1,6 +1,6 @@
-# \\\Delta\Delta C_T\\ ANOVA analysis
+# ΔΔCt ANOVA analysis
 
-Apply \\\Delta\Delta C_T\\ analysis to each target gene in the input
+Apply ΔΔCt analysis to each target gene in the input
 data frame. Target genes must be provided as paired efficiency (E) and
 Ct columns located between the experimental design columns and the
 reference gene columns.
@@ -87,7 +87,7 @@ ANOVA_DDCt(
 An object containing expression table, lm models, residuals, raw data
 and ANOVA table for each gene.
 
-- \\\Delta\Delta C_T\\ combined expression table:
+- ΔΔCt combined expression table:
 
   `object$combinedFoldChange`
 
@@ -117,7 +117,7 @@ and ANOVA table for each gene.
 
 ## Details
 
-\\\Delta\Delta C_T\\ analysis is performed for the \`mainFactor.column\`
+ΔΔCt analysis is performed for the \`mainFactor.column\`
 based on a full model factorial experiment by default. However, if
 \`ancova\`, the \`analysisType\` argument, analysis of covariance is
 performed for the levels of the \`mainFactor.column\` and the other

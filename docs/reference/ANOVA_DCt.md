@@ -62,7 +62,7 @@ ANOVA_DCt(
 An object containing expression table, lm models, residuals, raw data
 and ANOVA table for each gene.
 
-- \\\Delta C_T\\ combined expression table:
+- ΔCt combined expression table:
 
   `object$combinedResults`
 

@@ -109,9 +109,9 @@
 <h2 id="improvement-in-the-current-github-version-rtpcr_v211">Improvement in the current GitHub version <code>rtpcr_v2.1.1</code>:<a class="anchor" aria-label="anchor" href="#improvement-in-the-current-github-version-rtpcr_v211"></a>
 </h2>
 <p>✔️ <strong>A unified data structure as input for all functions.</strong></p>
-<p>🔴 <span style="color: green;"><strong>No restriction on the number of target or reference genes.</strong></span></p>
-<p>🔴 <span style="color: green;"><strong>Supports analysis of all genes or selected subsets.</strong></span></p>
-<p>🔴 <span style="color: green;"><strong>Publication-ready graphical outputs.</strong></span></p>
+<p>✔️ <strong>No restriction on the number of target or reference genes.</strong></p>
+<p>✔️ ****Supports analysis of all genes or selected subsets.**</p>
+<p>✔️ ****Publication-ready graphical outputs.**</p>
 </div>
 </div>
 <div class="section level1">
@@ -174,18 +174,16 @@
 <h3 id="installing-and-loading">Installing and loading<a class="anchor" aria-label="anchor" href="#installing-and-loading"></a>
 </h3>
 <p>The current version of the <code>rtpcr</code> package can be installed from GitHub by running the following code in R:</p>
-<p>```{r devtools::install_github(“mirzaghaderi/rtpcr”, build_vignettes = FALSE)</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mirzaghaderi/rtpcr"</span>, build_vignettes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Loading the package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mirzaghaderi/rtpcr" class="external-link">rtpcr</a></span><span class="op">)</span></span></code></pre></div>
+<p>Or from CRAN which may install the previous version.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Installing from CRAN</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rtpcr"</span><span class="op">)</span></span></code></pre></div>
 </div>
-</div>
-<div class="section level1">
-<h1 id="loading-the-package">Loading the package<a class="anchor" aria-label="anchor" href="#loading-the-package"></a>
-</h1>
-<p>library(rtpcr)</p>
-<pre><code>
-Or from CRAN which may install the previous version.
-```{r
-# Installing from CRAN
-install.packages("rtpcr")</code></pre>
 </div>
 <div class="section level1">
 <h1 id="input-data-structure">Input data structure<a class="anchor" aria-label="anchor" href="#input-data-structure"></a>

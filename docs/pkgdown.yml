@@ -1,15 +1,9 @@
 pandoc: '3.2'
 pkgdown: 2.2.0
 pkgdown_sha: ~
-
 template:
   template:
   bootstrap: 5
-  bslib:
-    primary: "#0054AD"
-    border-radius: 0.5rem
-    btn-border-radius: 0.25rem
-
 articles: {}
 last_built: 2025-12-28T02:40Z
 

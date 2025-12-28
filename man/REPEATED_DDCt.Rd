@@ -11,7 +11,6 @@ REPEATED_DDCt(
   repeatedFactor,
   calibratorLevel,
   block = NULL,
-  x.axis.labels.rename = "none",
   p.adj = "none",
   plot = FALSE,
   analyseAllTarget = TRUE
@@ -41,8 +40,6 @@ or time 0.}
 
 \item{block}{Optional blocking factor column name. If supplied, block effects are treated
 as random effects.}
-
-\item{x.axis.labels.rename}{Optional character vector used to replace x-axis labels in the bar plot.}
 
 \item{p.adj}{Method for p-value adjustment.}
 

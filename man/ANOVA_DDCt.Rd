@@ -12,7 +12,6 @@ ANOVA_DDCt(
   analysisType = "anova",
   mainFactor.level.order = NULL,
   block = NULL,
-  x.axis.labels.rename = "none",
   p.adj = "none",
   plot = FALSE,
   plotType = "RE",
@@ -42,8 +41,6 @@ If \code{NULL}, the first observed level is used as the calibrator.
 If provided, the first element of the vector is used as the calibrator level.}
 
 \item{block}{Character or \code{NULL}. Name of the blocking factor column.}
-
-\item{x.axis.labels.rename}{Optional character vector used to relabel the x-axis in bar plots.}
 
 \item{p.adj}{Method for p-value adjustment.}
 

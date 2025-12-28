@@ -1,9 +1,10 @@
-pandoc: '3.2'
+pandoc: "3.2"
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles: {}
 last_built: 2025-12-28T11:28Z
+
+url: https://mirzaghaderi.github.io/rtpcr/
+
 template:
   bootstrap: 5
-url:
-https://mirzaghaderi.github.io/rtpcr/

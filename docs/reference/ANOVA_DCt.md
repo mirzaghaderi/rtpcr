@@ -1,7 +1,6 @@
-# \\\Delta C_T\\ ANOVA analysis
+# ΔCT ANOVA analysis
 
-Performs \\\Delta C_T\\ analysis for target genes by applying \\\Delta
-C_T\\ method to each target gene. Target genes must be provided as
+Performs ΔCT ANOVA analysis for target genes by applying ΔCT method to each target gene. Target genes must be provided as
 paired efficiency (E) and Ct columns followed by the the reference
 gene(s) columns. See example data sets or refer
 [`vignette`](https://mirzaghaderi.github.io/rtpcr/doc/vignette.md),

@@ -22,11 +22,3 @@ navbar:
   structure:
     left: [home, reference, articles, tutorials, news]
     right: [github]
-
-reference:
-  - title: "Core functions"
-    contents:
-      - starts_with("DDCt")
-      - starts_with("ANOVA")
-      - meanTech
-      - readCtData

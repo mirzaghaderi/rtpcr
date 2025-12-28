@@ -1,24 +1,10 @@
-url: https://mirzaghaderi.github.io/rtpcr/
-
 template:
   bootstrap: 5
-  bslib:
-      primary: "#0054AD"
-      border-radius: 0.5rem
-      btn-border-radius: 0.25rem
-  params:
-     ganalytics: UA-140429633-1
-     docsearch:
-       api_key: ef40e3bab94bb0e1d687fd3844052701
-       index_name: rtpcr
 
-home:
-  title: rtpcr
-  description: >
-    An R package for RT-qPCR data processing, normalization,
-    and statistical analysis.
+url: https://mirzaghaderi.github.io/rtpcr/
 
-navbar:
-  structure:
-    left: [home, reference, articles, tutorials, news]
-    right: [github]
+pandoc: '3.2'
+pkgdown: 2.2.0
+pkgdown_sha: ~
+articles: {}
+last_built: 2025-12-28T04:11Z

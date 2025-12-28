@@ -1,7 +1,3 @@
-pandoc: '3.2'
-pkgdown: 2.2.0
-pkgdown_sha: ~
-articles: {}
 template:
   bootstrap: 5
 url: https://mirzaghaderi.github.io/rtpcr/

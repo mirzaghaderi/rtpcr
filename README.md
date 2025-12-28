@@ -11,7 +11,12 @@ https://CRAN.R-project.org/package=rtpcr
 
 
 
-# Multi-target multi-reference qPCR data analysis using **`rtpcr`** package
+# rtpcr
+
+Tools for multi-target multi-reference analysis of qPCR data using ΔCt and ΔΔCt methods,
+including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. 
+The package implements a  [general calculation method](inst/method.md) described by Ganger et al. (2017) 
+and Taylor et al. (2019) for covering both the Livak and Pfaffl methods.
 
 
 - [Overview](#overview)
@@ -35,14 +40,6 @@ https://CRAN.R-project.org/package=rtpcr
 - [References](#references)
 
 
-
-# Overview
-
-Tools for analysis of RT-qPCR gene expression data using ΔCt and ΔΔCt methods,
-including t-tests, ANOVA, ANCOVA, repeated-measures models, and
-publication-ready visualizations. The package implements a  [general calculation
-method](inst/method.md) described by Ganger et al. (2017) and Taylor et al. (2019), covering
-both the Livak and Pfaffl methods.
 
 ## Improvement in the current GitHub version `rtpcr_v2.1.1`:
 
@@ -108,9 +105,6 @@ The package supports **one or more target or reference gene(s)**, supplied as ef
 </p>
 
 
-<details>
-![Workflow of the analysis](figures/dataStructure1.png)
-</details>
 
 #### NOTE 1
 For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and uniq biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a `1` at Rep column correspond to a single individual, all rows with a `2` correspond to another individual, and so on, which have been sampled at specific time points. 
@@ -296,9 +290,6 @@ p + theme(
 <img src="inst/Rplot02.png" width="100%">
 </p>
 
-<details>
-![Workflow of the analysis](figures/Rplot02.png)
-</details>
 
 # How to edit ouptput plots?
 the `rtpcr` plotFactor function create ggplot objects for one to three factor table that can furtherbe edited by adding new layers:
@@ -351,10 +342,6 @@ p1 +
 <p align="center">
 <img src="inst/Rplot01.png" width="100%">
 </p>
-
-<details>
-![Workflow of the analysis](figures/Rplot01.png)
-</details>
 
 ### Plot output: example 3
 
@@ -411,16 +398,10 @@ p + theme(
 <img src="inst/Rplot03.png" width="80%">
 </p>
 
-<details>
-![Workflow of the analysis](figures/Rplot03.png)
-</details>
-
 
 # Apply expression analysis per level of upper factor
 When the dataset contains two factor columns, and the expression analysis is intended to be performed on the second factor within each level of the first factor, this can be achieved by looping over the levels of the first factor, as demonstrated in the following example.
 
-<details>
-<summary><strong>See details</strong></summary>
 
 ```r
 library(rtpcr)
@@ -594,17 +575,3 @@ A BibTeX entry for LaTeX users is
   }
 ```
 
-
-
-# References
-Livak, Kenneth J, and Thomas D Schmittgen. 2001. Analysis of Relative Gene Expression Data Using Real-Time Quantitative PCR and the Double Delta CT Method. Methods 25 (4). <a href="https://doi.org/10.1006/meth.2001.1262">doi.org/10.1006/meth.2001.1262</a>.
-
-Ganger, MT, Dietz GD, Ewing SJ. 2017. A common base method for analysis of qPCR data and the application of simple blocking in qPCR experiments. BMC bioinformatics 18, 1-11. <a href="https://doi.org/10.1186/s12859-017-1949-5">doi.org/10.1186/s12859-017-1949-5</a>.
-
-Mirzaghaderi G. 2025. rtpcr: a package for statistical analysis and graphical presentation of qPCR data in R. PeerJ 13, e20185. <a href="https://doi.org/10.7717/peerj.20185">doi.org/10.7717/peerj.20185</a>.
-
-Pfaffl MW, Horgan GW, Dempfle L. 2002. Relative expression software tool (REST©) for group-wise comparison and statistical analysis of relative expression results in real-time PCR. Nucleic acids research 30, e36-e36. <a href="https://doi.org/10.1093/nar/30.9.e36">doi.org/10.1093/nar/30.9.e36</a>.
-
-Taylor SC, Nadeau K, Abbasi M, Lachance C, Nguyen M, Fenrich, J. 2019. The ultimate qPCR experiment: producing publication quality, reproducible data the first time. Trends in Biotechnology, 37(7), 761-774. <a href="https://doi.org/10.1016/j.tibtech.2018.12.002">doi.org/10.1016/j.tibtech.2018.12.002</a>.
-
-Yuan, JS, Ann Reed, Feng Chen, and Neal Stewart. 2006. Statistical Analysis of Real-Time PCR Data. BMC Bioinformatics 7 (85). <a href="https://doi.org/10.1186/1471-2105-7-85">doi.org/10.1186/1471-2105-7-85</a>.

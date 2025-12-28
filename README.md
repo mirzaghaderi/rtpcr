@@ -19,7 +19,6 @@ The package implements a  [general calculation method](inst/method.md) described
 and Taylor et al. (2019) for covering both the Livak and Pfaffl methods.
 
 
-- [Overview](#overview)
 - [Improvement in the current GitHub version `rtpcr_v2.1.1`](#improvement-in-the-current-github-version-rtpcr_v211)
 - [Functions](#functions)
 - [Quick start](#quick-start)

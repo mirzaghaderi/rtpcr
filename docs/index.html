@@ -65,10 +65,10 @@
 
 
 <div class="section level1">
-<div class="page-header"><h1 id="multi-target-multi-reference-qpcr-data-analysis-using-rtpcr-package">Multi-target multi-reference qPCR data analysis using <strong><code>rtpcr</code></strong> package<a class="anchor" aria-label="anchor" href="#multi-target-multi-reference-qpcr-data-analysis-using-rtpcr-package"></a>
+<div class="page-header"><h1 id="rtpcr">rtpcr<a class="anchor" aria-label="anchor" href="#rtpcr"></a>
 </h1></div>
+<p>Tools for multi-target multi-reference analysis of qPCR data using ΔCt and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package implements a <a href="inst/method.html">general calculation method</a> described by Ganger et al. (2017) and Taylor et al. (2019) for covering both the Livak and Pfaffl methods.</p>
 <ul>
-<li><a href="#overview">Overview</a></li>
 <li><a href="#improvement-in-the-current-github-version-rtpcr_v211">Improvement in the current GitHub version <code>rtpcr_v2.1.1</code></a></li>
 <li><a href="#functions">Functions</a></li>
 <li>
@@ -100,11 +100,6 @@
 <li><a href="#citation">Citation</a></li>
 <li><a href="#references">References</a></li>
 </ul>
-</div>
-<div class="section level1">
-<h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
-</h1>
-<p>Tools for analysis of RT-qPCR gene expression data using ΔCt and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package implements a <a href="inst/method.html">general calculation method</a> described by Ganger et al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl methods.</p>
 <div class="section level2">
 <h2 id="improvement-in-the-current-github-version-rtpcr_v211">Improvement in the current GitHub version <code>rtpcr_v2.1.1</code>:<a class="anchor" aria-label="anchor" href="#improvement-in-the-current-github-version-rtpcr_v211"></a>
 </h2>
@@ -198,11 +193,8 @@
 </ol>
 <p>The package supports <strong>one or more target or reference gene(s)</strong>, supplied as efficiency–Ct column pairs. Reference gene columns must always appear last. A sample input data is presented below.</p>
 <p align="center">
-<img src="dataStructure1.png" width="100%"></p>
-<details><div class="float">
-<img src="dataStructure1.png" alt="Workflow of the analysis"><div class="figcaption">Workflow of the analysis</div>
-</div>
-</details><div class="section level4">
+<img src="inst/dataStructure1.png" width="100%"></p>
+<div class="section level4">
 <h4 id="note-1">NOTE 1<a class="anchor" aria-label="anchor" href="#note-1"></a>
 </h4>
 <p>For <code>TTEST_DDCt</code>, <code>ANOVA_DCt</code>, and <code>ANOVA_DDCt</code>, each row is from a separate and uniq biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The <code>REPEATED_DDCt</code> function is intended for experiments with repeated observations (e.g. time-course data). For <code>REPEATED_DDCt</code>, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a <code>1</code> at Rep column correspond to a single individual, all rows with a <code>2</code> correspond to another individual, and so on, which have been sampled at specific time points.</p>
@@ -410,11 +402,7 @@
 <span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
 <span>  panel.border <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p align="center">
-<img src="Rplot02.png" width="100%"></p>
-<details><div class="float">
-<img src="Rplot02.png" alt="Workflow of the analysis"><div class="figcaption">Workflow of the analysis</div>
-</div>
-</details>
+<img src="inst/Rplot02.png" width="100%"></p>
 </div>
 </div>
 </div>
@@ -491,11 +479,7 @@
 <span>        legend.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"transparent"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p align="center">
-<img src="Rplot01.png" width="100%"></p>
-<details><div class="float">
-<img src="Rplot01.png" alt="Workflow of the analysis"><div class="figcaption">Workflow of the analysis</div>
-</div>
-</details>
+<img src="inst/Rplot01.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="plot-output-example-3">Plot output: example 3<a class="anchor" aria-label="anchor" href="#plot-output-example-3"></a>
@@ -549,19 +533,14 @@
 <span>    strip.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,  <span class="co"># removes the faceting gray background</span></span>
 <span>    strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span><span class="op">)</span> <span class="co"># optional: keeps the text visible</span></span></code></pre></div>
 <p align="center">
-<img src="Rplot03.png" width="80%"></p>
-<details><div class="float">
-<img src="Rplot03.png" alt="Workflow of the analysis"><div class="figcaption">Workflow of the analysis</div>
-</div>
-</details>
+<img src="inst/Rplot03.png" width="80%"></p>
 </div>
 </div>
 <div class="section level1">
 <h1 id="apply-expression-analysis-per-level-of-upper-factor">Apply expression analysis per level of upper factor<a class="anchor" aria-label="anchor" href="#apply-expression-analysis-per-level-of-upper-factor"></a>
 </h1>
 <p>When the dataset contains two factor columns, and the expression analysis is intended to be performed on the second factor within each level of the first factor, this can be achieved by looping over the levels of the first factor, as demonstrated in the following example.</p>
-<details><summary><strong>See details</strong>
-</summary><div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">library</span>(rtpcr)</span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">library</span>(rtpcr)</span>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"E:/Dropbox/rtpcr manuscript/rtpcr/inst/extdata/farokh_et_al_2025.csv"</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>df</span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
@@ -619,7 +598,7 @@
 <span id="cb9-56"><a href="#cb9-56" tabindex="-1"></a><span class="co"># Combine all tables</span></span>
 <span id="cb9-57"><a href="#cb9-57" tabindex="-1"></a>final_table_1 <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, res_list)</span>
 <span id="cb9-58"><a href="#cb9-58" tabindex="-1"></a><span class="fu">rownames</span>(final_table_1) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div>
-</details>
+
 </div>
 <div class="section level1">
 <h1 id="post-hoc-analysis">Post-hoc analysis<a class="anchor" aria-label="anchor" href="#post-hoc-analysis"></a>
@@ -724,16 +703,6 @@
 <span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a>    year = {2025},</span>
 <span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a>    doi = {10.7717/peerj.20185},</span>
 <span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a>  }</span></code></pre></div>
-</div>
-<div class="section level1">
-<h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h1>
-<p>Livak, Kenneth J, and Thomas D Schmittgen. 2001. Analysis of Relative Gene Expression Data Using Real-Time Quantitative PCR and the Double Delta CT Method. Methods 25 (4). <a href="https://doi.org/10.1006/meth.2001.1262" class="external-link">doi.org/10.1006/meth.2001.1262</a>.</p>
-<p>Ganger, MT, Dietz GD, Ewing SJ. 2017. A common base method for analysis of qPCR data and the application of simple blocking in qPCR experiments. BMC bioinformatics 18, 1-11. <a href="https://doi.org/10.1186/s12859-017-1949-5" class="external-link">doi.org/10.1186/s12859-017-1949-5</a>.</p>
-<p>Mirzaghaderi G. 2025. rtpcr: a package for statistical analysis and graphical presentation of qPCR data in R. PeerJ 13, e20185. <a href="https://doi.org/10.7717/peerj.20185" class="external-link">doi.org/10.7717/peerj.20185</a>.</p>
-<p>Pfaffl MW, Horgan GW, Dempfle L. 2002. Relative expression software tool (REST©) for group-wise comparison and statistical analysis of relative expression results in real-time PCR. Nucleic acids research 30, e36-e36. <a href="https://doi.org/10.1093/nar/30.9.e36" class="external-link">doi.org/10.1093/nar/30.9.e36</a>.</p>
-<p>Taylor SC, Nadeau K, Abbasi M, Lachance C, Nguyen M, Fenrich, J. 2019. The ultimate qPCR experiment: producing publication quality, reproducible data the first time. Trends in Biotechnology, 37(7), 761-774. <a href="https://doi.org/10.1016/j.tibtech.2018.12.002" class="external-link">doi.org/10.1016/j.tibtech.2018.12.002</a>.</p>
-<p>Yuan, JS, Ann Reed, Feng Chen, and Neal Stewart. 2006. Statistical Analysis of Real-Time PCR Data. BMC Bioinformatics 7 (85). <a href="https://doi.org/10.1186/1471-2105-7-85" class="external-link">doi.org/10.1186/1471-2105-7-85</a>.</p>
 </div>
 
   </div>

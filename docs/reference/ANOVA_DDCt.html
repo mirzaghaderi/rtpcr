@@ -191,11 +191,11 @@ even there is only one factor (without covariate or factor  variable).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response: wDCt</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 Df Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> block            1  4.252   4.252  2.0175    0.1774    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> factor2          2  0.855   0.428  0.2029    0.8187    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> factor1          1 62.897  62.897 29.8411 8.363e-05 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> factor2:factor1  2  2.166   1.083  0.5139    0.6090    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals       14 29.508   2.108                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block            1  3.956   3.956  2.1292 0.1665850    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> factor2          2  0.866   0.433  0.2331 0.7950523    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> factor1          1 50.978  50.978 27.4353 0.0001256 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> factor2:factor1  2  1.901   0.950  0.5115 0.6103927    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals       14 26.014   1.858                      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -204,34 +204,34 @@ even there is only one factor (without covariate or factor  variable).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response: wDCt</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           Df Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> block      1  4.252   4.252  2.1480    0.1621    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> factor1    1 63.656  63.656 32.1547 3.478e-05 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> factor2    2  0.097   0.048  0.0244    0.9759    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals 16 31.675   1.980                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block      1  3.956   3.956  2.2677    0.1516    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> factor1    1 51.704  51.704 29.6359 5.409e-05 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> factor2    2  0.140   0.070  0.0402    0.9607    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals 16 27.914   1.745                      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Expression table</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   contrast     RE log2FC pvalue sig    LCL    UCL     se Lower.se.RE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       L1 1.0000 0.0000 1.0000     0.0000 0.0000 1.0125      0.4957</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 L2 vs L1 1.0300 0.0427 0.9589     0.2355 4.5051 0.6457      0.6584</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 L3 vs L1 1.0667 0.0931 0.9039     0.2699 4.2153 0.7638      0.6282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       L1 1.0000 0.0000 1.0000     0.0000 0.0000 0.9290      0.5252</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 L2 vs L1 1.0601 0.0842 0.9138     0.2652 4.2370 0.5943      0.7022</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 L3 vs L1 1.0919 0.1268 0.8610     0.3005 3.9677 0.6948      0.6746</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      2.0174          0.0000          0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1.6115          0.0273          0.0668</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1.8112          0.0548          0.1581</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1.9040          0.0000          0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1.6005          0.0558          0.1271</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1.7674          0.0784          0.2053</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** The L1 level was used as calibrator.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> NOTE: Results may be misleading due to involvement in interactions</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ANOVA table </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis of Variance Table</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response: wDCt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 Df Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> block            1  4.817   4.817  3.0271 0.1010796    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> factor2          2  6.944   3.472  2.1820 0.1452323    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> factor1          1 41.228  41.228 25.9094 0.0001092 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> factor2:factor1  2  7.923   3.961  2.4895 0.1144695    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals       16 25.460   1.591                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 Df  Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block            1  4.3883  4.3883  3.5437 0.0780855 .  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> factor2          2  3.9386  1.9693  1.5903 0.2344519    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> factor1          1 25.5443 25.5443 20.6282 0.0003334 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> factor2:factor1  2  6.1005  3.0503  2.4632 0.1167857    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals       16 19.8130  1.2383                      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -239,23 +239,23 @@ even there is only one factor (without covariate or factor  variable).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis of Variance Table</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response: wDCt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           Df Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> block      1  4.817   4.817  2.5973 0.1244432    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> factor1    1 39.584  39.584 21.3437 0.0002127 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> factor2    2  8.589   4.294  2.3155 0.1273881    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals 18 33.383   1.855                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> block      1  4.3883  4.3883  3.0482 0.0978731 .  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> factor1    1 24.6349 24.6349 17.1118 0.0006196 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> factor2    2  4.8480  2.4240  1.6838 0.2136332    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals 18 25.9136  1.4396                      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Expression table</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast     RE  log2FC pvalue sig    LCL    UCL     se Lower.se.RE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       L1 1.0000  0.0000 1.0000     0.0000 0.0000 0.7584      0.5911</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 L2 vs L1 0.6991 -0.5165 0.4439     0.2155 2.2678 0.7125      0.4266</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 L3 vs L1 0.3432 -1.5427 0.0323   * 0.1058 1.1134 0.6526      0.2183</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast     RE  log2FC pvalue sig   LCL    UCL     se Lower.se.RE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       L1 1.0000  0.0000 1.0000     0.000 0.0000 0.6237      0.6490</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 L2 vs L1 0.7935 -0.3338 0.5733     0.281 2.2407 0.6037      0.5221</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 L3 vs L1 0.4520 -1.1457 0.0659   . 0.160 1.2763 0.5520      0.3083</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1.6916          0.0000          0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1.1456         -0.8463         -0.3152</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.5396         -2.4252         -0.9813</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1.5408          0.0000          0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1.2058         -0.5072         -0.2196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.6626         -1.6798         -0.7815</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** The L1 level was used as calibrator.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> NOTE: Results may be misleading due to involvement in interactions</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ANOVA table </span>
@@ -291,23 +291,23 @@ even there is only one factor (without covariate or factor  variable).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** The L1 level was used as calibrator.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative Expression</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    gene contrast     RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    PO       L1 1.0000  0.0000 1.0000     0.0000  0.0000 1.0125      0.4957</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    PO L2 vs L1 1.0300  0.0427 0.9589     0.2355  4.5051 0.6457      0.6584</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    PO L3 vs L1 1.0667  0.0931 0.9039     0.2699  4.2153 0.7638      0.6282</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 GAPDH       L1 1.0000  0.0000 1.0000     0.0000  0.0000 0.7584      0.5911</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 GAPDH L2 vs L1 0.6991 -0.5165 0.4439     0.2155  2.2678 0.7125      0.4266</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 GAPDH L3 vs L1 0.3432 -1.5427 0.0323   * 0.1058  1.1134 0.6526      0.2183</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  ref2       L1 1.0000  0.0000 1.0000     0.0000  0.0000 1.0167      0.4942</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  ref2 L2 vs L1 2.4017  1.2640 0.1894     0.4616 12.4961 0.2760      1.9834</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  ref2 L3 vs L1 2.5785  1.3665 0.1578     0.4956 13.4163 0.3309      2.0500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     gene contrast     RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   E.PO       L1 1.0000  0.0000 1.0000     0.0000  0.0000 0.9290      0.5252</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   E.PO L2 vs L1 1.0601  0.0842 0.9138     0.2652  4.2370 0.5943      0.7022</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   E.PO L3 vs L1 1.0919  0.1268 0.8610     0.3005  3.9677 0.6948      0.6746</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 E.PAO5       L1 1.0000  0.0000 1.0000     0.0000  0.0000 0.6237      0.6490</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 E.PAO5 L2 vs L1 0.7935 -0.3338 0.5733     0.2810  2.2407 0.6037      0.5221</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 E.PAO5 L3 vs L1 0.4520 -1.1457 0.0659   . 0.1600  1.2763 0.5520      0.3083</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 E.ref1       L1 1.0000  0.0000 1.0000     0.0000  0.0000 1.0167      0.4942</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 E.ref1 L2 vs L1 2.4017  1.2640 0.1894     0.4616 12.4961 0.2760      1.9834</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 E.ref1 L3 vs L1 2.5785  1.3665 0.1578     0.4956 13.4163 0.3309      2.0500</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      2.0174          0.0000          0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1.6115          0.0273          0.0668</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1.8112          0.0548          0.1581</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      1.6916          0.0000          0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      1.1456         -0.8463         -0.3152</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.5396         -2.4252         -0.9813</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1.9040          0.0000          0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1.6005          0.0558          0.1271</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1.7674          0.0784          0.2053</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      1.5408          0.0000          0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      1.2058         -0.5072         -0.2196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.6626         -1.6798         -0.7815</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7      2.0233          0.0000          0.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8      2.9081          1.0439          1.5306</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9      3.2433          1.0864          1.7189</span>

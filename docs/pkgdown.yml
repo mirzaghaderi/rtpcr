@@ -1,10 +1,5 @@
 pandoc: '3.2'
 pkgdown: 2.2.0
 pkgdown_sha: ~
-template:
-  template:
-  bootstrap: 5
 articles: {}
-last_built: 2025-12-28T02:40Z
-
-
+last_built: 2025-12-28T03:06Z

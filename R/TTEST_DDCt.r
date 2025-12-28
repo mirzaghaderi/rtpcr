@@ -1,8 +1,8 @@
-#' @title \eqn{\Delta\Delta C_T} method t-test analysis
+#' @title ΔΔCt method t-test analysis
 #'
 #' @description
 #' The \code{TTEST_DDCt} function performs fold change expression analysis based on
-#' the \eqn{\Delta\Delta C_T} method using Student's t-test. It supports analysis
+#' the ΔΔCt method using Student's t-test. It supports analysis
 #' of one or more target genes evaluated under two experimental conditions
 #' (e.g. control vs treatment).
 #'
@@ -44,8 +44,7 @@
 #' estimate is used. Otherwise, Welch's t-test is applied.
 #'
 #' @param numberOfrefGenes
-#' Integer specifying the number of reference genes used for normalization
-#' (must be \eqn{\ge 1}).
+#' Integer specifying the number of reference genes used for normalization.
 #'
 #' @param Factor.level.order
 #' Optional character vector specifying the order of factor levels.

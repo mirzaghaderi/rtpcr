@@ -69,7 +69,9 @@
 
 
 
-Means_DDCt <- function(model, specs, p.adj = "none"){
+Means_DDCt <- function(model, 
+                       specs, 
+                       p.adj = "none"){
   
   if(any(c("lmerModLmerTest", "lm") %in% class(model)) == FALSE){
     stop(deparse(substitute(model)), " is not an accepted model object created by ANOVA_DDCt, qpcrANOVARE, or REPEATED_DDCt functions!")

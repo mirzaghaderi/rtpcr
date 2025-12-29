@@ -23,14 +23,14 @@
 #' @param group_col Character. Column name for grouping bars (optional)
 #' @param facet_col Character. Column name for faceting (optional)
 #' @param letters_col Character. Column name for significance letters (optional)
-#' @param letters_d Numeric. Vertical offset for letters (default 0.2)
-#' @param col_width Numeric. Width of bars (default 0.8)
-#' @param err_width Numeric. Width of error bars (default 0.15)
-#' @param dodge_width Numeric. Width of dodge for grouped bars (default 0.8)
+#' @param letters_d Numeric. Vertical offset for letters (default \code{0.2})
+#' @param col_width Numeric. Width of bars (default \code{0.8})
+#' @param err_width Numeric. Width of error bars (default \code{0.15})
+#' @param dodge_width Numeric. Width of dodge for grouped bars (default \code{0.8})
 #' @param fill_colors Optional vector of fill colors
-#' @param alpha Numeric. Transparency of bars (default 1)
-#' @param base_size Numeric. Base font size for theme (default 12)
-#' @param legend_position Character or numeric vector. Legend position (default "right")
+#' @param alpha Numeric. Transparency of bars (default \code{1})
+#' @param base_size Numeric. Base font size for theme (default \code{12})
+#' @param legend_position Character or numeric vector. Legend position (default \code{right})
 #' @param ... Additional ggplot2 layer arguments
 #' 
 #' @return ggplot2 plot object

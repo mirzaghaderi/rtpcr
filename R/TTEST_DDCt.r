@@ -53,7 +53,7 @@
 #' @param p.adj
 #' Method for p-value adjustment. One of
 #' \code{"holm"}, \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"},
-#' \code{"BH"}, \code{"BY"}, \code{"fdr"}, or \code{"none"}.
+#' \code{"BH"}, \code{"BY"}, \code{"fdr"}, or \code{"none"}. See \code{\link[stats]{p.adjust}}.
 #'
 #' @param order
 #' Optional character vector specifying the order of genes in the output plot.

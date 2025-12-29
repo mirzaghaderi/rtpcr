@@ -16,10 +16,6 @@ data_repeated_measure_2
 
 A data frame with 18 observations and 7 variables:
 
-- id:
-
-  experimental factor
-
 - treatment:
 
   treatment
@@ -28,19 +24,23 @@ A data frame with 18 observations and 7 variables:
 
   time course levels
 
-- E_target:
+- id:
+
+  experimental factor
+
+- Target:
 
   Amplification efficiency of target gene
 
-- Ct_target:
+- Target_Ct:
 
   Ct of target gene
 
-- E_ref:
+- Ref:
 
   Amplification efficiency of reference gene
 
-- Ct_ref:
+- Ref_Ct:
 
   Ct of reference gene
 

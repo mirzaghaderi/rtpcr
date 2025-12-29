@@ -64,19 +64,19 @@ plotFactor(
 
 - letters_d:
 
-  Numeric. Vertical offset for letters (default 0.2)
+  Numeric. Vertical offset for letters (default `0.2`)
 
 - col_width:
 
-  Numeric. Width of bars (default 0.8)
+  Numeric. Width of bars (default `0.8`)
 
 - err_width:
 
-  Numeric. Width of error bars (default 0.15)
+  Numeric. Width of error bars (default `0.15`)
 
 - dodge_width:
 
-  Numeric. Width of dodge for grouped bars (default 0.8)
+  Numeric. Width of dodge for grouped bars (default `0.8`)
 
 - fill_colors:
 
@@ -84,15 +84,15 @@ plotFactor(
 
 - alpha:
 
-  Numeric. Transparency of bars (default 1)
+  Numeric. Transparency of bars (default `1`)
 
 - base_size:
 
-  Numeric. Base font size for theme (default 12)
+  Numeric. Base font size for theme (default `12`)
 
 - legend_position:
 
-  Character or numeric vector. Legend position (default "right")
+  Character or numeric vector. Legend position (default `right`)
 
 - ...:
 

@@ -55,7 +55,8 @@ TTEST_DDCt(
 - p.adj:
 
   Method for p-value adjustment. One of `"holm"`, `"hochberg"`,
-  `"hommel"`, `"bonferroni"`, `"BH"`, `"BY"`, `"fdr"`, or `"none"`.
+  `"hommel"`, `"bonferroni"`, `"BH"`, `"BY"`, `"fdr"`, or `"none"`. See
+  [`p.adjust`](https://rdrr.io/r/stats/p.adjust.html).
 
 - order:
 

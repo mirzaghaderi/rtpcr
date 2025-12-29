@@ -16,27 +16,27 @@ data_repeated_measure_1
 
 A data frame with 9 observations and 6 variables:
 
-- id:
-
-  experimental factor
-
 - time:
 
   time course levels
 
-- E_target:
+- id:
+
+  experimental factor
+
+- Target:
 
   Amplification efficiency of target gene
 
-- Ct_target:
+- Ct_Target:
 
   Ct of target gene
 
-- E_ref:
+- Ref:
 
   Amplification efficiency of reference gene
 
-- Ct_ref:
+- Ct_Ref:
 
   Ct of reference gene
 

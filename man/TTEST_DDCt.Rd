@@ -35,7 +35,7 @@ estimate is used. Otherwise, Welch's t-test is applied.}
 
 \item{p.adj}{Method for p-value adjustment. One of
 \code{"holm"}, \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"},
-\code{"BH"}, \code{"BY"}, \code{"fdr"}, or \code{"none"}.}
+\code{"BH"}, \code{"BY"}, \code{"fdr"}, or \code{"none"}. See \code{\link[stats]{p.adjust}}.}
 
 \item{order}{Optional character vector specifying the order of genes in the output plot.}
 

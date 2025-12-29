@@ -5,8 +5,8 @@ target gene. Target genes must be provided as paired efficiency (E) and
 Ct columns followed by the the reference gene(s) columns. See example
 data sets or refer
 [`vignette`](https://mirzaghaderi.github.io/rtpcr/doc/vignette.md),
-section "data structure and column arrangement" for details about data
-structure.
+section "Input data structure and column arrangement" for details about
+data structure.
 
 ## Usage
 
@@ -50,7 +50,8 @@ ANOVA_DCt(
 
 - adjust:
 
-  Method for p-value adjustment.
+  Method for p-value adjustment. See
+  [`p.adjust`](https://rdrr.io/r/stats/p.adjust.html).
 
 - analyseAllTarget:
 
@@ -63,7 +64,7 @@ ANOVA_DCt(
 An object containing expression table, lm models, residuals, raw data
 and ANOVA table for each gene.
 
-- ΔCt combined expression table:
+- NCt combined expression table:
 
   `object$combinedResults`
 

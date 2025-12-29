@@ -682,16 +682,16 @@
   x <- .rearrange_repeatedMeasureData(x, column_name = "Time_", level = calibratorLevel) 
   
   
-  ## validate number of target genes
+
   ## validate that only ONE target gene exists
   expr_cols_expected <- if (is.null(block)) {
     3 + 2 * numberOfrefGenes   # time + target + refs
   } else {
     4 + 2 * numberOfrefGenes   # block + time + target + refs
   }
-  
+
   non_expr_cols <- ncol(x) - expr_cols_expected
-  
+
   if (non_expr_cols < 1) {
     stop(
       "Input data structure error:\n",

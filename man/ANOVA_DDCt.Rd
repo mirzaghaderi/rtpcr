@@ -30,8 +30,7 @@ columns must be located at the end of the data frame.}
 must be represented by two columns (E and Ct).}
 
 \item{mainFactor.column}{Column index or name of the factor for which relative expression is calculated.
-When \code{analysisType = "ancova"}, remaining factors are treated as covariates.
-  If \code{NULL}, no blocking factor is used.}
+When \code{analysisType = "ancova"}, remaining factors are treated as covariates.}
 
 \item{analysisType}{Character string specifying the analysis type; one of \code{"anova"} (default)
 or \code{"ancova"}.}
@@ -42,15 +41,15 @@ If provided, the first element of the vector is used as the calibrator level.}
 
 \item{block}{Character or \code{NULL}. Name of the blocking factor column.}
 
-\item{p.adj}{Method for p-value adjustment.}
+\item{p.adj}{Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.}
 
-\item{plot}{Logical; if \code{FALSE}, plots are not generated.}
+\item{plot}{Logical; if \code{FALSE}, per gene-plots are not generated.}
 
 \item{plotType}{Plot scale to use: \code{"RE"} for relative expression or
 \code{"log2FC"} for log2 fold change.}
 
 \item{analyseAllTarget}{Logical or character.
-If \code{TRUE} (default), all detected target genes are analysed.
+If \code{TRUE} (default), all target genes are analysed.
 Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
 to be analysed.}
 }
@@ -68,16 +67,16 @@ An object containing expression table, lm models, residuals, raw data and ANOVA 
 }
 \description{
 Apply ΔΔCt analysis to each target gene
-in the input data frame. Target genes must be provided as paired
-efficiency (E) and Ct columns located between the experimental design
-columns and the reference gene columns.
+in the input data frame. Target and reference genes must be provided as paired
+efficiency (E) and Ct columns located after the experimental design columns.
+columns.
 }
 \details{
 ΔΔCt analysis is performed for 
-the `mainFactor.column` based on a full model factorial 
-experiment by default. However, if `ancova`, the `analysisType` argument,
-analysis of covariance is performed for the levels of the `mainFactor.column` and the other factors are 
-treated as covariates. However in ANCOVA table, if the interaction between the main factor and the covariate is significant, ANCOVA is not appropriate. 
+the \code{mainFactor.column} based on a full model factorial 
+experiment by default. However, if \code{ancova}, the \code{analysisType} argument,
+analysis of covariance is performed for the levels of the \code{mainFactor.column} and the other factors are 
+treated as covariates. if the interaction between the main factor and the covariate is significant, ANCOVA is not appropriate. 
 ANCOVA is basically used when a factor is affected by uncontrolled quantitative covariate(s). 
 For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may 
 also be affected by drought. Since we already know that temperature affects the target gene, we are 

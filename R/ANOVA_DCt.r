@@ -3,7 +3,7 @@
 #' Performs ΔCt analysis for target genes by
 #' applying ΔCt method to each target gene. Target genes must be provided as paired
 #' efficiency (E) and Ct columns followed by the the reference gene(s) columns. See example data sets or refer \href{../doc/vignette.html}{\code{vignette}}, 
-#' section "data structure and column arrangement" for details about data structure.
+#' section "Input data structure and column arrangement" for details about data structure.
 #'
 #' @param x A data frame containing experimental design columns, target gene
 #'   E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene
@@ -18,7 +18,7 @@
 #'   to be analysed.
 #' @param block Character or \code{NULL}. Name of the blocking factor column.
 #' @param adjust
-#' Method for p-value adjustment.
+#' Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.
 #' @param alpha
 #' statistical level for comparisons
 #' 
@@ -27,7 +27,7 @@
 #' @return
 #' An object containing expression table, lm models, residuals, raw data and ANOVA table for each gene. 
 #' \describe{
-#' \item{ΔCt combined expression table}{\code{object$combinedResults}}
+#' \item{NCt combined expression table}{\code{object$combinedResults}}
 #' \item{ANOVA table}{\code{object$perGene$gene_nameANOVA}}
 #' \item{lm ANOVA}{\code{object$perGene$gene_name$lmCRD}}
 #' \item{Residuals}{\code{resid(object$perGene$gene_name$lmCRD)}}

@@ -17,17 +17,16 @@ REPEATED_DDCt(
 )
 }
 \arguments{
-\item{x}{input data frame in which the first column is id, 
+\item{x}{input data frame in which the first column is \code{id}, 
 followed by the factor column(s) which include at least time. 
 The first level of time in data frame is used as calibrator or reference level.
 Additional factor(s) may also be present. Other columns are efficiency and Ct values of target and reference genes.
- \strong{NOTE:} In the "id" column, a unique number is assigned to each individual from which samples have been taken over time, 
+In the \code{id} column, a unique number is assigned to each individual from which samples have been taken over time, 
 for example see \code{data_repeated_measure_1}, 
 all the three number 1 indicate one individual which has been sampled over three different time courses.
 See example data sets or refer \href{../doc/vignette.html}{\code{vignette}}, section "data structure and column arrangement" for details.}
 
-\item{numOfFactors}{Integer. Number of experimental factor columns
-(excluding optional \code{block}).}
+\item{numOfFactors}{Integer. Number of experimental factor columns (excluding optional \code{block}).}
 
 \item{numberOfrefGenes}{Integer. Number of reference genes. Each reference gene
 must be represented by two columns (E and Ct).}
@@ -41,14 +40,13 @@ or time 0.}
 \item{block}{Optional blocking factor column name. If supplied, block effects are treated
 as random effects.}
 
-\item{p.adj}{Method for p-value adjustment.}
+\item{p.adj}{Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.}
 
 \item{plot}{Logical; if \code{FALSE}, plots are not produced.}
 
-\item{analyseAllTarget}{Logical or character.
-If \code{TRUE} (default), all detected target genes are analysed.
-Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
-to be analysed.}
+\item{analyseAllTarget}{Logical or character. If \code{TRUE} (default), all 
+detected target genes are analysed. Alternatively, a character 
+vector specifying the names (names of their Efficiency columns) of target genes to be analysed.}
 }
 \value{
 An object containing expression table, lm models, residuals, raw data and ANOVA table for each gene.
@@ -65,22 +63,37 @@ An object containing expression table, lm models, residuals, raw data and ANOVA 
 \code{REPEATED_DDCt} function performs ΔΔCt method
 analysis of observations repeatedly taken over different time courses. 
 Data may be obtained over time from a uni- or multi-factorial experiment. Target genes must be provided as paired
-efficiency (E) and Ct columns followed by the columns and the reference gene columns.
+efficiency (E) and Ct columns followed by the E/Ct column pairs of reference genes.
 }
 \details{
 Column layout requirements for \code{x}:
 \itemize{
-  \item Target gene columns: E/Ct pairs located between design and reference columns
-  \item Reference gene columns: columns located at the end
+  \item Target gene columns: E/Ct column pairs located between design and reference columns
+  \item Reference gene columns: E/Ct column pairs located at the end
 }
 }
 \examples{
-data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
+data1 <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 REPEATED_DDCt(
-  data,
+  data1,
   numOfFactors = 1,
   numberOfrefGenes = 1,
   repeatedFactor = "time",
   calibratorLevel = "1",
   block = NULL)
+
+
+
+data2 <- read.csv(system.file("extdata", "data_repeated_measure_2.csv", package = "rtpcr"))
+REPEATED_DDCt(
+  data2,
+  numOfFactors = 2,
+  numberOfrefGenes = 1,
+  repeatedFactor = "time", 
+  calibratorLevel = "1",
+  block = NULL,
+  p.adj = "none",
+  plot = FALSE,
+  analyseAllTarget = TRUE)
+
 }

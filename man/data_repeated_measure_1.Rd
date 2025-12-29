@@ -7,12 +7,12 @@
 \format{
 A data frame with 9 observations and 6 variables:
 \describe{
-  \item{id}{experimental factor}
   \item{time}{time course levels}
-  \item{E_target}{Amplification efficiency of target gene}
-  \item{Ct_target}{Ct of target gene}
-  \item{E_ref}{Amplification efficiency of reference gene}
-  \item{Ct_ref}{Ct of reference gene}
+  \item{id}{experimental factor}
+  \item{Target}{Amplification efficiency of target gene}
+  \item{Ct_Target}{Ct of target gene}
+  \item{Ref}{Amplification efficiency of reference gene}
+  \item{Ct_Ref}{Ct of reference gene}
 }
 }
 \source{

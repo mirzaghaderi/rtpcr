@@ -41,21 +41,21 @@ plotFactor(
 
 \item{letters_col}{Character. Column name for significance letters (optional)}
 
-\item{letters_d}{Numeric. Vertical offset for letters (default 0.2)}
+\item{letters_d}{Numeric. Vertical offset for letters (default \code{0.2})}
 
-\item{col_width}{Numeric. Width of bars (default 0.8)}
+\item{col_width}{Numeric. Width of bars (default \code{0.8})}
 
-\item{err_width}{Numeric. Width of error bars (default 0.15)}
+\item{err_width}{Numeric. Width of error bars (default \code{0.15})}
 
-\item{dodge_width}{Numeric. Width of dodge for grouped bars (default 0.8)}
+\item{dodge_width}{Numeric. Width of dodge for grouped bars (default \code{0.8})}
 
 \item{fill_colors}{Optional vector of fill colors}
 
-\item{alpha}{Numeric. Transparency of bars (default 1)}
+\item{alpha}{Numeric. Transparency of bars (default \code{1})}
 
-\item{base_size}{Numeric. Base font size for theme (default 12)}
+\item{base_size}{Numeric. Base font size for theme (default \code{12})}
 
-\item{legend_position}{Character or numeric vector. Legend position (default "right")}
+\item{legend_position}{Character or numeric vector. Legend position (default \code{right})}
 
 \item{...}{Additional ggplot2 layer arguments}
 }

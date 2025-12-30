@@ -40,7 +40,7 @@ and Taylor et al. (2019) for covering both the Livak and Pfaffl methods.
 
 
 
-## Improvement in the current GitHub version `rtpcr_v2.1.1`:
+## New features in the current GitHub version `rtpcr_v2.1.1`:
 
 ✔️ **A unified data structure as input for all functions.**
  

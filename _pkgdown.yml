@@ -8,36 +8,46 @@ url: https://mirzaghaderi.github.io/rtpcr/
 
 template:
   bootstrap: 5
-  
+
+navbar:
+  structure:
+    left:
+      - home
+      - reference
+      - articles
+      - news
+
 references:
 - title: Functions
   desc: >
-    The rtpcr package functions 
+    The rtpcr package functions
   contents:
-    - ANOVA_DCt
-    - ANOVA_DDCt
-    - efficiency
-    - Means_DDCt
-    - meanTech
-    - multiplo
-    - plotFactor
-    - REPEATED_DDCt
-    - TTEST_DDCt
+  - ANOVA_DCt
+  - ANOVA_DDCt
+  - efficiency
+  - Means_DDCt
+  - meanTech
+  - multiplo
+  - plotFactor
+  - REPEATED_DDCt
+  - TTEST_DDCt
+
 - title: Datasets
   desc: >
-    Example datasets that can be used for practicing use of package's functions
+    Example datasets for practicing package functions
   contents:
-    - data_1factor                
-    - data_1factor_one_ref        
-    - data_1factor_one_ref_Eff    
-    - data_1factor_Two_ref        
-    - data_2factor                
-    - data_2factor3ref            
-    - data_2factorBlock           
-    - data_2factorBlock3ref       
-    - data_3factor                
-    - data_efficiency             
-    - data_repeated_measure_1     
-    - data_repeated_measure_2     
-    - data_withTechRep            
-    - Lee_etal2020qPCR
+  - data_1factor
+  - data_1factor_one_ref
+  - data_1factor_one_ref_Eff
+  - data_1factor_Two_ref
+  - data_2factor
+  - data_2factor3ref
+  - data_2factorBlock
+  - data_2factorBlock3ref
+  - data_3factor
+  - data_efficiency
+  - data_repeated_measure_1
+  - data_repeated_measure_2
+  - data_withTechRep
+  - Lee_etal2020qPCR
+

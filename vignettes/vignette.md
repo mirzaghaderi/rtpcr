@@ -1,44 +1,39 @@
+---
+title: "qPCR data analysis using **`rtpcr`** package"
+author: Ghader Mirzaghaderi
+output:
+  html_document: 
+    toc: true
+    keep_md: true
+    output: rmarkdown::html_vignette
+    df_print: default
+  pdf_document: 
+    toc: true
+    latex_engine: lualatex
+  word_document:
+    toc: No
+vignette: |
+  %\VignetteIndexEntry{Sending Messages With Gmailr}
+  %\usepackage[utf8]{inputenc}
+  %\VignetteEngine{knitr::knitr}
+editor_options:
+  markdown:
+    wrap: 90
+  chunk_output_type: console
+---
 
 
 
-[![](https://cranlogs.r-pkg.org/badges/grand-total/rtpcr)](https://cran.rstudio.com/web/packages/rtpcr/index.html)
-[![R package version](https://img.shields.io/github/r-package/v/mirzaghaderi/rtpcr)](
-https://github.com/mirzaghaderi/rtpcr
-)
-[![CRAN version](https://www.r-pkg.org/badges/version/rtpcr)](
-https://CRAN.R-project.org/package=rtpcr
-)
 
 
 
-# rtpcr
+# Overview
 
-Tools for multi-target multi-reference analysis of qPCR data using ΔCt and ΔΔCt methods,
-including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. 
-The package implements a general calculation method described by Ganger et al. (2017) 
-and Taylor et al. (2019) for covering both the Livak and Pfaffl methods.
-
-
-- [New features in the current version `rtpcr_v2.1.1`](#New-features-in-the-current-version-rtpcr_v211)
-- [Functions](#functions)
-- [Quick start](#quick-start)
-  - [Installing and loading](#installing-and-loading)
-- [Input data structure](#input-data-structure)
-- [Handling missing Ct values](#handling-missing-ct-values)
-- [Data analysis](#data-analysis)
-  - [Amplification efficiency](#amplification-efficiency)
-  - [Relative expression](#relative-expression)
-- [Output](#output)
-  - [Data output](#data-output)
-  - [Plot output](#plot-output)
-- [Post-hoc analysis](#post-hoc-analysis)
-- [Checking normality of residuals](#checking-normality-of-residuals)
-- [Mean of technical replicates](#mean-of-technical-replicates)
-- [Contact](#contact)
-- [Citation](#citation)
-- [References](#references)
-
-
+Tools for analysis of RT-qPCR gene expression data using ΔCt and ΔΔCt methods,
+including t-tests, ANOVA, ANCOVA, repeated-measures models, and
+publication-ready visualizations. The package implements a  [general calculation
+method](inst/method.md) described by Ganger et al. (2017) and Taylor et al. (2019), covering
+both the Livak and Pfaffl methods.
 
 ## Improvement in the current GitHub version `rtpcr_v2.1.1`:
 
@@ -52,8 +47,8 @@ and Taylor et al. (2019) for covering both the Livak and Pfaffl methods.
 
 
 
-# Functions
-The `rtpcr` package takes a table of efficiency (E) the Ct values of genes and performs different analyses using the following functions.
+# Functions (Brief explanations)
+The `rtpcr` package gets efficiency (E) the Ct values of genes and performs different analyses using the following functions.
 
 | Function            | Description                                                  |
 |---------------------|--------------------------------------------------------------|
@@ -69,28 +64,26 @@ The `rtpcr` package takes a table of efficiency (E) the Ct values of genes and p
 
 
 
-# Quick start
 
+# Quick start
 ### Installing and loading
 
-The `rtpcr` package can be installedb by running the following code in R:
+The current version of the `rtpcr` package can be installed from GitHub by running the following code in R:
 
-from CRAN:
 
-```{r eval = F}
-# Installing from CRAN
-install.packages("rtpcr")
+``` r
+devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)
 
 # Loading the package
 library(rtpcr)
 ```
 
-Or from from GitHub (developing version):
+Or from CRAN which may install the previous version.
 
-```{r eval = F}
-devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)
+``` r
+# Installing from CRAN
+install.packages("rtpcr")
 ```
-
 
 
 # Input data structure 
@@ -103,24 +96,21 @@ Input data structure is important and should be in wide format. For relative exp
 
 The package supports **one or more target or reference gene(s)**, supplied as efficiency–Ct column pairs. Reference gene columns must always appear last. A sample input data is presented below.
 
-<p align="center">
-<img src="man/figures/dataStructure1.png" width="100%">
-</p>
+
+![Workflow of the analysis](figures/dataStructure1.png)
 
 
 
 #### NOTE 1
 For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and uniq biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a `1` at Rep column correspond to a single individual, all rows with a `2` correspond to another individual, and so on, which have been sampled at specific time points. 
 
-# Handling missing Ct values
-The `rtpcr` package does not automatically handle missing Ct values. However, NA can be used to represent missing Ct measurements in the input data. In such cases, NA is returned for the corresponding individual ΔCt and passed along to downstream statistical analyses. If more sophisticated handling of missing Ct values (fixed value of 40 for target genes, mean Ct alues of other replicates, or imputation) is desired, qPCR imputation tools can be used in advance of analysis with rtpcr.
+# Data Analysis 
 
-# Data analysis 
-
-### Amplification efficiency 
+### Amplification Efficiency 
 The `efficiency` function calculates the amplification efficiency (E), slope, and R² statistics for genes, and performs pairwise comparisons of slopes. It takes a data frame in which the first column contains the dilution ratios, followed by the Ct value columns for each gene.
 
-```r
+
+``` r
 # Applying the efficiency function
 data <- read.csv(system.file("extdata", "data_efficiency.csv", package = "rtpcr"))
 data
@@ -165,9 +155,9 @@ $contrasts
 ```
 
 ### Relative expression
-`TTEST_DDCt`, `ANOVA_DDCt`, `REPEATED_DDCt`, and `ANOVA_DCt`  functions perform relative expression analysis using ΔΔCt or ΔCt methods. Below is an example of expression analysis using ΔΔCt method.
+Relative expression analysis can be done using ΔΔCt or ΔCt methods. Below is an example of expression analysis using ΔΔCt method.
 
-```r
+``` r
 # An example of a properly arranged dataset from a repeated-measures experiment.
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 data
@@ -235,7 +225,8 @@ The expression table of all genes is returned by `res$combinedFoldChange`. Other
 | Residuals          | `resid(res$perGene$gene_name$lm_ANOVA)`               |
 
 
-```r
+
+``` r
 # Relative expression table for the specified column in the input data:
 df <- res$combinedFoldChange
 df
@@ -252,9 +243,10 @@ ref2     S vs R	  0.9372 -0.0936 0.9005     0.3145  2.7929 0.2414      0.7927   
 ## Plot output
 A single function of `plotFactor` is used to produce barplots for one- to three-factor expression tables. 
 
-### Plot output: example 1
+## Plot output: example 1
 
-```r
+
+``` r
 data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 #Perform analysis first
 res <- ANOVA_DCt(
@@ -289,9 +281,9 @@ p + theme(
   panel.border = element_rect(color = "black", linewidth = 0.5))
 ```
 
-<p align="center">
-<img src="man/figures/Rplot02.png" width="100%">
-</p>
+
+
+![Workflow of the analysis](figures/Rplot02.png)
 
 
 # How to edit ouptput plots?
@@ -307,7 +299,8 @@ the `rtpcr` plotFactor function create ggplot objects for one to three factor ta
 
 
 ### Plot output: example 2
-```r
+
+``` r
 data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
 res <- ANOVA_DCt(data, 
       numOfFactors = 2,
@@ -335,22 +328,22 @@ p1 <- plotFactor(
 
 library(ggplot2)
 p1 + 
-  theme(axis.text.y = element_text(size = 14, color = "black")) +
-  theme(axis.text.x = element_text(size = 14, color = "black", angle = 45, hjust = 1)) +
+  theme(axis.text.x = element_text(size = 14, color = "black", angle = 45),
+        axis.text.y = element_text(size = 14,color = "black", angle = 0, hjust = 0.5)) +
   theme(legend.text = element_text(colour = "black", size = 14),
         legend.background = element_rect(fill = "transparent")) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
 ```
 
-<p align="center">
-  <img src="man/figures/Rplot01.png"
-       width="100%"
-       alt="Example qPCR data visualization generated by the rtpcr package">
-</p>
+
+
+![Workflow of the analysis](figures/Rplot01.png)
+
 
 ### Plot output: example 3
 
-```r
+
+``` r
 # Heffer et al., 2020, PlosOne
 library(dplyr)
 df <- read.csv(system.file("extdata", "Heffer2020PlosOne.csv", package = "rtpcr"))
@@ -365,7 +358,7 @@ res <- ANOVA_DDCt(
 data <- res$combinedFoldChange
 data$gene <- factor(data$gene, levels = unique(data$gene))
 
-# Keep only the first words in 'contrast' column to be used as the x-axis labels.
+# Selecting only the first words in 'contrast' column to be used as the x-axis labels.
 data$contrast <- sub(" .*", "", data$contrast)
 
 # Converting the 'contrast' column as factor and fix the current level order
@@ -399,82 +392,18 @@ p + theme(
     strip.background = element_blank(),  # removes the faceting gray background
     strip.text = element_text(face = "bold")) # optional: keeps the text visible
 ```
-<p align="center">
-<img src="man/figures/Rplot03.png" width="80%">
-</p>
-
-
-# Apply expression analysis per level of upper factor
-When the dataset contains two factor columns, and the expression analysis is intended to be performed on the second factor within each level of the first factor, this can be achieved by looping over the levels of the first factor, as demonstrated in the following example.
-
-
-```r
-library(rtpcr)
-df <- read.csv("E:/Dropbox/rtpcr manuscript/rtpcr/inst/extdata/farokh_et_al_2025.csv")
-df
-
-
-stage	stress	Rep	TraesCS2D02G351900	CtTraesCS2D02G351900	TraesCS4A02G268500	CtTraesCS4A02G268500	TraesCS4B02G155800	CtTraesCS4B02G155800	TraesCS5B02G163500	CtTraesCS5B02G163500	TraesCS6A02G218900	CtTraesCS6A02G218900	TraesCS6B02G315400	CtTraesCS6B02G315400	TraesCS7A02G218600	CtTraesCS7A02G218600	TraesCS7B02G400600	CtTraesCS7B02G400600	EReference	CtRefrence
-4LS	Control	1	1.8	25.17	1.8	28.53	1.8	16.42	1.82	19.26	1.8	25.89	1.8	27.97	1.8	23.68	1.8	27.09	2	24.49
-4LS	Control	2	1.8	25.07	1.8	28.41	1.8	16.48	1.82	19.38	1.8	25.66	1.8	27.81	1.8	23.90	1.8	27.05	2	24.80
-4LS	Drought	1	1.8	26.72	1.8	28.08	1.8	15.60	1.82	20.07	1.8	23.6	1.8	26.77	1.8	26.21	1.8	27.58	2	25.55
-4LS	Drought	2	1.8	26.90	1.8	28.35	1.8	15.56	1.82	20.22	1.8	23.64	1.8	26.67	1.8	26.58	1.8	27.57	2	25.36
-5LS	Control	1	1.8	26.21	1.8	27.19	1.8	14.38	1.82	20.25	1.8	25.39	1.8	28.08	1.8	27.19	1.8	27.10	2	25.00
-5LS	Control	2	1.8	26.08	1.8	27.20	1.8	14.14	1.82	20.31	1.8	25.52	1.8	28.04	1.8	27.57	1.8	27.02	2	25.20
-5LS	Drought	1	1.8	26.78	1.8	25.75	1.8	13.23	1.82	20.07	1.8	24.84	1.8	26.38	1.8	27.07	1.8	27.69	2	26.05
-5LS	Drought	2	1.8	26.94	1.8	25.68	1.8	13.05	1.82	20.27	1.8	24.72	1.8	26.48	1.8	27.24	1.8	27.43	2	25.87
-6LS	Control	1	1.8	26.43	1.8	28.68	1.8	13.06	1.82	22.41	1.8	24.95	1.8	29.57	1.8	29.54	1.8	27.51	2	25.57
-6LS	Control	2	1.8	25.94	1.8	28.55	1.8	13.22	1.82	22.25	1.8	24.76	1.8	29.50	1.8	29.33	1.8	27.57	2	25.03
-6LS	Drought	1	1.8	25.78	1.8	25.56	1.8	11.87	1.82	20.93	1.8	24.67	1.8	27.88	1.8	28.43	1.8	28.29	2	26.44
-6LS	Drought	2	1.8	26.19	1.8	25.55	1.8	11.69	1.82	21.18	1.8	24.60	1.8	27.92	1.8	28.81	1.8	28.24	2	26.62
-7LS	Control	1	1.8	26.42	1.8	27.21	1.8	12.96	1.82	21.06	1.8	25.08	1.8	27.90	1.8	28.08	1.8	28.42	2	25.16
-7LS	Control	2	1.8	26.27	1.8	27.33	1.8	12.62	1.82	21.17	1.8	24.72	1.8	27.58	1.8	27.50	1.8	28.21	2	25.05
-7LS	Drought	1	1.8	25.75	1.8	26.00	1.8	11.35	1.82	18.78	1.8	23.92	1.8	27.00	1.8	28.21	1.8	28.27	2	25.57
-7LS	Drought	2	1.8	25.55	1.8	25.87	1.8	11.28	1.82	18.60	1.8	24.09	1.8	27.20	1.8	27.88	1.8	28.15	2	25.57
 
 
 
-# Split by levels of the first column
-df_split <- split(df, df[[1]])
+![Workflow of the analysis](figures/Rplot03.png)
 
-# Apply ANOVA_DDCt per level
-res_list <- lapply(names(df_split), function(lv) {
-  
-  df <- df_split[[lv]]
-  
-  out <- ANOVA_DDCt(
-    df[, -1, drop = FALSE],
-    numOfFactors = 1,
-    numberOfrefGenes = 1,
-    mainFactor.column = 1,
-    analysisType = "anova",
-    mainFactor.level.order = NULL,
-    block = NULL
-  )
-  
-  # Add level name as FIRST column
-  out <- cbind(
-    Level = lv,
-    out$combinedFoldChange
-  )
-  
-  out
-})
 
-# Name list elements
-names(res_list) <- names(df_split)
-
-# Combine all tables
-final_table_1 <- do.call(rbind, res_list)
-rownames(final_table_1) <- NULL
-```
-
-</details>
 
 # Post-hoc analysis
 The `Means_DDCt` function performs post-hoc comparisons using a fitted model object produced by `ANOVA_DDCt` or `REPEATED_DDCt`. It applies pairwise statistical comparisons of relative expression (RE) values for user-specified effects via the `specs` argument. Supported effects include simple effects, interactions, and slicing, provided the underlying model is an ANOVA. For ANCOVA models returned by this package, the `Means_DDCt` output is limited to simple effects only.
 
-```r
+
+``` r
 res <- ANOVA_DDCt(
   data_3factor,
   numOfFactors = 3,
@@ -520,7 +449,8 @@ Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type * SA")
 
 If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test (also known as the Wilcoxon rank-sum test), implemented via `wilcox.test()`, is an alternative to t.test, and `kruskal.test()` is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the `t.test` function (along with the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis. Residuals for `lm` (from `ANOVA_DCt` and `ANOVA_DDCt` functions) and `lmer` (from `REPEATED_DDCt` function) objects can be extracted and plotted as follow:
 
-```r
+
+``` r
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 res3 <- REPEATED_DDCt(
   data,
@@ -539,9 +469,10 @@ qqline(residuals, col = "red")
 ```
 
 # Mean of technical replicates
-The `meanTech` function calculates the mean of technical replicates by collapsing them into a single value, producing an output dataset that is ready for subsequent analyses. The input data must follow the column structure illustrated in the example below. Columns used to define technical replicate groupings should be specified using the `groups` argument of the `meanTech` function.
+Calculating the mean of technical replicates and generating an output table suitable for subsequent ANOVA analysis can be accomplished using the `meanTech` function. The input dataset must follow the column structure illustrated in the example data below. Columns used for grouping should be explicitly specified via the `groups` argument of the `meanTech` function.
 
-```r
+
+``` r
 # See example input data frame:
 data <- read.csv(system.file("extdata", "data_withTechRep.csv", package = "rtpcr"))
 data
@@ -549,10 +480,6 @@ data
 # Calculating mean of technical replicates
 meanTech(data, groups = 1:4)
 ```
-
-
-
-
 
 
 # Contact 
@@ -580,3 +507,17 @@ A BibTeX entry for LaTeX users is
   }
 ```
 
+
+
+# References
+Livak, Kenneth J, and Thomas D Schmittgen. 2001. Analysis of Relative Gene Expression Data Using Real-Time Quantitative PCR and the Double Delta CT Method. Methods 25 (4). <a href="https://doi.org/10.1006/meth.2001.1262">doi.org/10.1006/meth.2001.1262</a>.
+
+Ganger, MT, Dietz GD, Ewing SJ. 2017. A common base method for analysis of qPCR data and the application of simple blocking in qPCR experiments. BMC bioinformatics 18, 1-11. <a href="https://doi.org/10.1186/s12859-017-1949-5">doi.org/10.1186/s12859-017-1949-5</a>.
+
+Mirzaghaderi G. 2025. rtpcr: a package for statistical analysis and graphical presentation of qPCR data in R. PeerJ 13, e20185. <a href="https://doi.org/10.7717/peerj.20185">doi.org/10.7717/peerj.20185</a>.
+
+Pfaffl MW, Horgan GW, Dempfle L. 2002. Relative expression software tool (REST©) for group-wise comparison and statistical analysis of relative expression results in real-time PCR. Nucleic acids research 30, e36-e36. <a href="https://doi.org/10.1093/nar/30.9.e36">doi.org/10.1093/nar/30.9.e36</a>.
+
+Taylor SC, Nadeau K, Abbasi M, Lachance C, Nguyen M, Fenrich, J. 2019. The ultimate qPCR experiment: producing publication quality, reproducible data the first time. Trends in Biotechnology, 37(7), 761-774. <a href="https://doi.org/10.1016/j.tibtech.2018.12.002">doi.org/10.1016/j.tibtech.2018.12.002</a>.
+
+Yuan, JS, Ann Reed, Feng Chen, and Neal Stewart. 2006. Statistical Analysis of Real-Time PCR Data. BMC Bioinformatics 7 (85). <a href="https://doi.org/10.1186/1471-2105-7-85">doi.org/10.1186/1471-2105-7-85</a>.

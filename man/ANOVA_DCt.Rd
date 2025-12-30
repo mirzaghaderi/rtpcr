@@ -48,8 +48,8 @@ An object containing expression table, lm models, residuals, raw data and ANOVA 
 \description{
 Performs ΔCt analysis for target genes by
 applying ΔCt method to each target gene. Target genes must be provided as paired
-efficiency (E) and Ct columns followed by the the reference gene(s) columns. See example data sets or refer \href{../doc/vignette.html}{\code{vignette}}, 
-section "Input data structure and column arrangement" for details about data structure.
+efficiency (E) and Ct columns followed by the the reference gene(s) columns. 
+See "Input data structure and column arrangement" in vignettes for details about data structure.
 }
 \examples{
 data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))

@@ -2,10 +2,8 @@
 
 Performs ΔCt analysis for target genes by applying ΔCt method to each
 target gene. Target genes must be provided as paired efficiency (E) and
-Ct columns followed by the the reference gene(s) columns. See example
-data sets or refer
-[`vignette`](https://mirzaghaderi.github.io/rtpcr/doc/vignette.md),
-section "Input data structure and column arrangement" for details about
+Ct columns followed by the the reference gene(s) columns. See "Input
+data structure and column arrangement" in vignettes for details about
 data structure.
 
 ## Usage

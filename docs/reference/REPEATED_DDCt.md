@@ -35,8 +35,7 @@ REPEATED_DDCt(
   taken over time, for example see `data_repeated_measure_1`, all the
   three number 1 indicate one individual which has been sampled over
   three different time courses. See example data sets or refer
-  [`vignette`](https://mirzaghaderi.github.io/rtpcr/doc/vignette.md),
-  section "data structure and column arrangement" for details.
+  vignettes, section "Input data structure" for details.
 
 - numOfFactors:
 

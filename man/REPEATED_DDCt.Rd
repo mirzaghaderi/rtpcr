@@ -24,7 +24,7 @@ Additional factor(s) may also be present. Other columns are efficiency and Ct va
 In the \code{id} column, a unique number is assigned to each individual from which samples have been taken over time, 
 for example see \code{data_repeated_measure_1}, 
 all the three number 1 indicate one individual which has been sampled over three different time courses.
-See example data sets or refer \href{../doc/vignette.html}{\code{vignette}}, section "data structure and column arrangement" for details.}
+See example data sets or refer vignettes, section "Input data structure" for details.}
 
 \item{numOfFactors}{Integer. Number of experimental factor columns (excluding optional \code{block}).}
 

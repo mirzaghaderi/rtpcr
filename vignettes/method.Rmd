@@ -1,10 +1,10 @@
 ---
-title: "qPCR data analysis"
+title: "Calculation method"
 author: "Ghader Mirzaghaderi"
 output: rmarkdown::html_vignette
 link-citations: true
 vignette: >
-  %\VignetteIndexEntry{qPCR data analysis}
+  %\VignetteIndexEntry{Calculation method}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(rtpcr)
 ```
 
-# qPCR data analysis
+# Calculation method
 
 Real-time polymerase chain reaction (real-time PCR) is widely used in biological studies. Various analysis methods are employed on the real-time PCR data to measure the mRNA levels under different experimental conditions. 
 

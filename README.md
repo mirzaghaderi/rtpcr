@@ -9,7 +9,6 @@ https://github.com/mirzaghaderi/rtpcr
 https://CRAN.R-project.org/package=rtpcr
 )
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 
 Tools for multi-target multi-reference analysis of qPCR data using ΔCt and ΔΔCt methods,

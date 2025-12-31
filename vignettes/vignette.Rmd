@@ -1,10 +1,10 @@
 ---
-title: "rtpcr: qPCR data analysis"
+title: "Manual"
 author: "Ghader Mirzaghaderi"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{rtpcr: qPCR data analysis}
+  %\VignetteIndexEntry{Manual}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,6 +15,7 @@ options(tinytex.verbose = TRUE)
 knitr::opts_chunk$set(echo = TRUE)
 library(rtpcr)
 ```
+
 
 
 

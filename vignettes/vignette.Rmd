@@ -1,13 +1,12 @@
 ---
 title: "rtpcr: qPCR data analysis"
 author: "Ghader Mirzaghaderi"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{qPCR data analysis using rtpcr}
-  %\VignetteEngine{knitr::knitr}
-editor_options:
-  markdown:
-    wrap: 90
+  %\VignetteIndexEntry{rtpcr: qPCR data analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 
@@ -92,7 +91,7 @@ Input data structure is important and should be in wide format. For relative exp
 The package supports **one or more target or reference gene(s)**, supplied as efficiency–Ct column pairs. Reference gene columns must always appear last. A sample input data is presented below.
 
 
-![Workflow of the analysis](figures/dataStructure1.png)
+![](../man/figures/dataStructure1.png){.center height="400px"}
 
 
 
@@ -274,7 +273,7 @@ p + theme(
 
 
 
-![Workflow of the analysis](figures/Rplot02.png)
+![](../man/figures/Rplot02.png){.center height="400px"}
 
 
 # How to edit ouptput plots?
@@ -327,7 +326,7 @@ p1 +
 
 
 
-![Workflow of the analysis](figures/Rplot01.png)
+![](../man/figures/Rplot01.png){.center height="300px"}
 
 
 ### Plot output: example 3
@@ -384,7 +383,7 @@ p + theme(
 
 
 
-![Workflow of the analysis](figures/Rplot03.png)
+![](../man/figures/Rplot03.png){.center height="700px"}
 
 
 
@@ -493,6 +492,9 @@ A BibTeX entry for LaTeX users is
   }
 ```
 
+# Getting help
+
+* If you encounter a clear bug, please file a minimal reproducible example on [github](https://github.com/mirzaghaderi/rtpcr/issues)
 
 
 # References

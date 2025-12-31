@@ -1,5 +1,11 @@
 # rtpcr
 
+[![](https://cranlogs.r-pkg.org/badges/grand-total/rtpcr)](https://cran.rstudio.com/web/packages/rtpcr/index.html)
+[![R package
+version](https://img.shields.io/github/r-package/v/mirzaghaderi/rtpcr)](https://github.com/mirzaghaderi/rtpcr)
+[![CRAN
+version](https://www.r-pkg.org/badges/version/rtpcr)](https://CRAN.R-project.org/package=rtpcr)
+
 Tools for multi-target multi-reference analysis of qPCR data using ΔCt
 and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures
 models, and publication-ready visualizations. The package implements a
@@ -7,7 +13,7 @@ general calculation method described by Ganger et al. (2017) and Taylor
 et al. (2019) for covering both the Livak and Pfaffl methods.
 
 - [New features in the current version
-  `rtpcr_v2.1.1`](#New-features-in-the-current-version-rtpcr_v211)
+  `rtpcr_v2.1.1`](#new-features-in-the-current-version-rtpcr_v211)
 - [Functions](#functions)
 - [Quick start](#quick-start)
   - [Installing and loading](#installing-and-loading)
@@ -26,7 +32,7 @@ et al. (2019) for covering both the Livak and Pfaffl methods.
 - [Citation](#citation)
 - [References](#references)
 
-## Improvement in the current GitHub version `rtpcr_v2.1.1`:
+## New features in the current version `rtpcr_v2.1.1`:
 
 ✔️ **A unified data structure as input for all functions.**
 

@@ -10,9 +10,6 @@ https://CRAN.R-project.org/package=rtpcr
 )
 
 
-
-# rtpcr
-
 Tools for multi-target multi-reference analysis of qPCR data using ΔCt and ΔΔCt methods,
 including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. 
 The package implements a general calculation method described by Ganger et al. (2017) 

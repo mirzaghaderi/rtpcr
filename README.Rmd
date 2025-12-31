@@ -8,7 +8,7 @@ editor_options:
   markdown:
     wrap: 90
 ---
-
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # rtpcr: qPCR data analysis <img src="man/figures/logo.png" align="right" height="140/"/>
 

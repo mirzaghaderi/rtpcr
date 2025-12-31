@@ -18,7 +18,6 @@ The package implements a general calculation method described by Ganger et al. (
 and Taylor et al. (2019) for covering both the Livak and Pfaffl methods.
 
 
-- [New features in the current version `rtpcr_v2.1.1`](#new-features-in-the-current-version-rtpcr_v211)
 - [Functions](#functions)
 - [Quick start](#quick-start)
   - [Installing and loading](#installing-and-loading)
@@ -37,17 +36,6 @@ and Taylor et al. (2019) for covering both the Livak and Pfaffl methods.
 - [Citation](#citation)
 - [References](#references)
 
-
-
-## New features in the current version `rtpcr_v2.1.1`:
-
-✔️ **A unified data structure as input for all functions.**
- 
-✔️ **No restriction on the number of target or reference genes.**
-
-✔️ **Supports analysis of all genes or selected subsets.**
- 
-✔️ **Publication-ready graphical outputs.**
 
 
 

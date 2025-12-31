@@ -53,7 +53,7 @@ genes and performs different analyses using the following functions.
 
 The `rtpcr` package can be installed by running the following code in R:
 
-from CRAN:
+From CRAN:
 
 ``` r
 # Installing from CRAN

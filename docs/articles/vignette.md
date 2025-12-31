@@ -6,7 +6,10 @@ Tools for analysis of RT-qPCR gene expression data using ΔCt and ΔΔCt
 methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and
 publication-ready visualizations. The package implements a general
 calculation method described by Ganger et al. (2017) and Taylor et
-al. (2019), covering both the Livak and Pfaffl methods.
+al. (2019), covering both the Livak and Pfaffl methods. See the
+[calculation
+method](https://mirzaghaderi.github.io/rtpcr/articles/method.md) for
+details.
 
 ## Functions
 

@@ -2,8 +2,9 @@ pandoc: '3.2'
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
+  method: method.html
   vignette: vignette.html
-last_built: 2025-12-31T09:09Z
+last_built: 2025-12-31T14:21Z
 urls:
   reference: https://mirzaghaderi.github.io/rtpcr/reference
   article: https://mirzaghaderi.github.io/rtpcr/articles

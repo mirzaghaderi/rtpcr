@@ -51,21 +51,23 @@ genes and performs different analyses using the following functions.
 
 ### Installing and loading
 
-The `rtpcr` package can be installedb by running the following code in
-R:
+The `rtpcr` package can be installed by running the following code in R:
 
 from CRAN:
 
-\`\`\`{r eval = F} \# Installing from CRAN install.packages(“rtpcr”)
+``` r
+# Installing from CRAN
+install.packages("rtpcr")
 
 # Loading the package
-
 library(rtpcr)
+```
 
-    Or from from GitHub (developing version):
+Or from from GitHub (developing version):
 
-    ```{r eval = F}
-    devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)
+``` r
+devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)
+```
 
 # Input data structure
 

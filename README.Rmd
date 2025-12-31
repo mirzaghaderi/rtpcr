@@ -50,7 +50,7 @@ The `rtpcr` package gets efficiency (E) the Ct values of genes and performs diff
 # Quick start
 ### Installing and loading
 
-The `rtpcr` package can be installedb by running the following code in R:
+The `rtpcr` package can be installed by running the following code in R:
 
 from CRAN:
 

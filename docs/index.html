@@ -157,20 +157,18 @@
 <div class="section level3">
 <h3 id="installing-and-loading">Installing and loading<a class="anchor" aria-label="anchor" href="#installing-and-loading"></a>
 </h3>
-<p>The <code>rtpcr</code> package can be installedb by running the following code in R:</p>
+<p>The <code>rtpcr</code> package can be installed by running the following code in R:</p>
 <p>from CRAN:</p>
-<p>```{r eval = F} # Installing from CRAN install.packages(“rtpcr”)</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Installing from CRAN</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rtpcr"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Loading the package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mirzaghaderi.github.io/rtpcr">rtpcr</a></span><span class="op">)</span></span></code></pre></div>
+<p>Or from from GitHub (developing version):</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mirzaghaderi/rtpcr"</span>, build_vignettes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
-</div>
-<div class="section level1">
-<h1 id="loading-the-package">Loading the package<a class="anchor" aria-label="anchor" href="#loading-the-package"></a>
-</h1>
-<p>library(rtpcr)</p>
-<pre><code>
-Or from from GitHub (developing version):
-
-```{r eval = F}
-devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)</code></pre>
 </div>
 <div class="section level1">
 <h1 id="input-data-structure">Input data structure<a class="anchor" aria-label="anchor" href="#input-data-structure"></a>
@@ -204,7 +202,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)</code></
 <h3 id="amplification-efficiency">Amplification efficiency<a class="anchor" aria-label="anchor" href="#amplification-efficiency"></a>
 </h3>
 <p>The <code>efficiency</code> function calculates the amplification efficiency (E), slope, and R² statistics for genes, and performs pairwise comparisons of slopes. It takes a data frame in which the first column contains the dilution ratios, followed by the Ct value columns for each gene.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Applying the efficiency function</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_efficiency.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">data</span></span>
@@ -251,7 +249,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)</code></
 <h3 id="relative-expression">Relative expression<a class="anchor" aria-label="anchor" href="#relative-expression"></a>
 </h3>
 <p><code>TTEST_DDCt</code>, <code>ANOVA_DDCt</code>, <code>REPEATED_DDCt</code>, and <code>ANOVA_DCt</code> functions perform relative expression analysis using ΔΔCt or ΔCt methods. Below is an example of expression analysis using ΔΔCt method.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># An example of a properly arranged dataset from a repeated-measures experiment.</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_repeated_measure_1.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">data</span></span>
@@ -343,7 +341,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)</code></
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Relative expression table for the specified column in the input data:</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">combinedFoldChange</span></span>
 <span><span class="va">df</span></span>
@@ -363,7 +361,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)</code></
 <div class="section level3">
 <h3 id="plot-output-example-1">Plot output: example 1<a class="anchor" aria-label="anchor" href="#plot-output-example-1"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_3factor.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#Perform analysis first</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ANOVA_DCt.html">ANOVA_DCt</a></span><span class="op">(</span></span>
@@ -440,7 +438,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)</code></
 <div class="section level3">
 <h3 id="plot-output-example-2">Plot output: example 2<a class="anchor" aria-label="anchor" href="#plot-output-example-2"></a>
 </h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_2factorBlock.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ANOVA_DCt.html">ANOVA_DCt</a></span><span class="op">(</span><span class="va">data</span>, </span>
 <span>      numOfFactors <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -479,7 +477,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)</code></
 <div class="section level3">
 <h3 id="plot-output-example-3">Plot output: example 3<a class="anchor" aria-label="anchor" href="#plot-output-example-3"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Heffer et al., 2020, PlosOne</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Heffer2020PlosOne.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
@@ -535,7 +533,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)</code></
 <h1 id="apply-expression-analysis-per-level-of-upper-factor">Apply expression analysis per level of upper factor<a class="anchor" aria-label="anchor" href="#apply-expression-analysis-per-level-of-upper-factor"></a>
 </h1>
 <p>When the dataset contains two factor columns, and the expression analysis is intended to be performed on the second factor within each level of the first factor, this can be achieved by looping over the levels of the first factor, as demonstrated in the following example.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mirzaghaderi.github.io/rtpcr">rtpcr</a></span><span class="op">)</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"E:/Dropbox/rtpcr manuscript/rtpcr/inst/extdata/farokh_et_al_2025.csv"</span><span class="op">)</span></span>
 <span><span class="va">df</span></span>
@@ -599,7 +597,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)</code></
 <h1 id="post-hoc-analysis">Post-hoc analysis<a class="anchor" aria-label="anchor" href="#post-hoc-analysis"></a>
 </h1>
 <p>The <code>Means_DDCt</code> function performs post-hoc comparisons using a fitted model object produced by <code>ANOVA_DDCt</code> or <code>REPEATED_DDCt</code>. It applies pairwise statistical comparisons of relative expression (RE) values for user-specified effects via the <code>specs</code> argument. Supported effects include simple effects, interactions, and slicing, provided the underlying model is an ANOVA. For ANCOVA models returned by this package, the <code>Means_DDCt</code> output is limited to simple effects only.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt</a></span><span class="op">(</span></span>
 <span>  <span class="va">data_3factor</span>,</span>
 <span>  numOfFactors <span class="op">=</span> <span class="fl">3</span>,</span>
@@ -644,7 +642,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)</code></
 <h1 id="checking-normality-of-residuals">Checking normality of residuals<a class="anchor" aria-label="anchor" href="#checking-normality-of-residuals"></a>
 </h1>
 <p>If the residuals from a <code>t.test</code> or an <code>lm</code> or and <code>lmer</code> object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test (also known as the Wilcoxon rank-sum test), implemented via <code><a href="https://rdrr.io/r/stats/wilcox.test.html" class="external-link">wilcox.test()</a></code>, is an alternative to t.test, and <code><a href="https://rdrr.io/r/stats/kruskal.test.html" class="external-link">kruskal.test()</a></code> is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the <code>t.test</code> function (along with the <code>TTEST_DDCt</code> function described above) includes the <code>var.equal</code> argument. When set to <code>FALSE</code>, perform <code>t.test</code> under the unequal variances hypothesis. Residuals for <code>lm</code> (from <code>ANOVA_DCt</code> and <code>ANOVA_DDCt</code> functions) and <code>lmer</code> (from <code>REPEATED_DDCt</code> function) objects can be extracted and plotted as follow:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_repeated_measure_1.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/REPEATED_DDCt.html">REPEATED_DDCt</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
@@ -665,7 +663,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)</code></
 <h1 id="mean-of-technical-replicates">Mean of technical replicates<a class="anchor" aria-label="anchor" href="#mean-of-technical-replicates"></a>
 </h1>
 <p>The <code>meanTech</code> function calculates the mean of technical replicates by collapsing them into a single value, producing an output dataset that is ready for subsequent analyses. The input data must follow the column structure illustrated in the example below. Columns used to define technical replicate groupings should be specified using the <code>groups</code> argument of the <code>meanTech</code> function.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># See example input data frame:</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_withTechRep.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">data</span></span>
@@ -681,24 +679,24 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)</code></
 <div class="section level1">
 <h1 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h1>
-<div class="sourceCode" id="cb12"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>citation("rtpcr")</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>To cite the package ‘rtpcr’ in publications, please use:</span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  Ghader Mirzaghaderi (2025). rtpcr: a package for statistical analysis and graphical</span>
-<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  presentation of qPCR data in R. PeerJ 13:e20185. https://doi.org/10.7717/peerj.20185</span>
-<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>A BibTeX entry for LaTeX users is</span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>  @Article{,</span>
-<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>    title = {rtpcr: A package for statistical analysis and graphical presentation of qPCR data in R},</span>
-<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a>    author = {Ghader Mirzaghaderi},</span>
-<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a>    journal = {PeerJ},</span>
-<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a>    volume = {13},</span>
-<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a>    pages = {e20185},</span>
-<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a>    year = {2025},</span>
-<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a>    doi = {10.7717/peerj.20185},</span>
-<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>citation("rtpcr")</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>To cite the package ‘rtpcr’ in publications, please use:</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  Ghader Mirzaghaderi (2025). rtpcr: a package for statistical analysis and graphical</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  presentation of qPCR data in R. PeerJ 13:e20185. https://doi.org/10.7717/peerj.20185</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>A BibTeX entry for LaTeX users is</span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>  @Article{,</span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>    title = {rtpcr: A package for statistical analysis and graphical presentation of qPCR data in R},</span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>    author = {Ghader Mirzaghaderi},</span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a>    journal = {PeerJ},</span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a>    volume = {13},</span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a>    pages = {e20185},</span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a>    year = {2025},</span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a>    doi = {10.7717/peerj.20185},</span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a>  }</span></code></pre></div>
 </div>
 
   </main><aside class="col-md-3"><div class="links">

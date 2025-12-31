@@ -3,7 +3,7 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   vignette: vignette.html
-last_built: 2025-12-31T08:57Z
+last_built: 2025-12-31T09:09Z
 urls:
   reference: https://mirzaghaderi.github.io/rtpcr/reference
   article: https://mirzaghaderi.github.io/rtpcr/articles

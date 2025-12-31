@@ -62,7 +62,7 @@ The `rtpcr` package takes a table of efficiency (E) the Ct values of genes and p
 
 The `rtpcr` package can be installed by running the following code in R:
 
-from CRAN:
+From CRAN:
 
 ```r
 # Installing from CRAN

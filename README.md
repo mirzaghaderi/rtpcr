@@ -1,4 +1,4 @@
-
+# rtpcr <img src="man/figures/logo.png" align="right" height="140/"/>
 
 
 [![](https://cranlogs.r-pkg.org/badges/grand-total/rtpcr)](https://cran.rstudio.com/web/packages/rtpcr/index.html)

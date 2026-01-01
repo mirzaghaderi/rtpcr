@@ -115,7 +115,7 @@ correspond to a single individual, all rows with a `2` correspond to another
 individual, and so on, which have been sampled at specific time points. 
 
 #### NOTE 2
-Your data table may also include a column of Ct values for technical replicates. 
+Your data table may also include technical replicates as well. 
 In this case, the `meanTech` function should be applied first to calculate 
 the mean of the technical replicates. The resulting table is then used as the 
 input for expression analysis. To use the `meanTech` function correctly, the 

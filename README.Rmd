@@ -90,7 +90,7 @@ The package supports **one or more target or reference gene(s)**, supplied as ef
 For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and unique biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a `1` at Rep column correspond to a single individual, all rows with a `2` correspond to another individual, and so on, which have been sampled at specific time points.
 
 #### NOTE 2
-Your data table may also include a column of Ct values for technical replicates. In this case, the `meanTech` function should be applied first to calculate the mean of the technical replicates. The resulting table is then used as the input for expression analysis. To use the `meanTech` function correctly, the technical replicate column must appear immediately after the biological replicate column ([Mean of technical replicates](#mean-of-technical-replicates) for an example). 
+Your data table may also include a column of technical replicates (so there would be both biological replicates and technical replicate columns in the data). In this case, the `meanTech` function should be applied first to calculate the mean of the technical replicates. The resulting table is then used as the input for expression analysis. To use the `meanTech` function correctly, the technical replicate column must appear immediately after the biological replicate column ([Mean of technical replicates](#mean-of-technical-replicates) for an example). 
 
 # Data Analysis 
 

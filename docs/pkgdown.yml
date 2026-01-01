@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   method: method.html
   vignette: vignette.html
-last_built: 2026-01-01T08:26Z
+last_built: 2026-01-01T09:55Z
 urls:
   reference: https://mirzaghaderi.github.io/rtpcr/reference
   article: https://mirzaghaderi.github.io/rtpcr/articles

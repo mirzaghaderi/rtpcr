@@ -71,7 +71,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)
 For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`,
 `ANOVA_DDCt` and `REPEATED_DDCt` functions), the amplification
 efficiency (`E`) and `Ct` or `Cq` values (the mean of technical
-replicates) is used for the input table. if the `E` values are not
+replicates) is used for the input table. If the `E` values are not
 available you should use ‘2’ instead representing the complete primer
 amplification efficiency. The required column structure of the input
 data is:
@@ -86,7 +86,7 @@ data is:
     gene)
 
 The package supports **one or more target or reference gene(s)**,
-supplied as efficiencyΔ?Ct column pairs. Reference gene columns must
+supplied as efficiency-Ct column pairs. Reference gene columns must
 always appear last. A sample input data is presented below.
 
 ![](reference/figures/dataStructure1.png)
@@ -94,8 +94,8 @@ always appear last. A sample input data is presented below.
 #### NOTE 1
 
 For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a
-separate and uniq biological replicate. For example, a dataframe with 12
-rows has come from an experiment with 12 individuals. The
+separate and unique biological replicate. For example, a dataframe with
+12 rows has come from an experiment with 12 individuals. The
 `REPEATED_DDCt` function is intended for experiments with repeated
 observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate
 column contains identifiers for each individual (id or subject). For
@@ -120,7 +120,7 @@ However, NA can be used to represent missing Ct measurements in the
 input data. In such cases, NA is returned for the corresponding
 individual ΔCt and passed along to downstream statistical analyses. If
 more sophisticated handling of missing Ct values (fixed value of 40 for
-target genes, mean Ct alues of other replicates, or imputation) is
+target genes, mean Ct values of other replicates, or imputation) is
 desired, qPCR imputation tools can be used in advance of analysis with
 rtpcr.
 
@@ -129,7 +129,7 @@ rtpcr.
 ### Amplification efficiency
 
 The `efficiency` function calculates the amplification efficiency (E),
-slope, and RΔ statistics for genes, and performs pairwise comparisons of
+slope, and R² statistics for genes, and performs pairwise comparisons of
 slopes. It takes a data frame in which the first column contains the
 dilution ratios, followed by the Ct value columns for each gene.
 
@@ -313,7 +313,7 @@ p + theme(
 
 # How to edit ouptput plots?
 
-the `rtpcr` plotFactor function create ggplot objects for one to three
+the rtpcr `plotFactor` function create ggplot objects for one to three
 factor table that can furtherbe edited by adding new layers:
 
 | Task | Example Code |
@@ -542,7 +542,7 @@ Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type * SA")
 If the residuals from a `t.test` or an `lm` or and `lmer` object are not
 normally distributed, the significance results might be violated. In
 such cases, non-parametric tests can be used. For example, the
-MannΔ?Whitney test (also known as the Wilcoxon rank-sum test),
+Mann-Whitney test (also known as the Wilcoxon rank-sum test),
 implemented via
 [`wilcox.test()`](https://rdrr.io/r/stats/wilcox.test.html), is an
 alternative to t.test, and
@@ -601,7 +601,7 @@ Email: gh.mirzaghaderi at uok.ac.ir
 ``` md
 citation("rtpcr")
 
-To cite the package Δ?rtpcrΔ? in publications, please use:
+To cite the package rtpcr in publications, please use:
 
   Ghader Mirzaghaderi (2025). rtpcr: a package for statistical analysis and graphical
   presentation of qPCR data in R. PeerJ 13:e20185. https://doi.org/10.7717/peerj.20185

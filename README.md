@@ -1,5 +1,6 @@
 # rtpcr <img src="man/figures/logo.png" align="right" height="140/"/>
 
+<!-- badges: start -->
 
 [![](https://cranlogs.r-pkg.org/badges/grand-total/rtpcr)](https://cran.rstudio.com/web/packages/rtpcr/index.html)
 [![R package version](https://img.shields.io/github/r-package/v/mirzaghaderi/rtpcr)](
@@ -9,9 +10,10 @@ https://github.com/mirzaghaderi/rtpcr
 https://CRAN.R-project.org/package=rtpcr
 )
 
+⁠<!-- badges: end -->
 
 
-Tools for multi-target multi-reference analysis of qPCR data using ΔCt and ΔΔCt methods,
+rtpcr is a tool for multi-target multi-reference analysis of qPCR data using ΔCt and ΔΔCt methods,
 including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. 
 The package implements a general calculation method described by Ganger et al. (2017) 
 and Taylor et al. (2019) for covering both the Livak and Pfaffl methods.
@@ -80,14 +82,15 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)
 
 
 # Input data structure 
-Input data structure is important and should be in wide format. For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt` functions), the required column structure of the input data is:
+For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt` functions), the amplification efficiency (`E`) and `Ct` or `Cq` values (the mean of technical replicates) is used for the input table. if the `E` values are  not available you should use '2' instead representing the complete primer amplification efficiency. 
+The required column structure of the input data is:
 
 1. Experimental condition columns (up to 3 factors, and one block if available) 
 2. Replicates information (biological replicates or subjects; see [NOTE 1](#note-1))  
-3. Target genes efficiency and Ct values (a pair column for each gene)
+3. Target genes efficiency and Ct values (a pair column for each gene) [NOTE 2](#note-2).
 5. Reference genes efficiency and Ct values (a pair column for each gene)
 
-The package supports **one or more target or reference gene(s)**, supplied as efficiency–Ct column pairs. Reference gene columns must always appear last. A sample input data is presented below.
+The package supports **one or more target or reference gene(s)**, supplied as efficiencyΔ?Ct column pairs. Reference gene columns must always appear last. A sample input data is presented below.
 
 <p align="center">
 <img src="man/figures/dataStructure1.png" width="100%">
@@ -98,13 +101,17 @@ The package supports **one or more target or reference gene(s)**, supplied as ef
 #### NOTE 1
 For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and uniq biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a `1` at Rep column correspond to a single individual, all rows with a `2` correspond to another individual, and so on, which have been sampled at specific time points. 
 
+#### NOTE 2
+Your data table may also include a column of Ct values for technical replicates. In this case, the `meanTech` function should be applied first to calculate the mean of the technical replicates. The resulting table is then used as the input for expression analysis. To use the `meanTech` function correctly, the technical replicate column must appear immediately after the biological replicate column ([Mean of technical replicates](#mean-of-technical-replicates) for an example). 
+
+
 # Handling missing Ct values
 The `rtpcr` package does not automatically handle missing Ct values. However, NA can be used to represent missing Ct measurements in the input data. In such cases, NA is returned for the corresponding individual ΔCt and passed along to downstream statistical analyses. If more sophisticated handling of missing Ct values (fixed value of 40 for target genes, mean Ct alues of other replicates, or imputation) is desired, qPCR imputation tools can be used in advance of analysis with rtpcr.
 
 # Data analysis 
 
 ### Amplification efficiency 
-The `efficiency` function calculates the amplification efficiency (E), slope, and R² statistics for genes, and performs pairwise comparisons of slopes. It takes a data frame in which the first column contains the dilution ratios, followed by the Ct value columns for each gene.
+The `efficiency` function calculates the amplification efficiency (E), slope, and RΔ statistics for genes, and performs pairwise comparisons of slopes. It takes a data frame in which the first column contains the dilution ratios, followed by the Ct value columns for each gene.
 
 ```r
 # Applying the efficiency function
@@ -503,7 +510,7 @@ Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type * SA")
 
 # Checking normality of residuals
 
-If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test (also known as the Wilcoxon rank-sum test), implemented via `wilcox.test()`, is an alternative to t.test, and `kruskal.test()` is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the `t.test` function (along with the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis. Residuals for `lm` (from `ANOVA_DCt` and `ANOVA_DDCt` functions) and `lmer` (from `REPEATED_DDCt` function) objects can be extracted and plotted as follow:
+If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the MannΔ?Whitney test (also known as the Wilcoxon rank-sum test), implemented via `wilcox.test()`, is an alternative to t.test, and `kruskal.test()` is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the `t.test` function (along with the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis. Residuals for `lm` (from `ANOVA_DCt` and `ANOVA_DDCt` functions) and `lmer` (from `REPEATED_DDCt` function) objects can be extracted and plotted as follow:
 
 ```r
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
@@ -547,7 +554,7 @@ Email: gh.mirzaghaderi at uok.ac.ir
 ```md
 citation("rtpcr")
 
-To cite the package ‘rtpcr’ in publications, please use:
+To cite the package Δ?rtpcrΔ? in publications, please use:
 
   Ghader Mirzaghaderi (2025). rtpcr: a package for statistical analysis and graphical
   presentation of qPCR data in R. PeerJ 13:e20185. https://doi.org/10.7717/peerj.20185
@@ -564,4 +571,3 @@ A BibTeX entry for LaTeX users is
     doi = {10.7717/peerj.20185},
   }
 ```
-

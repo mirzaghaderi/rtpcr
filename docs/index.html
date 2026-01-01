@@ -64,8 +64,10 @@
 <img src="logo.png" class="logo" alt=""><h1 id="rtpcr-">rtpcr <a class="anchor" aria-label="anchor" href="#rtpcr-"></a>
 </h1>
 </div>
-<p><a href="https://cran.rstudio.com/web/packages/rtpcr/index.html" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/rtpcr"></a> <a href="https://github.com/mirzaghaderi/rtpcr" class="external-link"><img src="https://img.shields.io/github/r-package/v/mirzaghaderi/rtpcr" alt="R package version"></a> <a href="https://CRAN.R-project.org/package=rtpcr" class="external-link"><img src="https://www.r-pkg.org/badges/version/rtpcr" alt="CRAN version"></a></p>
-<p>Tools for multi-target multi-reference analysis of qPCR data using ΔCt and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package implements a general calculation method described by Ganger et al. (2017) and Taylor et al. (2019) for covering both the Livak and Pfaffl methods.</p>
+<!-- badges: start -->
+
+<p>⁠<!-- badges: end --></p>
+<p>rtpcr is a tool for multi-target multi-reference analysis of qPCR data using ΔCt and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package implements a general calculation method described by Ganger et al. (2017) and Taylor et al. (2019) for covering both the Livak and Pfaffl methods.</p>
 <ul>
 <li><a href="#functions">Functions</a></li>
 <li>
@@ -173,21 +175,26 @@
 <div class="section level1">
 <h1 id="input-data-structure">Input data structure<a class="anchor" aria-label="anchor" href="#input-data-structure"></a>
 </h1>
-<p>Input data structure is important and should be in wide format. For relative expression analysis (using <code>TTEST_DDCt</code>, <code>ANOVA_DCt</code>, <code>ANOVA_DDCt</code> and <code>REPEATED_DDCt</code> functions), the required column structure of the input data is:</p>
+<p>For relative expression analysis (using <code>TTEST_DDCt</code>, <code>ANOVA_DCt</code>, <code>ANOVA_DDCt</code> and <code>REPEATED_DDCt</code> functions), the amplification efficiency (<code>E</code>) and <code>Ct</code> or <code>Cq</code> values (the mean of technical replicates) is used for the input table. if the <code>E</code> values are not available you should use ‘2’ instead representing the complete primer amplification efficiency. The required column structure of the input data is:</p>
 <ol style="list-style-type: decimal">
 <li>Experimental condition columns (up to 3 factors, and one block if available)</li>
 <li>Replicates information (biological replicates or subjects; see <a href="#note-1">NOTE 1</a>)<br>
 </li>
-<li>Target genes efficiency and Ct values (a pair column for each gene)</li>
+<li>Target genes efficiency and Ct values (a pair column for each gene) <a href="#note-2">NOTE 2</a>.</li>
 <li>Reference genes efficiency and Ct values (a pair column for each gene)</li>
 </ol>
-<p>The package supports <strong>one or more target or reference gene(s)</strong>, supplied as efficiency–Ct column pairs. Reference gene columns must always appear last. A sample input data is presented below.</p>
+<p>The package supports <strong>one or more target or reference gene(s)</strong>, supplied as efficiencyΔ?Ct column pairs. Reference gene columns must always appear last. A sample input data is presented below.</p>
 <p align="center">
 <img src="reference/figures/dataStructure1.png" width="100%"></p>
 <div class="section level4">
 <h4 id="note-1">NOTE 1<a class="anchor" aria-label="anchor" href="#note-1"></a>
 </h4>
 <p>For <code>TTEST_DDCt</code>, <code>ANOVA_DCt</code>, and <code>ANOVA_DDCt</code>, each row is from a separate and uniq biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The <code>REPEATED_DDCt</code> function is intended for experiments with repeated observations (e.g. time-course data). For <code>REPEATED_DDCt</code>, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a <code>1</code> at Rep column correspond to a single individual, all rows with a <code>2</code> correspond to another individual, and so on, which have been sampled at specific time points.</p>
+</div>
+<div class="section level4">
+<h4 id="note-2">NOTE 2<a class="anchor" aria-label="anchor" href="#note-2"></a>
+</h4>
+<p>Your data table may also include a column of Ct values for technical replicates. In this case, the <code>meanTech</code> function should be applied first to calculate the mean of the technical replicates. The resulting table is then used as the input for expression analysis. To use the <code>meanTech</code> function correctly, the technical replicate column must appear immediately after the biological replicate column (<a href="#mean-of-technical-replicates">Mean of technical replicates</a> for an example).</p>
 </div>
 </div>
 <div class="section level1">
@@ -201,7 +208,7 @@
 <div class="section level3">
 <h3 id="amplification-efficiency">Amplification efficiency<a class="anchor" aria-label="anchor" href="#amplification-efficiency"></a>
 </h3>
-<p>The <code>efficiency</code> function calculates the amplification efficiency (E), slope, and R² statistics for genes, and performs pairwise comparisons of slopes. It takes a data frame in which the first column contains the dilution ratios, followed by the Ct value columns for each gene.</p>
+<p>The <code>efficiency</code> function calculates the amplification efficiency (E), slope, and RΔ statistics for genes, and performs pairwise comparisons of slopes. It takes a data frame in which the first column contains the dilution ratios, followed by the Ct value columns for each gene.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Applying the efficiency function</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_efficiency.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
@@ -641,7 +648,7 @@
 <div class="section level1">
 <h1 id="checking-normality-of-residuals">Checking normality of residuals<a class="anchor" aria-label="anchor" href="#checking-normality-of-residuals"></a>
 </h1>
-<p>If the residuals from a <code>t.test</code> or an <code>lm</code> or and <code>lmer</code> object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test (also known as the Wilcoxon rank-sum test), implemented via <code><a href="https://rdrr.io/r/stats/wilcox.test.html" class="external-link">wilcox.test()</a></code>, is an alternative to t.test, and <code><a href="https://rdrr.io/r/stats/kruskal.test.html" class="external-link">kruskal.test()</a></code> is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the <code>t.test</code> function (along with the <code>TTEST_DDCt</code> function described above) includes the <code>var.equal</code> argument. When set to <code>FALSE</code>, perform <code>t.test</code> under the unequal variances hypothesis. Residuals for <code>lm</code> (from <code>ANOVA_DCt</code> and <code>ANOVA_DDCt</code> functions) and <code>lmer</code> (from <code>REPEATED_DDCt</code> function) objects can be extracted and plotted as follow:</p>
+<p>If the residuals from a <code>t.test</code> or an <code>lm</code> or and <code>lmer</code> object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the MannΔ?Whitney test (also known as the Wilcoxon rank-sum test), implemented via <code><a href="https://rdrr.io/r/stats/wilcox.test.html" class="external-link">wilcox.test()</a></code>, is an alternative to t.test, and <code><a href="https://rdrr.io/r/stats/kruskal.test.html" class="external-link">kruskal.test()</a></code> is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the <code>t.test</code> function (along with the <code>TTEST_DDCt</code> function described above) includes the <code>var.equal</code> argument. When set to <code>FALSE</code>, perform <code>t.test</code> under the unequal variances hypothesis. Residuals for <code>lm</code> (from <code>ANOVA_DCt</code> and <code>ANOVA_DDCt</code> functions) and <code>lmer</code> (from <code>REPEATED_DDCt</code> function) objects can be extracted and plotted as follow:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_repeated_measure_1.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/REPEATED_DDCt.html">REPEATED_DDCt</a></span><span class="op">(</span></span>
@@ -681,7 +688,7 @@
 </h1>
 <div class="sourceCode" id="cb13"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>citation("rtpcr")</span>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>To cite the package ‘rtpcr’ in publications, please use:</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>To cite the package Δ?rtpcrΔ? in publications, please use:</span>
 <span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a></span>
 <span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  Ghader Mirzaghaderi (2025). rtpcr: a package for statistical analysis and graphical</span>
 <span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  presentation of qPCR data in R. PeerJ 13:e20185. https://doi.org/10.7717/peerj.20185</span>
@@ -729,7 +736,14 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://cran.rstudio.com/web/packages/rtpcr/index.html" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/rtpcr"></a></li>
+<li><a href="https://github.com/mirzaghaderi/rtpcr" class="external-link"><img src="https://img.shields.io/github/r-package/v/mirzaghaderi/rtpcr" alt="R package version"></a></li>
+<li><a href="https://CRAN.R-project.org/package=rtpcr" class="external-link"><img src="https://www.r-pkg.org/badges/version/rtpcr" alt="CRAN version"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>

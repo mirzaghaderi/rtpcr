@@ -53,16 +53,20 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)
 
 ## Input data structure
 
-Input data structure is important and should be in wide format. For
-relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`,
-`ANOVA_DDCt` and `REPEATED_DDCt` functions), the required column
-structure of the input data is:
+For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`,
+`ANOVA_DDCt` and `REPEATED_DDCt` functions), the amplification
+efficiency (`E`) and `Ct` or `Cq` values (the mean of technical
+replicates) is used for the input table. if the `E` values are not
+available you should use ‘2’ instead representing the complete primer
+amplification efficiency. The required column structure of the input
+data is:
 
 1.  Experimental condition columns (up to 3 factors, and one block if
     available)
 2.  Replicates information (biological replicates or subjects; see [NOTE
     1](#note-1))  
 3.  Target genes efficiency and Ct values (a pair column for each gene)
+    [NOTE 2](#note-2).
 4.  Reference genes efficiency and Ct values (a pair column for each
     gene)
 
@@ -83,6 +87,16 @@ column contains identifiers for each individual (id or subject). For
 example, all rows with a `1` at Rep column correspond to a single
 individual, all rows with a `2` correspond to another individual, and so
 on, which have been sampled at specific time points.
+
+##### NOTE 2
+
+Your data table may also include a column of Ct values for technical
+replicates. In this case, the `meanTech` function should be applied
+first to calculate the mean of the technical replicates. The resulting
+table is then used as the input for expression analysis. To use the
+`meanTech` function correctly, the technical replicate column must
+appear immediately after the biological replicate column ([Mean of
+technical replicates](#mean-of-technical-replicates) for an example).
 
 ## Data Analysis
 

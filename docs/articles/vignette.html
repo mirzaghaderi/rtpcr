@@ -65,7 +65,7 @@
                         <h4 data-toc-skip class="author">Ghader
 Mirzaghaderi</h4>
             
-            <h4 data-toc-skip class="date">2025-12-31</h4>
+            <h4 data-toc-skip class="date">2026-01-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mirzaghaderi/rtpcr/blob/HEAD/vignettes/vignette.Rmd" class="external-link"><code>vignettes/vignette.Rmd</code></a></small>
       <div class="d-none name"><code>vignette.Rmd</code></div>
@@ -160,18 +160,21 @@ following code in R:</p>
 <div class="section level2">
 <h2 id="input-data-structure">Input data structure<a class="anchor" aria-label="anchor" href="#input-data-structure"></a>
 </h2>
-<p>Input data structure is important and should be in wide format. For
-relative expression analysis (using <code>TTEST_DDCt</code>,
+<p>For relative expression analysis (using <code>TTEST_DDCt</code>,
 <code>ANOVA_DCt</code>, <code>ANOVA_DDCt</code> and
-<code>REPEATED_DDCt</code> functions), the required column structure of
-the input data is:</p>
+<code>REPEATED_DDCt</code> functions), the amplification efficiency
+(<code>E</code>) and <code>Ct</code> or <code>Cq</code> values (the mean
+of technical replicates) is used for the input table. if the
+<code>E</code> values are not available you should use ‘2’ instead
+representing the complete primer amplification efficiency. The required
+column structure of the input data is:</p>
 <ol style="list-style-type: decimal">
 <li>Experimental condition columns (up to 3 factors, and one block if
 available)</li>
 <li>Replicates information (biological replicates or subjects; see <a href="#note-1">NOTE 1</a>)<br>
 </li>
-<li>Target genes efficiency and Ct values (a pair column for each
-gene)</li>
+<li>Target genes efficiency and Ct values (a pair column for each gene)
+<a href="#note-2">NOTE 2</a>.</li>
 <li>Reference genes efficiency and Ct values (a pair column for each
 gene)</li>
 </ol>
@@ -193,6 +196,18 @@ identifiers for each individual (id or subject). For example, all rows
 with a <code>1</code> at Rep column correspond to a single individual,
 all rows with a <code>2</code> correspond to another individual, and so
 on, which have been sampled at specific time points.</p>
+</div>
+<div class="section level5">
+<h5 id="note-2">NOTE 2<a class="anchor" aria-label="anchor" href="#note-2"></a>
+</h5>
+<p>Your data table may also include a column of Ct values for technical
+replicates. In this case, the <code>meanTech</code> function should be
+applied first to calculate the mean of the technical replicates. The
+resulting table is then used as the input for expression analysis. To
+use the <code>meanTech</code> function correctly, the technical
+replicate column must appear immediately after the biological replicate
+column (<a href="#mean-of-technical-replicates">Mean of technical
+replicates</a> for an example).</p>
 </div>
 </div>
 <div class="section level2">

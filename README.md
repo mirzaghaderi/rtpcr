@@ -120,7 +120,7 @@ In this case, the `meanTech` function should be applied first to calculate
 the mean of the technical replicates. The resulting table is then used as the 
 input for expression analysis. To use the `meanTech` function correctly, the 
 technical replicate column must appear immediately after the biological 
-replicate column ([Mean of technical replicates](#mean-of-technical-replicates) 
+replicate column (see [Mean of technical replicates](#mean-of-technical-replicates) 
 for an example). 
 
 
@@ -597,7 +597,9 @@ data
 meanTech(data, groups = 1:4)
 ```
 
-
+<p align="center">
+<img src="man/figures/techrep.png" width="70%">
+</p>
 
 
 

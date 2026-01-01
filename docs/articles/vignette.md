@@ -90,13 +90,13 @@ on, which have been sampled at specific time points.
 
 ##### NOTE 2
 
-Your data table may also include a column of Ct values for technical
-replicates. In this case, the `meanTech` function should be applied
-first to calculate the mean of the technical replicates. The resulting
-table is then used as the input for expression analysis. To use the
-`meanTech` function correctly, the technical replicate column must
-appear immediately after the biological replicate column ([Mean of
-technical replicates](#mean-of-technical-replicates) for an example).
+Your data table may also include technical replicates. In this case, the
+`meanTech` function should be applied first to calculate the mean of the
+technical replicates. The resulting table is then used as the input for
+expression analysis. To use the `meanTech` function correctly, the
+technical replicate column must appear immediately after the biological
+replicate column (see [Mean of technical
+replicates](#mean-of-technical-replicates) for an example).
 
 ## Data Analysis
 
@@ -496,6 +496,8 @@ data
 # Calculating mean of technical replicates
 meanTech(data, groups = 1:4)
 ```
+
+![](../reference/figures/techrep.png)
 
 ## Contact
 

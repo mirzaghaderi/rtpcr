@@ -104,8 +104,11 @@ ANOVA_DCt <- function(
     
     gene_df <- x[, c(designCols, tc, refCols), drop = FALSE]
     
+    
+    
     res <- .ANOVA_DCt_uniTarget(
       x = gene_df,
+      numOfFactors = numOfFactors,
       numberOfrefGenes = numberOfrefGenes,
       block = block,
       alpha = alpha,

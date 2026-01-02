@@ -162,6 +162,27 @@ Ganger et al. (2017) except that log2 is used instead of log10:</p>
   \log_2(E_{\text{target}}) \cdot C_{t,\text{target}}
 -
   \log_2(E_{\text{ref}}) \cdot C_{t,\text{ref}}
+</annotation></semantics></math> and for more than one reference gene,
+the log2.Ct term of the references, and the whole wDCt is defined using
+the geometric mean as follow:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mi>C</mi><mi>t</mi><mo>=</mo><msub><mo>log</mo><mn>2</mn></msub><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>E</mi><mtext mathvariant="normal">target</mtext></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mi>C</mi><msub><mi>t</mi><mtext mathvariant="normal">target</mtext></msub><mo>−</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><munderover><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo stretchy="true" form="prefix">[</mo><msub><mo>log</mo><mn>2</mn></msub><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">geoMeanE</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mi>C</mi><msub><mi>t</mi><msub><mtext mathvariant="normal">ref</mtext><mi>i</mi></msub></msub><mo stretchy="true" form="postfix">]</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>1</mn><mi>/</mi><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">
+wCt =
+\log_{2}\!\left(E_{\text{target}}\right)\cdot Ct_{\text{target}}
+-
+\left(
+\prod_{i=1}^{n}
+\left[
+\log_{2}\!\left(\text{geoMeanE}\right)\cdot Ct_{\text{ref}_i}
+\right]
+\right)^{1/n}
+</annotation></semantics></math> where the geometric mean of the
+efficieny values of the referene genes is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">geoMeanE</mtext><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><munderover><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>E</mi><msub><mtext mathvariant="normal">ref</mtext><mi>i</mi></msub></msub><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>1</mn><mi>/</mi><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">
+\text{geoMeanE}
+=
+\left(
+\prod_{i=1}^{n} E_{\text{ref}_i}
+\right)^{1/n}
 </annotation></semantics></math></p>
 <p>The relative expression of the target gene normalized to that of
 reference gene(s) within the same sample or condition is called relative

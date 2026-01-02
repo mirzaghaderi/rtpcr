@@ -109,89 +109,49 @@
 
 
 
-.compute_wDCt <- function(x,
-                          numberOfrefGenes,
-                          block = NULL) {
+
+.compute_wDCt <- function(x, numberOfrefGenes, block = NULL) {
   
   stopifnot(numberOfrefGenes >= 1)
-  
-  nc   <- ncol(x)
   nRef <- numberOfrefGenes
+  nc   <- ncol(x)
   
-  # core columns: rep + target + refs
-  nTargetCols <- 2
-  nRefCols    <- 2 * nRef
-  nCoreCols   <- 1 + nTargetCols + nRefCols
+
+  # Identify columns
+  # Reference columns: last nRef*2 columns
+  ref_E_cols  <- seq(nc - 2 * nRef + 1, nc, by = 2)
+  ref_Ct_cols <- seq(nc - 2 * nRef + 2, nc, by = 2)
   
-  if (!is.null(block)) {
-    nCoreCols <- nCoreCols + 1
+  # Target columns: immediately before reference columns
+  target_E_col  <- ref_E_cols[1] - 2
+  target_Ct_col <- ref_E_cols[1] - 1
+  
+
+  # Target term
+  target_term <- log2(x[[target_E_col]]) * x[[target_Ct_col]]
+  
+
+  # Reference term
+  E_mat  <- as.matrix(x[, ref_E_cols])
+  Ct_mat <- as.matrix(x[, ref_Ct_cols])
+  
+  # geometric mean of reference efficiencies
+  geoMeanE <- apply(E_mat, 1, function(z) prod(z)^(1 / nRef))
+  
+  # compute reference term exactly as in Excel
+  ref_term <- numeric(nrow(x))
+  for (r in seq_len(nrow(x))) {
+    tmp <- log2(geoMeanE[r]) * Ct_mat[r, ] 
+    ref_term[r] <- prod(tmp)^(1 / nRef) 
   }
   
-  # rename from the end
-  idx <- nc
+
+  # Final wDCt
+  x$wDCt <- target_term - ref_term
   
-  # reference genes
-  for (i in nRef:1) {
-    colnames(x)[idx - 1] <- paste0("Eref",  if (i == 1) "" else i)
-    colnames(x)[idx]     <- paste0("Ctref", if (i == 1) "" else i)
-    idx <- idx - 2
-  }
-  
-  # target
-  colnames(x)[idx - 1] <- "Etarget"
-  colnames(x)[idx]     <- "Cttarget"
-  idx <- idx - 2
-  
-  # replicate
-  colnames(x)[idx] <- "rep"
-  idx <- idx - 1
-  
-  # block (optional)
-  if (!is.null(block)) {
-    colnames(x)[idx] <- "block"
-  }
-  
-  #FACTOR CONVERSION
-  if (!is.null(block)) {
-    factor_cols <- seq_len(which(colnames(x) == "block") - 1)
-  } else {
-    factor_cols <- seq_len(which(colnames(x) == "rep") - 1)
-  }
-  
-  x[factor_cols] <- lapply(
-    x[factor_cols],
-    function(z) {
-      if (is.numeric(z)) {
-        z <- as.factor(z)
-      } else {
-        z <- factor(z)
-      }
-      z
-    }
-  )
-  
-  #wDCt calculation
-  target_term <- log2(x$Etarget) * x$Cttarget
-  
-  ref_terms <- vapply(
-    seq_len(nRef),
-    function(i) {
-      E  <- x[[paste0("Eref",  if (i == 1) "" else i)]]
-      Ct <- x[[paste0("Ctref", if (i == 1) "" else i)]]
-      log2(E) * Ct
-    },
-    numeric(nrow(x))
-  )
-  
-  ref_mean <- rowMeans(ref_terms, na.rm = FALSE)
-  
-  y <- data.frame(
-    x,
-    wDCt = target_term - ref_mean
-  )
-  
-  return(y)
+  return(x)
 }
+
 
 
 
@@ -246,6 +206,7 @@
 
 .ANOVA_DDCt_uniTarget <- function(
     x, 
+    numOfFactors,
     numberOfrefGenes, 
     mainFactor.column, 
     analysisType = "anova",
@@ -300,15 +261,18 @@
   }
   
   x <- .compute_wDCt(x, numberOfrefGenes, block)
-  x[,1] <- factor(
-    x[,1],
-    levels = mainFactor.level.order
-  )
+  # x[,1] <- factor(
+  #   x[,1],
+  #   levels = mainFactor.level.order
+  # )
   
   # get names of factor columns
+  x[seq_len(numOfFactors)] <- lapply(
+    x[seq_len(numOfFactors)],
+    function(col) factor(col))
   factors <- names(x)[vapply(x, is.factor, logical(1))]
-
-
+  
+  
   
   
   # Check if there is block
@@ -423,7 +387,7 @@
   tableC <- data.frame(tableC, 
                        Lower.se.RE = 2^(log2(tableC$RE) - tableC$se), 
                        Upper.se.RE = 2^(log2(tableC$RE) + tableC$se))  
-  ##################################################
+
   a <- data.frame(tableC, d = 0)
   
   for (i in 1:length(tableC$RE)) {
@@ -451,7 +415,7 @@
     ylab("log2FC")
   
   tableC <- data.frame(tableC, Lower.se.log2FC = a$Lower.se, Upper.se.log2FC = a$Upper.se)
-  ##################################################  
+  
   
   if (is.null(block)) {
     lm_ANOVA <- lmf
@@ -504,11 +468,12 @@
 
 
 .ANOVA_DCt_uniTarget <- function(x,
-                      numberOfrefGenes,
-                      block,
-                      alpha,
-                      adjust,
-                      verbose = FALSE) {
+                                 numOfFactors,
+                                 numberOfrefGenes,
+                                 block,
+                                 alpha,
+                                 adjust,
+                                 verbose = FALSE) {
   
   ## basic argument checks
   if (!is.data.frame(x)) {
@@ -522,7 +487,11 @@
   }
   
   
-  x <- .compute_wDCt(x, numberOfrefGenes, block)
+  x <- .compute_wDCt(x, numberOfrefGenes, block) ##############################################################
+  # convert the first numOfFactors columns to factor
+  x[seq_len(numOfFactors)] <- lapply(
+    x[seq_len(numOfFactors)],
+    function(col) factor(col))
   # get names of factor columns
   factors <- names(x)[vapply(x, is.factor, logical(1))]
   
@@ -661,14 +630,15 @@
 
 
 
-.REPEATED_DDCt_uniTarget <- function(x, 
-                          numberOfrefGenes,
-                          repeatedFactor, 
-                          calibratorLevel,
-                          block,
-                          p.adj,
-                          plot,
-                          plotType){
+.REPEATED_DDCt_uniTarget <- function(x,
+                                     numOfFactors,
+                                     numberOfrefGenes,
+                                     repeatedFactor, 
+                                     calibratorLevel,
+                                     block,
+                                     p.adj,
+                                     plot,
+                                     plotType){
   
   # basic checks
   # if (!is.data.frame(x)) stop("`x` must be a data.frame")
@@ -682,16 +652,16 @@
   x <- .rearrange_repeatedMeasureData(x, column_name = "Time_", level = calibratorLevel) 
   
   
-
+  
   ## validate that only ONE target gene exists
   expr_cols_expected <- if (is.null(block)) {
     3 + 2 * numberOfrefGenes   # time + target + refs
   } else {
     4 + 2 * numberOfrefGenes   # block + time + target + refs
   }
-
+  
   non_expr_cols <- ncol(x) - expr_cols_expected
-
+  
   if (non_expr_cols < 1) {
     stop(
       "Input data structure error:\n",
@@ -726,7 +696,7 @@
     )
   }
   
-
+  
   id <- colnames(x)[1]
   
   # column parsing
@@ -756,26 +726,18 @@
     ref_cols <- ref_start:ncol(x)
   }
   
-  # compute wDCt (GENERALIZED)
-  target_part <- log2(x$Etarget) * x$Cttarget
   
-  ref_matrix <- matrix(
-    mapply(
-      function(E, Ct) log2(E) * Ct,
-      x[, ref_cols[seq(1, length(ref_cols), 2)]],
-      x[, ref_cols[seq(2, length(ref_cols), 2)]]
-    ),
-    ncol = numberOfrefGenes
-  )
-  
-  ref_part <- rowMeans(ref_matrix)
-  x <- data.frame(x, wDCt = target_part - ref_part)
+  x <- .compute_wDCt(x, numberOfrefGenes, block)
+  # convert the first numOfFactors columns to factor
+  x[seq_len(numOfFactors)] <- lapply(
+    x[seq_len(numOfFactors)],
+    function(col) factor(col))
   
   # convert factors
   for (i in 2:which(names(x) == "Time_")) {
     x[[i]] <- factor(x[[i]], levels = unique(x[[i]]))
   }
-
+  
   
   
   # model formula 
@@ -851,7 +813,7 @@
                           se = se$se[1])
   
   tableC  <- rbind(reference, post_hoc_test)
-
+  
   FINALDATA <- x
   
   tableC$contrast <- sapply(strsplit(tableC$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))
@@ -870,7 +832,7 @@
   tableC <- data.frame(tableC, 
                        Lower.se.RE = 2^(log2(tableC$RE) - tableC$se), 
                        Upper.se.RE = 2^(log2(tableC$RE) + tableC$se))  
-
+  
   
   
   a <- data.frame(tableC, d = 0)
@@ -900,7 +862,7 @@
     ylab("log2FC")
   
   tableC <- data.frame(tableC, Lower.se.log2FC = a$Lower.se, Upper.se.log2FC = a$Upper.se)
-
+  
   
   
   tableC <- tableC %>%

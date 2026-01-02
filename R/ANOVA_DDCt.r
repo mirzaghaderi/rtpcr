@@ -146,6 +146,7 @@ ANOVA_DDCt <- function(
     
     res <- .ANOVA_DDCt_uniTarget(
       x = gene_df,
+      numOfFactors = numOfFactors,
       numberOfrefGenes = numberOfrefGenes,
       mainFactor.column = mainFactor.column,
       analysisType = analysisType,

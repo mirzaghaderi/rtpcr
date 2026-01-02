@@ -176,9 +176,9 @@ TTEST_DDCt(
 #> *** The control level was used as calibrator.
 #> $Result
 #>   Gene     RE    LCL    UCL pvalue     se  log2FC Lower.se.RE Upper.se.RE sig
-#> 1 DER5 0.4343 0.1921 0.9816 0.0469 0.4191 -1.2033      0.3248      0.5807   *
+#> 1 DER5 0.4341 0.1915 0.9839 0.0473 0.4204 -1.2039      0.3244       0.581   *
 #>   Lower.se.log2FC Upper.se.log2FC
-#> 1          -1.609            -0.9
+#> 1         -1.6111         -0.8996
 #> 
 #> $plot
 

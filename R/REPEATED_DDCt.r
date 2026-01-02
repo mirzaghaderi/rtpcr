@@ -218,8 +218,10 @@ REPEATED_DDCt <- function(
       return(NULL)
     }
     
+    
     res <- .REPEATED_DDCt_uniTarget(
       x = gene_df,
+      numOfFactors = numOfFactors,
       numberOfrefGenes = numberOfrefGenes,
       repeatedFactor = repeatedFactor,
       block = block,

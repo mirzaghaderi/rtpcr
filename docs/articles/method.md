@@ -71,6 +71,15 @@ the amplification efficiencies as described by Ganger et al. (2017)
 except that log2 is used instead of log10:
 
 $$w\Delta C_{t} = \log_{2}\left( E_{\text{target}} \right) \cdot C_{t,\text{target}} - \log_{2}\left( E_{\text{ref}} \right) \cdot C_{t,\text{ref}}$$
+and for more than one reference gene, the log2.Ct term of the
+references, and the whole wDCt is defined using the geometric mean as
+follow:
+
+$$wCt = \log_{2}\!\left( E_{\text{target}} \right) \cdot Ct_{\text{target}} - \left( \prod\limits_{i = 1}^{n}\left\lbrack \log_{2}\!\left( \text{geoMeanE} \right) \cdot Ct_{\text{ref}_{i}} \right\rbrack \right)^{1/n}$$
+where the geometric mean of the efficieny values of the referene genes
+is:
+
+$$\text{geoMeanE} = \left( \prod\limits_{i = 1}^{n}E_{\text{ref}_{i}} \right)^{1/n}$$
 
 The relative expression of the target gene normalized to that of
 reference gene(s) within the same sample or condition is called relative

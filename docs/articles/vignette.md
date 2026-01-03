@@ -497,7 +497,7 @@ data
 meanTech(data, groups = 1:4)
 ```
 
-![](../reference/figures/techrep.png)
+![](../reference/figures/techrep.png){.center width =“100%”}
 
 ## Contact
 

@@ -69,7 +69,7 @@ $$
 -
   \log_2(E_{\text{ref}}) \cdot C_{t,\text{ref}}
 $$
-and for more than one reference gene, the log2.Ct term of the references, and the whole wDCt  is defined using the geometric mean as follow:
+and for more than one reference gene, the log2E.Ct term of the references, and the whole wDCt  is defined using the geometric mean as follow:
 
 $$
 wCt =

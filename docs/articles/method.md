@@ -71,7 +71,7 @@ the amplification efficiencies as described by Ganger et al. (2017)
 except that log2 is used instead of log10:
 
 $$w\Delta C_{t} = \log_{2}\left( E_{\text{target}} \right) \cdot C_{t,\text{target}} - \log_{2}\left( E_{\text{ref}} \right) \cdot C_{t,\text{ref}}$$
-and for more than one reference gene, the log2.Ct term of the
+and for more than one reference gene, the log2E.Ct term of the
 references, and the whole wDCt is defined using the geometric mean as
 follow:
 

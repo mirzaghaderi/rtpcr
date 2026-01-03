@@ -598,7 +598,7 @@ meanTech(data, groups = 1:4)
 ```
 
 <p align="center">
-<img src="man/figures/techrep.png" width="70%">
+<img src="man/figures/techrep.png" width="100%">
 </p>
 
 

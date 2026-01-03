@@ -25,12 +25,14 @@
 #' @importFrom stats setNames
 #'
 #' @return
-#' An object containing expression table, lm models, residuals, raw data and ANOVA table for each gene. 
+#' An object containing expression table, lm models, ANOVA tables, residuals, raw data and ANOVA table for each gene. 
 #' \describe{
-#' \item{NCt combined expression table}{\code{object$combinedResults}}
-#' \item{ANOVA table}{\code{object$perGene$gene_nameANOVA}}
-#' \item{lm ANOVA}{\code{object$perGene$gene_name$lmCRD}}
-#' \item{Residuals}{\code{resid(object$perGene$gene_name$lmCRD)}}
+#' \item{ΔCt combined expression table}{\code{object$combinedResults}}
+#' \item{ANOVA table for treatments}{\code{object$perGene$gene_name$ANOVA_T}}
+#' \item{ANOVA table factorial}{\code{object$perGene$gene_name$ANOVA_factorial}}
+#' \item{lm ANOVA for tratments}{\code{object$perGene$gene_name$lm_T}}
+#' \item{lm ANOVA factorial}{\code{object$perGene$gene_name$lm_factorial}}
+#' \item{Residuals}{\code{resid(object$perGene$gene_name$lm_T)}}
 #' }
 #' @export
 #' 

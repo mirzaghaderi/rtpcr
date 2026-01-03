@@ -552,6 +552,42 @@
     anovaCRD <- stats::anova(lm_fit)
   }
   
+  # LM factorial ##################################################
+  # Check if there is block
+  if (is.null(block)) {
+    
+    # ANOVA based on factorial design
+    formula_ANOVA <- as.formula(
+      paste("wDCt ~", paste(factors, collapse = " * "))
+    )
+    lm_factorial <- lm(formula_ANOVA, data = x)
+    ANOVA_factorial <- stats::anova(lm_factorial)
+    
+    # ANCOVA (other factors as covariates)
+    # formula_ANCOVA <- as.formula(
+    #   paste("wDCt ~", paste(rev(factors), collapse = " + "))
+    # )
+    # lmc <- lm(formula_ANCOVA, data = x)
+    # ANCOVA <- stats::anova(lmc)
+    
+  } else {
+    
+    # ANOVA with blocking factor (block treated as fixed)
+    formula_ANOVA <- as.formula(
+      paste("wDCt ~ block +", paste(factors, collapse = " * "))
+    )
+    lm_factorial <- lm(formula_ANOVA, data = x)
+    ANOVA_factorial <- stats::anova(lm_factorial)
+    
+    # ANCOVA with blocking factor
+    # formula_ANCOVA <- as.formula(
+    #   paste("wDCt ~ block +", paste(rev(factors), collapse = " + "))
+    # )
+    # lmcb <- lm(formula_ANCOVA, data = x)
+    # ANCOVA <- stats::anova(lmcb)
+  }
+  # LM factorial ##################################################
+  
   
   ## emmeans / multiple comparisons
   emg <- emmeans::emmeans(lm_fit, pairwise ~ T, mode = "satterthwaite")
@@ -651,8 +687,10 @@
     mutate_if(is.numeric, ~ round(., 4))
   
   outlist2 <- structure(list(Final_data = xx,
-                             lmCRD = lm_fit,
-                             ANOVA = anovaCRD,
+                             lm_T = lm_fit,
+                             lm_factorial = lm_factorial,
+                             ANOVA_T = anovaCRD,
+                             ANOVA_factorial = ANOVA_factorial,
                              Results = Results_final),
                         class = "XX")
   

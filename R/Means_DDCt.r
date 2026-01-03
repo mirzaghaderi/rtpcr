@@ -1,14 +1,14 @@
-#' @title Pairwise comparisons of relative expression values (ΔΔCt) using a fitted model
+#' @title Pairwise comparisons of relative expression values (ΔCt or ΔΔCt) using a fitted model
 #'
 #' @description
 #' Performs relative expression (fold change) analysis based on the
-#' ΔΔCt method using a fitted model object produced by
-#' \code{ANOVA_DDCt()} or \code{REPEATED_DDCt()}.
+#' ΔCt or ΔΔCt methods using a fitted model object produced by
+#' \code{ANOVA_DCt()}, \code{ANOVA_DDCt()} or \code{REPEATED_DDCt()}.
 #'
 #' @details
 #' The \code{Means_DDCt} function performs pairwise comparisons of relative expression values fo all combinations using
 #' estimated marginal means derived from a fitted model.
-#' For ANOVA models, FC values can be obtained for main effects,
+#' For ANOVA models, relative expression values can be obtained for main effects,
 #' interactions, and sliced (simple) effects.
 #' For ANCOVA models returned by the \pkg{rtpcr} package, only simple
 #' effects are supported.
@@ -26,7 +26,7 @@
 #'
 #' @param model
 #' A fitted model object (typically an \code{lmer} or \code{lm} object)
-#' created by \code{ANOVA_DDCt()} or \code{REPEATED_DDCt()}.
+#' created by \code{ANOVA_DCt()}, \code{ANOVA_DDCt()} or \code{REPEATED_DDCt()}.
 #'
 #' @param specs
 #' A character string or character vector specifying the predictors or
@@ -65,6 +65,19 @@
 #'
 #' # Relative expression values for Concentration sliced by Type and SA
 #' Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type * SA")
+#' 
+#' 
+#' 
+#' 
+#' data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
+#' res <- ANOVA_DCt(
+#'   data,
+#'   numOfFactors = 3,
+#'   numberOfrefGenes = 1,
+#'   block = NULL)
+#' 
+#' # lm <- res$perGene$PO$lm_factorial
+#' # Means_DDCt(lm, specs = "Type * Conc * SA", p.adj = "none")
 
 
 

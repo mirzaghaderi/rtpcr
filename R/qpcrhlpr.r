@@ -20,6 +20,8 @@
 }
 
 
+
+
 .wide_to_long <- function(df) {
   
   if (ncol(df) < 6) {
@@ -60,6 +62,47 @@
   rownames(out) <- NULL
   out
 }
+
+
+
+
+
+.long_to_wide <- function(df) {
+  
+  if (ncol(df) < 4) {
+    stop("Data frame must contain at least 4 columns: Condition, Gene, E, Ct")
+  }
+  
+  # standardize first 4 columns internally
+  tmp <- data.frame(
+    Condition = df[[1]],
+    Gene      = df[[2]],
+    E         = df[[3]],
+    Ct        = df[[4]],
+    stringsAsFactors = FALSE
+  )
+  
+  # replicate number within Condition × Gene
+  tmp$Rep <- ave(
+    seq_len(nrow(tmp)),
+    tmp$Condition,
+    tmp$Gene,
+    FUN = seq_along
+  )
+  
+  # reshape to wide
+  wide <- reshape(
+    tmp,
+    idvar   = c("Condition", "Rep"),
+    timevar = "Gene",
+    direction = "wide"
+  )
+  wide
+}
+
+
+
+
 
 
 

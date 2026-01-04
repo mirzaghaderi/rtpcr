@@ -184,7 +184,9 @@ TTEST_DDCt <- function(x,
     ## Compute wDCt using helper
     tmp <- .compute_wDCt(
       x = tmp,
-      numberOfrefGenes = numberOfrefGenes
+      numOfFactors = 1, 
+      numberOfrefGenes = numberOfrefGenes, 
+      block = NULL
     )
     
     wDCt <- tmp$wDCt

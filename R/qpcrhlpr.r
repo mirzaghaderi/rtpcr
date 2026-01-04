@@ -22,6 +22,37 @@
 
 
 
+
+.cleanup <- function(x){
+  x[] <- lapply(x, function(x) {
+    
+    # leave factors untouched
+    if (is.factor(x)) return(x)
+    
+    # handle character columns
+    if (is.character(x)) {
+      x[x == "Undetermined"] <- NA
+      suppressWarnings(x <- as.numeric(x))
+    }
+    
+    if (is.character(x)) {
+      x[x == "undetermined"] <- NA
+      suppressWarnings(x <- as.numeric(x))
+    }
+    
+    # handle numeric columns
+    if (is.numeric(x)) {
+      x[x == 0] <- NA
+    }
+    x 
+  })
+  x
+}
+
+
+
+
+
 .wide_to_long <- function(df) {
   
   if (ncol(df) < 6) {
@@ -60,6 +91,7 @@
   )
   
   rownames(out) <- NULL
+  out[[1]] <- factor(out[[1]])
   out
 }
 
@@ -97,7 +129,8 @@
     timevar = "Gene",
     direction = "wide"
   )
-  wide
+  wide[[1]] <- factor(wide[[1]])
+  .cleanup(wide)
 }
 
 
@@ -153,7 +186,22 @@
 
 
 
-.compute_wDCt <- function(x, numberOfrefGenes, block = NULL) {
+.compute_wDCt <- function(x, 
+                          numOfFactors,
+                          numberOfrefGenes, 
+                          block) {
+  
+  if (is.null(block)) {
+    x[seq_len(numOfFactors)] <- lapply(
+      x[seq_len(numOfFactors)],
+      function(col) factor(col))
+  } else {
+    x[seq_len(numOfFactors + 1)] <- lapply(
+      x[seq_len(numOfFactors + 1)],
+      function(col) factor(col))
+  }
+  x <- .cleanup(x)
+
   
   stopifnot(numberOfrefGenes >= 1)
   nRef <- numberOfrefGenes
@@ -185,12 +233,12 @@
   ref_term <- numeric(nrow(x))
   for (r in seq_len(nrow(x))) {
     tmp <- log2(geoMeanE[r]) * Ct_mat[r, ] 
-    ref_term[r] <- prod(tmp)^(1 / nRef) 
+    ref_term[r] <- prod(tmp, na.rm = TRUE)^(1 / nRef) 
   }
   
-
   # Final wDCt
   x$wDCt <- target_term - ref_term
+
   
   return(x)
 }
@@ -303,7 +351,7 @@
     on.exit(cat(structure(paste("*** The", calibrartor, "level was used as calibrator.\n"))))
   }
   
-  x <- .compute_wDCt(x, numberOfrefGenes, block)
+  x <- .compute_wDCt(x, numOfFactors, numberOfrefGenes, block)
   # x[,1] <- factor(
   #   x[,1],
   #   levels = mainFactor.level.order
@@ -530,7 +578,7 @@
   }
   
   
-  x <- .compute_wDCt(x, numberOfrefGenes, block) ##############################################################
+  x <- .compute_wDCt(x, numOfFactors, numberOfrefGenes, block) ##############################################################
   # convert the first numOfFactors columns to factor
   x[seq_len(numOfFactors)] <- lapply(
     x[seq_len(numOfFactors)],
@@ -808,7 +856,7 @@
   }
   
   
-  x <- .compute_wDCt(x, numberOfrefGenes, block)
+  x <- .compute_wDCt(x, numOfFactors, numberOfrefGenes, block)
   # convert the first numOfFactors columns to factor
   x[seq_len(numOfFactors)] <- lapply(
     x[seq_len(numOfFactors)],

@@ -67,7 +67,7 @@
 <!-- badges: start -->
 
 <p>⁠<!-- badges: end --></p>
-<p>rtpcr is a tool for multi-target multi-reference analysis of qPCR data using ΔCt and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package implements a general calculation method described by Ganger et al. (2017) and Taylor et al. (2019) for covering both the Livak and Pfaffl methods.</p>
+<p>rtpcr is a tool for analysis of RT-qPCR gene expression data using ΔCt and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package implements a general calculation method described by Ganger et al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl methods.</p>
 <ul>
 <li><a href="#functions">Functions</a></li>
 <li>
@@ -103,11 +103,11 @@
 <div class="section level1">
 <h1 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
 </h1>
-<p>The <code>rtpcr</code> package takes a table of efficiency (E) the Ct values of genes and performs different analyses using the following functions.</p>
+<p>The rtpcr package gets efficiency (E) the Ct values of genes and performs different analyses using the following functions.</p>
 <table class="table">
 <colgroup>
-<col width="25%">
-<col width="74%">
+<col width="50%">
+<col width="50%">
 </colgroup>
 <thead><tr class="header">
 <th>Function</th>
@@ -160,7 +160,7 @@
 <h3 id="installing-and-loading">Installing and loading<a class="anchor" aria-label="anchor" href="#installing-and-loading"></a>
 </h3>
 <p>The <code>rtpcr</code> package can be installed by running the following code in R:</p>
-<p>From CRAN:</p>
+<p>from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Installing from CRAN</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rtpcr"</span><span class="op">)</span></span>
@@ -178,14 +178,13 @@
 <p>For relative expression analysis (using <code>TTEST_DDCt</code>, <code>ANOVA_DCt</code>, <code>ANOVA_DDCt</code> and <code>REPEATED_DDCt</code> functions), the amplification efficiency (<code>E</code>) and <code>Ct</code> or <code>Cq</code> values (the mean of technical replicates) is used for the input table. If the <code>E</code> values are not available you should use ‘2’ instead representing the complete primer amplification efficiency. The required column structure of the input data is:</p>
 <ol style="list-style-type: decimal">
 <li>Experimental condition columns (up to 3 factors, and one block if available)</li>
-<li>Replicates information (biological replicates or subjects; see <a href="#note-1">NOTE 1</a>)<br>
+<li>Replicates information (biological replicates or subjects; see <a href="#note-1">NOTE 1</a>, and <a href="#note-2">NOTE 2</a>)<br>
 </li>
-<li>Target genes efficiency and Ct values (a pair column for each gene) <a href="#note-2">NOTE 2</a>.</li>
+<li>Target genes efficiency and Ct values (a pair column for each gene).</li>
 <li>Reference genes efficiency and Ct values (a pair column for each gene)</li>
 </ol>
-<p>The package supports <strong>one or more target or reference gene(s)</strong>, supplied as efficiency-Ct column pairs. Reference gene columns must always appear last. A sample input data is presented below.</p>
-<p align="center">
-<img src="reference/figures/dataStructure1.png" width="100%"></p>
+<p>The package supports <strong>one or more target or reference gene(s)</strong>, supplied as efficiency–Ct column pairs. Reference gene columns must always appear last. A sample input data is presented below.</p>
+<p><img src="reference/figures/dataStructure1.png" class="center" style="width:100.0%"></p>
 <div class="section level4">
 <h4 id="note-1">NOTE 1<a class="anchor" aria-label="anchor" href="#note-1"></a>
 </h4>
@@ -194,19 +193,14 @@
 <div class="section level4">
 <h4 id="note-2">NOTE 2<a class="anchor" aria-label="anchor" href="#note-2"></a>
 </h4>
-<p>Your data table may also include technical replicates as well. In this case, the <code>meanTech</code> function should be applied first to calculate the mean of the technical replicates. The resulting table is then used as the input for expression analysis. To use the <code>meanTech</code> function correctly, the technical replicate column must appear immediately after the biological replicate column (see <a href="#mean-of-technical-replicates">Mean of technical replicates</a> for an example).</p>
+<p>Your data table may also include a column of technical replicates (so there would be both biological replicates and technical replicate columns in the data). In this case, the <code>meanTech</code> function should be applied first to calculate the mean of the technical replicates. The resulting table is then used as the input for expression analysis. To use the <code>meanTech</code> function correctly, the technical replicate column must appear immediately after the biological replicate column (see <a href="#mean-of-technical-replicates">Mean of technical replicates</a> for an example).</p>
 </div>
 </div>
 <div class="section level1">
-<h1 id="handling-missing-ct-values">Handling missing Ct values<a class="anchor" aria-label="anchor" href="#handling-missing-ct-values"></a>
-</h1>
-<p>The <code>rtpcr</code> package does not automatically handle missing Ct values. However, NA can be used to represent missing Ct measurements in the input data. In such cases, NA is returned for the corresponding individual ΔCt and passed along to downstream statistical analyses. If more sophisticated handling of missing Ct values (fixed value of 40 for target genes, mean Ct values of other replicates, or imputation) is desired, qPCR imputation tools can be used in advance of analysis with rtpcr.</p>
-</div>
-<div class="section level1">
-<h1 id="data-analysis">Data analysis<a class="anchor" aria-label="anchor" href="#data-analysis"></a>
+<h1 id="data-analysis">Data Analysis<a class="anchor" aria-label="anchor" href="#data-analysis"></a>
 </h1>
 <div class="section level3">
-<h3 id="amplification-efficiency">Amplification efficiency<a class="anchor" aria-label="anchor" href="#amplification-efficiency"></a>
+<h3 id="amplification-efficiency">Amplification Efficiency<a class="anchor" aria-label="anchor" href="#amplification-efficiency"></a>
 </h3>
 <p>The <code>efficiency</code> function calculates the amplification efficiency (E), slope, and R² statistics for genes, and performs pairwise comparisons of slopes. It takes a data frame in which the first column contains the dilution ratios, followed by the Ct value columns for each gene.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -255,7 +249,7 @@
 <div class="section level3">
 <h3 id="relative-expression">Relative expression<a class="anchor" aria-label="anchor" href="#relative-expression"></a>
 </h3>
-<p><code>TTEST_DDCt</code>, <code>ANOVA_DDCt</code>, <code>REPEATED_DDCt</code>, and <code>ANOVA_DCt</code> functions perform relative expression analysis using ΔΔCt or ΔCt methods. Below is an example of expression analysis using ΔΔCt method.</p>
+<p>Relative expression analysis can be done using ΔΔCt or ΔCt methods. Below is an example of expression analysis using ΔΔCt method.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># An example of a properly arranged dataset from a repeated-measures experiment.</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_repeated_measure_1.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
@@ -317,10 +311,6 @@
 </h2>
 <p>A lot of outputs including relative expression table, lm models, residuals, raw data and ANOVA table for each gene can be accessed. The expression table of all genes is returned by <code>res$combinedFoldChange</code>. Other outpus for each gene can be obtained as follow:</p>
 <table class="table">
-<colgroup>
-<col width="26%">
-<col width="73%">
-</colgroup>
 <thead><tr class="header">
 <th>Per_gene Output</th>
 <th>Code</th>
@@ -365,9 +355,10 @@
 <h2 id="plot-output">Plot output<a class="anchor" aria-label="anchor" href="#plot-output"></a>
 </h2>
 <p>A single function of <code>plotFactor</code> is used to produce barplots for one- to three-factor expression tables.</p>
-<div class="section level3">
-<h3 id="plot-output-example-1">Plot output: example 1<a class="anchor" aria-label="anchor" href="#plot-output-example-1"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="plot-output-example-1">Plot output: example 1<a class="anchor" aria-label="anchor" href="#plot-output-example-1"></a>
+</h2>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_3factor.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#Perform analysis first</span></span>
@@ -401,9 +392,7 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
 <span>  panel.border <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p align="center">
-<img src="reference/figures/Rplot02.png" width="100%"></p>
-</div>
+<p><img src="reference/figures/Rplot02.png" class="center" height="400"></p>
 </div>
 </div>
 <div class="section level1">
@@ -412,8 +401,8 @@
 <p>the rtpcr <code>plotFactor</code> function create ggplot objects for one to three factor table that can furtherbe edited by adding new layers:</p>
 <table class="table">
 <colgroup>
-<col width="30%">
-<col width="70%">
+<col width="50%">
+<col width="50%">
 </colgroup>
 <thead><tr class="header">
 <th>Task</th>
@@ -473,13 +462,12 @@
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="va">p1</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">14</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">14</span>, color <span class="op">=</span> <span class="st">"black"</span>, angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">14</span>, color <span class="op">=</span> <span class="st">"black"</span>, angle <span class="op">=</span> <span class="fl">45</span><span class="op">)</span>,</span>
+<span>        axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">14</span>,color <span class="op">=</span> <span class="st">"black"</span>, angle <span class="op">=</span> <span class="fl">0</span>, hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span>,</span>
 <span>        legend.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"transparent"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p align="center">
-<img src="reference/figures/Rplot01.png" width="100%" alt="Example qPCR data visualization generated by the rtpcr package"></p>
+<p><img src="reference/figures/Rplot01.png" class="center" height="300"></p>
 </div>
 <div class="section level3">
 <h3 id="plot-output-example-3">Plot output: example 3<a class="anchor" aria-label="anchor" href="#plot-output-example-3"></a>
@@ -499,7 +487,7 @@
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">combinedFoldChange</span></span>
 <span><span class="va">data</span><span class="op">$</span><span class="va">gene</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">gene</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">gene</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Keep only the first words in 'contrast' column to be used as the x-axis labels.</span></span>
+<span><span class="co"># Selecting only the first words in 'contrast' column to be used as the x-axis labels.</span></span>
 <span><span class="va">data</span><span class="op">$</span><span class="va">contrast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">" .*"</span>, <span class="st">""</span>, <span class="va">data</span><span class="op">$</span><span class="va">contrast</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Converting the 'contrast' column as factor and fix the current level order</span></span>
@@ -532,124 +520,58 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
 <span>    strip.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,  <span class="co"># removes the faceting gray background</span></span>
 <span>    strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span><span class="op">)</span> <span class="co"># optional: keeps the text visible</span></span></code></pre></div>
-<p align="center">
-<img src="reference/figures/Rplot03.png" width="80%"></p>
+<p><img src="reference/figures/Rplot03.png" class="center" height="700"></p>
 </div>
-</div>
-<div class="section level1">
-<h1 id="apply-expression-analysis-per-level-of-upper-factor">Apply expression analysis per level of upper factor<a class="anchor" aria-label="anchor" href="#apply-expression-analysis-per-level-of-upper-factor"></a>
-</h1>
-<p>When the dataset contains two factor columns, and the expression analysis is intended to be performed on the second factor within each level of the first factor, this can be achieved by looping over the levels of the first factor, as demonstrated in the following example.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mirzaghaderi.github.io/rtpcr">rtpcr</a></span><span class="op">)</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"E:/Dropbox/rtpcr manuscript/rtpcr/inst/extdata/farokh_et_al_2025.csv"</span><span class="op">)</span></span>
-<span><span class="va">df</span></span>
-<span></span>
-<span><span class="co"># stage stress  Rep TraesCS2D02G351900  CtTraesCS2D02G351900    TraesCS4A02G268500  CtTraesCS4A02G268500    TraesCS4B02G155800  CtTraesCS4B02G155800    TraesCS5B02G163500  CtTraesCS5B02G163500    TraesCS6A02G218900  CtTraesCS6A02G218900    TraesCS6B02G315400  CtTraesCS6B02G315400    TraesCS7A02G218600  CtTraesCS7A02G218600    TraesCS7B02G400600  CtTraesCS7B02G400600    EReference  CtRefrence</span></span>
-<span><span class="co"># 4LS   Control 1   1.8 25.17   1.8 28.53   1.8 16.42   1.82    19.26   1.8 25.89   1.8 27.97   1.8 23.68   1.8 27.09   2   24.49</span></span>
-<span><span class="co"># 4LS   Control 2   1.8 25.07   1.8 28.41   1.8 16.48   1.82    19.38   1.8 25.66   1.8 27.81   1.8 23.90   1.8 27.05   2   24.80</span></span>
-<span><span class="co"># 4LS   Drought 1   1.8 26.72   1.8 28.08   1.8 15.60   1.82    20.07   1.8 23.6    1.8 26.77   1.8 26.21   1.8 27.58   2   25.55</span></span>
-<span><span class="co"># 4LS   Drought 2   1.8 26.90   1.8 28.35   1.8 15.56   1.82    20.22   1.8 23.64   1.8 26.67   1.8 26.58   1.8 27.57   2   25.36</span></span>
-<span><span class="co"># 5LS   Control 1   1.8 26.21   1.8 27.19   1.8 14.38   1.82    20.25   1.8 25.39   1.8 28.08   1.8 27.19   1.8 27.10   2   25.00</span></span>
-<span><span class="co"># 5LS   Control 2   1.8 26.08   1.8 27.20   1.8 14.14   1.82    20.31   1.8 25.52   1.8 28.04   1.8 27.57   1.8 27.02   2   25.20</span></span>
-<span><span class="co"># 5LS   Drought 1   1.8 26.78   1.8 25.75   1.8 13.23   1.82    20.07   1.8 24.84   1.8 26.38   1.8 27.07   1.8 27.69   2   26.05</span></span>
-<span><span class="co"># 5LS   Drought 2   1.8 26.94   1.8 25.68   1.8 13.05   1.82    20.27   1.8 24.72   1.8 26.48   1.8 27.24   1.8 27.43   2   25.87</span></span>
-<span><span class="co"># 6LS   Control 1   1.8 26.43   1.8 28.68   1.8 13.06   1.82    22.41   1.8 24.95   1.8 29.57   1.8 29.54   1.8 27.51   2   25.57</span></span>
-<span><span class="co"># 6LS   Control 2   1.8 25.94   1.8 28.55   1.8 13.22   1.82    22.25   1.8 24.76   1.8 29.50   1.8 29.33   1.8 27.57   2   25.03</span></span>
-<span><span class="co"># 6LS   Drought 1   1.8 25.78   1.8 25.56   1.8 11.87   1.82    20.93   1.8 24.67   1.8 27.88   1.8 28.43   1.8 28.29   2   26.44</span></span>
-<span><span class="co"># 6LS   Drought 2   1.8 26.19   1.8 25.55   1.8 11.69   1.82    21.18   1.8 24.60   1.8 27.92   1.8 28.81   1.8 28.24   2   26.62</span></span>
-<span><span class="co"># 7LS   Control 1   1.8 26.42   1.8 27.21   1.8 12.96   1.82    21.06   1.8 25.08   1.8 27.90   1.8 28.08   1.8 28.42   2   25.16</span></span>
-<span><span class="co"># 7LS   Control 2   1.8 26.27   1.8 27.33   1.8 12.62   1.82    21.17   1.8 24.72   1.8 27.58   1.8 27.50   1.8 28.21   2   25.05</span></span>
-<span><span class="co"># 7LS   Drought 1   1.8 25.75   1.8 26.00   1.8 11.35   1.82    18.78   1.8 23.92   1.8 27.00   1.8 28.21   1.8 28.27   2   25.57</span></span>
-<span><span class="co"># 7LS   Drought 2   1.8 25.55   1.8 25.87   1.8 11.28   1.82    18.60   1.8 24.09   1.8 27.20   1.8 27.88   1.8 28.15   2   25.57</span></span>
-<span></span>
-<span></span>
-<span></span>
-<span><span class="co"># Split by levels of the first column</span></span>
-<span><span class="va">df_split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Apply ANOVA_DDCt per level</span></span>
-<span><span class="va">res_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df_split</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">lv</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  </span>
-<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df_split</span><span class="op">[[</span><span class="va">lv</span><span class="op">]</span><span class="op">]</span></span>
-<span>  </span>
-<span>  <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt</a></span><span class="op">(</span></span>
-<span>    <span class="va">df</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>,</span>
-<span>    numOfFactors <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>    numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>    mainFactor.column <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>    analysisType <span class="op">=</span> <span class="st">"anova"</span>,</span>
-<span>    mainFactor.level.order <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>    block <span class="op">=</span> <span class="cn">NULL</span></span>
-<span>  <span class="op">)</span></span>
-<span>  </span>
-<span>  <span class="co"># Add level name as FIRST column</span></span>
-<span>  <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
-<span>    Level <span class="op">=</span> <span class="va">lv</span>,</span>
-<span>    <span class="va">out</span><span class="op">$</span><span class="va">combinedFoldChange</span></span>
-<span>  <span class="op">)</span></span>
-<span>  </span>
-<span>  <span class="va">out</span></span>
-<span><span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Name list elements</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">res_list</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df_split</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Combine all tables</span></span>
-<span><span class="va">final_table_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">res_list</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">final_table_1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div>
-
 </div>
 <div class="section level1">
 <h1 id="post-hoc-analysis">Post-hoc analysis<a class="anchor" aria-label="anchor" href="#post-hoc-analysis"></a>
 </h1>
-<p>The <code>Means_DDCt</code> function performs post-hoc comparisons using a fitted model object produced by <code>ANOVA_DDCt</code> or <code>REPEATED_DDCt</code>. It applies pairwise statistical comparisons of relative expression (RE) values for user-specified effects via the <code>specs</code> argument. Supported effects include simple effects, interactions, and slicing, provided the underlying model is an ANOVA. For ANCOVA models returned by this package, the <code>Means_DDCt</code> output is limited to simple effects only.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt</a></span><span class="op">(</span></span>
-<span>  <span class="va">data_3factor</span>,</span>
-<span>  numOfFactors <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  mainFactor.column <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  block <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="co"># Relative expression values for Concentration main effect</span></span>
-<span><span class="fu"><a href="reference/Means_DDCt.html">Means_DDCt</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">perGene</span><span class="op">$</span><span class="va">E_PO</span><span class="op">$</span><span class="va">lm_ANOVA</span>, specs <span class="op">=</span> <span class="st">"Conc"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#  contrast        RE        SE df       LCL       UCL p.value sig</span></span>
-<span><span class="co">#  L vs H   0.1703610 0.2208988 24 0.1242014 0.2336757 &lt;0.0001 ***</span></span>
-<span><span class="co">#  M vs H   0.2227247 0.2208988 24 0.1623772 0.3055004 &lt;0.0001 ***</span></span>
-<span><span class="co">#  M vs L   1.3073692 0.2208988 24 0.9531359 1.7932535  0.0928 .  </span></span>
-<span><span class="co"># </span></span>
-<span><span class="co"># Results are averaged over the levels of: Type, SA </span></span>
-<span><span class="co"># Confidence level used: 0.95 </span></span>
-<span><span class="co"># </span></span>
-<span><span class="co"># # Relative expression values for Concentration sliced by Type</span></span>
-<span><span class="co"># Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type")</span></span>
-<span><span class="co"># </span></span>
-<span><span class="co"># Type = R:</span></span>
-<span><span class="co">#  contrast       RE        SE df       LCL      UCL p.value sig</span></span>
-<span><span class="co">#  L vs H   0.103187 0.3123981 24 0.0659984 0.161331 &lt;0.0001 ***</span></span>
-<span><span class="co">#  M vs H   0.339151 0.3123981 24 0.2169210 0.530255 &lt;0.0001 ***</span></span>
-<span><span class="co">#  M vs L   3.286761 0.3123981 24 2.1022126 5.138776 &lt;0.0001 ***</span></span>
-<span><span class="co"># </span></span>
-<span><span class="co"># Type = S:</span></span>
-<span><span class="co">#  contrast       RE        SE df       LCL      UCL p.value sig</span></span>
-<span><span class="co">#  L vs H   0.281265 0.3123981 24 0.1798969 0.439751 &lt;0.0001 ***</span></span>
-<span><span class="co">#  M vs H   0.146266 0.3123981 24 0.0935518 0.228684 &lt;0.0001 ***</span></span>
-<span><span class="co">#  M vs L   0.520030 0.3123981 24 0.3326112 0.813055  0.0059 ** </span></span>
-<span><span class="co"># </span></span>
-<span><span class="co"># Results are averaged over the levels of: SA </span></span>
-<span><span class="co"># Confidence level used: 0.95 </span></span>
-<span></span>
-<span><span class="co"># Relative expression values for Concentration sliced by Type and SA</span></span>
-<span><span class="fu"><a href="reference/Means_DDCt.html">Means_DDCt</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">perGene</span><span class="op">$</span><span class="va">E_PO</span><span class="op">$</span><span class="va">lm_ANOVA</span>, specs <span class="op">=</span> <span class="st">"Conc | Type * SA"</span><span class="op">)</span></span></code></pre></div>
+<p>The <code>Means_DDCt</code> function performs post-hoc comparisons using a fitted model object produced by <code>ANOVA_DCt</code>, <code>ANOVA_DDCt</code> or <code>REPEATED_DDCt</code>. It applies pairwise statistical comparisons of relative expression (RE) values for user-specified effects via the <code>specs</code> argument. Supported effects include simple effects, interactions, and slicing, provided the underlying model is an ANOVA. For ANCOVA models returned by this package, the <code>Means_DDCt</code> output is limited to simple effects only.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ANOVA_DDCt</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  data_3factor,</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">3</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">1</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  <span class="at">block =</span> <span class="cn">NULL</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co"># Relative expression values for Concentration main effect</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="fu">Means_DDCt</span>(res<span class="sc">$</span>perGene<span class="sc">$</span>E_PO<span class="sc">$</span>lm_ANOVA, <span class="at">specs =</span> <span class="st">"Conc"</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a> <span class="co"># contrast        RE        SE df       LCL       UCL p.value sig</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a> <span class="co"># L vs H   0.1703610 0.2208988 24 0.1242014 0.2336757 &lt;0.0001 ***</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a> <span class="co"># M vs H   0.2227247 0.2208988 24 0.1623772 0.3055004 &lt;0.0001 ***</span></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a> <span class="co"># M vs L   1.3073692 0.2208988 24 0.9531359 1.7932535  0.0928 .  </span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>Results are averaged over the levels of<span class="sc">:</span> Type, SA </span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a>Confidence level used<span class="sc">:</span> <span class="fl">0.95</span> </span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="co"># Relative expression values for Concentration sliced by Type</span></span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="fu">Means_DDCt</span>(res<span class="sc">$</span>perGene<span class="sc">$</span>E_PO<span class="sc">$</span>lm_ANOVA, <span class="at">specs =</span> <span class="st">"Conc | Type"</span>)</span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a><span class="co"># Type = R:</span></span>
+<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a><span class="co">#  contrast       RE        SE df       LCL      UCL p.value sig</span></span>
+<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a><span class="co">#  L vs H   0.103187 0.3123981 24 0.0659984 0.161331 &lt;0.0001 ***</span></span>
+<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a><span class="co">#  M vs H   0.339151 0.3123981 24 0.2169210 0.530255 &lt;0.0001 ***</span></span>
+<span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a><span class="co">#  M vs L   3.286761 0.3123981 24 2.1022126 5.138776 &lt;0.0001 ***</span></span>
+<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a></span>
+<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a><span class="co"># Type = S:</span></span>
+<span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a><span class="co">#  contrast       RE        SE df       LCL      UCL p.value sig</span></span>
+<span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a><span class="co">#  L vs H   0.281265 0.3123981 24 0.1798969 0.439751 &lt;0.0001 ***</span></span>
+<span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a><span class="co">#  M vs H   0.146266 0.3123981 24 0.0935518 0.228684 &lt;0.0001 ***</span></span>
+<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a><span class="co">#  M vs L   0.520030 0.3123981 24 0.3326112 0.813055  0.0059 ** </span></span>
+<span id="cb9-34"><a href="#cb9-34" tabindex="-1"></a></span>
+<span id="cb9-35"><a href="#cb9-35" tabindex="-1"></a><span class="co"># Results are averaged over the levels of: SA </span></span>
+<span id="cb9-36"><a href="#cb9-36" tabindex="-1"></a><span class="co"># Confidence level used: 0.95 </span></span>
+<span id="cb9-37"><a href="#cb9-37" tabindex="-1"></a></span>
+<span id="cb9-38"><a href="#cb9-38" tabindex="-1"></a><span class="co"># Relative expression values for Concentration sliced by Type and SA</span></span>
+<span id="cb9-39"><a href="#cb9-39" tabindex="-1"></a><span class="fu">Means_DDCt</span>(res<span class="sc">$</span>perGene<span class="sc">$</span>E_PO<span class="sc">$</span>lm_ANOVA, <span class="at">specs =</span> <span class="st">"Conc | Type * SA"</span>)</span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="checking-normality-of-residuals">Checking normality of residuals<a class="anchor" aria-label="anchor" href="#checking-normality-of-residuals"></a>
 </h1>
-<p>If the residuals from a <code>t.test</code> or an <code>lm</code> or and <code>lmer</code> object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann-Whitney test (also known as the Wilcoxon rank-sum test), implemented via <code><a href="https://rdrr.io/r/stats/wilcox.test.html" class="external-link">wilcox.test()</a></code>, is an alternative to t.test, and <code><a href="https://rdrr.io/r/stats/kruskal.test.html" class="external-link">kruskal.test()</a></code> is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the <code>t.test</code> function (along with the <code>TTEST_DDCt</code> function described above) includes the <code>var.equal</code> argument. When set to <code>FALSE</code>, perform <code>t.test</code> under the unequal variances hypothesis. Residuals for <code>lm</code> (from <code>ANOVA_DCt</code> and <code>ANOVA_DDCt</code> functions) and <code>lmer</code> (from <code>REPEATED_DDCt</code> function) objects can be extracted and plotted as follow:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p>If the residuals from a <code>t.test</code> or an <code>lm</code> or and <code>lmer</code> object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test (also known as the Wilcoxon rank-sum test), implemented via <code><a href="https://rdrr.io/r/stats/wilcox.test.html" class="external-link">wilcox.test()</a></code>, is an alternative to t.test, and <code><a href="https://rdrr.io/r/stats/kruskal.test.html" class="external-link">kruskal.test()</a></code> is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the <code>t.test</code> function (along with the <code>TTEST_DDCt</code> function described above) includes the <code>var.equal</code> argument. When set to <code>FALSE</code>, perform <code>t.test</code> under the unequal variances hypothesis. Residuals for <code>lm</code> (from <code>ANOVA_DCt</code> and <code>ANOVA_DDCt</code> functions) and <code>lmer</code> (from <code>REPEATED_DDCt</code> function) objects can be extracted and plotted as follow:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_repeated_measure_1.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/REPEATED_DDCt.html">REPEATED_DDCt</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
@@ -669,16 +591,15 @@
 <div class="section level1">
 <h1 id="mean-of-technical-replicates">Mean of technical replicates<a class="anchor" aria-label="anchor" href="#mean-of-technical-replicates"></a>
 </h1>
-<p>The <code>meanTech</code> function calculates the mean of technical replicates by collapsing them into a single value, producing an output dataset that is ready for subsequent analyses. The input data must follow the column structure illustrated in the example below. Columns used to define technical replicate groupings should be specified using the <code>groups</code> argument of the <code>meanTech</code> function.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<p>Calculating the mean of technical replicates and generating an output table suitable for subsequent ANOVA analysis can be accomplished using the <code>meanTech</code> function. The input dataset must follow the column structure illustrated in the example data below. Columns used for grouping should be explicitly specified via the <code>groups</code> argument of the <code>meanTech</code> function.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># See example input data frame:</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_withTechRep.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">data</span></span>
 <span></span>
 <span><span class="co"># Calculating mean of technical replicates</span></span>
 <span><span class="fu"><a href="reference/meanTech.html">meanTech</a></span><span class="op">(</span><span class="va">data</span>, groups <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span></code></pre></div>
-<p align="center">
-<img src="reference/figures/techrep.png" width="100%"></p>
+<p><img src="reference/figures/techrep.png" class="center" style="width:100.0%"></p>
 </div>
 <div class="section level1">
 <h1 id="contact">Contact<a class="anchor" aria-label="anchor" href="#contact"></a>
@@ -688,24 +609,34 @@
 <div class="section level1">
 <h1 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h1>
-<div class="sourceCode" id="cb13"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>citation("rtpcr")</span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>To cite the package rtpcr in publications, please use:</span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  Ghader Mirzaghaderi (2025). rtpcr: a package for statistical analysis and graphical</span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  presentation of qPCR data in R. PeerJ 13:e20185. https://doi.org/10.7717/peerj.20185</span>
-<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>A BibTeX entry for LaTeX users is</span>
-<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>  @Article{,</span>
-<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>    title = {rtpcr: A package for statistical analysis and graphical presentation of qPCR data in R},</span>
-<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>    author = {Ghader Mirzaghaderi},</span>
-<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a>    journal = {PeerJ},</span>
-<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a>    volume = {13},</span>
-<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a>    pages = {e20185},</span>
-<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a>    year = {2025},</span>
-<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a>    doi = {10.7717/peerj.20185},</span>
-<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>citation("rtpcr")</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>To cite the package ‘rtpcr’ in publications, please use:</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  Ghader Mirzaghaderi (2025). rtpcr: a package for statistical analysis and graphical</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  presentation of qPCR data in R. PeerJ 13:e20185. https://doi.org/10.7717/peerj.20185</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>A BibTeX entry for LaTeX users is</span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>  @Article{,</span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>    title = {rtpcr: A package for statistical analysis and graphical presentation of qPCR data in R},</span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a>    author = {Ghader Mirzaghaderi},</span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a>    journal = {PeerJ},</span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a>    volume = {13},</span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a>    pages = {e20185},</span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a>    year = {2025},</span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a>    doi = {10.7717/peerj.20185},</span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a>  }</span></code></pre></div>
+</div>
+<div class="section level1">
+<h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h1>
+<p>Livak, Kenneth J, and Thomas D Schmittgen. 2001. Analysis of Relative Gene Expression Data Using Real-Time Quantitative PCR and the Double Delta CT Method. Methods 25 (4). <a href="https://doi.org/10.1006/meth.2001.1262" class="external-link">doi.org/10.1006/meth.2001.1262</a>.</p>
+<p>Ganger, MT, Dietz GD, Ewing SJ. 2017. A common base method for analysis of qPCR data and the application of simple blocking in qPCR experiments. BMC bioinformatics 18, 1-11. <a href="https://doi.org/10.1186/s12859-017-1949-5" class="external-link">doi.org/10.1186/s12859-017-1949-5</a>.</p>
+<p>Mirzaghaderi G. 2025. rtpcr: a package for statistical analysis and graphical presentation of qPCR data in R. PeerJ 13, e20185. <a href="https://doi.org/10.7717/peerj.20185" class="external-link">doi.org/10.7717/peerj.20185</a>.</p>
+<p>Pfaffl MW, Horgan GW, Dempfle L. 2002. Relative expression software tool (REST©) for group-wise comparison and statistical analysis of relative expression results in real-time PCR. Nucleic acids research 30, e36-e36. <a href="https://doi.org/10.1093/nar/30.9.e36" class="external-link">doi.org/10.1093/nar/30.9.e36</a>.</p>
+<p>Taylor SC, Nadeau K, Abbasi M, Lachance C, Nguyen M, Fenrich, J. 2019. The ultimate qPCR experiment: producing publication quality, reproducible data the first time. Trends in Biotechnology, 37(7), 761-774. <a href="https://doi.org/10.1016/j.tibtech.2018.12.002" class="external-link">doi.org/10.1016/j.tibtech.2018.12.002</a>.</p>
+<p>Yuan, JS, Ann Reed, Feng Chen, and Neal Stewart. 2006. Statistical Analysis of Real-Time PCR Data. BMC Bioinformatics 7 (85). <a href="https://doi.org/10.1186/1471-2105-7-85" class="external-link">doi.org/10.1186/1471-2105-7-85</a>.</p>
 </div>
 
   </main><aside class="col-md-3"><div class="links">

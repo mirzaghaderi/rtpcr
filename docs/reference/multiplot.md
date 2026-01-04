@@ -54,14 +54,7 @@ out2 <- ANOVA_DCt(
   numOfFactors = 1,
   numberOfrefGenes = 1,
   block = NULL)
-#> Analysis of Variance Table
-#> 
-#> Response: wDCt
-#>           Df Sum Sq Mean Sq F value   Pr(>F)   
-#> T          2 4.9393 2.46963  12.345 0.007473 **
-#> Residuals  6 1.2003 0.20006                    
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> NULL
 #> 
 #> Relative expression (DCt method)
 #>   SA     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE

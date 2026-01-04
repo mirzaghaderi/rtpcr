@@ -65,7 +65,7 @@
                         <h4 data-toc-skip class="author">Ghader
 Mirzaghaderi</h4>
             
-            <h4 data-toc-skip class="date">2026-01-03</h4>
+            <h4 data-toc-skip class="date">2026-01-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mirzaghaderi/rtpcr/blob/HEAD/vignettes/vignette.Rmd" class="external-link"><code>vignettes/vignette.Rmd</code></a></small>
       <div class="d-none name"><code>vignette.Rmd</code></div>
@@ -171,10 +171,10 @@ column structure of the input data is:</p>
 <ol style="list-style-type: decimal">
 <li>Experimental condition columns (up to 3 factors, and one block if
 available)</li>
-<li>Replicates information (biological replicates or subjects; see <a href="#note-1">NOTE 1</a>)<br>
+<li>Replicates information (biological replicates or subjects; see <a href="#note-1">NOTE 1</a>, and <a href="#note-2">NOTE 2</a>)<br>
 </li>
-<li>Target genes efficiency and Ct values (a pair column for each gene)
-<a href="#note-2">NOTE 2</a>.</li>
+<li>Target genes efficiency and Ct values (a pair column for each
+gene).</li>
 <li>Reference genes efficiency and Ct values (a pair column for each
 gene)</li>
 </ol>
@@ -553,13 +553,14 @@ layers:</p>
 <h2 id="post-hoc-analysis">Post-hoc analysis<a class="anchor" aria-label="anchor" href="#post-hoc-analysis"></a>
 </h2>
 <p>The <code>Means_DDCt</code> function performs post-hoc comparisons
-using a fitted model object produced by <code>ANOVA_DDCt</code> or
-<code>REPEATED_DDCt</code>. It applies pairwise statistical comparisons
-of relative expression (RE) values for user-specified effects via the
-<code>specs</code> argument. Supported effects include simple effects,
-interactions, and slicing, provided the underlying model is an ANOVA.
-For ANCOVA models returned by this package, the <code>Means_DDCt</code>
-output is limited to simple effects only.</p>
+using a fitted model object produced by <code>ANOVA_DCt</code>,
+<code>ANOVA_DDCt</code> or <code>REPEATED_DDCt</code>. It applies
+pairwise statistical comparisons of relative expression (RE) values for
+user-specified effects via the <code>specs</code> argument. Supported
+effects include simple effects, interactions, and slicing, provided the
+underlying model is an ANOVA. For ANCOVA models returned by this
+package, the <code>Means_DDCt</code> output is limited to simple effects
+only.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ANOVA_DDCt</span>(</span>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  data_3factor,</span>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">3</span>,</span>

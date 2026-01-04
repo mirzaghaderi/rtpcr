@@ -9,8 +9,8 @@
 - [`efficiency()`](https://mirzaghaderi.github.io/rtpcr/reference/efficiency.md)
   : Amplification efficiency statistics and standard curves
 - [`Means_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/Means_DDCt.md)
-  : Pairwise comparisons of relative expression values (ΔΔCt) using a
-  fitted model
+  : Pairwise comparisons of relative expression values (ΔCt or ΔΔCt)
+  using a fitted model
 - [`meanTech()`](https://mirzaghaderi.github.io/rtpcr/reference/meanTech.md)
   : Calculate mean of technical replicates
 - [`multiplot()`](https://mirzaghaderi.github.io/rtpcr/reference/multiplot.md)

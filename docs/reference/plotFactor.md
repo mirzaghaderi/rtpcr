@@ -114,15 +114,7 @@ res <- ANOVA_DCt(data,
     numOfFactors = 2,
     block = "block",
     numberOfrefGenes = 1)
-#> Analysis of Variance Table
-#> 
-#> Response: wDCt
-#>           Df  Sum Sq Mean Sq F value    Pr(>F)    
-#> block      1  0.0072  0.0072  0.0425    0.8404    
-#> T          5 20.5489  4.1098 24.1712 1.377e-05 ***
-#> Residuals 11  1.8703  0.1700                      
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> NULL
 #> 
 #> Relative expression (DCt method)
 #>   factor1 factor2     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE
@@ -186,14 +178,7 @@ res <- ANOVA_DCt(
   numOfFactors = 3,
   numberOfrefGenes = 1,
   block = NULL)
-#> Analysis of Variance Table
-#> 
-#> Response: wDCt
-#>           Df Sum Sq Mean Sq F value    Pr(>F)    
-#> T         11 94.001  8.5456  29.188 3.248e-11 ***
-#> Residuals 24  7.027  0.2928                      
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> NULL
 #> 
 #> Relative expression (DCt method)
 #>    Type Conc SA     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE

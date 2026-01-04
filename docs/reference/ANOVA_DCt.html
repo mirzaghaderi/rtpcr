@@ -104,17 +104,23 @@ to be analysed.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object containing expression table, lm models, residuals, raw data and ANOVA table for each gene.</p><dl><dt>NCt combined expression table</dt>
+    <p>An object containing expression table, lm models, ANOVA tables, residuals, raw data and ANOVA table for each gene.</p><dl><dt>ΔCt combined expression table</dt>
 <dd><p><code>object$combinedResults</code></p></dd>
 
-<dt>ANOVA table</dt>
-<dd><p><code>object$perGene$gene_nameANOVA</code></p></dd>
+<dt>ANOVA table for treatments</dt>
+<dd><p><code>object$perGene$gene_name$ANOVA_T</code></p></dd>
 
-<dt>lm ANOVA</dt>
-<dd><p><code>object$perGene$gene_name$lmCRD</code></p></dd>
+<dt>ANOVA table factorial</dt>
+<dd><p><code>object$perGene$gene_name$ANOVA_factorial</code></p></dd>
+
+<dt>lm ANOVA for tratments</dt>
+<dd><p><code>object$perGene$gene_name$lm_T</code></p></dd>
+
+<dt>lm ANOVA factorial</dt>
+<dd><p><code>object$perGene$gene_name$lm_factorial</code></p></dd>
 
 <dt>Residuals</dt>
-<dd><p><code>resid(object$perGene$gene_name$lmCRD)</code></p></dd>
+<dd><p><code>resid(object$perGene$gene_name$lm_T)</code></p></dd>
 
 
 </dl></div>
@@ -127,14 +133,7 @@ to be analysed.</p></dd>
 <span class="r-in"><span>  numOfFactors <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>  block <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Analysis of Variance Table</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Response: wDCt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           Df Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> T         11 94.001  8.5456  29.188 3.248e-11 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals 24  7.027  0.2928                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative expression (DCt method)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Type Conc SA     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE</span>

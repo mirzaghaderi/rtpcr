@@ -59,24 +59,32 @@ ANOVA_DCt(
 
 ## Value
 
-An object containing expression table, lm models, residuals, raw data
-and ANOVA table for each gene.
+An object containing expression table, lm models, ANOVA tables,
+residuals, raw data and ANOVA table for each gene.
 
-- NCt combined expression table:
+- ΔCt combined expression table:
 
   `object$combinedResults`
 
-- ANOVA table:
+- ANOVA table for treatments:
 
-  `object$perGene$gene_nameANOVA`
+  `object$perGene$gene_name$ANOVA_T`
 
-- lm ANOVA:
+- ANOVA table factorial:
 
-  `object$perGene$gene_name$lmCRD`
+  `object$perGene$gene_name$ANOVA_factorial`
+
+- lm ANOVA for tratments:
+
+  `object$perGene$gene_name$lm_T`
+
+- lm ANOVA factorial:
+
+  `object$perGene$gene_name$lm_factorial`
 
 - Residuals:
 
-  `resid(object$perGene$gene_name$lmCRD)`
+  `resid(object$perGene$gene_name$lm_T)`
 
 ## Examples
 
@@ -87,14 +95,7 @@ res <- ANOVA_DCt(
   numOfFactors = 3,
   numberOfrefGenes = 1,
   block = NULL)
-#> Analysis of Variance Table
-#> 
-#> Response: wDCt
-#>           Df Sum Sq Mean Sq F value    Pr(>F)    
-#> T         11 94.001  8.5456  29.188 3.248e-11 ***
-#> Residuals 24  7.027  0.2928                      
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> NULL
 #> 
 #> Relative expression (DCt method)
 #>    Type Conc SA     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE

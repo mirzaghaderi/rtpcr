@@ -64,9 +64,8 @@ data is:
 1.  Experimental condition columns (up to 3 factors, and one block if
     available)
 2.  Replicates information (biological replicates or subjects; see [NOTE
-    1](#note-1))  
-3.  Target genes efficiency and Ct values (a pair column for each gene)
-    [NOTE 2](#note-2).
+    1](#note-1), and [NOTE 2](#note-2))  
+3.  Target genes efficiency and Ct values (a pair column for each gene).
 4.  Reference genes efficiency and Ct values (a pair column for each
     gene)
 
@@ -393,10 +392,10 @@ p + theme(
 ## Post-hoc analysis
 
 The `Means_DDCt` function performs post-hoc comparisons using a fitted
-model object produced by `ANOVA_DDCt` or `REPEATED_DDCt`. It applies
-pairwise statistical comparisons of relative expression (RE) values for
-user-specified effects via the `specs` argument. Supported effects
-include simple effects, interactions, and slicing, provided the
+model object produced by `ANOVA_DCt`, `ANOVA_DDCt` or `REPEATED_DDCt`.
+It applies pairwise statistical comparisons of relative expression (RE)
+values for user-specified effects via the `specs` argument. Supported
+effects include simple effects, interactions, and slicing, provided the
 underlying model is an ANOVA. For ANCOVA models returned by this
 package, the `Means_DDCt` output is limited to simple effects only.
 

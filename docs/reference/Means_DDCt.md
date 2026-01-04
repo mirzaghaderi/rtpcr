@@ -1,7 +1,8 @@
-# Pairwise comparisons of relative expression values (ΔΔCt) using a fitted model
+# Pairwise comparisons of relative expression values (ΔCt or ΔΔCt) using a fitted model
 
-Performs relative expression (fold change) analysis based on the ΔΔCt
-method using a fitted model object produced by
+Performs relative expression (fold change) analysis based on the ΔCt or
+ΔΔCt methods using a fitted model object produced by
+[`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md),
 [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
 or
 [`REPEATED_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/REPEATED_DDCt.md).
@@ -17,6 +18,7 @@ Means_DDCt(model, specs, p.adj = "none")
 - model:
 
   A fitted model object (typically an `lmer` or `lm` object) created by
+  [`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md),
   [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
   or
   [`REPEATED_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/REPEATED_DDCt.md).
@@ -45,9 +47,10 @@ model.
 
 The `Means_DDCt` function performs pairwise comparisons of relative
 expression values fo all combinations using estimated marginal means
-derived from a fitted model. For ANOVA models, FC values can be obtained
-for main effects, interactions, and sliced (simple) effects. For ANCOVA
-models returned by the rtpcr package, only simple effects are supported.
+derived from a fitted model. For ANOVA models, relative expression
+values can be obtained for main effects, interactions, and sliced
+(simple) effects. For ANCOVA models returned by the rtpcr package, only
+simple effects are supported.
 
 Internally, this function relies on the emmeans package to compute
 marginal means and contrasts, which are then back-transformed to fold
@@ -175,4 +178,74 @@ Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type * SA")
 #>  M vs L   0.518830 0.4417977 24 0.2757643 0.976139  0.0425 *  
 #> 
 #> Confidence level used: 0.95 
+
+
+
+
+data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
+res <- ANOVA_DCt(
+  data,
+  numOfFactors = 3,
+  numberOfrefGenes = 1,
+  block = NULL)
+#> NULL
+#> 
+#> Relative expression (DCt method)
+#>    Type Conc SA     RE  log2FC    LCL    UCL     se Lower.se.RE Upper.se.RE
+#> 1     S    H A2 5.1934  2.3767 8.1197 3.3217 0.1309      4.7428      5.6867
+#> 2     S    H A1 2.9690  1.5700 4.6420 1.8990 0.0551      2.8578      3.0846
+#> 3     R    H A2 1.7371  0.7967 2.7159 1.1110 0.0837      1.6391      1.8409
+#> 4     S    L A2 1.5333  0.6167 2.3973 0.9807 0.0865      1.4441      1.6280
+#> 5     R    H A1 0.9885 -0.0167 1.5455 0.6323 0.0841      0.9325      1.0479
+#> 6     S    L A1 0.7955 -0.3300 1.2438 0.5088 0.2128      0.6864      0.9220
+#> 7     S    M A2 0.7955 -0.3300 1.2438 0.5088 0.2571      0.6657      0.9507
+#> 8     R    M A1 0.6271 -0.6733 0.9804 0.4011 0.4388      0.4626      0.8500
+#> 9     S    M A1 0.4147 -1.2700 0.6483 0.2652 0.2540      0.3477      0.4945
+#> 10    R    M A2 0.3150 -1.6667 0.4925 0.2015 0.2890      0.2578      0.3848
+#> 11    R    L A1 0.2852 -1.8100 0.4459 0.1824 0.0208      0.2811      0.2893
+#> 12    R    L A2 0.0641 -3.9633 0.1002 0.0410 0.8228      0.0362      0.1134
+#>    Lower.se.log2FC Upper.se.log2FC sig
+#> 1           2.1705          2.6025   a
+#> 2           1.5112          1.6311  ab
+#> 3           0.7517          0.8443  bc
+#> 4           0.5808          0.6548   c
+#> 5          -0.0177         -0.0157  cd
+#> 6          -0.3825         -0.2847   d
+#> 7          -0.3944         -0.2761   d
+#> 8          -0.9127         -0.4968  de
+#> 9          -1.5145         -1.0650  ef
+#> 10         -2.0363         -1.3641   f
+#> 11         -1.8363         -1.7841   f
+#> 12         -7.0103         -2.2407   g
+#> 
+#> Combined Expression Table (all genes)
+#>    gene Type Conc SA     RE  log2FC    LCL    UCL     se Lower.se.RE
+#> 1    PO    S    H A2 5.1934  2.3767 8.1197 3.3217 0.1309      4.7428
+#> 2    PO    S    H A1 2.9690  1.5700 4.6420 1.8990 0.0551      2.8578
+#> 3    PO    R    H A2 1.7371  0.7967 2.7159 1.1110 0.0837      1.6391
+#> 4    PO    S    L A2 1.5333  0.6167 2.3973 0.9807 0.0865      1.4441
+#> 5    PO    R    H A1 0.9885 -0.0167 1.5455 0.6323 0.0841      0.9325
+#> 6    PO    S    L A1 0.7955 -0.3300 1.2438 0.5088 0.2128      0.6864
+#> 7    PO    S    M A2 0.7955 -0.3300 1.2438 0.5088 0.2571      0.6657
+#> 8    PO    R    M A1 0.6271 -0.6733 0.9804 0.4011 0.4388      0.4626
+#> 9    PO    S    M A1 0.4147 -1.2700 0.6483 0.2652 0.2540      0.3477
+#> 10   PO    R    M A2 0.3150 -1.6667 0.4925 0.2015 0.2890      0.2578
+#> 11   PO    R    L A1 0.2852 -1.8100 0.4459 0.1824 0.0208      0.2811
+#> 12   PO    R    L A2 0.0641 -3.9633 0.1002 0.0410 0.8228      0.0362
+#>    Upper.se.RE Lower.se.log2FC Upper.se.log2FC sig
+#> 1       5.6867          2.1705          2.6025   a
+#> 2       3.0846          1.5112          1.6311  ab
+#> 3       1.8409          0.7517          0.8443  bc
+#> 4       1.6280          0.5808          0.6548   c
+#> 5       1.0479         -0.0177         -0.0157  cd
+#> 6       0.9220         -0.3825         -0.2847   d
+#> 7       0.9507         -0.3944         -0.2761   d
+#> 8       0.8500         -0.9127         -0.4968  de
+#> 9       0.4945         -1.5145         -1.0650  ef
+#> 10      0.3848         -2.0363         -1.3641   f
+#> 11      0.2893         -1.8363         -1.7841   f
+#> 12      0.1134         -7.0103         -2.2407   g
+
+# lm <- res$perGene$PO$lm_factorial
+# Means_DDCt(lm, specs = "Type * Conc * SA", p.adj = "none")
 ```

@@ -3,11 +3,39 @@
 
 # rtpcr <img src="man/figures/logo.png" align="right" height="140/"/>
 
+<!-- badges: start -->
+
+[![](https://cranlogs.r-pkg.org/badges/grand-total/rtpcr)](https://cran.rstudio.com/web/packages/rtpcr/index.html)
+[![R package
+version](https://img.shields.io/github/r-package/v/mirzaghaderi/rtpcr)](https://github.com/mirzaghaderi/rtpcr)
+[![CRAN
+version](https://www.r-pkg.org/badges/version/rtpcr)](https://CRAN.R-project.org/package=rtpcr)
+
+⁠<!-- badges: end -->
+
 rtpcr is a tool for analysis of RT-qPCR gene expression data using ΔCt
 and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures
 models, and publication-ready visualizations. The package implements a
 general calculation method described by Ganger et al. (2017) and Taylor
 et al. (2019), covering both the Livak and Pfaffl methods.
+
+- [Functions](#functions)
+- [Quick start](#quick-start)
+  - [Installing and loading](#installing-and-loading)
+- [Input data structure](#input-data-structure)
+- [Handling missing Ct values](#handling-missing-ct-values)
+- [Data analysis](#data-analysis)
+  - [Amplification efficiency](#amplification-efficiency)
+  - [Relative expression](#relative-expression)
+- [Output](#output)
+  - [Data output](#data-output)
+  - [Plot output](#plot-output)
+- [Post-hoc analysis](#post-hoc-analysis)
+- [Checking normality of residuals](#checking-normality-of-residuals)
+- [Mean of technical replicates](#mean-of-technical-replicates)
+- [Contact](#contact)
+- [Citation](#citation)
+- [References](#references)
 
 # Functions
 

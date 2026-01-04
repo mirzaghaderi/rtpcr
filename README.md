@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rtpcr <img src="man/figures/logo.png" align="left" height="140/"/>
+# rtpcr <img src="man/figures/logo.png" align="right" height="140/"/>
 
 rtpcr is a tool for analysis of RT-qPCR gene expression data using ΔCt
 and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures

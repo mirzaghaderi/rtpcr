@@ -185,7 +185,6 @@
 
 
 
-
 .compute_wDCt <- function(x, 
                           numOfFactors,
                           numberOfrefGenes, 
@@ -194,55 +193,60 @@
   if (is.null(block)) {
     x[seq_len(numOfFactors)] <- lapply(
       x[seq_len(numOfFactors)],
-      function(col) factor(col))
+      factor
+    )
   } else {
     x[seq_len(numOfFactors + 1)] <- lapply(
       x[seq_len(numOfFactors + 1)],
-      function(col) factor(col))
+      factor
+    )
   }
+  
   x <- .cleanup(x)
-
   
   stopifnot(numberOfrefGenes >= 1)
   nRef <- numberOfrefGenes
   nc   <- ncol(x)
   
-
   # Identify columns
-  # Reference columns: last nRef*2 columns
   ref_E_cols  <- seq(nc - 2 * nRef + 1, nc, by = 2)
   ref_Ct_cols <- seq(nc - 2 * nRef + 2, nc, by = 2)
   
-  # Target columns: immediately before reference columns
   target_E_col  <- ref_E_cols[1] - 2
   target_Ct_col <- ref_E_cols[1] - 1
   
-
   # Target term
   target_term <- log2(x[[target_E_col]]) * x[[target_Ct_col]]
   
-
-  # Reference term
+  # Reference matrices
   E_mat  <- as.matrix(x[, ref_E_cols])
   Ct_mat <- as.matrix(x[, ref_Ct_cols])
   
-  # geometric mean of reference efficiencies
-  geoMeanE <- apply(E_mat, 1, function(z) prod(z)^(1 / nRef))
+  # Row-wise geometric mean of reference efficiencies (NA-aware)
+  geoMeanE <- apply(E_mat, 1, function(z) {
+    k <- sum(!is.na(z))
+    if (k > 0) prod(z, na.rm = TRUE)^(1 / k) else NA_real_
+  })
   
-  # compute reference term exactly as in Excel
+  # Reference term (Excel-consistent)
   ref_term <- numeric(nrow(x))
   for (r in seq_len(nrow(x))) {
-    tmp <- log2(geoMeanE[r]) * Ct_mat[r, ] 
-    ref_term[r] <- prod(tmp, na.rm = TRUE)^(1 / nRef) 
+    
+    tmp <- log2(geoMeanE[r]) * Ct_mat[r, ]
+    k   <- sum(!is.na(tmp))
+    
+    if (k > 0) {
+      ref_term[r] <- prod(tmp, na.rm = TRUE)^(1 / k)
+    } else {
+      ref_term[r] <- NA_real_
+    }
   }
   
   # Final wDCt
   x$wDCt <- target_term - ref_term
-
   
-  return(x)
+  x
 }
-
 
 
 

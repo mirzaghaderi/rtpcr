@@ -91,7 +91,7 @@ even there is only one factor (without covariate or factor  variable).
 data1 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
 ANOVA_DDCt(x = data1,
            numOfFactors = 2,
-           numberOfrefGenes = 1,
+           numberOfrefGenes = 2,
            block = "block",
            mainFactor.column = 2,
            plot = FALSE,

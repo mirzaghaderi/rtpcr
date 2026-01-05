@@ -17,7 +17,7 @@
 #'   Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
 #'   to be analysed.
 #' @param block Character or \code{NULL}. Name of the blocking factor column.
-#' @param adjust
+#' @param p.adj
 #' Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.
 #' @param alpha
 #' statistical level for comparisons
@@ -52,7 +52,7 @@ ANOVA_DCt <- function(
     numberOfrefGenes,
     block = NULL,
     alpha = 0.05,
-    adjust = "none",
+    p.adj = "none",
     analyseAllTarget = TRUE
 ) {
   
@@ -114,7 +114,7 @@ ANOVA_DCt <- function(
       numberOfrefGenes = numberOfrefGenes,
       block = block,
       alpha = alpha,
-      adjust = adjust
+      p.adj = p.adj
     )
     
     # Add gene name to results

@@ -10,7 +10,7 @@ ANOVA_DCt(
   numberOfrefGenes,
   block = NULL,
   alpha = 0.05,
-  adjust = "none",
+  p.adj = "none",
   analyseAllTarget = TRUE
 )
 }
@@ -29,7 +29,7 @@ must be represented by two columns (E and Ct).}
 
 \item{alpha}{statistical level for comparisons}
 
-\item{adjust}{Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.}
+\item{p.adj}{Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.}
 
 \item{analyseAllTarget}{Logical or character.
 If \code{TRUE} (default), all detected target genes are analysed.

@@ -572,7 +572,7 @@
                                  numberOfrefGenes,
                                  block,
                                  alpha,
-                                 adjust,
+                                 p.adj,
                                  verbose = FALSE) {
   
   ## basic argument checks
@@ -662,7 +662,7 @@
   ## emmeans / multiple comparisons
   emg <- emmeans::emmeans(lm_fit, pairwise ~ T, mode = "satterthwaite")
   # use cld() on the emmeans object (the first element)
-  meanPairs <- multcomp::cld(emg[[1]], adjust = adjust, alpha = alpha, reversed = FALSE, Letters = letters)
+  meanPairs <- multcomp::cld(emg[[1]], adjust = p.adj, alpha = alpha, reversed = FALSE, Letters = letters)
   # meanPairs typically contains columns: T, emmean, lower.CL, upper.CL, .group
   ROWS <- as.character(meanPairs[[1]])     # treatment labels in the same order
   diffs <- meanPairs$emmean

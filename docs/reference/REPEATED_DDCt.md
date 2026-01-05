@@ -170,9 +170,9 @@ REPEATED_DDCt(
 #> NOTE: Results may be misleading due to involvement in interactions
 #> Type III Analysis of Variance Table with Satterthwaite's method
 #>                 Sum Sq Mean Sq NumDF DenDF F value  Pr(>F)  
-#> Time_           5.9166 2.95832     2     8  3.4888 0.08139 .
 #> treatment       0.6773 0.67728     1     4  0.7987 0.42199  
-#> Time_:treatment 6.3186 3.15932     2     8  3.7258 0.07186 .
+#> Time_           5.9166 2.95832     2     8  3.4888 0.08139 .
+#> treatment:Time_ 6.3186 3.15932     2     8  3.7258 0.07186 .
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 

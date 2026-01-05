@@ -15,7 +15,7 @@ ANOVA_DCt(
   numberOfrefGenes,
   block = NULL,
   alpha = 0.05,
-  adjust = "none",
+  p.adj = "none",
   analyseAllTarget = TRUE
 )
 ```
@@ -46,7 +46,7 @@ ANOVA_DCt(
 
   statistical level for comparisons
 
-- adjust:
+- p.adj:
 
   Method for p-value adjustment. See
   [`p.adjust`](https://rdrr.io/r/stats/p.adjust.html).

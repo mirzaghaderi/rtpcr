@@ -352,18 +352,23 @@
   }
   
   x <- .compute_wDCt(x, numOfFactors, numberOfrefGenes, block)
-  # x[,1] <- factor(
-  #   x[,1],
-  #   levels = mainFactor.level.order
-  # )
   
-  # get names of factor columns
-  x[seq_len(numOfFactors)] <- lapply(
-    x[seq_len(numOfFactors)],
-    function(col) factor(col))
-  factors <- names(x)[vapply(x, is.factor, logical(1))]
+  x[] <- lapply(x, function(x) {
+    if (is.factor(x)) as.character(x) else x
+  })
   
+  #convert the first numOfFactors columns to factor
+  if (is.null(block)) {
+    x[seq_len(numOfFactors)] <- lapply(
+      x[seq_len(numOfFactors)],
+      function(col) factor(col))
+  } else {
+    x[seq_len(numOfFactors + 1)] <- lapply(
+      x[seq_len(numOfFactors + 1)],
+      function(col) factor(col))
+  }
   
+  factors <- colnames(x)[1:numOfFactors]
   
   
   # Check if there is block
@@ -579,12 +584,25 @@
   
   
   x <- .compute_wDCt(x, numOfFactors, numberOfrefGenes, block) ##############################################################
-  # convert the first numOfFactors columns to factor
-  x[seq_len(numOfFactors)] <- lapply(
-    x[seq_len(numOfFactors)],
-    function(col) factor(col))
-  # get names of factor columns
-  factors <- names(x)[vapply(x, is.factor, logical(1))]
+  
+  #Convert all factor columns to character
+  x[] <- lapply(x, function(x) {
+    if (is.factor(x)) as.character(x) else x
+  })
+  
+  #convert the first numOfFactors columns to factor
+  if (is.null(block)) {
+    x[seq_len(numOfFactors)] <- lapply(
+      x[seq_len(numOfFactors)],
+      function(col) factor(col))
+  } else {
+    x[seq_len(numOfFactors + 1)] <- lapply(
+      x[seq_len(numOfFactors + 1)],
+      function(col) factor(col))
+  }
+  
+  #get names of factor columns
+  factors <- colnames(x)[1:numOfFactors]
   
   
   ##build treatment factor T and fit lm
@@ -857,37 +875,32 @@
   
   
   x <- .compute_wDCt(x, numOfFactors, numberOfrefGenes, block)
-  # convert the first numOfFactors columns to factor
-  x[seq_len(numOfFactors)] <- lapply(
-    x[seq_len(numOfFactors)],
-    function(col) factor(col))
+
+  x[] <- lapply(x, function(x) {
+    if (is.factor(x)) as.character(x) else x
+  })
+
   
   # convert factors
   for (i in 2:which(names(x) == "Time_")) {
     x[[i]] <- factor(x[[i]], levels = unique(x[[i]]))
   }
+  factors <- colnames(x)[2:which(names(x) == "Time_")]
   
-  
+  if ("block" %in% names(x)) {
+    x$block <- as.factor(x$block)
+  }
   
   # model formula 
   if (is.null(block)) {
-    if (is.null(factors)) {
-      formula <- wDCt ~ Time_ + (1 | id)
-    } else {
       formula <- as.formula(
-        paste("wDCt ~ Time_ *", paste(factors, collapse = " * "), "+ (1 | id)")
+        paste("wDCt ~ ", paste(factors, collapse = " * "), "+ (1 | id)")
       )
-    }
   } else {
-    if (is.null(factors)) {
-      formula <- wDCt ~ Time_ + (1 | id) + (1 | block)
-    } else {
       formula <- as.formula(
-        paste("wDCt ~ Time_ *", paste(factors, collapse = " * "),
-              "+ (1 | id) + (1 | block)")
+        paste("wDCt ~ ", paste(factors, collapse = " * "), " + (1 | id) + (1 | block)")
       )
     }
-  }
   
   lm <- lmerTest::lmer(formula, data = x)
   ANOVA <- stats::anova(lm)

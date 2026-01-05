@@ -152,72 +152,32 @@ ANOVA_DDCt(x = data1,
 #> Analysis of Variance Table
 #> 
 #> Response: wDCt
-#>                 Df Sum Sq Mean Sq F value    Pr(>F)    
-#> block            1  3.956   3.956  2.1292 0.1665850    
-#> factor2          2  0.866   0.433  0.2331 0.7950523    
-#> factor1          1 50.978  50.978 27.4353 0.0001256 ***
-#> factor2:factor1  2  1.901   0.950  0.5115 0.6103927    
-#> Residuals       14 26.014   1.858                      
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#>                 Df Sum Sq Mean Sq F value Pr(>F)
+#> block            1  10.99  10.992  0.2980 0.5932
+#> factor2          2  63.50  31.748  0.8608 0.4427
+#> factor1          1   1.23   1.225  0.0332 0.8578
+#> factor2:factor1  2  35.01  17.504  0.4746 0.6312
+#> Residuals       15 553.24  36.883               
 #> 
 #> ANCOVA table
 #> Analysis of Variance Table
 #> 
 #> Response: wDCt
-#>           Df Sum Sq Mean Sq F value    Pr(>F)    
-#> block      1  3.956   3.956  2.2677    0.1516    
-#> factor1    1 51.704  51.704 29.6359 5.409e-05 ***
-#> factor2    2  0.140   0.070  0.0402    0.9607    
-#> Residuals 16 27.914   1.745                      
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#>           Df Sum Sq Mean Sq F value Pr(>F)
+#> block      1  10.99  10.992  0.3177 0.5804
+#> factor1    1   1.23   1.225  0.0354 0.8530
+#> factor2    2  63.50  31.748  0.9175 0.4184
+#> Residuals 17 588.25  34.603               
 #> 
 #> Expression table
-#>   contrast     RE log2FC pvalue sig    LCL    UCL     se Lower.se.RE
-#> 1       L1 1.0000 0.0000 1.0000     0.0000 0.0000 0.9290      0.5252
-#> 2 L2 vs L1 1.0601 0.0842 0.9138     0.2652 4.2370 0.5943      0.7022
-#> 3 L3 vs L1 1.0919 0.1268 0.8610     0.3005 3.9677 0.6948      0.6746
+#>   contrast      RE log2FC pvalue sig    LCL      UCL     se Lower.se.RE
+#> 1       L1  1.0000 0.0000 1.0000     0.0000    0.000 3.1603      0.1119
+#> 2 L2 vs L1 11.3694 3.5071 0.3018     0.0310 4171.614 0.5943      7.5307
+#> 3 L3 vs L1 11.7105 3.5497 0.2606     0.0495 2772.692 0.6948      7.2347
 #>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC
-#> 1      1.9040          0.0000          0.0000
-#> 2      1.6005          0.0558          0.1271
-#> 3      1.7674          0.0784          0.2053
-#> *** The L1 level was used as calibrator.
-#> NOTE: Results may be misleading due to involvement in interactions
-#> ANOVA table 
-#> Analysis of Variance Table
-#> 
-#> Response: wDCt
-#>                 Df  Sum Sq Mean Sq F value    Pr(>F)    
-#> block            1  4.3883  4.3883  3.5437 0.0780855 .  
-#> factor2          2  3.9386  1.9693  1.5903 0.2344519    
-#> factor1          1 25.5443 25.5443 20.6282 0.0003334 ***
-#> factor2:factor1  2  6.1005  3.0503  2.4632 0.1167857    
-#> Residuals       16 19.8130  1.2383                      
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#> 
-#> ANCOVA table
-#> Analysis of Variance Table
-#> 
-#> Response: wDCt
-#>           Df  Sum Sq Mean Sq F value    Pr(>F)    
-#> block      1  4.3883  4.3883  3.0482 0.0978731 .  
-#> factor1    1 24.6349 24.6349 17.1118 0.0006196 ***
-#> factor2    2  4.8480  2.4240  1.6838 0.2136332    
-#> Residuals 18 25.9136  1.4396                      
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#> 
-#> Expression table
-#>   contrast     RE  log2FC pvalue sig   LCL    UCL     se Lower.se.RE
-#> 1       L1 1.0000  0.0000 1.0000     0.000 0.0000 0.6237      0.6490
-#> 2 L2 vs L1 0.7935 -0.3338 0.5733     0.281 2.2407 0.6037      0.5221
-#> 3 L3 vs L1 0.4520 -1.1457 0.0659   . 0.160 1.2763 0.5520      0.3083
-#>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC
-#> 1      1.5408          0.0000          0.0000
-#> 2      1.2058         -0.5072         -0.2196
-#> 3      0.6626         -1.6798         -0.7815
+#> 1      8.9402           0.000          0.0000
+#> 2     17.1649           2.323          5.2948
+#> 3     18.9551           2.193          5.7458
 #> *** The L1 level was used as calibrator.
 #> NOTE: Results may be misleading due to involvement in interactions
 #> ANOVA table 
@@ -225,54 +185,86 @@ ANOVA_DDCt(x = data1,
 #> 
 #> Response: wDCt
 #>                 Df Sum Sq Mean Sq F value Pr(>F)
-#> block            1  6.914  6.9138  2.2121 0.1564
-#> factor2          2  9.373  4.6864  1.4994 0.2530
-#> factor1          1  0.136  0.1356  0.0434 0.8377
-#> factor2:factor1  2  4.004  2.0021  0.6406 0.5400
-#> Residuals       16 50.007  3.1254               
+#> block            1   8.84   8.838  0.2761 0.6060
+#> factor2          2  40.41  20.203  0.6312 0.5440
+#> factor1          1   0.07   0.071  0.0022 0.9631
+#> factor2:factor1  2  46.33  23.165  0.7237 0.4993
+#> Residuals       17 544.14  32.008               
 #> 
 #> ANCOVA table
 #> Analysis of Variance Table
 #> 
 #> Response: wDCt
 #>           Df Sum Sq Mean Sq F value Pr(>F)
-#> block      1  6.914  6.9138  2.3041 0.1464
-#> factor1    1  0.024  0.0245  0.0082 0.9290
-#> factor2    2  9.484  4.7419  1.5803 0.2332
-#> Residuals 18 54.011  3.0006               
+#> block      1   8.84  8.8383  0.2844 0.6000
+#> factor1    1   0.07  0.0705  0.0023 0.9625
+#> factor2    2  40.41 20.2031  0.6501 0.5332
+#> Residuals 19 590.47 31.0775               
 #> 
 #> Expression table
-#>   contrast     RE log2FC pvalue sig    LCL     UCL     se Lower.se.RE
-#> 1       L1 1.0000 0.0000 1.0000     0.0000  0.0000 1.0167      0.4942
-#> 2 L2 vs L1 2.4017 1.2640 0.1894     0.4616 12.4961 0.2760      1.9834
-#> 3 L3 vs L1 2.5785 1.3665 0.1578     0.4956 13.4163 0.3309      2.0500
+#>   contrast     RE log2FC pvalue sig    LCL       UCL     se Lower.se.RE
+#> 1       L1 1.0000 0.0000 1.0000     0.0000    0.0000 3.1677      0.1113
+#> 2 L2 vs L1 8.3810 3.0671 0.2934     0.0548 1281.8250 0.6037      5.5151
+#> 3 L3 vs L1 4.7739 2.2552 0.4363     0.0312  730.1455 0.5520      3.2562
 #>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC
-#> 1      2.0233          0.0000          0.0000
-#> 2      2.9081          1.0439          1.5306
-#> 3      3.2433          1.0864          1.7189
+#> 1      8.9858          0.0000          0.0000
+#> 2     12.7360          2.0183          4.6609
+#> 3      6.9992          1.5382          3.3064
+#> *** The L1 level was used as calibrator.
+#> NOTE: Results may be misleading due to involvement in interactions
+#> ANOVA table 
+#> Analysis of Variance Table
+#> 
+#> Response: wDCt
+#>                 Df Sum Sq Mean Sq F value Pr(>F)
+#> block            1   7.89   7.889  0.2450 0.6269
+#> factor2          2 114.25  57.124  1.7742 0.1996
+#> factor1          1  31.92  31.924  0.9915 0.3333
+#> factor2:factor1  2  34.84  17.418  0.5410 0.5919
+#> Residuals       17 547.35  32.197               
+#> 
+#> ANCOVA table
+#> Analysis of Variance Table
+#> 
+#> Response: wDCt
+#>           Df Sum Sq Mean Sq F value Pr(>F)
+#> block      1   7.89   7.889  0.2575 0.6177
+#> factor1    1  31.92  31.924  1.0419 0.3202
+#> factor2    2 114.25  57.124  1.8643 0.1823
+#> Residuals 19 582.18  30.641               
+#> 
+#> Expression table
+#>   contrast      RE log2FC pvalue sig    LCL      UCL     se Lower.se.RE
+#> 1       L1  1.0000 0.0000 1.0000     0.0000    0.000 3.3047      0.1012
+#> 2 L2 vs L1 23.8555 4.5763 0.1252     0.1537 3702.933 0.2760     19.7011
+#> 3 L3 vs L1 25.6120 4.6788 0.1175     0.1650 3975.588 0.3309     20.3623
+#>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC
+#> 1      9.8816          0.0000          0.0000
+#> 2     28.8860          3.7793          5.5413
+#> 3     32.2152          3.7197          5.8850
 #> *** The L1 level was used as calibrator.
 #> 
 #> Relative Expression
-#>     gene contrast     RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE
-#> 1   E.PO       L1 1.0000  0.0000 1.0000     0.0000  0.0000 0.9290      0.5252
-#> 2   E.PO L2 vs L1 1.0601  0.0842 0.9138     0.2652  4.2370 0.5943      0.7022
-#> 3   E.PO L3 vs L1 1.0919  0.1268 0.8610     0.3005  3.9677 0.6948      0.6746
-#> 4 E.PAO5       L1 1.0000  0.0000 1.0000     0.0000  0.0000 0.6237      0.6490
-#> 5 E.PAO5 L2 vs L1 0.7935 -0.3338 0.5733     0.2810  2.2407 0.6037      0.5221
-#> 6 E.PAO5 L3 vs L1 0.4520 -1.1457 0.0659   . 0.1600  1.2763 0.5520      0.3083
-#> 7 E.ref1       L1 1.0000  0.0000 1.0000     0.0000  0.0000 1.0167      0.4942
-#> 8 E.ref1 L2 vs L1 2.4017  1.2640 0.1894     0.4616 12.4961 0.2760      1.9834
-#> 9 E.ref1 L3 vs L1 2.5785  1.3665 0.1578     0.4956 13.4163 0.3309      2.0500
+#>     gene contrast      RE log2FC pvalue sig    LCL       UCL     se Lower.se.RE
+#> 1   E.PO       L1  1.0000 0.0000 1.0000     0.0000    0.0000 3.1603      0.1119
+#> 2   E.PO L2 vs L1 11.3694 3.5071 0.3018     0.0310 4171.6138 0.5943      7.5307
+#> 3   E.PO L3 vs L1 11.7105 3.5497 0.2606     0.0495 2772.6918 0.6948      7.2347
+#> 4 E.PAO5       L1  1.0000 0.0000 1.0000     0.0000    0.0000 3.1677      0.1113
+#> 5 E.PAO5 L2 vs L1  8.3810 3.0671 0.2934     0.0548 1281.8250 0.6037      5.5151
+#> 6 E.PAO5 L3 vs L1  4.7739 2.2552 0.4363     0.0312  730.1455 0.5520      3.2562
+#> 7 E.ref1       L1  1.0000 0.0000 1.0000     0.0000    0.0000 3.3047      0.1012
+#> 8 E.ref1 L2 vs L1 23.8555 4.5763 0.1252     0.1537 3702.9329 0.2760     19.7011
+#> 9 E.ref1 L3 vs L1 25.6120 4.6788 0.1175     0.1650 3975.5884 0.3309     20.3623
 #>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC
-#> 1      1.9040          0.0000          0.0000
-#> 2      1.6005          0.0558          0.1271
-#> 3      1.7674          0.0784          0.2053
-#> 4      1.5408          0.0000          0.0000
-#> 5      1.2058         -0.5072         -0.2196
-#> 6      0.6626         -1.6798         -0.7815
-#> 7      2.0233          0.0000          0.0000
-#> 8      2.9081          1.0439          1.5306
-#> 9      3.2433          1.0864          1.7189
+#> 1      8.9402          0.0000          0.0000
+#> 2     17.1649          2.3230          5.2948
+#> 3     18.9551          2.1930          5.7458
+#> 4      8.9858          0.0000          0.0000
+#> 5     12.7360          2.0183          4.6609
+#> 6      6.9992          1.5382          3.3064
+#> 7      9.8816          0.0000          0.0000
+#> 8     28.8860          3.7793          5.5413
+#> 9     32.2152          3.7197          5.8850
            
 data2 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))          
 ANOVA_DDCt(

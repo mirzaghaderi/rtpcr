@@ -23,31 +23,60 @@
 
 
 
-.cleanup <- function(x){
-  x[] <- lapply(x, function(x) {
+.cleanup <- function(x, numOfFactors, block) {
+  
+  ## ---- Step 1: define factor columns ----
+  if (is.null(block)) {
+    x[seq_len(numOfFactors)] <- lapply(x[seq_len(numOfFactors)], factor)
+  } else {
+    x[seq_len(numOfFactors + 1)] <- lapply(x[seq_len(numOfFactors + 1)], factor)
+  }
+  
+  ## ---- Step 2: pairwise cleanup (from last to first) ----
+  n <- ncol(x)
+  
+  for (i in seq(from = n, to = 2, by = -2)) {
     
-    # leave factors untouched
-    if (is.factor(x)) return(x)
+    colA <- x[[i - 1]]
+    colB <- x[[i]]
     
-    # handle character columns
-    if (is.character(x)) {
-      x[x == "Undetermined"] <- NA
-      suppressWarnings(x <- as.numeric(x))
+    # skip if either column is a factor
+    if (is.factor(colA) || is.factor(colB)) next
+    
+    # identify invalid cells
+    badA <- suppressWarnings(is.na(as.numeric(colA))) | colA == 0
+    badB <- suppressWarnings(is.na(as.numeric(colB))) | colB == 0
+    
+    # cross-invalidate within the pair
+    colA[badB] <- NA
+    colB[badA] <- NA
+    
+    x[[i - 1]] <- colA
+    x[[i]]     <- colB
+  }
+  
+  ## ---- Step 3: column-wise cleanup (original behavior) ----
+  x[] <- lapply(x, function(col) {
+    
+    if (is.factor(col)) return(col)
+    
+    if (is.character(col)) {
+      col[col %in% c("Undetermined", "undetermined")] <- NA
+      suppressWarnings(col <- as.numeric(col))
     }
     
-    if (is.character(x)) {
-      x[x == "undetermined"] <- NA
-      suppressWarnings(x <- as.numeric(x))
+    if (is.numeric(col)) {
+      col[col == 0] <- NA
     }
     
-    # handle numeric columns
-    if (is.numeric(x)) {
-      x[x == 0] <- NA
-    }
-    x 
+    col
   })
+  
   x
 }
+
+
+
 
 
 
@@ -202,7 +231,7 @@
     )
   }
   
-  x <- .cleanup(x)
+  x <- .cleanup(x, numOfFactors, block)
   
   stopifnot(numberOfrefGenes >= 1)
   nRef <- numberOfrefGenes
@@ -587,7 +616,7 @@
   }
   
   
-  x <- .compute_wDCt(x, numOfFactors, numberOfrefGenes, block) ##############################################################
+  x <- .compute_wDCt(x, numOfFactors, numberOfrefGenes, block) 
   
   #Convert all factor columns to character
   x[] <- lapply(x, function(x) {
@@ -622,8 +651,7 @@
     anovaCRD <- stats::anova(lm_fit)
   }
   
-  # LM factorial ##################################################
-  # Check if there is block
+  # LM factorial 
   if (is.null(block)) {
     
     # ANOVA based on factorial design
@@ -633,13 +661,6 @@
     lm_factorial <- lm(formula_ANOVA, data = x)
     ANOVA_factorial <- stats::anova(lm_factorial)
     
-    # ANCOVA (other factors as covariates)
-    # formula_ANCOVA <- as.formula(
-    #   paste("wDCt ~", paste(rev(factors), collapse = " + "))
-    # )
-    # lmc <- lm(formula_ANCOVA, data = x)
-    # ANCOVA <- stats::anova(lmc)
-    
   } else {
     
     # ANOVA with blocking factor (block treated as fixed)
@@ -648,16 +669,9 @@
     )
     lm_factorial <- lm(formula_ANOVA, data = x)
     ANOVA_factorial <- stats::anova(lm_factorial)
-    
-    # ANCOVA with blocking factor
-    # formula_ANCOVA <- as.formula(
-    #   paste("wDCt ~ block +", paste(rev(factors), collapse = " + "))
-    # )
-    # lmcb <- lm(formula_ANCOVA, data = x)
-    # ANCOVA <- stats::anova(lmcb)
+
   }
-  # LM factorial ##################################################
-  
+
   
   ## emmeans / multiple comparisons
   emg <- emmeans::emmeans(lm_fit, pairwise ~ T, mode = "satterthwaite")

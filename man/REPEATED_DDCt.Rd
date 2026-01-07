@@ -10,7 +10,7 @@ REPEATED_DDCt(
   numberOfrefGenes,
   repeatedFactor,
   calibratorLevel,
-  block = NULL,
+  block,
   p.adj = "none",
   plot = FALSE,
   analyseAllTarget = TRUE
@@ -37,8 +37,13 @@ must be represented by two columns (E and Ct).}
 \item{calibratorLevel}{A level of \code{repeatedFactor} to be used as the calibrator (reference level) which is the reference level or sample that all others are compared to. Examples are untreated 
 or time 0.}
 
-\item{block}{Optional blocking factor column name. If supplied, block effects are treated
-as random effects.}
+\item{block}{Character or \code{NULL}. Name of the blocking factor column.
+When a qPCR experiment is done in multiple qPCR plates, 
+variation resulting from the plates may interfere with the actual amount of 
+gene expression. One solution is to conduct each plate as a randomized block 
+so that at least one replicate of each treatment and control is present 
+on a plate. Block effect is usually considered as random and its interaction 
+with any main effect is not considered.}
 
 \item{p.adj}{Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.}
 

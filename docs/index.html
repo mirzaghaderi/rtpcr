@@ -16,8 +16,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="qPCR Data Analysis">
-<meta name="description" content="Tools for qPCR data analysis using ΔCt and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package supports multiple target, and multiple reference genes, and use a general calculation framework described by Ganger et al. (2017) &lt;doi:10.1186/s12859-017-1949-5&gt; and Taylor et al. (2019) &lt;doi:10.1016/j.tibtech.2018.12.002&gt;, covering both the Livak and Pfaffl methods.">
-<meta property="og:description" content="Tools for qPCR data analysis using ΔCt and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package supports multiple target, and multiple reference genes, and use a general calculation framework described by Ganger et al. (2017) &lt;doi:10.1186/s12859-017-1949-5&gt; and Taylor et al. (2019) &lt;doi:10.1016/j.tibtech.2018.12.002&gt;, covering both the Livak and Pfaffl methods.">
+<meta name="description" content="Tools for qPCR data analysis using ΔCt and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package supports multiple target, and multiple reference genes, and uses a calculation framework adopted from Ganger et al. (2017) &lt;doi:10.1186/s12859-017-1949-5&gt; and Taylor et al. (2019) &lt;doi:10.1016/j.tibtech.2018.12.002&gt;, covering both the Livak and Pfaffl methods.">
+<meta property="og:description" content="Tools for qPCR data analysis using ΔCt and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package supports multiple target, and multiple reference genes, and uses a calculation framework adopted from Ganger et al. (2017) &lt;doi:10.1186/s12859-017-1949-5&gt; and Taylor et al. (2019) &lt;doi:10.1016/j.tibtech.2018.12.002&gt;, covering both the Livak and Pfaffl methods.">
 <meta property="og:image" content="https://mirzaghaderi.github.io/rtpcr/logo.png">
 </head>
 <body>
@@ -177,8 +177,8 @@
 </h1>
 <p>For relative expression analysis (using <code>TTEST_DDCt</code>, <code>ANOVA_DCt</code>, <code>ANOVA_DDCt</code> and <code>REPEATED_DDCt</code> functions), the amplification efficiency (<code>E</code>) and <code>Ct</code> or <code>Cq</code> values (the mean of technical replicates) is used for the input table. If the <code>E</code> values are not available you should use ‘2’ instead representing the complete primer amplification efficiency. The required column structure of the input data is:</p>
 <ol style="list-style-type: decimal">
-<li>Experimental condition columns (up to 3 factors, and one block if available)</li>
-<li>Replicates information (biological replicates or subjects; see <a href="#note-1">NOTE 1</a>, and <a href="#note-2">NOTE 2</a>)<br>
+<li>Experimental condition columns (up to 3 factors, and one block if available <a href="#note-1">NOTE 1</a>)</li>
+<li>Replicates information (biological replicates or subjects; see <a href="#note-2">NOTE 2</a>, and <a href="#note-3">NOTE 3</a>)<br>
 </li>
 <li>Target genes efficiency and Ct values (a pair column for each gene).</li>
 <li>Reference genes efficiency and Ct values (a pair column for each gene)</li>
@@ -188,10 +188,15 @@
 <div class="section level4">
 <h4 id="note-1">NOTE 1<a class="anchor" aria-label="anchor" href="#note-1"></a>
 </h4>
-<p>For <code>TTEST_DDCt</code>, <code>ANOVA_DCt</code>, and <code>ANOVA_DDCt</code>, each row is from a separate and unique biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The <code>REPEATED_DDCt</code> function is intended for experiments with repeated observations (e.g. time-course data). For <code>REPEATED_DDCt</code>, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a <code>1</code> at Rep column correspond to a single individual, all rows with a <code>2</code> correspond to another individual, and so on, which have been sampled at specific time points.</p>
+<p>When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.</p>
 </div>
 <div class="section level4">
 <h4 id="note-2">NOTE 2<a class="anchor" aria-label="anchor" href="#note-2"></a>
+</h4>
+<p>For <code>TTEST_DDCt</code>, <code>ANOVA_DCt</code>, and <code>ANOVA_DDCt</code>, each row is from a separate and unique biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The <code>REPEATED_DDCt</code> function is intended for experiments with repeated observations (e.g. time-course data). For <code>REPEATED_DDCt</code>, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a <code>1</code> at Rep column correspond to a single individual, all rows with a <code>2</code> correspond to another individual, and so on, which have been sampled at specific time points.</p>
+</div>
+<div class="section level4">
+<h4 id="note-3">NOTE 3<a class="anchor" aria-label="anchor" href="#note-3"></a>
 </h4>
 <p>Your data table may also include a column of technical replicates (so there would be both biological replicates and technical replicate columns in the data). In this case, the <code>meanTech</code> function should be applied first to calculate the mean of the technical replicates. The resulting table is then used as the input for expression analysis. To use the <code>meanTech</code> function correctly, the technical replicate column must appear immediately after the biological replicate column (see <a href="#mean-of-technical-replicates">Mean of technical replicates</a> for an example).</p>
 </div>

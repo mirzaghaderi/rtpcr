@@ -9,9 +9,9 @@ ANOVA_DDCt(
   numOfFactors,
   numberOfrefGenes,
   mainFactor.column,
+  block,
   analysisType = "anova",
   mainFactor.level.order = NULL,
-  block = NULL,
   p.adj = "none",
   plot = FALSE,
   plotType = "RE",
@@ -32,14 +32,20 @@ must be represented by two columns (E and Ct).}
 \item{mainFactor.column}{Column index or name of the factor for which relative expression is calculated.
 When \code{analysisType = "ancova"}, remaining factors are treated as covariates.}
 
+\item{block}{Character or \code{NULL}. Name of the blocking factor column.
+When a qPCR experiment is done in multiple qPCR plates, 
+variation resulting from the plates may interfere with the actual amount of 
+gene expression. One solution is to conduct each plate as a randomized block 
+so that at least one replicate of each treatment and control is present 
+on a plate. Block effect is usually considered as random and its interaction 
+with any main effect is not considered.}
+
 \item{analysisType}{Character string specifying the analysis type; one of \code{"anova"} (default)
 or \code{"ancova"}.}
 
 \item{mainFactor.level.order}{Optional character vector specifying the order of levels for the main factor.
 If \code{NULL}, the first observed level is used as the calibrator.
 If provided, the first element of the vector is used as the calibrator level.}
-
-\item{block}{Character or \code{NULL}. Name of the blocking factor column.}
 
 \item{p.adj}{Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.}
 
@@ -105,6 +111,6 @@ ANOVA_DDCt(
            block = NULL,
            mainFactor.column = 1,
            plot = FALSE,
-           p.adj = "none"
-           )
+           p.adj = "none")
+           
 }

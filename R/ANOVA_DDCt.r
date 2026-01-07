@@ -13,6 +13,12 @@
 #' @param numberOfrefGenes Integer. Number of reference genes. Each reference gene
 #'   must be represented by two columns (E and Ct).
 #' @param block Character or \code{NULL}. Name of the blocking factor column.
+#' When a qPCR experiment is done in multiple qPCR plates, 
+#' variation resulting from the plates may interfere with the actual amount of 
+#' gene expression. One solution is to conduct each plate as a randomized block 
+#' so that at least one replicate of each treatment and control is present 
+#' on a plate. Block effect is usually considered as random and its interaction 
+#' with any main effect is not considered.
 #' @param mainFactor.column
 #' Column index or name of the factor for which relative expression is calculated.
 #' When \code{analysisType = "ancova"}, remaining factors are treated as covariates.
@@ -85,8 +91,8 @@
 #'            block = NULL,
 #'            mainFactor.column = 1,
 #'            plot = FALSE,
-#'            p.adj = "none"
-#'            )
+#'            p.adj = "none")
+#'            
 
 
 
@@ -95,9 +101,9 @@ ANOVA_DDCt <- function(
     numOfFactors,
     numberOfrefGenes,
     mainFactor.column,
+    block,
     analysisType = "anova",
     mainFactor.level.order = NULL,
-    block = NULL,
     p.adj = "none",
     plot = FALSE,
     plotType = "RE",

@@ -17,6 +17,12 @@
 #'   Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
 #'   to be analysed.
 #' @param block Character or \code{NULL}. Name of the blocking factor column.
+#' When a qPCR experiment is done in multiple qPCR plates, 
+#' variation resulting from the plates may interfere with the actual amount of 
+#' gene expression. One solution is to conduct each plate as a randomized block 
+#' so that at least one replicate of each treatment and control is present 
+#' on a plate. Block effect is usually considered as random and its interaction 
+#' with any main effect is not considered.
 #' @param p.adj
 #' Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.
 #' @param alpha
@@ -50,7 +56,7 @@ ANOVA_DCt <- function(
     x,
     numOfFactors,
     numberOfrefGenes,
-    block = NULL,
+    block,
     alpha = 0.05,
     p.adj = "none",
     analyseAllTarget = TRUE

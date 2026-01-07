@@ -76,9 +76,9 @@ amplification efficiency. The required column structure of the input
 data is:
 
 1.  Experimental condition columns (up to 3 factors, and one block if
-    available)
+    available [NOTE 1](#note-1))
 2.  Replicates information (biological replicates or subjects; see [NOTE
-    1](#note-1), and [NOTE 2](#note-2))  
+    2](#note-2), and [NOTE 3](#note-3))  
 3.  Target genes efficiency and Ct values (a pair column for each gene).
 4.  Reference genes efficiency and Ct values (a pair column for each
     gene)
@@ -91,6 +91,15 @@ always appear last. A sample input data is presented below.
 
 #### NOTE 1
 
+When a qPCR experiment is done in multiple qPCR plates, variation
+resulting from the plates may interfere with the actual amount of gene
+expression. One solution is to conduct each plate as a randomized block
+so that at least one replicate of each treatment and control is present
+on a plate. Block effect is usually considered as random and its
+interaction with any main effect is not considered.
+
+#### NOTE 2
+
 For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a
 separate and unique biological replicate. For example, a dataframe with
 12 rows has come from an experiment with 12 individuals. The
@@ -101,7 +110,7 @@ example, all rows with a `1` at Rep column correspond to a single
 individual, all rows with a `2` correspond to another individual, and so
 on, which have been sampled at specific time points.
 
-#### NOTE 2
+#### NOTE 3
 
 Your data table may also include a column of technical replicates (so
 there would be both biological replicates and technical replicate

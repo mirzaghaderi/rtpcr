@@ -40,10 +40,11 @@
 <h2 class="pkg-version" data-toc-text="2.1.1" id="rtpcr-211">rtpcr 2.1.1<a class="anchor" aria-label="anchor" href="#rtpcr-211"></a></h2>
 <div class="section level3">
 <h3 id="new-features-2-1-1">New features<a class="anchor" aria-label="anchor" href="#new-features-2-1-1"></a></h3>
-<ul><li>A unified data structure as input for all functions.</li>
-<li>No restriction on the number of target or reference genes.</li>
-<li>Supports analysis of all genes or selected subsets.</li>
-<li>Publication-ready graphical outputs.</li>
+<ul><li><p>Introduced a unified input data structure for all expression analysis functions.</p></li>
+<li><p>Removed restrictions on the number of target or reference genes. Weighted Ct values are now calculated from efficiency and Ct values using the geometric mean of the specified reference genes.</p></li>
+<li><p>Added support for analyzing all genes or selected subsets. The returned object includes the final expression table for all genes as well as per-gene results.</p></li>
+<li><p>Added publication-ready graphical outputs via the <code>plotFacto()</code> function for one- to three-factor experimental designs.</p></li>
+<li><p>Improved handling of missing values for more robust analyses.</p></li>
 </ul></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

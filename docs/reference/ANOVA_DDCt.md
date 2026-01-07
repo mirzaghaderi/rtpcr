@@ -12,9 +12,9 @@ ANOVA_DDCt(
   numOfFactors,
   numberOfrefGenes,
   mainFactor.column,
+  block,
   analysisType = "anova",
   mainFactor.level.order = NULL,
-  block = NULL,
   p.adj = "none",
   plot = FALSE,
   plotType = "RE",
@@ -46,6 +46,16 @@ ANOVA_DDCt(
   calculated. When `analysisType = "ancova"`, remaining factors are
   treated as covariates.
 
+- block:
+
+  Character or `NULL`. Name of the blocking factor column. When a qPCR
+  experiment is done in multiple qPCR plates, variation resulting from
+  the plates may interfere with the actual amount of gene expression.
+  One solution is to conduct each plate as a randomized block so that at
+  least one replicate of each treatment and control is present on a
+  plate. Block effect is usually considered as random and its
+  interaction with any main effect is not considered.
+
 - analysisType:
 
   Character string specifying the analysis type; one of `"anova"`
@@ -57,10 +67,6 @@ ANOVA_DDCt(
   factor. If `NULL`, the first observed level is used as the calibrator.
   If provided, the first element of the vector is used as the calibrator
   level.
-
-- block:
-
-  Character or `NULL`. Name of the blocking factor column.
 
 - p.adj:
 
@@ -244,8 +250,7 @@ ANOVA_DDCt(
            block = NULL,
            mainFactor.column = 1,
            plot = FALSE,
-           p.adj = "none"
-           )
+           p.adj = "none")
 #> ANOVA table 
 #> Analysis of Variance Table
 #> 
@@ -346,4 +351,5 @@ ANOVA_DDCt(
 #> 4      3.4518      4.6783          1.7237          2.3361
 #> 5      0.8796      1.1368          0.0000          0.0000
 #> 6      1.4228      1.9069          0.6219          0.8335
+           
 ```

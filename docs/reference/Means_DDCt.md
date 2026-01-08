@@ -1,7 +1,8 @@
-# Pairwise comparisons of relative expression values (ΔCt or ΔΔCt) using a fitted model
+# Pairwise comparisons of relative expression values (\\\Delta C_T\\ or \\\Delta \Delta C_T\\) using a fitted model
 
-Performs relative expression (fold change) analysis based on the ΔCt or
-ΔΔCt methods using a fitted model object produced by
+Performs relative expression (fold change) analysis based on the
+\\\Delta C_T\\ or \\\Delta \Delta C_T\\ methods using a fitted model
+object produced by
 [`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md),
 [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
 or
@@ -54,7 +55,7 @@ simple effects are supported.
 
 Internally, this function relies on the emmeans package to compute
 marginal means and contrasts, which are then back-transformed to fold
-change values using the ΔΔCt framework.
+change values using the \\\Delta \Delta C_T\\ framework.
 
 ## Author
 

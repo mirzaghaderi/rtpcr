@@ -13,11 +13,12 @@ version](https://www.r-pkg.org/badges/version/rtpcr)](https://CRAN.R-project.org
 
 ⁠<!-- badges: end -->
 
-rtpcr is a tool for analysis of RT-qPCR gene expression data using ΔCt
-and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures
-models, and publication-ready visualizations. The package implements a
-general calculation method described by Ganger et al. (2017) and Taylor
-et al. (2019), covering both the Livak and Pfaffl methods.
+rtpcr is a tool for analysis of RT-qPCR gene expression data using
+$\Delta Ct$ and $\Delta\Delta Ct$ methods, including t-tests, ANOVA,
+ANCOVA, repeated-measures models, and publication-ready visualizations.
+The package implements a general calculation method described by Ganger
+et al. (2017) and Taylor et al. (2019), covering both the Livak and
+Pfaffl methods.
 
 - [Functions](#functions)
 - [Quick start](#quick-start)
@@ -44,10 +45,10 @@ performs different analyses using the following functions.
 
 | Function | Description |
 |----|----|
-| `ANOVA_DCt` | ΔCt ANOVA analysis |
-| `ANOVA_DDCt` | ΔΔCt ANOVA analysis |
-| `REPEATED_DDCt` | ΔΔCt ANOVA analysis for repeated-measures data |
-| `TTEST_DDCt` | ΔΔCt method *t*-test analysis |
+| `ANOVA_DCt` | $\Delta Ct$ ANOVA analysis |
+| `ANOVA_DDCt` | $\Delta\Delta Ct$ ANOVA analysis |
+| `REPEATED_DDCt` | $\Delta\Delta Ct$ ANOVA analysis for repeated-measures data |
+| `TTEST_DDCt` | $\Delta\Delta Ct$ method *t*-test analysis |
 | `plotFactor` | Bar plot of gene expression for one-, two- or three-factor experiments |
 | `Means_DDCt` | Pairwise comparison of RE values for any user-specified effect |
 | `efficiency` | Amplification efficiency statistics and standard curves |
@@ -188,8 +189,9 @@ efficiency(data)
 
 ### Relative expression
 
-Relative expression analysis can be done using ΔΔCt or ΔCt methods.
-Below is an example of expression analysis using ΔΔCt method.
+Relative expression analysis can be done using $\Delta\Delta Ct$ or
+$\Delta Ct$ methods. Below is an example of expression analysis using
+$\Delta\Delta Ct$ method.
 
 ``` r
 # An example of a properly arranged dataset from a repeated-measures experiment.
@@ -326,7 +328,7 @@ factor table that can furtherbe edited by adding new layers:
 
 | Task | Example Code |
 |----|----|
-| **Change y-axis label** | `p + ylab("Relative expression (ΔΔCt method)")` |
+| **Change y-axis label** | `p + ylab("Relative expression ($\Delta\Delta Ct$ method)")` |
 | **Add a horizontal reference line** | `p + geom_hline(yintercept = 0, linetype = "dashed")` |
 | **Change y-axis limits** | `p + scale_y_continuous(expand = expansion(mult = c(0, 0.1)))` |
 | **Relabel x-axis** | `p + scale_x_discrete(labels = c("A" = "Control", "B" = "Treatment"))` |
@@ -529,7 +531,7 @@ data
 meanTech(data, groups = 1:4)
 ```
 
-<img src="../man/figures/techrep.png" class="center" height="380" />
+<img src="man/figures/techrep.png" class="center" height="380" />
 
 # Contact
 

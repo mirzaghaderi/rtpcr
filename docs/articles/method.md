@@ -17,15 +17,14 @@ al. (2002)](https://doi.org/10.1093/nar/30.9.e36) methods was used.
 Based on the experimental conditions, the functions of the ‘rtpcr’
 package use t-test (for experiments with a two-level factor), analysis
 of variance, analysis of covariance (ANCOVA) or analysis of repeated
-measure data to calculate the fold change (FC, $\Delta\Delta C_{t}$
-method) or relative expression (RE, $\Delta C_{t}$ method). The
-functions further provide standard errors and confidence interval for
-means, apply statistical mean comparisons and present significance. To
-facilitate function application, different data sets were used as
-examples and the outputs were explained. An outstanding feature of
-‘rtpcr’ package is providing publication-ready bar plots with various
-controlling arguments for experiments with up to three different factors
-which are further editable by ggplot2 functions.
+measure data to calculate the $\Delta\Delta C_{t}$ method or
+$\Delta C_{t}$ method. The functions further provide standard errors and
+confidence interval for means, apply statistical mean comparisons and
+present significance. To facilitate function application, different data
+sets were used as examples and the outputs were explained. An
+outstanding feature of ‘rtpcr’ package is providing publication-ready
+bar plots with various controlling arguments for experiments with up to
+three different factors which are further editable by ggplot2 functions.
 
 ## Calculations
 
@@ -128,6 +127,10 @@ Ganger, MT, Dietz GD, Ewing SJ. 2017. A common base method for analysis
 of qPCR data and the application of simple blocking in qPCR experiments.
 BMC bioinformatics 18, 1-11.
 [doi.org/10.1186/s12859-017-1949-5](https://doi.org/10.1186/s12859-017-1949-5).
+
+Mirzaghaderi G. 2025. rtpcr: a package for statistical analysis and
+graphical presentation of qPCR data in R. PeerJ 13, e20185.
+[doi.org/10.7717/peerj.20185](https://doi.org/10.7717/peerj.20185).
 
 Pfaffl MW, Horgan GW, Dempfle L. 2002. Relative expression software tool
 (REST©) for group-wise comparison and statistical analysis of relative

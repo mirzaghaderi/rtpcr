@@ -1,9 +1,9 @@
-# ΔΔCt method t-test analysis
+# \\\Delta \Delta C_T\\ method t-test analysis
 
 The `TTEST_DDCt` function performs fold change expression analysis based
-on the ΔΔCt method using Student's t-test. It supports analysis of one
-or more target genes evaluated under two experimental conditions (e.g.
-control vs treatment).
+on the \\\Delta \Delta C_T\\ method using Student's t-test. It supports
+analysis of one or more target genes evaluated under two experimental
+conditions (e.g. control vs treatment).
 
 ## Usage
 

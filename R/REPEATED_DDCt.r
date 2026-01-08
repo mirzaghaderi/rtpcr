@@ -1,4 +1,4 @@
-#' \eqn{\Delta \Delta C_T} ANOVA analysis on repeated measure data
+#' Delta Delta Ct ANOVA analysis on repeated measure data
 #'
 #' @description \code{REPEATED_DDCt} function performs \eqn{\Delta \Delta C_T} method
 #' analysis of observations repeatedly taken over different time courses. 

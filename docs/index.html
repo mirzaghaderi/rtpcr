@@ -67,7 +67,7 @@
 <!-- badges: start -->
 
 <p>⁠<!-- badges: end --></p>
-<p>rtpcr is a tool for analysis of RT-qPCR gene expression data using ΔCt and ΔΔCt methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package implements a general calculation method described by Ganger et al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl methods.</p>
+<p>rtpcr is a tool for analysis of RT-qPCR gene expression data using <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta Ct</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package implements a general calculation method described by Ganger et al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl methods.</p>
 <ul>
 <li><a href="#functions">Functions</a></li>
 <li>
@@ -116,19 +116,23 @@
 <tbody>
 <tr class="odd">
 <td><code>ANOVA_DCt</code></td>
-<td>ΔCt ANOVA analysis</td>
+<td>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta Ct</annotation></semantics></math> ANOVA analysis</td>
 </tr>
 <tr class="even">
 <td><code>ANOVA_DDCt</code></td>
-<td>ΔΔCt ANOVA analysis</td>
+<td>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> ANOVA analysis</td>
 </tr>
 <tr class="odd">
 <td><code>REPEATED_DDCt</code></td>
-<td>ΔΔCt ANOVA analysis for repeated-measures data</td>
+<td>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> ANOVA analysis for repeated-measures data</td>
 </tr>
 <tr class="even">
 <td><code>TTEST_DDCt</code></td>
-<td>ΔΔCt method <em>t</em>-test analysis</td>
+<td>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> method <em>t</em>-test analysis</td>
 </tr>
 <tr class="odd">
 <td><code>plotFactor</code></td>
@@ -254,7 +258,7 @@
 <div class="section level3">
 <h3 id="relative-expression">Relative expression<a class="anchor" aria-label="anchor" href="#relative-expression"></a>
 </h3>
-<p>Relative expression analysis can be done using ΔΔCt or ΔCt methods. Below is an example of expression analysis using ΔΔCt method.</p>
+<p>Relative expression analysis can be done using <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> or <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta Ct</annotation></semantics></math> methods. Below is an example of expression analysis using <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> method.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># An example of a properly arranged dataset from a repeated-measures experiment.</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_repeated_measure_1.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
@@ -416,7 +420,7 @@
 <tbody>
 <tr class="odd">
 <td><strong>Change y-axis label</strong></td>
-<td><code>p + ylab("Relative expression (ΔΔCt method)")</code></td>
+<td><code>p + ylab("Relative expression ($\Delta\Delta Ct$ method)")</code></td>
 </tr>
 <tr class="even">
 <td><strong>Add a horizontal reference line</strong></td>

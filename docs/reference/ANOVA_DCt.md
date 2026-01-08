@@ -1,4 +1,4 @@
-# \\\Delta C_T\\ ANOVA analysis
+# Delta Ct ANOVA analysis
 
 Performs \\\Delta C_T\\ analysis for target genes by applying \\\Delta
 C_T\\ method to each target gene. Target genes must be provided as

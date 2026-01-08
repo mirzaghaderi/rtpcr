@@ -1,4 +1,4 @@
-#' @title \eqn{\Delta \Delta C_T} method t-test analysis
+#' @title Delta Delta Ct method t-test analysis
 #'
 #' @description
 #' The \code{TTEST_DDCt} function performs fold change expression analysis based on

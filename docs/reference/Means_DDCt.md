@@ -1,4 +1,4 @@
-# Pairwise comparisons of relative expression values (\\\Delta C_T\\ or \\\Delta \Delta C_T\\) using a fitted model
+# Pairwise comparisons of relative expression values (Delta Ct or Delta Delta Ct) using a fitted model
 
 Performs relative expression (fold change) analysis based on the
 \\\Delta C_T\\ or \\\Delta \Delta C_T\\ methods using a fitted model

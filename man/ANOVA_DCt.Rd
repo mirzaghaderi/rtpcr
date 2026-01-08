@@ -2,7 +2,7 @@
 % Please edit documentation in R/ANOVA_DCt.r
 \name{ANOVA_DCt}
 \alias{ANOVA_DCt}
-\title{\eqn{\Delta C_T} ANOVA analysis}
+\title{Delta Ct ANOVA analysis}
 \usage{
 ANOVA_DCt(
   x,

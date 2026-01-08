@@ -2,7 +2,7 @@
 % Please edit documentation in R/Means_DDCt.r
 \name{Means_DDCt}
 \alias{Means_DDCt}
-\title{Pairwise comparisons of relative expression values (\eqn{\Delta C_T} or \eqn{\Delta \Delta C_T}) using a fitted model}
+\title{Pairwise comparisons of relative expression values (Delta Ct or Delta Delta Ct) using a fitted model}
 \usage{
 Means_DDCt(model, specs, p.adj = "none")
 }

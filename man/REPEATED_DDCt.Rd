@@ -2,7 +2,7 @@
 % Please edit documentation in R/REPEATED_DDCt.r
 \name{REPEATED_DDCt}
 \alias{REPEATED_DDCt}
-\title{\eqn{\Delta \Delta C_T} ANOVA analysis on repeated measure data}
+\title{Delta Delta Ct ANOVA analysis on repeated measure data}
 \usage{
 REPEATED_DDCt(
   x,

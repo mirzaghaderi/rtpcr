@@ -1,4 +1,4 @@
-# \\\Delta \Delta C_T\\ ANOVA analysis
+# Delta Delta Ct ANOVA analysis
 
 Apply \\\Delta \Delta C_T\\ analysis to each target gene in the input
 data frame. Target and reference genes must be provided as paired

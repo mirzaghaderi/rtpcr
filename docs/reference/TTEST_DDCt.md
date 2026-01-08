@@ -1,4 +1,4 @@
-# \\\Delta \Delta C_T\\ method t-test analysis
+# Delta Delta Ct method t-test analysis
 
 The `TTEST_DDCt` function performs fold change expression analysis based
 on the \\\Delta \Delta C_T\\ method using Student's t-test. It supports

@@ -2,7 +2,7 @@
 % Please edit documentation in R/TTEST_DDCt.r
 \name{TTEST_DDCt}
 \alias{TTEST_DDCt}
-\title{\eqn{\Delta \Delta C_T} method t-test analysis}
+\title{Delta Delta Ct method t-test analysis}
 \usage{
 TTEST_DDCt(
   x,

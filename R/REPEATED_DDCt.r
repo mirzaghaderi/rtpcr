@@ -1,6 +1,6 @@
-#' ΔΔCt ANOVA analysis on repeated measure data
+#' \eqn{\Delta \Delta C_T} ANOVA analysis on repeated measure data
 #'
-#' @description \code{REPEATED_DDCt} function performs ΔΔCt method
+#' @description \code{REPEATED_DDCt} function performs \eqn{\Delta \Delta C_T} method
 #' analysis of observations repeatedly taken over different time courses. 
 #' Data may be obtained over time from a uni- or multi-factorial experiment. Target genes must be provided as paired
 #' efficiency (E) and Ct columns followed by the E/Ct column pairs of reference genes.
@@ -49,7 +49,7 @@
 #' @return
 #' An object containing expression table, lm models, residuals, raw data and ANOVA table for each gene.
 #' \describe{ 
-#' \item{ΔΔCt combined expression table}{\code{object$Relative_Expression_table}}
+#' \item{\eqn{\Delta \Delta C_T} combined expression table}{\code{object$Relative_Expression_table}}
 #' \item{ANOVA table}{\code{object$perGene$gene_name$ANOVA_table}}
 #' \item{lm ANOVA}{\code{object$perGene$gene_name$lm}}
 #' \item{Residuals}{\code{resid(object$perGene$gene_name$lm)}}

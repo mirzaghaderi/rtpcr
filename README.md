@@ -529,8 +529,7 @@ data
 meanTech(data, groups = 1:4)
 ```
 
-<img src="man/figures/techrep.png" class="center"
-style="width:100.0%" />
+<img src="../man/figures/techrep.png" class="center" height="380" />
 
 # Contact
 

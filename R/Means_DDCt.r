@@ -1,8 +1,8 @@
-#' @title Pairwise comparisons of relative expression values (ΔCt or ΔΔCt) using a fitted model
+#' @title Pairwise comparisons of relative expression values (\eqn{\Delta C_T} or \eqn{\Delta \Delta C_T}) using a fitted model
 #'
 #' @description
 #' Performs relative expression (fold change) analysis based on the
-#' ΔCt or ΔΔCt methods using a fitted model object produced by
+#' \eqn{\Delta C_T} or \eqn{\Delta \Delta C_T} methods using a fitted model object produced by
 #' \code{ANOVA_DCt()}, \code{ANOVA_DDCt()} or \code{REPEATED_DDCt()}.
 #'
 #' @details
@@ -15,7 +15,7 @@
 #'
 #' Internally, this function relies on the \pkg{emmeans} package to
 #' compute marginal means and contrasts, which are then back-transformed
-#' to fold change values using the ΔΔCt framework.
+#' to fold change values using the \eqn{\Delta \Delta C_T} framework.
 #'
 #' @author
 #' Ghader Mirzaghaderi

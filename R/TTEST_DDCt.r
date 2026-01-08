@@ -1,8 +1,8 @@
-#' @title ΔΔCt method t-test analysis
+#' @title \eqn{\Delta \Delta C_T} method t-test analysis
 #'
 #' @description
 #' The \code{TTEST_DDCt} function performs fold change expression analysis based on
-#' the ΔΔCt method using Student's t-test. It supports analysis
+#' the \eqn{\Delta \Delta C_T} method using Student's t-test. It supports analysis
 #' of one or more target genes evaluated under two experimental conditions
 #' (e.g. control vs treatment).
 #'
@@ -130,7 +130,7 @@ TTEST_DDCt <- function(x,
   stopifnot(is.data.frame(x))
   stopifnot(numberOfrefGenes >= 1)
   
-
+  
   ## Factor handling
   if (is.null(Factor.level.order)) {
     x[, 1] <- factor(x[, 1], levels = unique(x[, 1]))
@@ -145,7 +145,7 @@ TTEST_DDCt <- function(x,
     calibrator
   )))
   
-
+  
   ## Column structure
   nc <- ncol(x)
   
@@ -166,12 +166,12 @@ TTEST_DDCt <- function(x,
   ## Replicates per condition
   r <- table(x[, 1])[1]
   
-
+  
   ## Result container
   res <- matrix(NA, nrow = nTargets, ncol = 7)
   colnames(res) <- c("Gene", "dif", "RE", "LCL", "UCL", "pvalue", "se")
   
-
+  
   ## Loop over targets
   for (i in seq_len(nTargets)) {
     
@@ -214,7 +214,7 @@ TTEST_DDCt <- function(x,
     )
   }
   
-
+  
   ## Result table
   res <- as.data.frame(res)
   num_cols <- c("RE", "LCL", "UCL", "pvalue", "se")

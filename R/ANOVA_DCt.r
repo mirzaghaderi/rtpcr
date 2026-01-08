@@ -1,7 +1,7 @@
-#' ΔCt ANOVA analysis
+#' \eqn{\Delta C_T} ANOVA analysis
 #'
-#' Performs ΔCt analysis for target genes by
-#' applying ΔCt method to each target gene. Target genes must be provided as paired
+#' Performs \eqn{\Delta C_T} analysis for target genes by
+#' applying \eqn{\Delta C_T} method to each target gene. Target genes must be provided as paired
 #' efficiency (E) and Ct columns followed by the the reference gene(s) columns. 
 #' See "Input data structure and column arrangement" in vignettes for details about data structure.
 #'
@@ -33,7 +33,7 @@
 #' @return
 #' An object containing expression table, lm models, ANOVA tables, residuals, raw data and ANOVA table for each gene. 
 #' \describe{
-#' \item{ΔCt combined expression table}{\code{object$combinedResults}}
+#' \item{\eqn{\Delta C_T} combined expression table}{\code{object$combinedResults}}
 #' \item{ANOVA table for treatments}{\code{object$perGene$gene_name$ANOVA_T}}
 #' \item{ANOVA table factorial}{\code{object$perGene$gene_name$ANOVA_factorial}}
 #' \item{lm ANOVA for tratments}{\code{object$perGene$gene_name$lm_T}}

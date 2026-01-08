@@ -2,7 +2,7 @@
 % Please edit documentation in R/ANOVA_DDCt.r
 \name{ANOVA_DDCt}
 \alias{ANOVA_DDCt}
-\title{ΔΔCt ANOVA analysis}
+\title{\eqn{\Delta \Delta C_T} ANOVA analysis}
 \usage{
 ANOVA_DDCt(
   x,
@@ -62,7 +62,7 @@ to be analysed.}
 \value{
 An object containing expression table, lm models, residuals, raw data and ANOVA table for each gene.
 \describe{  
-\item{ΔΔCt combined expression table}{\code{object$combinedFoldChange}}
+\item{\eqn{\Delta \Delta C_T} combined expression table}{\code{object$combinedFoldChange}}
 \item{ANOVA table}{\code{object$perGene$gene_name$ANOVA_table}}
 \item{lm ANOVA}{\code{object$perGene$gene_name$lm_ANOVA}}
 \item{lm ANCOVA}{\code{object$perGene$gene_name$lm_ANCOVA}}
@@ -72,13 +72,13 @@ An object containing expression table, lm models, residuals, raw data and ANOVA 
 }
 }
 \description{
-Apply ΔΔCt analysis to each target gene
+Apply \eqn{\Delta \Delta C_T} analysis to each target gene
 in the input data frame. Target and reference genes must be provided as paired
 efficiency (E) and Ct columns located after the experimental design columns.
 columns.
 }
 \details{
-ΔΔCt analysis is performed for 
+\eqn{\Delta \Delta C_T} analysis is performed for 
 the \code{mainFactor.column} based on a full model factorial 
 experiment by default. However, if \code{ancova}, the \code{analysisType} argument,
 analysis of covariance is performed for the levels of the \code{mainFactor.column} and the other factors are 

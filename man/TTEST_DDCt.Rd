@@ -2,7 +2,7 @@
 % Please edit documentation in R/TTEST_DDCt.r
 \name{TTEST_DDCt}
 \alias{TTEST_DDCt}
-\title{ΔΔCt method t-test analysis}
+\title{\eqn{\Delta \Delta C_T} method t-test analysis}
 \usage{
 TTEST_DDCt(
   x,
@@ -53,7 +53,7 @@ A list with the following components:
 }
 \description{
 The \code{TTEST_DDCt} function performs fold change expression analysis based on
-the ΔΔCt method using Student's t-test. It supports analysis
+the \eqn{\Delta \Delta C_T} method using Student's t-test. It supports analysis
 of one or more target genes evaluated under two experimental conditions
 (e.g. control vs treatment).
 }

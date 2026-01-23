@@ -11,5 +11,5 @@ utils::globalVariables(c(
   "ymin", "ymax", "lower", "upper", "sig", "d",
   "contrast", "RE", "log2FC", "Lower.se", "Upper.se", 
   "Lower.se.RE", "Upper.se.RE", "factors", "as.formula", "tail", "Gene",
-  "se", "pvalue", "ave", "reshape", "lm"
+  "se", "pvalue", "ave", "reshape", "lm", "formula"
 ))

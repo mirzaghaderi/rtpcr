@@ -15,24 +15,22 @@
       characters[i] <- " "
     }
   }
-  
   return(characters)
 }
 
 
 
 
-
 .cleanup <- function(x, numOfFactors, block) {
   
-  ## ---- Step 1: define factor columns ----
+  # define factor columns 
   if (is.null(block)) {
     x[seq_len(numOfFactors)] <- lapply(x[seq_len(numOfFactors)], factor)
   } else {
     x[seq_len(numOfFactors + 1)] <- lapply(x[seq_len(numOfFactors + 1)], factor)
   }
-  
-  ## ---- Step 2: pairwise cleanup (from last to first) ----
+
+  # pairwise cleanup (from last to first) 
   n <- ncol(x)
   
   for (i in seq(from = n, to = 2, by = -2)) {
@@ -43,35 +41,28 @@
     # skip if either column is a factor
     if (is.factor(colA) || is.factor(colB)) next
     
-    # identify invalid cells
     badA <- suppressWarnings(is.na(as.numeric(colA))) | colA == 0
     badB <- suppressWarnings(is.na(as.numeric(colB))) | colB == 0
     
-    # cross-invalidate within the pair
     colA[badB] <- NA
     colB[badA] <- NA
     
     x[[i - 1]] <- colA
     x[[i]]     <- colB
   }
+
   
-  ## ---- Step 3: column-wise cleanup (original behavior) ----
   x[] <- lapply(x, function(col) {
-    
     if (is.factor(col)) return(col)
-    
     if (is.character(col)) {
       col[col %in% c("Undetermined", "undetermined")] <- NA
       suppressWarnings(col <- as.numeric(col))
     }
-    
     if (is.numeric(col)) {
       col[col == 0] <- NA
     }
-    
     col
   })
-  
   x
 }
 
@@ -143,7 +134,7 @@
     stringsAsFactors = FALSE
   )
   
-  # replicate number within Condition × Gene
+  # replicate number within Condition C Gene
   tmp$Rep <- ave(
     seq_len(nrow(tmp)),
     tmp$Condition,
@@ -161,122 +152,6 @@
   wide[[1]] <- factor(wide[[1]])
   .cleanup(wide)
 }
-
-
-
-
-
-
-
-.rearrange_repeatedMeasureData <- function(
-    df,
-    column_name,
-    level
-) {
-  
-  if (!column_name %in% names(df)) {
-    stop("column_name not found in data frame")
-  }
-  
-  col_idx <- match(column_name, names(df))
-  if (col_idx == 1) {
-    stop("No previous columns to define groups")
-  }
-  
-  # grouping columns = all columns before column_name
-  group_cols <- seq_len(col_idx - 1)
-  
-  # groups in order of appearance
-  grp <- interaction(df[group_cols], drop = TRUE)
-  grp_levels <- unique(grp)
-  
-  out <- df[0, , drop = FALSE]
-  
-  # safe comparison (numeric / factor / character)
-  level_chr <- as.character(level)
-  
-  for (g in grp_levels) {
-    block <- df[grp == g, , drop = FALSE]
-    
-    is_level <- as.character(block[[column_name]]) == level_chr
-    
-    block <- rbind(block[is_level, , drop = FALSE],
-                   block[!is_level, , drop = FALSE])
-    
-    out <- rbind(out, block)
-  }
-  
-  rownames(out) <- NULL
-  out
-}
-
-
-
-
-
-.compute_wDCt <- function(x, 
-                          numOfFactors,
-                          numberOfrefGenes, 
-                          block) {
-  
-  if (is.null(block)) {
-    x[seq_len(numOfFactors)] <- lapply(
-      x[seq_len(numOfFactors)],
-      factor
-    )
-  } else {
-    x[seq_len(numOfFactors + 1)] <- lapply(
-      x[seq_len(numOfFactors + 1)],
-      factor
-    )
-  }
-  
-  x <- .cleanup(x, numOfFactors, block)
-  
-  stopifnot(numberOfrefGenes >= 1)
-  nRef <- numberOfrefGenes
-  nc   <- ncol(x)
-  
-  # Identify columns
-  ref_E_cols  <- seq(nc - 2 * nRef + 1, nc, by = 2)
-  ref_Ct_cols <- seq(nc - 2 * nRef + 2, nc, by = 2)
-  
-  target_E_col  <- ref_E_cols[1] - 2
-  target_Ct_col <- ref_E_cols[1] - 1
-  
-  # Target term
-  target_term <- log2(x[[target_E_col]]) * x[[target_Ct_col]]
-  
-  # Reference matrices
-  E_mat  <- as.matrix(x[, ref_E_cols])
-  Ct_mat <- as.matrix(x[, ref_Ct_cols])
-  
-  # Row-wise geometric mean of reference efficiencies (NA-aware)
-  geoMeanE <- apply(E_mat, 1, function(z) {
-    k <- sum(!is.na(z))
-    if (k > 0) prod(z, na.rm = TRUE)^(1 / k) else NA_real_
-  })
-  
-  # Reference term (Excel-consistent)
-  ref_term <- numeric(nrow(x))
-  for (r in seq_len(nrow(x))) {
-    
-    tmp <- log2(geoMeanE[r]) * Ct_mat[r, ]
-    k   <- sum(!is.na(tmp))
-    
-    if (k > 0) {
-      ref_term[r] <- prod(tmp, na.rm = TRUE)^(1 / k)
-    } else {
-      ref_term[r] <- NA_real_
-    }
-  }
-  
-  # Final wDCt
-  x$wDCt <- target_term - ref_term
-  
-  x
-}
-
 
 
 
@@ -327,275 +202,6 @@
 
 
 
-
-.ANOVA_DDCt_uniTarget <- function(
-    x, 
-    numOfFactors,
-    numberOfrefGenes, 
-    mainFactor.column, 
-    analysisType = "anova",
-    mainFactor.level.order = NULL, 
-    block = NULL, 
-    p.adj = "none",  
-    plot = TRUE,
-    plotType = "RE", 
-    verbose = FALSE) {
-  
-  
-  x <- x[, c(mainFactor.column, (1:ncol(x))[-mainFactor.column])]
-  
-  
-  # basic checks
-  if (!is.data.frame(x)) {
-    stop("`x` must be a data.frame")
-  }
-  if (!is.numeric(numberOfrefGenes) || length(numberOfrefGenes) != 1) {
-    stop("`numberOfrefGenes` must be a single numeric value")
-  }
-  if (!is.numeric(mainFactor.column) || length(mainFactor.column) != 1) {
-    stop("`mainFactor.column` must be a single numeric value")
-  }
-  
-  
-  if (missing(numberOfrefGenes)) {
-    stop("argument 'numberOfrefGenes' is missing, with no default")
-  }
-  if (missing(mainFactor.column)) {
-    stop("argument 'mainFactor.column' is missing, with no default")
-  }
-  if (missing(block)) {
-    stop("argument 'block' is missing, with no default. Requires NULL or a blocking factor column.")
-  }
-  
-  
-  
-  
-  
-  if (is.null(mainFactor.level.order)) {
-    mainFactor.level.order <- unique(x[,1])
-    calibrartor <- x[,1][1]
-    on.exit(cat(structure(paste("*** The", calibrartor, "level was used as calibrator.\n"))))
-  } else if (any(is.na(match(unique(x[,1]), mainFactor.level.order))) == TRUE){
-    stop("The `mainFactor.level.order` doesn't match main factor levels.")
-  } else {
-    x <- x[order(match(x[,1], mainFactor.level.order)), ]
-    #x <- x[order(match(as.character(x[,1]), as.character(mainFactor.level.order))), ]
-    calibrartor <- x[,1][1]
-    on.exit(cat(structure(paste("*** The", calibrartor, "level was used as calibrator.\n"))))
-  }
-  
-  x <- .compute_wDCt(x, numOfFactors, numberOfrefGenes, block)
-  
-  x[] <- lapply(x, function(x) {
-    if (is.factor(x)) as.character(x) else x
-  })
-  
-  #convert the first numOfFactors columns to factor
-  if (is.null(block)) {
-    x[seq_len(numOfFactors)] <- lapply(
-      x[seq_len(numOfFactors)],
-      function(col) factor(col))
-  } else {
-    x[seq_len(numOfFactors + 1)] <- lapply(
-      x[seq_len(numOfFactors + 1)],
-      function(col) factor(col))
-  }
-  
-  factors <- colnames(x)[1:numOfFactors]
-  
-  
-  # Check if there is block
-  if (is.null(block)) {
-    
-    # ANOVA based on factorial design
-    formula_ANOVA <- as.formula(
-      paste("wDCt ~", paste(factors, collapse = " * "))
-    )
-    lmf <- lm(formula_ANOVA, data = x)
-    ANOVA <- stats::anova(lmf)
-    
-    # ANCOVA (other factors as covariates)
-    formula_ANCOVA <- as.formula(
-      paste("wDCt ~", paste(rev(factors), collapse = " + "))
-    )
-    lmc <- lm(formula_ANCOVA, data = x)
-    ANCOVA <- stats::anova(lmc)
-    
-  } else {
-    
-    # ANOVA with blocking factor (block treated as fixed)
-    formula_ANOVA <- as.formula(
-      paste("wDCt ~ block +", paste(factors, collapse = " * "))
-    )
-    lmfb <- lm(formula_ANOVA, data = x)
-    ANOVA <- stats::anova(lmfb)
-    
-    # ANCOVA with blocking factor
-    formula_ANCOVA <- as.formula(
-      paste("wDCt ~ block +", paste(rev(factors), collapse = " + "))
-    )
-    lmcb <- lm(formula_ANCOVA, data = x)
-    ANCOVA <- stats::anova(lmcb)
-    
-  }
-  
-  
-  
-  
-  
-  
-  # Type of analysis: ancova or anova
-  if (is.null(block)) {
-    if(analysisType == "ancova") {
-      lm <- lmc
-    } 
-    else{
-      lm <- lmf
-    }
-  } else {
-    if(analysisType == "ancova") {
-      lm <- lmcb
-    } 
-    else{
-      lm <- lmfb
-    } 
-  }
-  
-  
-  pp1 <- emmeans(lm, colnames(x)[1], data = x, adjust = p.adj, mode = "satterthwaite")
-  pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
-  pp3 <- pp2[1:length(mainFactor.level.order)-1,]
-  ci <- as.data.frame(stats::confint(graphics::pairs(pp1)), adjust = p.adj)[1:length(unique(x[,1]))-1,]
-  pp <- cbind(pp3, lower.CL = ci$lower.CL, upper.CL = ci$upper.CL)
-  
-  
-  bwDCt <- x$wDCt   
-  se <- summarise(
-    group_by(data.frame(factor = x[,1], bwDCt = bwDCt), x[,1]),
-    se = stats::sd(bwDCt, na.rm = TRUE)/sqrt(length(bwDCt)))  
-  
-  
-  sig <- .convert_to_character(pp$p.value)
-  contrast <- pp$contrast
-  post_hoc_test <- data.frame(contrast, 
-                              RE = 1/(2^-(pp$estimate)),
-                              log2FC = log2(1/(2^-(pp$estimate))),
-                              pvalue = pp$p.value,
-                              sig = sig,
-                              LCL = 1/(2^-pp$lower.CL),
-                              UCL = 1/(2^-pp$upper.CL),
-                              se = se$se[-1])
-  
-  reference <- data.frame(contrast = mainFactor.level.order[1],
-                          RE = 1,
-                          log2FC = 0,
-                          pvalue = 1, 
-                          sig = " ",
-                          LCL = 0,
-                          UCL = 0,
-                          se = se$se[1])
-  
-  tableC <- rbind(reference, post_hoc_test)
-  
-  FINALDATA <- x
-  
-  tableC$contrast <- as.character(tableC$contrast)
-  tableC$contrast <- sapply(strsplit(tableC$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))
-  
-  
-  
-  tableC$contrast <- factor(tableC$contrast, levels = unique(tableC$contrast))
-  contrast <- tableC$contrast
-  LCL <- tableC$LCL
-  UCL <- tableC$UCL
-  REp <- as.numeric(tableC$RE)
-  FCp <- as.numeric(tableC$log2FC)
-  significance <- tableC$sig
-  se <- tableC$se
-  
-  tableC <- data.frame(tableC, 
-                       Lower.se.RE = 2^(log2(tableC$RE) - tableC$se), 
-                       Upper.se.RE = 2^(log2(tableC$RE) + tableC$se))  
-
-  a <- data.frame(tableC, d = 0)
-  
-  for (i in 1:length(tableC$RE)) {
-    if (tableC$RE[i] < 1) {
-      a$Lower.se[i] <- (tableC$Upper.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i]
-      a$Upper.se[i] <- (tableC$Lower.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i]
-      a$d[i] <- (tableC$Upper.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i] - 0.2
-    } else {
-      a$Lower.se[i] <- (tableC$Lower.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i]
-      a$Upper.se[i] <- (tableC$Upper.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i]
-      a$d[i] <- (tableC$Upper.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i] + 0.2
-    }
-  }
-  pfc1 <- ggplot(a, aes(contrast,RE)) + 
-    geom_col() +
-    geom_errorbar(aes(ymin = tableC$Lower.se.RE, ymax=tableC$Upper.se.RE), width=0.1) +
-    geom_text(aes(label = sig, x = contrast,
-                  y = tableC$Upper.se.RE + 0.2)) +
-    ylab("Relative Expression (DDCt)")
-  pfc2 <- ggplot(a, aes(contrast,log2FC)) +
-    geom_col() +
-    geom_errorbar(aes(ymin = Upper.se, ymax=Lower.se), width=0.1) +
-    geom_text(aes(label = sig, x = contrast,
-                  y = d)) +
-    ylab("log2FC")
-  
-  tableC <- data.frame(tableC, Lower.se.log2FC = a$Lower.se, Upper.se.log2FC = a$Upper.se)
-  
-  
-  if (is.null(block)) {
-    lm_ANOVA <- lmf
-    lm_ANCOVA <- lmc
-  } else {
-    lm_ANOVA <- lmfb
-    lm_ANCOVA <- lmcb
-  }
-  
-  #round tableC to 4 decimal places
-  tableC <- tableC %>%
-    mutate_if(is.numeric, ~ round(., 4))
-  
-  outlist2 <- structure(list(Final_data = x,
-                             lm_ANOVA = lm_ANOVA,
-                             lm_ANCOVA = lm_ANCOVA,
-                             ANOVA_table = ANOVA,
-                             ANCOVA_table = ANCOVA,
-                             Fold_Change  = tableC,
-                             RE_Plot = pfc1,
-                             log2FC_Plot = pfc2), class = "XX")
-  
-  print.XX <- function(outlist2){
-    cat("ANOVA table", "\n")
-    print(outlist2$ANOVA_table)
-    cat("\n", sep = '', "ANCOVA table", "\n")
-    print(outlist2$ANCOVA_table)
-    cat("\n", sep = '', "Expression table", "\n")
-    print(outlist2$Fold_Change)
-    
-    
-    if (plot == TRUE){
-      if(plotType == "RE"){
-        cat("RE_Plot\n")
-        print(outlist2$RE_Plot)
-      }else{
-        cat("log2FC_Plot\n")
-        print(outlist2$log2FC_Plot)
-      }
-    }
-    invisible(outlist2)
-  }
-  print.XX(outlist2)
-}
-
-
-
-
-
-
-
 .ANOVA_DCt_uniTarget <- function(x,
                                  numOfFactors,
                                  numberOfrefGenes,
@@ -604,7 +210,7 @@
                                  p.adj,
                                  verbose = FALSE) {
   
-  ## basic argument checks
+  # basic argument checks
   if (!is.data.frame(x)) {
     stop("`x` must be a data.frame")
   }
@@ -616,29 +222,29 @@
   }
   
   
-  x <- .compute_wDCt(x, numOfFactors, numberOfrefGenes, block) 
+  x <- compute_wDCt(x, numOfFactors, numberOfrefGenes, block) 
   
-  #Convert all factor columns to character
+  # Convert all factor columns to character
   x[] <- lapply(x, function(x) {
     if (is.factor(x)) as.character(x) else x
   })
   
-  #convert the first numOfFactors columns to factor
+  # convert the first numOfFactors columns to factor
   if (is.null(block)) {
     x[seq_len(numOfFactors)] <- lapply(
       x[seq_len(numOfFactors)],
-      function(col) factor(col))
+      function(col) factor(col, levels = unique(col)))
   } else {
     x[seq_len(numOfFactors + 1)] <- lapply(
       x[seq_len(numOfFactors + 1)],
-      function(col) factor(col))
+      function(col) factor(col, levels = unique(col)))
   }
   
-  #get names of factor columns
+  # get names of factor columns
   factors <- colnames(x)[1:numOfFactors]
   
-  
-  ##build treatment factor T and fit lm
+
+  # build treatment factor T and fit lm
   if (is.null(block)) {
     x$T <- do.call(paste, c(x[1:length(factors)], sep = ":"))
     x$T <- as.factor(x$T)
@@ -647,34 +253,39 @@
   } else {
     x$T <- do.call(paste, c(x[1:length(factors)], sep = ":"))
     x$T <- as.factor(x$T)
-    lm_fit <- stats::lm(wDCt ~ block + T, data = x)
+    
+    lm_fit <- as.formula(
+      paste("wDCt ~", block, "+ T"))
+
+    lm_fit <- stats::lm(lm_fit, data = x)
     anovaCRD <- stats::anova(lm_fit)
   }
   
+  
+
   # LM factorial 
   if (is.null(block)) {
     
-    # ANOVA based on factorial design
+    # ANOVA based on factorial design      
     formula_ANOVA <- as.formula(
       paste("wDCt ~", paste(factors, collapse = " * "))
     )
     lm_factorial <- lm(formula_ANOVA, data = x)
     ANOVA_factorial <- stats::anova(lm_factorial)
-    
+    lm_formula <- formula(lm_factorial)
   } else {
-    
     # ANOVA with blocking factor (block treated as fixed)
     formula_ANOVA <- as.formula(
-      paste("wDCt ~ block +", paste(factors, collapse = " * "))
+      paste("wDCt ~", block, "+", paste(factors, collapse = " * "))
     )
     lm_factorial <- lm(formula_ANOVA, data = x)
     ANOVA_factorial <- stats::anova(lm_factorial)
-
+    lm_formula <- formula(lm_factorial)
   }
 
   
-  ## emmeans / multiple comparisons
-  emg <- emmeans::emmeans(lm_fit, pairwise ~ T, mode = "satterthwaite")
+  # emmeans / multiple comparisons
+  emg <- suppressMessages(emmeans::emmeans(lm_fit, pairwise ~ T, mode = "satterthwaite"))
   # use cld() on the emmeans object (the first element)
   meanPairs <- multcomp::cld(emg[[1]], adjust = p.adj, alpha = alpha, reversed = FALSE, Letters = letters)
   # meanPairs typically contains columns: T, emmean, lower.CL, upper.CL, .group
@@ -701,6 +312,7 @@
   
   # build Results table
   Results <- data.frame(row.names = ROWS,
+                        dCt = diffs,
                         RE = 2^(-diffs),
                         log2FC = log2(2^(-diffs)),
                         LCL = 2^(-lcl),
@@ -713,7 +325,7 @@
   Results$RowNames <- rownames(Results)
   
   
-  ## ---- split RowNames back to factor columns (base R) ----
+  # split RowNames back to factor columns (base R) ----
   parts <- strsplit(Results$RowNames, ":", fixed = TRUE)
   parts_mat <- do.call(rbind, lapply(parts, function(p) {
     # ensure length matches number of factor columns
@@ -768,24 +380,16 @@
   xx <- x[, setdiff(names(x), "T"), drop = FALSE]
   
   Results_final <- Results_final %>%
-    mutate_if(is.numeric, ~ round(., 4))
+    mutate_if(is.numeric, ~ round(., 5))
   
-  outlist2 <- structure(list(Final_data = xx,
-                             lm_T = lm_fit,
-                             lm_factorial = lm_factorial,
-                             ANOVA_T = anovaCRD,
-                             ANOVA_factorial = ANOVA_factorial,
-                             Results = Results_final),
-                        class = "XX")
+  outlist2 <- list(Final_data = xx,
+                   lm_T = lm_fit,
+                   lm_factorial = lm_factorial,
+                   ANOVA_T = anovaCRD,
+                   ANOVA_factorial = ANOVA_factorial,
+                   Results = Results_final)
   
-  print.XX <- function(outlist2) {
-    print(outlist2$ANOVA)
-    cat("\n", sep = '', "Relative expression (DCt method)", "\n")
-    print(outlist2$Results)
-    invisible(outlist2)
-  }
-  
-  print.XX(outlist2)
+  invisible(outlist2)
 }
 
 
@@ -795,161 +399,154 @@
 
 
 
-.REPEATED_DDCt_uniTarget <- function(x,
-                                     numOfFactors,
-                                     numberOfrefGenes,
-                                     repeatedFactor, 
-                                     calibratorLevel,
-                                     block,
-                                     p.adj,
-                                     plot,
-                                     plotType){
-  
-  # basic checks
-  # if (!is.data.frame(x)) stop("`x` must be a data.frame")
-  # if (missing(repeatedFactor)) stop("argument 'repeatedFactor' is missing")
-  # if (missing(calibratorLevel)) stop("argument 'calibratorLevel' is missing")
-  # if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1)
-  #   stop("`numberOfrefGenes` must be >= 1")
-  # if (missing(block)) stop("argument 'block' is missing")
-  
-  # rearrange_repeatedMeasureData
-  x <- .rearrange_repeatedMeasureData(x, column_name = "Time_", level = calibratorLevel) 
-  
-  
-  
-  ## validate that only ONE target gene exists
-  expr_cols_expected <- if (is.null(block)) {
-    3 + 2 * numberOfrefGenes   # time + target + refs
-  } else {
-    4 + 2 * numberOfrefGenes   # block + time + target + refs
-  }
-  
-  non_expr_cols <- ncol(x) - expr_cols_expected
-  
-  if (non_expr_cols < 1) {
-    stop(
-      "Input data structure error:\n",
-      "At least one non-expression column (id) must exist before expression columns.",
-      call. = FALSE
-    )
-  }
-  
-  ## if expression columns are MORE than expected → extra target genes
-  actual_expr_cols <- ncol(x) - non_expr_cols
-  
-  if (actual_expr_cols != expr_cols_expected) {
-    stop(
-      sprintf(
-        paste0(
-          "Exactly ONE target gene is allowed.\n\n",
-          "Expected expression columns:\n",
-          "  %d  (= time + 1 target + %d reference gene(s)%s)\n\n",
-          "But detected:\n",
-          "  %d expression-related columns\n\n",
-          "This usually means:\n",
-          "  more than one target gene is present, or\n",
-          "  numberOfrefGenes is incorrect, or\n",
-          "  expression columns are not at the end of the data frame."
-        ),
-        expr_cols_expected,
-        numberOfrefGenes,
-        if (is.null(block)) "" else " + block",
-        actual_expr_cols
-      ),
-      call. = FALSE
-    )
-  }
-  
-  
-  id <- colnames(x)[1]
-  
-  # column parsing
-  if (is.null(block)) {
-    
-    n_expr <- 3 + 2 * numberOfrefGenes
-    factors <- if ((ncol(x) - n_expr) <= 1) NULL else colnames(x)[2:(ncol(x) - n_expr)]
-    
-    colnames(x)[(ncol(x) - n_expr + 1)] <- "Time_"
-    colnames(x)[(ncol(x) - n_expr + 2)] <- "Etarget"
-    colnames(x)[(ncol(x) - n_expr + 3)] <- "Cttarget"
-    
-    ref_start <- ncol(x) - (2 * numberOfrefGenes) + 1
-    ref_cols <- ref_start:ncol(x)
-    
-  } else {
-    
-    n_expr <- 4 + 2 * numberOfrefGenes
-    factors <- if ((ncol(x) - n_expr) <= 1) NULL else colnames(x)[2:(ncol(x) - n_expr)]
-    
-    colnames(x)[(ncol(x) - n_expr + 1)] <- "Time_"
-    colnames(x)[(ncol(x) - n_expr + 2)] <- "block"
-    colnames(x)[(ncol(x) - n_expr + 3)] <- "Etarget"
-    colnames(x)[(ncol(x) - n_expr + 4)] <- "Cttarget"
-    
-    ref_start <- ncol(x) - (2 * numberOfrefGenes) + 1
-    ref_cols <- ref_start:ncol(x)
-  }
-  
-  
-  x <- .compute_wDCt(x, numOfFactors, numberOfrefGenes, block)
 
+
+
+
+
+
+
+
+
+.ANOVA <- function(
+    x, 
+    numOfFactors,
+    numberOfrefGenes, 
+    mainFactor.column, 
+    analysisType,
+    mainFactor.level.order = NULL, 
+    block, 
+    p.adj = "none",
+    verbose = FALSE) {
+
+  x <- x[, c(mainFactor.column, (1:ncol(x))[-mainFactor.column])]
+
+  
+  #convert the first numOfFactors columns to factor
+  if (is.null(block)) {
+    x[seq_len(numOfFactors)] <- lapply(
+      x[seq_len(numOfFactors)],
+      function(col) factor(col, levels = unique(col)))
+  } else {
+    x[seq_len(numOfFactors + 1)] <- lapply(
+      x[seq_len(numOfFactors + 1)],
+      function(col) factor(col, levels = unique(col)))
+  }
+  
+  
+  if (is.null(mainFactor.level.order)) {
+    mainFactor.level.order <- unique(x[,1])
+    calibrartor <- x[,1][1]
+  } else if (any(is.na(match(unique(x[,1]), mainFactor.level.order))) == TRUE){
+    stop("The `mainFactor.level.order` doesn't match main factor levels.")
+  } else {
+    x <- x[order(match(x[,1], mainFactor.level.order)), ]
+    calibrartor <- x[,1][1]
+  }
+  
+  x <- compute_wDCt(x, numOfFactors, numberOfrefGenes, block)
+  
   x[] <- lapply(x, function(x) {
     if (is.factor(x)) as.character(x) else x
   })
-
   
-  # convert factors
-  for (i in 2:which(names(x) == "Time_")) {
-    x[[i]] <- factor(x[[i]], levels = unique(x[[i]]))
-  }
-  factors <- colnames(x)[2:which(names(x) == "Time_")]
-  
-  if ("block" %in% names(x)) {
-    x$block <- as.factor(x$block)
-  }
-  
-  # model formula 
+  # convert the first numOfFactors columns to factor
   if (is.null(block)) {
-      formula <- as.formula(
-        paste("wDCt ~ ", paste(factors, collapse = " * "), "+ (1 | id)")
-      )
+    x[seq_len(numOfFactors)] <- lapply(
+      x[seq_len(numOfFactors)],
+      function(col) factor(col, levels = unique(col)))
   } else {
-      formula <- as.formula(
-        paste("wDCt ~ ", paste(factors, collapse = " * "), " + (1 | id) + (1 | block)")
-      )
-    }
-  
-  lm <- lmerTest::lmer(formula, data = x)
-  ANOVA <- stats::anova(lm)
-  
-  #post hoc
-  v <- match(colnames(x), "Time_") 
-  n <- which(!is.na(v))
-  repeatedFactor <- colnames(x)[n]
-  lvls <- unique(x[,n])
-  calibrartor <- lvls[1]
-  
-  on.exit(cat(paste("The level", calibrartor, " of the selected factor was used as calibrator.\n")))
-  pp1 <- emmeans(lm, repeatedFactor, data = x, adjust = p.adj, mode = "satterthwaite")
-  pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
-  if (length(lvls) >= 3){
-    pp3 <- pp2[1:length(lvls) - 1,] 
-  } else {
-    pp3 <- pp2
+    x[seq_len(numOfFactors + 1)] <- lapply(
+      x[seq_len(numOfFactors + 1)],
+      function(col) factor(col, levels = unique(col)))
   }
-  ci <- as.data.frame(stats::confint(graphics::pairs(pp1)), adjust = p.adj)[1:length(lvls)-1,]
-  pp <- cbind(pp3, lower.CL = ci$lower.CL, upper.CL = ci$upper.CL)
   
-  bwDCt <- x$wDCt   
+  factors <- colnames(x)[1:numOfFactors]
+  
+  
+  # Analysis of variance (no blocking factor)
+  if (is.null(block)) {
+    # ANOVA
+    if(analysisType == "anova") {
+      formula_ANOVA <- as.formula(
+        paste("wDCt ~", paste(factors, collapse = " * "))
+      )
+      lm <- lm(formula_ANOVA, data = x)
+      lm_formula <- formula(lm)
+      ANOVA <- stats::anova(lm)
+    }
+    # ANCOVA (other factors as covariates)
+    if (analysisType == "ancova") {
+      formula_ANCOVA <- as.formula(
+        paste("wDCt ~", paste(rev(factors), collapse = " + "))
+      )
+      lm <- lm(formula_ANCOVA, data = x)
+      lm_formula <- formula(lm)
+      ANOVA <- stats::anova(lm)
+    }
+    # Repeated measure
+    if (analysisType == "repeated") {
+        id <- colnames(x)[numOfFactors + 1]
+        formula <- as.formula(
+          paste("wDCt ~ ", paste(factors, collapse = " * "), " + (1 |", id, ")")
+        )
+        lm <- suppressMessages(lmerTest::lmer(formula, data = x))
+        ANOVA <- stats::anova(lm)
+        lm_formula <- formula(lm)
+    }
+  }
+  
+  
+  # Analysis of variance (blocking factor)
+  if (!is.null(block)) {
+    # ANOVA
+    if(analysisType == "anova") {
+      formula_ANOVA <- as.formula(
+        paste("wDCt ~", block, "+", paste(factors, collapse = " * "))
+      )
+      lm <- lm(formula_ANOVA, data = x)
+      lm_formula <- formula(lm)
+      ANOVA <- stats::anova(lm)
+    }
+    # ANCOVA with blocking factor
+    if (analysisType == "ancova") {
+      formula_ANCOVA <- as.formula(
+        paste("wDCt ~", block, "+", paste(rev(factors), collapse = " + "))
+      )
+      lm <- lm(formula_ANCOVA, data = x)
+      lm_formula <- formula(lm)
+      ANOVA <- stats::anova(lm)
+    }
+    # Repeated measure
+    if (analysisType == "repeated") {
+        id <- colnames(x)[numOfFactors + 2]
+        formula <- as.formula(
+          paste("wDCt ~ ", paste(factors, collapse = " * "), " + (1 |", id, ") + (1 |", block,")")
+        )
+      lm <- suppressMessages(lmerTest::lmer(formula, data = x))
+      ANOVA <- stats::anova(lm)
+      lm_formula <- formula(lm)
+    }
+  }
+  
+  
+  pp1 <- suppressMessages(emmeans(lm, colnames(x)[1], data = x, adjust = p.adj, mode = "satterthwaite"))
+  pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
+  pp3 <- pp2[1:length(mainFactor.level.order)-1,]
+  ci  <- as.data.frame(stats::confint(graphics::pairs(pp1)), adjust = p.adj)[1:length(unique(x[,1]))-1,]
+  pp  <- cbind(pp3, lower.CL = ci$lower.CL, upper.CL = ci$upper.CL)
+
+
+  bwDCt <- x$wDCt
   se <- summarise(
-    group_by(data.frame(repeatedFactor = x[n], bwDCt = bwDCt), x[n]),
-    se = stats::sd(bwDCt, na.rm = TRUE)/sqrt(length(bwDCt)))  
-  
-  
+    group_by(data.frame(factor = x[,1], bwDCt = bwDCt), x[,1]),
+    se = stats::sd(bwDCt, na.rm = TRUE)/sqrt(length(bwDCt)))
+
+
   sig <- .convert_to_character(pp$p.value)
   contrast <- pp$contrast
-  post_hoc_test <- data.frame(contrast, 
+  post_hoc_test <- data.frame(contrast,
+                              ddCt = - pp$estimate,
                               RE = 1/(2^-(pp$estimate)),
                               log2FC = log2(1/(2^-(pp$estimate))),
                               pvalue = pp$p.value,
@@ -957,100 +554,62 @@
                               LCL = 1/(2^-pp$lower.CL),
                               UCL = 1/(2^-pp$upper.CL),
                               se = se$se[-1])
-  
-  
-  words <- strsplit(as.character(contrast[1]), " ")[[1]]
-  referencelevel <- words[1]
-  
-  
-  reference <- data.frame(contrast = as.character(referencelevel),
+
+  reference <- data.frame(contrast = mainFactor.level.order[1],
+                          ddCt = 0,
                           RE = 1,
                           log2FC = 0,
-                          pvalue = 1, 
+                          pvalue = 1,
                           sig = " ",
                           LCL = 0,
                           UCL = 0,
                           se = se$se[1])
-  
-  tableC  <- rbind(reference, post_hoc_test)
-  
-  FINALDATA <- x
-  
+
+  tableC <- rbind(reference, post_hoc_test)
+
+  tableC$contrast <- as.character(tableC$contrast)
   tableC$contrast <- sapply(strsplit(tableC$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))
-  
-  
-  
-  tableC$contrast <- factor(tableC$contrast, levels = unique(tableC$contrast))
+
+
+
   contrast <- tableC$contrast
   LCL <- tableC$LCL
   UCL <- tableC$UCL
-  FCp <- as.numeric(tableC$FC)
+  REp <- as.numeric(tableC$RE)
+  FCp <- as.numeric(tableC$log2FC)
   significance <- tableC$sig
   se <- tableC$se
-  
-  
-  tableC <- data.frame(tableC, 
-                       Lower.se.RE = 2^(log2(tableC$RE) - tableC$se), 
-                       Upper.se.RE = 2^(log2(tableC$RE) + tableC$se))  
-  
-  
-  
-  a <- data.frame(tableC, d = 0)
-  
+
+
+  tableC <- data.frame(tableC,
+                       Lower.se.RE = 2^(log2(tableC$RE) - tableC$se),
+                       Upper.se.RE = 2^(log2(tableC$RE) + tableC$se),
+                       Lower.se.log2FC = 0,
+                       Upper.se.log2FC = 0)
+
   for (i in 1:length(tableC$RE)) {
     if (tableC$RE[i] < 1) {
-      a$Lower.se[i] <- (tableC$Upper.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i]
-      a$Upper.se[i] <- (tableC$Lower.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i]
-      a$d[i] <- (tableC$Upper.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i] - 0.2
+      tableC$Lower.se.log2FC[i] <- (tableC$Upper.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i]
+      tableC$Upper.se.log2FC[i] <- (tableC$Lower.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i]
     } else {
-      a$Lower.se[i] <- (tableC$Lower.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i]
-      a$Upper.se[i] <- (tableC$Upper.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i]
-      a$d[i] <- (tableC$Upper.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i] + 0.2
+      tableC$Lower.se.log2FC[i] <- (tableC$Lower.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i]
+      tableC$Upper.se.log2FC[i] <- (tableC$Upper.se.RE[i]*log2(tableC$RE[i]))/tableC$RE[i]
     }
   }
-  pfc1 <- ggplot(a, aes(contrast,RE)) + 
-    geom_col() +
-    geom_errorbar(aes(ymin = tableC$Lower.se.RE, ymax=tableC$Upper.se.RE), width=0.1) +
-    geom_text(aes(label = sig, x = contrast,
-                  y = tableC$Upper.se.RE + 0.2)) +
-    ylab("Relative Expression (DDCt)")
-  pfc2 <- ggplot(a, aes(contrast,log2FC)) +
-    geom_col() +
-    geom_errorbar(aes(ymin = Upper.se, ymax=Lower.se), width=0.1) +
-    geom_text(aes(label = sig, x = contrast,
-                  y = d)) +
-    ylab("log2FC")
-  
-  tableC <- data.frame(tableC, Lower.se.log2FC = a$Lower.se, Upper.se.log2FC = a$Upper.se)
-  
-  
-  
+
+
+
+  #round tableC to 5 decimal places
   tableC <- tableC %>%
-    mutate_if(is.numeric, ~ round(., 4))
+    mutate_if(is.numeric, ~ round(., 5))
   
-  outlist2 <- structure(list(Final_data = x,
-                             lm = lm,
-                             ANOVA_table = ANOVA,
-                             Relative_Expression_table  = tableC,
-                             RE_Plot = pfc1,
-                             log2FC_Plot = pfc2), class = "XX")
   
-  print.XX <- function(outlist2){
-    print(outlist2$ANOVA_table)
-    cat("\n", sep = '',"Expression table", "\n")
-    print(outlist2$Relative_Expression_table)
-    
-    if (plot == TRUE){
-      if(plotType == "RE"){
-        cat("\n", sep = '', "Expression plot", "\n")
-        print(outlist2$RE_Plot)
-      }else{
-        cat("\n", sep = '', "Expression plot", "\n")
-        print(outlist2$log2FC_Plot)
-      }
-    }
-    
-    invisible(outlist2)
-  }
-  print.XX(outlist2)
+  # Type of analysis: ancova or anova
+    outlist2 <- list(Final_data = x,
+                     lm = lm,
+                     ANOVA_table = ANOVA,
+                     Fold_Change  = tableC,
+                     lm_formula = lm_formula)
+
+  invisible(outlist2)
 }

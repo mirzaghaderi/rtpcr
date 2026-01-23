@@ -1,8 +1,8 @@
-#' @title Pairwise comparisons of relative expression values (Delta Ct or Delta Delta Ct) using a fitted model
+#' @title Delta Delta Ct pairwise comparisons using a fitted model
 #'
 #' @description
 #' Performs relative expression (fold change) analysis based on the
-#' \eqn{\Delta C_T} or \eqn{\Delta \Delta C_T} methods using a fitted model object produced by
+#' Delta Delta Ct (ddCt) methods using a fitted model object produced by
 #' \code{ANOVA_DCt()}, \code{ANOVA_DDCt()} or \code{REPEATED_DDCt()}.
 #'
 #' @details
@@ -15,7 +15,7 @@
 #'
 #' Internally, this function relies on the \pkg{emmeans} package to
 #' compute marginal means and contrasts, which are then back-transformed
-#' to fold change values using the \eqn{\Delta \Delta C_T} framework.
+#' to fold change values using the ddCt framework.
 #'
 #' @author
 #' Ghader Mirzaghaderi
@@ -45,41 +45,30 @@
 #' model.
 #'
 #' @examples
+#' 
+#' data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 #'
 #' # Obtain a fitted model from ANOVA_DDCt
 #' res <- ANOVA_DDCt(
-#'   data_3factor,
+#'   data,
 #'   numOfFactors = 3,
 #'   numberOfrefGenes = 1,
 #'   mainFactor.column = 1,
 #'   block = NULL)
 #'
 #' # Relative expression values for Type main effect
-#' Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Type")
+#' lm <- res$perGene$PO$lm
+#' Means_DDCt(lm, specs = "Type")
 #'
 #' # Relative expression values for Concentration main effect
-#' Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc")
+#' Means_DDCt(lm, specs = "Conc")
 #'
 #' # Relative expression values for Concentration sliced by Type
-#' Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type")
+#' Means_DDCt(lm, specs = "Conc | Type")
 #'
 #' # Relative expression values for Concentration sliced by Type and SA
-#' Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type * SA")
+#' Means_DDCt(lm, specs = "Conc | Type * SA")
 #' 
-#' 
-#' 
-#' 
-#' data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
-#' res <- ANOVA_DCt(
-#'   data,
-#'   numOfFactors = 3,
-#'   numberOfrefGenes = 1,
-#'   block = NULL)
-#' 
-#' # lm <- res$perGene$PO$lm_factorial
-#' # Means_DDCt(lm, specs = "Type * Conc * SA", p.adj = "none")
-
-
 
 
 Means_DDCt <- function(model, 
@@ -93,20 +82,17 @@ Means_DDCt <- function(model,
   f <- stats::as.formula(paste("pairwise ~", specs))
   base::suppressMessages(Pv <- emmeans(model, f, adjust = p.adj))
   base::suppressMessages(emm2 <- stats::confint(emmeans(model, f, adjust = p.adj)))
-emm2$contrasts$p.value <- as.data.frame(Pv$contrasts)$p.value
-emm2 <- as.data.frame(emm2$contrasts)
-emm2$estimate <- 2^emm2$estimate
-emm2$lower.CL <- 2^emm2$lower.CL
-emm2$upper.CL <- 2^emm2$upper.CL
-emm2$contrast <- as.character(emm2$contrast)
-emm2$contrast <- sapply(strsplit(emm2$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))
-colnames(emm2)[which(names(emm2) == "lower.CL")] <- "LCL"
-colnames(emm2)[which(names(emm2) == "upper.CL")] <- "UCL"
-#emm2$se = (emm2$UCL - emm2$LCL)/(2*stats::qt(0.975, emm2$df))
-emm2$sig <- .convert_to_character(emm2$p.value)
-colnames(emm2)[which(names(emm2) == "estimate")] <- "RE"
-colnames(emm2)[which(names(emm2) == "FC")] <- "RE"
-return(emm2)
+  emm2$contrasts$p.value <- as.data.frame(Pv$contrasts)$p.value
+  emm2 <- as.data.frame(emm2$contrasts)
+  emm2$estimate <- 2^emm2$estimate
+  emm2$lower.CL <- 2^emm2$lower.CL
+  emm2$upper.CL <- 2^emm2$upper.CL
+  emm2$contrast <- as.character(emm2$contrast)
+  emm2$contrast <- sapply(strsplit(emm2$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))
+  colnames(emm2)[which(names(emm2) == "lower.CL")] <- "LCL"
+  colnames(emm2)[which(names(emm2) == "upper.CL")] <- "UCL"
+  emm2$sig <- .convert_to_character(emm2$p.value)
+  colnames(emm2)[which(names(emm2) == "estimate")] <- "RE"
+  colnames(emm2)[which(names(emm2) == "FC")] <- "RE"
+  return(emm2)
 }
-
-

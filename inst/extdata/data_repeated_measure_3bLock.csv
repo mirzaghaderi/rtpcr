@@ -1,4 +1,4 @@
-treatment,time,blk,id,Target,Target,Ref1,Ref1,Ref2,Ref2
+treatment,time,blk,id,Target,Ct_Target,Ref1,Ct_Ref1,Ref2,Ct_Ref2
 untreated,1,1,1,2,19.24,2,33.73,1.7,33.41
 untreated,1,2,2,2,20.11,2,32.56,1.7,32.17
 untreated,1,2,3,2,20.63,2,33.72,1.7,33.9

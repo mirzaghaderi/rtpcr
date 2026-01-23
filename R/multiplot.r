@@ -29,12 +29,28 @@
 #' @examples
 #'
 #' # Example using output from TTEST_DDCt
-#' data1 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))
-#' a <- TTEST_DDCt(
+#' data1 <- read.csv(system.file("extdata", "data_ttest18genes.csv", package = "rtpcr"))
+#' out <- TTEST_DDCt(
 #'   data1,
-#'   numberOfrefGenes = 1,
-#'   plotType = "log2FC")
-#' p1 <- a$plot
+#'   paired = FALSE,
+#'   var.equal = TRUE,
+#'   numberOfrefGenes = 1)
+#'   
+#' p1 <- plotFactor(out, 
+#'   x_col = "gene",
+#'   y_col = "log2FC", 
+#'   Lower.se_col = "Lower.se.log2FC",
+#'   Upper.se_col = "Upper.se.log2FC", 
+#'   letters_col = "sig")
+#'   
+#' p2 <- plotFactor(out, 
+#'   x_col = "gene",
+#'   y_col = "RE", 
+#'   Lower.se_col = "Lower.se.RE",
+#'   Upper.se_col = "Upper.se.RE", 
+#'   letters_col = "sig")
+#'   
+#'   
 #'
 #' # Example using output from ANOVA_DCt
 #' data2 <- read.csv(system.file("extdata", "data_1factor.csv", package = "rtpcr"))
@@ -44,9 +60,9 @@
 #'   numberOfrefGenes = 1,
 #'   block = NULL)
 #'   
-#' df <- out2$combinedResults
+#' df <- out2$relativeExpression
 #'
-#' p2 <- plotFactor(
+#' p3 <- plotFactor(
 #'   df,
 #'   x_col = "SA",
 #'   y_col = "RE",
@@ -58,12 +74,12 @@
 #'   err_width = 0.15,
 #'   fill_colors = "skyblue",
 #'   alpha = 1,
-#'   base_size = 16)
+#'   base_size = 14)
 #'
 #' # Combine plots into a single layout
 #' multiplot(p1, p2, cols = 2)
 #'
-#' multiplot(p1, p2, cols = 1)
+#' multiplot(p1, p3, cols = 2)
 
 
 

@@ -1,4 +1,4 @@
-Genotype,Drought,Rep,PO,PO,GAPDH,GAPDH
+Genotype,Drought,Rep,PO,Ct_PO,GAPDH,Ct_GAPDH
 R,D0,1,2,33.3,2,31.53
 R,D0,2,2,33.39,2,31.57
 R,D0,3,2,33.34,2,31.5

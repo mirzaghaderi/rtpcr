@@ -27,7 +27,8 @@
 #' @param col_width Numeric. Width of bars (default \code{0.8})
 #' @param err_width Numeric. Width of error bars (default \code{0.15})
 #' @param dodge_width Numeric. Width of dodge for grouped bars (default \code{0.8})
-#' @param fill_colors Optional vector of fill colors
+#' @param fill_colors Optional vector of fill colors to change the default colors
+#' @param color Optional color for the bar outline
 #' @param alpha Numeric. Transparency of bars (default \code{1})
 #' @param base_size Numeric. Base font size for theme (default \code{12})
 #' @param legend_position Character or numeric vector. Legend position (default \code{right})
@@ -36,45 +37,46 @@
 #' @return ggplot2 plot object
 #' 
 #' @examples
-#' data <- read.csv(system.file("extdata", "data_2factorBlock.csv", package = "rtpcr"))
-#' res <- ANOVA_DCt(data, 
-#'     numOfFactors = 2,
-#'     block = "block",
-#'     numberOfrefGenes = 1)
-#'     
-#' df <- res$combinedResults
+#' data <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
+#' 
+#' res <- ANOVA_DDCt(x = data,
+#'   numOfFactors = 2,
+#'   numberOfrefGenes = 2,
+#'   block = "block",
+#'   mainFactor.column = 2,
+#'   p.adj = "none")
+#' 
+#' df <- res$relativeExpression
 #' 
 #' p1 <- plotFactor(
 #'   data = df,
-#'   x_col = "factor2",
+#'   x_col = "contrast",
 #'   y_col = "RE",
-#'   group_col = "factor1",
+#'   group_col = "gene",
+#'   facet_col = "gene",
 #'   Lower.se_col = "Lower.se.RE",
 #'   Upper.se_col = "Upper.se.RE",
 #'   letters_col = "sig",
 #'   letters_d = 0.2,
-#'   fill_colors = c("aquamarine4", "gold2"),
 #'   alpha = 1,
 #'   col_width = 0.7,
 #'   dodge_width = 0.7,
-#'   base_size = 16, 
-#'   legend_position = c(0.2, 0.8))
-#'   
+#'   base_size = 14, 
+#'   legend_position = "none")
+#' 
 #' p1
 #' 
 #' 
-#' 
-#' data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
+#' data2 <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 #' #Perform analysis first
 #' res <- ANOVA_DCt(
-#'   data,
+#'   data2,
 #'   numOfFactors = 3,
 #'   numberOfrefGenes = 1,
 #'   block = NULL)
 #'   
-#' df <- res$combinedResults
-#'  df
-#'  # Generate three-factor bar plot
+#' df <- res$relativeExpression
+#' # Generate three-factor bar plot
 #'  p <- plotFactor(
 #'   df,
 #'   x_col = "SA",       
@@ -87,14 +89,12 @@
 #'   letters_d = 0.3,
 #'   col_width = 0.7, 
 #'   dodge_width = 0.7,
-#'   fill_colors = c("blue", "brown"),
+#'   #fill_colors = c("blue", "brown"),
+#'   color = "black",
 #'   base_size = 14, 
 #'   alpha = 1,
 #'   legend_position = c(0.1, 0.2))
 #' p
-#' library(ggplot2)
-#' p + theme(
-#'   panel.border = element_rect(color = "black", linewidth = 0.5))
 #'   
 plotFactor <- function(data,
                        x_col,
@@ -109,6 +109,7 @@ plotFactor <- function(data,
                        err_width = 0.15,
                        dodge_width = 0.8,
                        fill_colors = NULL,
+                       color = "black",
                        alpha = 1,
                        base_size = 12,
                        legend_position = "right",
@@ -135,10 +136,17 @@ plotFactor <- function(data,
     data[[letters_col]] <- as.character(data[[letters_col]])
   }
   
+  
+  # To factor:
+  data[] <- lapply(data, function(data) {
+    if (is.character(data)) factor(data, levels = unique(data)) else data
+  })
+
+  
   # 1-factor plot
   if (is.null(group_col) && is.null(facet_col)) {
     p <- ggplot(data, aes(x = .data[[x_col]], y = .data[[y_col]])) +
-      geom_col(width = col_width, fill = fill_colors[1] %||% "grey40", alpha = alpha, ...)
+      geom_col(width = col_width, fill = fill_colors[1] %||% "grey40", alpha = alpha, color = color, ...)
     p <- p + geom_errorbar(aes(ymin = ymin, ymax = ymax), width = err_width)
     
     if (!is.null(letters_col)) {
@@ -161,6 +169,7 @@ plotFactor <- function(data,
         fill_colors = fill_colors,
         dodge_width = dodge_width,
         alpha = alpha,
+        color = color,
         ...
       )
     
@@ -177,5 +186,19 @@ plotFactor <- function(data,
     }
   }
   
-  p + .theme_pub(base_size = base_size, legend_position = legend_position)
+  if(y_col == "log2FC" && any(data$log2FC < 0)){
+    p <- p + scale_y_continuous(expand = expansion(mult = c(0.05, 0.05)))
+  } else {
+    p <- p + scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
+  }
+  p + 
+    .theme_pub(base_size = base_size, legend_position = legend_position) +
+    xlab(NULL) +
+    theme(axis.text.x = element_text(size = base_size, color = "black", angle = 45, hjust = 1),
+          axis.text.y = element_text(size = base_size,color = "black", angle = 0),
+          panel.border = element_rect(color = "black"),
+          legend.text = element_text(colour = "black", size = base_size),
+          legend.background = element_rect(fill = "transparent"),
+          strip.background = element_blank(),            # removes the faceting gray background
+          strip.text = element_text(size = base_size))   # keeps the text visible
 }

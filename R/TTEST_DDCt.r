@@ -57,39 +57,58 @@
 #'
 #' @param order
 #' Optional character vector specifying the order of genes in the output plot.
-#'
-#' @param plotType
-#' Plot scale to use: \code{"RE"} for relative expression or
-#' \code{"log2FC"} for log2 fold change.
+#' 
+#' @details
+#' All the functions for relative expression analysis (including `TTEST_DDCt()`, 
+#' `WILCOX_DDCt()`, `ANOVA_DDCt()`, `ANCOVA_DDCt()`, `REPEATED_DDCt()`, and `ANOVA_DCt()`) return the 
+#' relative expression table which include fold change and corresponding 
+#' statistics. The output of `ANOVA_DDCt()`, `ANCOVA_DDCt()`, `ANCOVA_DDCt()`, `REPEATED_DDCt()`, 
+#' and `ANOVA_DCt()` also include lm models, residuals, raw data and ANOVA table 
+#' for each gene. 
+#' 
+#' The expression table returned by `TTEST_DDCt()`, 
+#' `WILCOX_DDCt()`, `ANOVA_DDCt()`, `ANCOVA_DDCt()`, and `REPEATED_DDCt()` functions 
+#' include these columns: gene (name of target genes), 
+#' contrast (calibrator level and contrasts for which the relative expression is computed), 
+#' RE (relative expression or fold change),  log2FC (log(2) of relative expression or fold change), 
+#' pvalue, sig  (per-gene significance), LCL (95\% lower confidence level), UCL (95\% upper confidence level),
+#' se (standard error of mean calculated from the weighted delta Ct values of each of the main factor levels),
+#' Lower.se.RE (The lower limit error bar for RE which is 2^(log2(RE) - se)), 
+#' Upper.se.RE (The upper limit error bar for RE which is 2^(log2(RE) + se)),
+#' Lower.se.log2FC (The lower limit error bar for log2 RE), and 
+#' Upper.se.log2FC (The upper limit error bar for log2 RE)
+#' 
 #'
 #' @return
 #' A list with the following components:
 #' \describe{
 #'   \item{Result}{Table containing RE values, log2FC, p-values, significance codes,
 #'   confidence intervals, standard errors, and lower/upper SE limits.}
-#'   \item{RE_Plot}{Bar plot of relative expression values.}
-#'   \item{log2FC_Plot}{Bar plot of log2 fold change values.}
 #' }
 #'
 #' @references
-#' Livak, K. J. and Schmittgen, T. D. (2001).
+#' LivakKJ, Schmittgen TD (2001).
 #' Analysis of Relative Gene Expression Data Using Real-Time Quantitative PCR
 #' and the Double Delta CT Method.
 #' \emph{Methods}, 25(4), 402–408.
 #' doi:10.1006/meth.2001.1262
 #'
-#' Ganger, M. T., Dietz, G. D., and Ewing, S. J. (2017).
+#' Ganger MT, Dietz GD, and Ewing SJ (2017).
 #' A common base method for analysis of qPCR data and the application of
 #' simple blocking in qPCR experiments.
 #' \emph{BMC Bioinformatics}, 18, 1–11.
-#'
-#' Yuan, J. S., Reed, A., Chen, F., and Stewart, N. (2006).
+#' 
+#' Taylor SC, Nadeau K, Abbasi M, Lachance C, Nguyen M, Fenrich, J. (2019). 
+#' The ultimate qPCR experiment: producing publication quality, reproducible 
+#' data the first time. \emph{Trends in Biotechnology}, 37, 761-774. 
+#' 
+#' Yuan JS, Reed A, Chen F, Stewart N (2006).
 #' Statistical Analysis of Real-Time PCR Data.
 #' \emph{BMC Bioinformatics}, 7, 85.
 #'
 #' @examples
 #' # Example data structure
-#' data1 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))
+#' data1 <- read.csv(system.file("extdata", "data_ttest18genes.csv", package = "rtpcr"))
 #'
 #' # Unpaired t-test
 #' TTEST_DDCt(
@@ -103,17 +122,13 @@
 #'
 #' TTEST_DDCt(
 #'   data2,
-#'   paired = FALSE,
-#'   var.equal = TRUE,
 #'   numberOfrefGenes = 1)
 #'
 #' # Two reference genes
 #' data3 <- read.csv(system.file("extdata", "data_1factor_Two_ref.csv", package = "rtpcr"))
 #' TTEST_DDCt(
 #'   data3,
-#'   numberOfrefGenes = 2,
-#'   var.equal = TRUE,
-#'   p.adj = "BH")
+#'   numberOfrefGenes = 2)
 
 
 
@@ -124,14 +139,13 @@ TTEST_DDCt <- function(x,
                        paired = FALSE,
                        var.equal = TRUE,
                        p.adj = "none",
-                       order = "none",
-                       plotType = "RE") {
+                       order = "none") {
   
   stopifnot(is.data.frame(x))
   stopifnot(numberOfrefGenes >= 1)
   
   
-  ## Factor handling
+  # Factor handling
   if (is.null(Factor.level.order)) {
     x[, 1] <- factor(x[, 1], levels = unique(x[, 1]))
     calibrator <- x[, 1][1]
@@ -146,7 +160,7 @@ TTEST_DDCt <- function(x,
   )))
   
   
-  ## Column structure
+  # Column structure
   nc <- ncol(x)
   
   nTargets <- (nc - 2 - numberOfrefGenes * 2) / 2
@@ -163,16 +177,16 @@ TTEST_DDCt <- function(x,
   
   gene_names <- sub("_E$", "", colnames(x)[seq(target_start, target_end, by = 2)])
   
-  ## Replicates per condition
+  # Replicates per condition
   r <- table(x[, 1])[1]
   
   
-  ## Result container
+  # Result container
   res <- matrix(NA, nrow = nTargets, ncol = 7)
-  colnames(res) <- c("Gene", "dif", "RE", "LCL", "UCL", "pvalue", "se")
+  colnames(res) <- c("gene", "ddCt", "RE", "LCL", "UCL", "pvalue", "se")
   
   
-  ## Loop over targets
+  # Loop over targets
   for (i in seq_len(nTargets)) {
     
     E_col  <- target_start + (i - 1) * 2
@@ -182,7 +196,7 @@ TTEST_DDCt <- function(x,
     tmp <- x[, c(1, 2, E_col, Ct_col, ref_start:nc)]
     
     ## Compute wDCt using helper
-    tmp <- .compute_wDCt(
+    tmp <- compute_wDCt(
       x = tmp,
       numOfFactors = 1, 
       numberOfrefGenes = numberOfrefGenes, 
@@ -215,12 +229,12 @@ TTEST_DDCt <- function(x,
   }
   
   
-  ## Result table
+  # Result table
   res <- as.data.frame(res)
-  num_cols <- c("RE", "LCL", "UCL", "pvalue", "se")
+  num_cols <- c("ddCt", "RE", "LCL", "UCL", "pvalue", "se")
   res[num_cols] <- lapply(res[num_cols], as.numeric)
   
-  res$dif <- NULL
+  # res$dif <- NULL
   
   res <- transform(
     res,
@@ -232,18 +246,15 @@ TTEST_DDCt <- function(x,
   
   res$sig <- cut(
     res$pvalue,
-    breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
-    labels = c("***", "**", "*", " ")
+    breaks = c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf),
+    labels = c("***", "**", "*", ".", " ")
   )
-  default.order <- unique(res$Gene)[-length(unique(res$Gene))]
+  default.order <- unique(res$Gene)      
   
   
-  
-  
-  
-  #-------------------- 
+
   a <- data.frame(res, d = 0, Lower.se.log2FC = 0, Upper.se.log2FC = 0)
-  res$Lower.se
+  
   for (i in 1:length(res$RE)) {
     if (res$RE[i] < 1) {
       a$Lower.se.log2FC[i] <- (res$Upper.se.RE[i]*log2(res$RE[i]))/res$RE[i]
@@ -259,51 +270,10 @@ TTEST_DDCt <- function(x,
   res <- data.frame(res, 
                     Lower.se.log2FC = a$Lower.se.log2FC,
                     Upper.se.log2FC = a$Upper.se.log2FC)
-  #-----------------
+
   
+  Result <- res %>%
+    dplyr::mutate_if(is.numeric, ~ round(., 5))
   
-  ## Plotting
-  df2 <- res
-  
-  if (any(order == "none")) {
-    df2$Gene <- factor(df2$Gene, levels = default.order)
-  } else {
-    df2$Gene <- factor(df2$Gene, levels = order)
-  }
-  
-  df2 <- df2[order(df2$Gene), ]
-  
-  
-  df2 <- data.frame(df2, d = 0)
-  for (i in 1:length(df2$RE)) {
-    if (df2$RE[i] < 1) {
-      df2$d[i] <- (df2$Upper.se.RE[i]*log2(df2$RE[i]))/df2$RE[i] - 0.2
-    } else {
-      df2$d[i] <- (df2$Upper.se.RE[i]*log2(df2$RE[i]))/df2$RE[i] + 0.2
-    }
-  }
-  
-  if (plotType == "RE") {
-    p <- ggplot(df2, aes(Gene, RE)) +
-      geom_col() +
-      geom_errorbar(aes(ymin = Lower.se.RE, ymax = Upper.se.RE), width = 0.1) +
-      geom_text(aes(label = sig, y = Upper.se.RE + 0.2)) +
-      ylab("Relative expression (DDCt method)")
-  }
-  
-  if (plotType == "log2FC") {
-    p <- ggplot(df2, aes(Gene, log2FC)) +
-      geom_col() +
-      geom_errorbar(
-        aes(ymin = log2(Lower.se.RE), ymax = log2(Upper.se.RE)),
-        width = 0.1
-      ) +
-      geom_text(aes(label = sig, y = d)) + 
-      ylab("log2 fold change")
-  }
-  
-  res <- res %>%
-    dplyr::mutate_if(is.numeric, ~ round(., 4))
-  
-  return(list(Result = res, plot = p))
+  Result
 }

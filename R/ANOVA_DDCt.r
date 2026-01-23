@@ -1,18 +1,16 @@
 #' Delta Delta Ct ANOVA analysis
 #'
-#' Apply \eqn{\Delta \Delta C_T} analysis to each target gene
-#' in the input data frame. Target and reference genes must be provided as paired
-#' efficiency (E) and Ct columns located after the experimental design columns.
-#' columns.
+#' Apply Delta Delta Ct (ddCt) analysis to each target gene
+#' and performs per-gene statistical analysis.
 #'
-#' @param x A data frame containing experimental design columns, target gene
-#'   E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene
-#'   columns must be located at the end of the data frame. 
+#' @param x The input data frame containing experimental design columns, replicates (integer), target gene
+#' E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene
+#' columns must be located at the right end of the data frame. See "Input data 
+#' structure" in vignettes for details about data structure.
 #' @param numOfFactors Integer. Number of experimental factor columns
-#'   (excluding \code{rep} and optional \code{block}).
-#' @param numberOfrefGenes Integer. Number of reference genes. Each reference gene
-#'   must be represented by two columns (E and Ct).
-#' @param block Character or \code{NULL}. Name of the blocking factor column.
+#' (excluding \code{rep} and optional \code{block}).
+#' @param numberOfrefGenes Integer. Number of reference genes.
+#' @param block Character. Block column name or \code{NULL}. 
 #' When a qPCR experiment is done in multiple qPCR plates, 
 #' variation resulting from the plates may interfere with the actual amount of 
 #' gene expression. One solution is to conduct each plate as a randomized block 
@@ -20,8 +18,7 @@
 #' on a plate. Block effect is usually considered as random and its interaction 
 #' with any main effect is not considered.
 #' @param mainFactor.column
-#' Column index or name of the factor for which relative expression is calculated.
-#' When \code{analysisType = "ancova"}, remaining factors are treated as covariates.
+#' Integer. Column index of the factor for which the relative expression analysis is applied.
 #' @param mainFactor.level.order
 #' Optional character vector specifying the order of levels for the main factor.
 #' If \code{NULL}, the first observed level is used as the calibrator.
@@ -30,48 +27,70 @@
 #' If \code{TRUE} (default), all target genes are analysed.
 #' Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
 #' to be analysed.
-#' @param analysisType
-#' Character string specifying the analysis type; one of \code{"anova"} (default)
-#' or \code{"ancova"}.
 #' @param p.adj
 #' Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.
-#' @param plot
-#' Logical; if \code{FALSE}, per gene-plots are not generated.
-#' @param plotType
-#' Plot scale to use: \code{"RE"} for relative expression or
-#' \code{"log2FC"} for log2 fold change.
 #' 
 #' @importFrom stats setNames
 #'
 #' @details
-#' \eqn{\Delta \Delta C_T} analysis is performed for 
+#' ddCt analysis of variance (ANOVA) is performed for 
 #' the \code{mainFactor.column} based on a full model factorial 
-#' experiment by default. However, if \code{ancova}, the \code{analysisType} argument,
+#' experiment by default. However, if \code{ANCOVA_DDCt} function is used, 
 #' analysis of covariance is performed for the levels of the \code{mainFactor.column} and the other factors are 
-#' treated as covariates. if the interaction between the main factor and the covariate is significant, ANCOVA is not appropriate. 
-#' ANCOVA is basically used when a factor is affected by uncontrolled quantitative covariate(s). 
-#' For example, suppose that wDCt of a target gene in a plant is affected by temperature. The gene may 
-#' also be affected by drought. Since we already know that temperature affects the target gene, we are 
-#' interested to know if the gene expression is also altered by the drought levels. We can design an 
-#' experiment to understand the gene behavior at both temperature and drought levels at the same time. 
-#' The drought is another factor (the covariate) that may affect the expression of our gene under the 
-#' levels of the first factor i.e. temperature. The data of such an experiment can be analyzed by ANCOVA 
-#' or using ANOVA based on a factorial experiment. ANCOVA is done  
-#' even there is only one factor (without covariate or factor  variable).
+#' treated as covariates. if the interaction between the main factor and the covariate is significant, ANCOVA is not appropriate.
+#' 
+#' All the functions for relative expression analysis (including `TTEST_DDCt()`, 
+#' `WILCOX_DDCt()`, `ANOVA_DDCt()`, `ANCOVA_DDCt()`, `REPEATED_DDCt()`, and `ANOVA_DCt()`) return the 
+#' relative expression table which include fold change and corresponding 
+#' statistics. The output of `ANOVA_DDCt()`, `ANCOVA_DDCt()`, `ANCOVA_DDCt()`, `REPEATED_DDCt()`, 
+#' and `ANOVA_DCt()` also include lm models, residuals, raw data and ANOVA table 
+#' for each gene. 
+#' 
+#' The expression table returned by `TTEST_DDCt()`, 
+#' `WILCOX_DDCt()`, `ANOVA_DDCt()`, `ANCOVA_DDCt()`, and `REPEATED_DDCt()` functions 
+#' include these columns: gene (name of target genes), 
+#' contrast (calibrator level and contrasts for which the relative expression is computed), 
+#' ddCt (mean of weighted delta delta Ct values), RE (relative expression or 
+#' fold change = 2^-ddCt),  log2FC (log(2) of relative expression or fold change), 
+#' pvalue, sig (per-gene significance), LCL (95\% lower confidence level), UCL (95\% upper confidence level),
+#' se (standard error of mean calculated from the weighted delta Ct values of each of the main factor levels),
+#' Lower.se.RE (The lower limit error bar for RE which is 2^(log2(RE) - se)), 
+#' Upper.se.RE (The upper limit error bar for RE which is 2^(log2(RE) + se)),
+#' Lower.se.log2FC (The lower limit error bar for log2 RE), and 
+#' Upper.se.log2FC (The upper limit error bar for log2 RE)
 #'
 #' @import emmeans
 #' @return
-#' An object containing expression table, lm models, residuals, raw data and ANOVA table for each gene.
+#' An object containing expression table, lm model, residuals, raw data and ANOVA table for each gene:
 #' \describe{  
-#' \item{\eqn{\Delta \Delta C_T} combined expression table}{\code{object$combinedFoldChange}}
+#' \item{ddCt expression table along with per-gene statistical comparison outputs}{\code{object$relativeExpression}}
 #' \item{ANOVA table}{\code{object$perGene$gene_name$ANOVA_table}}
-#' \item{lm ANOVA}{\code{object$perGene$gene_name$lm_ANOVA}}
-#' \item{lm ANCOVA}{\code{object$perGene$gene_name$lm_ANCOVA}}
-#' \item{Residuals}{\code{resid(object$perGene$gene_name$lm_ANOVA)}}
-#' \item{log2FC_Plot}{\code{object$perGene$gene_name$log2FC_Plot}}
-#' \item{RE_Plot}{\code{object$perGene$gene_name$RE_Plot}}
+#' \item{lm ANOVA}{\code{object$perGene$gene_name$lm}}
+#' \item{lm_formula}{\code{object$perGene$gene_name$lm_formula}}
+#' \item{Residuals}{\code{resid(object$perGene$gene_name$lm)}}
 #' }
 #' @export
+#' 
+#' @references
+#' LivakKJ, Schmittgen TD (2001).
+#' Analysis of Relative Gene Expression Data Using Real-Time Quantitative PCR
+#' and the Double Delta CT Method.
+#' \emph{Methods}, 25(4), 402–408.
+#' doi:10.1006/meth.2001.1262
+#'
+#' Ganger MT, Dietz GD, and Ewing SJ (2017).
+#' A common base method for analysis of qPCR data and the application of
+#' simple blocking in qPCR experiments.
+#' \emph{BMC Bioinformatics}, 18, 1–11.
+#' 
+#' Taylor SC, Nadeau K, Abbasi M, Lachance C, Nguyen M, Fenrich, J. (2019). 
+#' The ultimate qPCR experiment: producing publication quality, reproducible 
+#' data the first time. \emph{Trends in Biotechnology}, 37, 761-774. 
+#' 
+#' Yuan JS, Reed A, Chen F, Stewart N (2006).
+#' Statistical Analysis of Real-Time PCR Data.
+#' \emph{BMC Bioinformatics}, 7, 85.
+#'
 #' 
 #' @examples
 #' data1 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
@@ -80,17 +99,14 @@
 #'            numberOfrefGenes = 2,
 #'            block = "block",
 #'            mainFactor.column = 2,
-#'            plot = FALSE,
 #'            p.adj = "none")
 #'            
 #' data2 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))          
-#' ANOVA_DDCt(
-#'            x = data2,
+#' ANOVA_DDCt(x = data2,
 #'            numOfFactors = 1,
 #'            numberOfrefGenes = 1,
 #'            block = NULL,
 #'            mainFactor.column = 1,
-#'            plot = FALSE,
 #'            p.adj = "none")
 #'            
 
@@ -102,11 +118,8 @@ ANOVA_DDCt <- function(
     numberOfrefGenes,
     mainFactor.column,
     block,
-    analysisType = "anova",
     mainFactor.level.order = NULL,
     p.adj = "none",
-    plot = FALSE,
-    plotType = "RE",
     analyseAllTarget = TRUE
 ) {
   
@@ -150,17 +163,15 @@ ANOVA_DDCt <- function(
     
     gene_df <- x[, c(designCols, tc, refCols), drop = FALSE]
     
-    res <- .ANOVA_DDCt_uniTarget(
+    res <- .ANOVA(
       x = gene_df,
       numOfFactors = numOfFactors,
       numberOfrefGenes = numberOfrefGenes,
       mainFactor.column = mainFactor.column,
-      analysisType = analysisType,
+      analysisType = "anova",
       mainFactor.level.order = mainFactor.level.order,
       block = block,
-      p.adj = p.adj,
-      plot = plot,
-      plotType = plotType
+      p.adj = p.adj
     )
     
     res$Fold_Change$gene <- gene_name
@@ -169,21 +180,21 @@ ANOVA_DDCt <- function(
   
 
   # Combine fold-change tables
-  combinedFoldChange <- do.call(rbind, lapply(perGene, function(g) g$Fold_Change))
-  rownames(combinedFoldChange) <- NULL
+  relativeExpression <- do.call(rbind, lapply(perGene, function(g) g$Fold_Change))
+  rownames(relativeExpression) <- NULL
   
-  combinedFoldChange <- combinedFoldChange[, c(ncol(combinedFoldChange), 1:(ncol(combinedFoldChange) - 1))]
+  relativeExpression <- relativeExpression[, c(ncol(relativeExpression), 1:(ncol(relativeExpression) - 1))]
   
   # Print automatically
   cat("\nRelative Expression\n")
-  print(combinedFoldChange)
+  print(relativeExpression)
   
   # Return list with all results
   res_list <- list(
     perGene = setNames(perGene, targetNames),
-    combinedFoldChange = combinedFoldChange
+    relativeExpression = relativeExpression
   )
-  
+  on.exit(cat(paste("The", res_list$relativeExpression$contrast[1], "level was used as calibrator.\n")))
   invisible(res_list)
 }
 

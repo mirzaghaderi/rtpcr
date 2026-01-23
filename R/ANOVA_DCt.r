@@ -1,22 +1,33 @@
 #' Delta Ct ANOVA analysis
 #'
-#' Performs \eqn{\Delta C_T} analysis for target genes by
-#' applying \eqn{\Delta C_T} method to each target gene. Target genes must be provided as paired
-#' efficiency (E) and Ct columns followed by the the reference gene(s) columns. 
-#' See "Input data structure and column arrangement" in vignettes for details about data structure.
-#'
-#' @param x A data frame containing experimental design columns, target gene
-#'   E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene
-#'   columns must be located at the end of the data frame.
-#' @param numOfFactors Integer. Number of experimental factor columns
-#'   (excluding \code{rep} and optional \code{block}).
+#' Performs Delta Ct (dCt) analysis of the data from a 1-, 2-, or 3-factor experiment. 
+#' Per-gene statistical grouping is also performed for all treatment (T) combinations.
+#' @details
+#' The function returns analysis of variance components and the expression table which include these columns: gene (name 
+#' of target genes), factor columns, dCt (mean weighted delta Ct for each 
+#' treatment combination), RE (relative expression = 2^-dCt), log2FC 
+#' (log(2) of relative expression), 
+#' LCL (95\% lower confidence level), UCL (95\% upper confidence level),
+#' se (standard error of the mean calculated from the weighted delta Ct (wDCt) values of each treatment combination),
+#' Lower.se.RE (The lower limit error bar for RE which is 2^(log2(RE) - se)), 
+#' Upper.se.RE (The upper limit error bar for RE which is 2^(log2(RE) + se)),
+#' Lower.se.log2FC (The lower limit error bar for log2 RE), 
+#' Upper.se.log2FC (The upper limit error bar for log2 RE), and sig (per-gene significance grouping letters).
+#' 
+#' 
+#' @param x The input data frame containing experimental design columns, target gene
+#' E/Ct column pairs, and reference gene E/Ct column pairs. Reference gene
+#' columns must be located at the end of the data frame. See "Input data 
+#' structure" in vignettes for details about data structure.
+#' @param numOfFactors Integer. Number of experimental factor columns 
+#' (excluding \code{rep} and optional \code{block}).
 #' @param numberOfrefGenes Integer. Number of reference genes. Each reference gene
 #'   must be represented by two columns (E and Ct).
 #' @param analyseAllTarget Logical or character.
-#'   If \code{TRUE} (default), all detected target genes are analysed.
-#'   Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
-#'   to be analysed.
-#' @param block Character or \code{NULL}. Name of the blocking factor column.
+#' If \code{TRUE} (default), all detected target genes are analysed.
+#' Alternatively, a character vector specifying the names (names of their 
+#' Efficiency columns) of target genes to be analysed.
+#' @param block  Character. Block column name or \code{NULL}.
 #' When a qPCR experiment is done in multiple qPCR plates, 
 #' variation resulting from the plates may interfere with the actual amount of 
 #' gene expression. One solution is to conduct each plate as a randomized block 
@@ -31,9 +42,9 @@
 #' @importFrom stats setNames
 #'
 #' @return
-#' An object containing expression table, lm models, ANOVA tables, residuals, raw data and ANOVA table for each gene. 
+#' An object containing expression table, lm models, ANOVA table, residuals, and raw data for each gene:
 #' \describe{
-#' \item{\eqn{\Delta C_T} combined expression table}{\code{object$combinedResults}}
+#' \item{dCt expression table for all treatment combinations along with the per-gene statistical grouping}{\code{object$relativeExpression}}
 #' \item{ANOVA table for treatments}{\code{object$perGene$gene_name$ANOVA_T}}
 #' \item{ANOVA table factorial}{\code{object$perGene$gene_name$ANOVA_factorial}}
 #' \item{lm ANOVA for tratments}{\code{object$perGene$gene_name$lm_T}}
@@ -130,22 +141,22 @@ ANOVA_DCt <- function(
   
 
   # Combine results for all genes
-  combinedResults <- do.call(rbind, lapply(perGene, function(g) g$Results))
-  rownames(combinedResults) <- NULL
+  relativeExpression <- do.call(rbind, lapply(perGene, function(g) g$Results))
+  rownames(relativeExpression) <- NULL
   
-  re_col <- which(names(combinedResults) == "RE")
+  re_col <- which(names(relativeExpression) == "RE")
   
-  combinedResults <- combinedResults[, c(ncol(combinedResults), 1:(ncol(combinedResults) - 1))]
+  relativeExpression <- relativeExpression[, c(ncol(relativeExpression), 1:(ncol(relativeExpression) - 1))]
   
 
   # Print combined results automatically
-  cat("\nCombined Expression Table (all genes)\n")
-  print(combinedResults)
+  cat("\nRelative Expression\n")
+  print(relativeExpression)
   
 
   # Return full structured object invisibly
   invisible(list(
     perGene = setNames(perGene, targetNames),  # All individual gene outputs with models
-    combinedResults = combinedResults          # Combined table
+    relativeExpression = relativeExpression          # Combined table
   ))
 }

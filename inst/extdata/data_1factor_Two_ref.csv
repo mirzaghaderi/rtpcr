@@ -1,4 +1,4 @@
-Condition,Rep,DER5,DER5,Actin,Actin,HPRT,HPRT
+Condition,Rep,DER5,Ct_DER5,Actin,Ct_Actin,HPRT,Ct_HPRT
 control,1,2,31.26,2,28.74,2,29
 control,2,2,31.01,2,28.85,2,28
 control,3,2,30.97,2,28.63,2,28.5

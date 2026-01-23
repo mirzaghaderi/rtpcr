@@ -1,4 +1,4 @@
-#' @title Calculate mean of technical replicates
+#' @title Computing the mean of technical replicates
 #'
 #' @description
 #' Computes the arithmetic mean of technical replicates for each sample or group.
@@ -20,8 +20,9 @@
 #' @import dplyr
 #' @import reshape2
 #'
-#' @param x
-#' A raw data frame containing technical replicates.
+#' @param x A raw data frame containing technical replicates.
+#' @param numOfFactors Integer. Number of experimental factor columns
+#' @param block Character. Block column name or \code{NULL}. 
 #'
 #' @param groups
 #' An integer vector or character vector specifying the column(s) to group
@@ -36,15 +37,22 @@
 #' data1 <- read.csv(system.file("extdata", "data_withTechRep.csv", package = "rtpcr"))
 #'
 #' # Calculate mean of technical replicates using first four columns as groups
-#' meanTech(data1, groups = 1:4)
+#' meanTech(data1,
+#'          groups = 1:2,
+#'          numOfFactors = 1,
+#'          block = NULL)
 #' 
 #' # Another example using different dataset and grouping columns
-#' data2 <- read.csv(system.file("extdata", "Lee_etal2020qPCR.csv", package = "rtpcr"))
-#' meanTech(data2, groups = 1:3)
+#' data2 <- read.csv(system.file("extdata", "data_Lee_etal2020qPCR.csv", package = "rtpcr"))
+#' meanTech(data2, groups = 1:3,
+#'          numOfFactors = 2,
+#'          block = NULL)
 
 
-meanTech <- function(x, groups){
+meanTech <- function(x, groups, numOfFactors, block){
 
+  x <- .cleanup(x, numOfFactors, block)
+  
   g <- colnames(x)[groups]
 
   # Concatenate the columns using paste0

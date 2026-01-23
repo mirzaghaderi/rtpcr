@@ -22,7 +22,7 @@ library(rtpcr)
 Tools for analysis of RT-qPCR gene expression data using $\Delta Ct$ and $\Delta\Delta Ct$ methods,
 including t-tests, ANOVA, ANCOVA, repeated-measures models, and
 publication-ready visualizations. The package implements a general calculation
-method described by Ganger et al. (2017) and Taylor et al. (2019), covering
+method adopted from Ganger et al. (2017) and Taylor et al. (2019), covering
 both the Livak and Pfaffl methods. See the [calculation method](Method.html) for details.
 
 
@@ -32,15 +32,19 @@ The `rtpcr` package gets efficiency (E) the Ct values of genes and performs diff
 
 | Function            | Description                                                  |
 |---------------------|--------------------------------------------------------------|
-| `ANOVA_DCt`         | $\Delta Ct$ ANOVA analysis                                           |
-| `ANOVA_DDCt`        | $\Delta\Delta Ct$ ANOVA analysis                                          |
-| `REPEATED_DDCt`     | $\Delta\Delta Ct$ ANOVA analysis for repeated-measures data               |
-| `TTEST_DDCt`        | $\Delta\Delta Ct$ method *t*-test analysis                                |
+| `ANOVA_DCt`     | $\Delta Ct$ ANOVA analysis   |
+| `ANOVA_DDCt`    | $\Delta\Delta Ct$ ANOVA analysis  |
+| `ANCOVA_DDCt`    | $\Delta\Delta Ct$ ANCOVA analysis  |
+| `REPEATED_DDCt` | $\Delta\Delta Ct$ ANOVA analysis for repeated-measures data  |
+| `TTEST_DDCt`    | $\Delta\Delta Ct$ method *t*-test analysis   |
+| `WILCOX_DDCt`         | $\Delta\Delta Ct$ method wilcox.test analysis    |
 | `plotFactor`        | Bar plot of gene expression for one-, two- or three-factor experiments    |
 | `Means_DDCt`        | Pairwise comparison of RE values for any user-specified effect |
-| `efficiency`        | Amplification efficiency statistics and standard curves      |
-| `meanTech`          | Calculate mean of technical replicates                       |
-| `multiplot`         | Combine multiple ggplot objects into a single layout          |
+| `efficiency`        | Amplification efficiency statistics and standard curves     |
+| `meanTech`          | Calculate mean of technical replicates     |
+| `multiplot`         | Combine multiple ggplot objects into a single layout   |
+| `compute_wDCt`	 | Cleaning data and weighted delta Ct (wDCt) calculation    |
+| `long_to_wide`	 | Converts a 4-column qPCR long data format to wide format    |
 
 
 
@@ -48,7 +52,7 @@ The `rtpcr` package gets efficiency (E) the Ct values of genes and performs diff
 # Quick start
 ### Installing and loading
 
-The `rtpcr` package can be installedb by running the following code in R:
+The `rtpcr` package can be installed by running the following code in R:
 
 from CRAN:
 
@@ -63,20 +67,24 @@ library(rtpcr)
 Or from from GitHub (developing version):
 
 ```{r eval = F}
-devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)
+devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
 ```
 
 
 
 
 # Input data structure 
-For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt` functions), the amplification efficiency (`E`) and `Ct` or `Cq` values (the mean of technical replicates) is used for the input table. if the `E` values are  not available you should use '2' instead representing the complete primer amplification efficiency. 
+
+For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt` functions), the amplification efficiency (`E`) and `Ct` or `Cq` values (the mean of technical replicates) is used for the input table. If the `E` values are  not available you should use '2' instead representing the complete primer amplification efficiency. 
 The required column structure of the input data is:
 
-1. Experimental condition columns (up to 3 factors, and one block if available) 
-2. Replicates information (biological replicates or subjects; see [NOTE 1](#note-1), and [NOTE 2](#note-2))  
-3. Target genes efficiency and Ct values (a pair column for each gene).
-5. Reference genes efficiency and Ct values (a pair column for each gene)
+1.  Experimental condition columns (and one block if
+    available [NOTE 1](#note-1))
+2.  Replicates information (biological replicates or subjects; see [NOTE
+    2](#note-2), and [NOTE 3](#note-3))  
+3.  Target genes efficiency and Ct values (a pair column for each gene).
+4.  Reference genes efficiency and Ct values (a pair column for each
+    gene) [NOTE 4](#note-4).
 
 The package supports **one or more target or reference gene(s)**, supplied as efficiency–Ct column pairs. Reference gene columns must always appear last. A sample input data is presented below.
 
@@ -86,10 +94,54 @@ The package supports **one or more target or reference gene(s)**, supplied as ef
 
 
 #### NOTE 1
-For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a separate and uniq biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The `REPEATED_DDCt` function is intended for experiments with repeated observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a `1` at Rep column correspond to a single individual, all rows with a `2` correspond to another individual, and so on, which have been sampled at specific time points. 
+
+When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered. 
 
 #### NOTE 2
-Your data table may also include technical replicates. In this case, the `meanTech` function should be applied first to calculate the mean of the technical replicates. The resulting table is then used as the input for expression analysis. To use the `meanTech` function correctly, the technical replicate column must appear immediately after the biological replicate column (see [Mean of technical replicates](#mean-of-technical-replicates) for an example). 
+
+For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a
+separate and unique biological replicate. For example, a dataframe with
+12 rows has come from an experiment with 12 individuals. The
+`REPEATED_DDCt` function is intended for experiments with repeated
+observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate
+column contains identifiers for each individual (id or subject). For
+example, all rows with a `1` at Rep column correspond to a single
+individual, all rows with a `2` correspond to another individual, and so
+on, which have been sampled at specific time points.
+
+#### NOTE 3
+
+Your data table may also include a column of technical replicates (so
+there would be both biological replicates and technical replicate
+columns in the data). In this case, the `meanTech` function should be
+applied first to calculate the mean of the technical replicates. The
+resulting table is then used as the input for expression analysis. To
+use the `meanTech` function correctly, the technical replicate column
+must appear immediately after the biological replicate column (see [Mean
+of technical replicates](#mean-of-technical-replicates) for an example). 
+
+#### NOTE 4
+
+Complete amplification efficiency (E) in the rtpcr package is denoted by 2. This 
+means that 2 indicates 100%, and 1.85 and 1.70 indicate 0.85% and 0.70%
+amplification efficiencies. 
+
+
+# Handling missing data
+
+The rtpcr package does not replace a Ct value with a predetermined 
+value (such as a predefined value of 40, mean Ct values of other replicates, 
+or any imputed value). However missing data can be denoted by NA in the input data frame. 
+Values such as '0' and 'undetermined' (for any E and Ct) are
+automatically converted to NA before passing to the downstream analysis. 
+For target genes, NA for E or Ct measurements cause returning NA for the corresponding 
+ΔCt for that replicate which is passed along to downstream statistical analyses. 
+If there are more than
+one reference genes, NA in the place of the E or the Ct value of any reference gene cause
+skipping that reference gene and remaining genes are averaged in that 
+replicate. 
+If more sophisticated handling of missing Ct values is desired, qPCR imputation 
+tools can be used in advance of analysis with rtpcr.
 
 # Data Analysis 
 
@@ -98,7 +150,7 @@ The `efficiency` function calculates the amplification efficiency (E), slope, an
 
 ```{r eval= F}
 # Applying the efficiency function
-data <- read.csv(system.file("extdata", "data_efficiency.csv", package = "rtpcr"))
+data <- read.csv(system.file("extdata", "data_efficiency1.csv", package = "rtpcr"))
 data
 dilutions	Gene1	Gene2	Gene3
 1.00	25.58	24.25	22.61
@@ -141,7 +193,8 @@ $contrasts
 ```
 
 ### Relative expression
-Relative expression analysis can be done using $\Delta\Delta Ct$ or $\Delta Ct$ methods. Below is an example of expression analysis using $\Delta\Delta Ct$ method.
+Relative expression analysis can be done using $\Delta\Delta Ct$ or $\Delta Ct$ methods through different functions (i.e. `TTEST_DDCt`, `WILCOX_DDCt`, `ANOVA_DDCt()`, `REPEATED_DDCt`, and `ANOVA_DCt()`). Below are some examples of expression analysis using $\Delta\Delta Ct$ method.
+
 ```{r eval= F}
 # An example of a properly arranged dataset from a repeated-measures experiment.
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
@@ -163,8 +216,7 @@ res <- REPEATED_DDCt(
   data,
   numOfFactors = 1,
   numberOfrefGenes = 1,
-  repeatedFactor = "time",
-  calibratorLevel = "1",
+  mainFactor.column = 1,
   block = NULL)
 
 
@@ -198,21 +250,20 @@ res <- ANOVA_DDCt(
 
 # Output
 ## Data output
-A lot of outputs including relative expression table, lm models, residuals, raw data and ANOVA table for each gene can be accessed.
-The expression table of all genes is returned by `res$combinedFoldChange`. Other outpus for each gene can be obtained as follow:
+All the functions for relative expression analysis (including `TTEST_DDCt`, `WILCOX_DDCt`, `ANOVA_DDCt()`, `REPEATED_DDCt`, and `ANOVA_DCt()`) return the relative expression table which include fold change and corresponding statistics. The output of `ANOVA_DDCt()`, `ANCOVA_DDCt()`, `REPEATED_DDCt`, and `ANOVA_DCt()` also include lm models, residuals, raw data and ANOVA table for each gene. These outputs for each gene can be obtained as follow:
 
 | Per_gene Output    | Code                                                  |
 |--------------------|-------------------------------------------------------|
-| expression table   | `res$combinedFoldChange`                              |
+| expression table   | `res$relativeExpression`                              |
 | ANOVA table        | `res$perGene$gene_name$ANOVA_table`                   |
-| ANOVA lm           | `res$perGene$gene_name$lm_ANOVA`                      |
-| ANCOVA lm          | `res$perGene$gene_name$lm_ANCOVA`                     |
-| Residuals          | `resid(res$perGene$gene_name$lm_ANOVA)`               |
+| ANOVA lm           | `res$perGene$gene_name$lm`                      |
+| ANOVA lm formula   | `res$perGene$gene_name$lm_formula`                    |
+| Residuals          | `resid(res$perGene$gene_name$lm)`               |
 
 
 ```{r eval= F}
 # Relative expression table for the specified column in the input data:
-df <- res$combinedFoldChange
+df <- res$relativeExpression
 df
 Relative Expression
 gene   contrast	      RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC
@@ -238,10 +289,10 @@ res <- ANOVA_DCt(
   numberOfrefGenes = 1,
   block = NULL)
   
-df <- res$combinedResults
- df
- # Generate three-factor bar plot
- p <- plotFactor(
+df <- res$relativeExpression
+df
+# Generate three-factor bar plot
+plotFactor(
   df,
   x_col = "SA",       
   y_col = "log2FC",       
@@ -258,10 +309,6 @@ df <- res$combinedResults
   base_size = 14, 
   alpha = 1,
   legend_position = c(0.1, 0.2))
-
-library(ggplot2)
-p + theme(
-  panel.border = element_rect(color = "black", linewidth = 0.5))
 ```
 
 
@@ -270,7 +317,7 @@ p + theme(
 
 
 # How to edit ouptput plots?
-the `rtpcr` plotFactor function create ggplot objects for one to three factor table that can furtherbe edited by adding new layers:
+the `rtpcr` plotFactor function creates ggplot objects for one to three factor tables. The plot can further be edited by adding new layers:
 
 | Task | Example Code |
 |------|--------------|
@@ -289,9 +336,9 @@ res <- ANOVA_DCt(data,
       block = "block",
       numberOfrefGenes = 1)
 
-df <- res$combinedResults
+df <- res$relativeExpression
 
-p1 <- plotFactor(
+plotFactor(
   data = df,
   x_col = "factor2",
   y_col = "RE",
@@ -306,15 +353,7 @@ p1 <- plotFactor(
   col_width = 0.7,
   dodge_width = 0.7,
   base_size = 16, 
-  legend_position = c(0.2, 0.8))
-
-library(ggplot2)
-p1 + 
-  theme(axis.text.x = element_text(size = 14, color = "black", angle = 45),
-        axis.text.y = element_text(size = 14,color = "black", angle = 0, hjust = 0.5)) +
-  theme(legend.text = element_text(colour = "black", size = 14),
-        legend.background = element_rect(fill = "transparent")) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
+  legend_position = c(0.8, 0.8))
 ```
 
 
@@ -327,7 +366,7 @@ p1 +
 ```{r eval= F, warning = F}
 # Heffer et al., 2020, PlosOne
 library(dplyr)
-df <- read.csv(system.file("extdata", "Heffer2020PlosOne.csv", package = "rtpcr"))
+df <- read.csv(system.file("extdata", "data_Heffer2020PlosOne.csv", package = "rtpcr"))
 
 res <- ANOVA_DDCt(
   df,
@@ -336,16 +375,12 @@ res <- ANOVA_DDCt(
   numberOfrefGenes = 1,
   block = NULL)
 
-data <- res$combinedFoldChange
-data$gene <- factor(data$gene, levels = unique(data$gene))
+data <- res$relativeExpression
 
 # Selecting only the first words in 'contrast' column to be used as the x-axis labels.
 data$contrast <- sub(" .*", "", data$contrast)
 
-# Converting the 'contrast' column as factor and fix the current level order
-data$contrast <- factor(data$contrast, levels = unique(data$contrast))
-
-p <- plotFactor(
+plotFactor(
   data = data,
   x_col = "contrast",
   y_col = "RE",
@@ -362,16 +397,6 @@ p <- plotFactor(
   dodge_width = 0.5,
   base_size = 16, 
   legend_position = "none")
-
-library(ggplot2)
-p + theme(
-  panel.border = element_rect(color = "black", linewidth = 0.5)) +
-  theme(axis.text.x = element_text(size = 14, color = "black", angle = 45, hjust = 1)) +
-  xlab(NULL) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
-  theme(
-    strip.background = element_blank(),  # removes the faceting gray background
-    strip.text = element_text(face = "bold")) # optional: keeps the text visible
 ```
 
 
@@ -381,7 +406,8 @@ p + theme(
 
 
 # Post-hoc analysis
-The `Means_DDCt` function performs post-hoc comparisons using a fitted model object produced by `ANOVA_DCt`, `ANOVA_DDCt` or `REPEATED_DDCt`. It applies pairwise statistical comparisons of relative expression (RE) values for user-specified effects via the `specs` argument. Supported effects include simple effects, interactions, and slicing, provided the underlying model is an ANOVA. For ANCOVA models returned by this package, the `Means_DDCt` output is limited to simple effects only.
+Although all the expression analysis functions perform statistical comparisons for the levels of the analysed factor, further Post-hoc analysis is still possible. 
+The `Means_DDCt` function performs post-hoc comparisons using a fitted model object produced by `ANOVA_DCt`, `ANOVA_DDCt`, `ANCOVA_DDCt`  or `REPEATED_DDCt`. It applies pairwise statistical comparisons of relative expression (RE) values for user-specified effects via the `specs` argument. Supported effects include simple effects, interactions, and slicing, provided the underlying model is an ANOVA. For ANCOVA models returned by this package, the `Means_DDCt` output is limited to simple effects only.
 
 ```{r eval= F}
 res <- ANOVA_DDCt(
@@ -391,9 +417,9 @@ res <- ANOVA_DDCt(
   mainFactor.column = 1,
   block = NULL)
 
-
+model <- res$perGene$E_PO$lm
 # Relative expression values for Concentration main effect
-Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc")
+Means_DDCt(model, specs = "Conc")
 
  contrast        RE        SE df       LCL       UCL p.value sig
  L vs H   0.1703610 0.2208988 24 0.1242014 0.2336757 <0.0001 ***
@@ -404,7 +430,7 @@ Results are averaged over the levels of: Type, SA
 Confidence level used: 0.95 
 
 # Relative expression values for Concentration sliced by Type
-Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type")
+Means_DDCt(model, specs = "Conc | Type")
 
 Type = R:
  contrast       RE        SE df       LCL      UCL p.value sig
@@ -422,12 +448,12 @@ Results are averaged over the levels of: SA
 Confidence level used: 0.95 
 
 # Relative expression values for Concentration sliced by Type and SA
-Means_DDCt(res$perGene$E_PO$lm_ANOVA, specs = "Conc | Type * SA")
+Means_DDCt(model, specs = "Conc | Type * SA")
 ```
 
 # Checking normality of residuals
 
-If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test (also known as the Wilcoxon rank-sum test), implemented via `wilcox.test()`, is an alternative to t.test, and `kruskal.test()` is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the `t.test` function (along with the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, perform `t.test` under the unequal variances hypothesis. Residuals for `lm` (from `ANOVA_DCt` and `ANOVA_DDCt` functions) and `lmer` (from `REPEATED_DDCt` function) objects can be extracted and plotted as follow:
+If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test - also known as the Wilcoxon rank-sum test, (implemented via `WILCOX_DDCt()` in the rtpcr package), is an alternative to t.test, and `kruskal.test()` is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the `t.test` function (also the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, performs `t.test` under the unequal variances hypothesis. Residuals (from `ANOVA_DCt`, `ANOVA_DDCt`, and `REPEATED_DDCt` functions) objects can be extracted from `lm`and plotted as follow:
 
 ```{r eval= F}
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
@@ -435,8 +461,7 @@ res3 <- REPEATED_DDCt(
   data,
   numOfFactors = 1,
   numberOfrefGenes = 1,
-  repeatedFactor = "time",
-  calibratorLevel = "1",
+  mainFactor.column = 1,
   block = NULL
 )
 residuals <- resid(res3$perGene$Target$lm)
@@ -451,12 +476,14 @@ qqline(residuals, col = "red")
 Calculating the mean of technical replicates and generating an output table suitable for subsequent ANOVA analysis can be accomplished using the `meanTech` function. The input dataset must follow the column structure illustrated in the example data below. Columns used for grouping should be explicitly specified via the `groups` argument of the `meanTech` function.
 
 ```{r eval= F}
-# See example input data frame:
-data <- read.csv(system.file("extdata", "data_withTechRep.csv", package = "rtpcr"))
-data
+# Example input data frame with technical replicates
+data1 <- read.csv(system.file("extdata", "data_withTechRep.csv", package = "rtpcr"))
 
-# Calculating mean of technical replicates
-meanTech(data, groups = 1:4)
+# Calculate mean of technical replicates using first four columns as groups
+meanTech(data1,
+         groups = 1:2,
+         numOfFactors = 1,
+         block = NULL)
 ```
 
 ![](../man/figures/techrep.png){.center height="380px"}

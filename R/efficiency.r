@@ -28,6 +28,9 @@
 #' A data frame containing dilution series and corresponding Ct values.
 #' The first column should represent dilution levels, and the remaining
 #' columns should contain Ct values for different genes.
+#' @param base_size font size
+#' @param legend_position legend position
+#' @param ... Additional ggplot2 layer arguments
 #'
 #' @return
 #' A list with the following components:
@@ -41,15 +44,21 @@
 #' @examples
 #' 
 #' # Load example efficiency data
-#' data <- read.csv(system.file("extdata", "data_efficiency.csv", package = "rtpcr"))
+#' data <- read.csv(system.file("extdata", "data_efficiency1.csv", package = "rtpcr"))
 #'
 #' # Calculate amplification efficiency and generate standard curves
 #' efficiency(data)
+#' 
+#' 
+#' ef <- read.csv(system.file("extdata", "data_efficiency_Yuan2006PMCBioinf.csv", package = "rtpcr"))
+#' efficiency(ef)
+#' 
 
 
-
-
-efficiency <- function(df) {
+efficiency <- function(df,
+                       base_size = 12,
+                       legend_position = c(0.2, 0.2),
+                       ...) {
 
   
   # renaming the first column
@@ -91,18 +100,29 @@ efficiency <- function(df) {
     lm <- lm(value ~ log10(dilutions) * variable, data = e)
     slopes <- emtrends(lm, pairwise ~ variable, var = "log10(dilutions)")
     
-    
-    
+
     fits <- lapply(df[,-1], function(x) lm(x ~ log10(df[,1])))
     mdat <- melt(df, id = "dilutions")
     Ct <- mdat$value
     Gene <- mdat$variable
     variable <- mdat$Gene
     p <- ggplot(data = mdat) + 
-      geom_point(aes(y = Ct, x = log10(dilutions), color = Gene)) +
       geom_smooth(data = mdat,aes(x = log10(dilutions), y = Ct, color = Gene), formula = y ~ x,
-                  method = "lm", se = F)
-  }
+                  method = "lm", se = F) +
+      geom_point(aes(y = Ct, x = log10(dilutions), colour = Gene, shape = Gene), size = 2) +
+      theme_bw(base_size = base_size) +
+      theme(
+          panel.border = element_rect(color = "black"),
+          axis.line.x = element_line(color = "black"),
+          axis.line.y = element_line(color = "black"),
+          legend.background = element_rect(fill = "transparent"),
+          legend.position = legend_position,
+          axis.text.x = element_text(size = base_size, color = "black"),
+          axis.text.y = element_text(size = base_size,color = "black"),
+          legend.text = element_text(colour = "black", size = base_size),
+          ...
+        )
+    }
   
 
 

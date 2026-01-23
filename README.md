@@ -83,13 +83,13 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
 
 # Input data structure
 
-For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`,
-`ANOVA_DDCt` and `REPEATED_DDCt` functions), the amplification
-efficiency (`E`) and `Ct` or `Cq` values (the mean of technical
-replicates) is used for the input table. If the `E` values are not
-available you should use ‘2’ instead representing the complete primer
-amplification efficiency. The required column structure of the input
-data is:
+For relative expression analysis (using `TTEST_DDCt`, `WILCOX_DDCt`,
+`ANOVA_DCt`, `ANCOVA_DDCt`, `ANOVA_DDCt` and `REPEATED_DDCt` functions),
+the amplification efficiency (`E`) and `Ct` or `Cq` values (the mean of
+technical replicates) is used for the input table. If the `E` values are
+not available you should use ‘2’ instead representing the complete
+primer amplification efficiency. The required column structure of the
+input data is:
 
 1.  Experimental condition columns (and one block if available [NOTE
     1](#note-1))
@@ -117,15 +117,16 @@ interaction with any main effect is not considered.
 
 #### NOTE 2
 
-For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a
-separate and unique biological replicate. For example, a dataframe with
-12 rows has come from an experiment with 12 individuals. The
-`REPEATED_DDCt` function is intended for experiments with repeated
-observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate
-column contains identifiers for each individual (id or subject). For
-example, all rows with a `1` at Rep column correspond to a single
-individual, all rows with a `2` correspond to another individual, and so
-on, which have been sampled at specific time points.
+For `TTEST_DDCt` and `WILCOX_DDCt` (independent samples), `ANOVA_DCt`,
+`ANCOVA_DDCt`, and `ANOVA_DDCt` each row is from a separate and unique
+biological replicate. For example, a dataframe with 12 rows has come
+from an experiment with 12 individuals. The `REPEATED_DDCt` function is
+intended for experiments with repeated observations (e.g. time-course
+data). For `REPEATED_DDCt`, the Replicate column contains identifiers
+for each individual (id or subject). For example, all rows with a `1` at
+Rep column correspond to a single individual, all rows with a `2`
+correspond to another individual, and so on, which have been sampled at
+specific time points.
 
 #### NOTE 3
 

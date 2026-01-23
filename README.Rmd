@@ -97,7 +97,7 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
 
 # Input data structure 
 
-For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`, `ANOVA_DDCt` and `REPEATED_DDCt` functions), the amplification efficiency (`E`) and `Ct` or `Cq` values (the mean of technical replicates) is used for the input table. If the `E` values are  not available you should use '2' instead representing the complete primer amplification efficiency. 
+For relative expression analysis (using `TTEST_DDCt`, `WILCOX_DDCt`, `ANOVA_DCt`, `ANCOVA_DDCt`, `ANOVA_DDCt` and `REPEATED_DDCt` functions), the amplification efficiency (`E`) and `Ct` or `Cq` values (the mean of technical replicates) is used for the input table. If the `E` values are  not available you should use '2' instead representing the complete primer amplification efficiency. 
 The required column structure of the input data is:
 
 1.  Experimental condition columns (and one block if
@@ -121,7 +121,7 @@ When a qPCR experiment is done in multiple qPCR plates, variation resulting from
 
 #### NOTE 2
 
-For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a
+For `TTEST_DDCt` and `WILCOX_DDCt` (independent samples), `ANOVA_DCt`, `ANCOVA_DDCt`, and `ANOVA_DDCt` each row is from a
 separate and unique biological replicate. For example, a dataframe with
 12 rows has come from an experiment with 12 individuals. The
 `REPEATED_DDCt` function is intended for experiments with repeated

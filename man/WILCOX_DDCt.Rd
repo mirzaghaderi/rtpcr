@@ -9,8 +9,7 @@ WILCOX_DDCt(
   numberOfrefGenes,
   Factor.level.order = NULL,
   paired = FALSE,
-  p.adj = "none",
-  order = "none"
+  p.adj = "none"
 )
 }
 \arguments{
@@ -31,8 +30,6 @@ If \code{NULL}, the first level of the factor column is used as the calibrator.}
 \item{p.adj}{Method for p-value adjustment. One of
 \code{"holm"}, \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"},
 \code{"BH"}, \code{"BY"}, \code{"fdr"}, or \code{"none"}. See \code{\link[stats]{p.adjust}}.}
-
-\item{order}{Optional character vector specifying the order of genes in the output plot.}
 }
 \value{
 A table containing RE values, log2FC, p-values, significance, 

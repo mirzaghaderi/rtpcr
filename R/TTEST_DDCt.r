@@ -55,8 +55,6 @@
 #' \code{"holm"}, \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"},
 #' \code{"BH"}, \code{"BY"}, \code{"fdr"}, or \code{"none"}. See \code{\link[stats]{p.adjust}}.
 #'
-#' @param order
-#' Optional character vector specifying the order of genes in the output plot.
 #' 
 #' @details
 #' All the functions for relative expression analysis (including `TTEST_DDCt()`, 
@@ -138,8 +136,7 @@ TTEST_DDCt <- function(x,
                        Factor.level.order = NULL,
                        paired = FALSE,
                        var.equal = TRUE,
-                       p.adj = "none",
-                       order = "none") {
+                       p.adj = "none") {
   
   stopifnot(is.data.frame(x))
   stopifnot(numberOfrefGenes >= 1)
@@ -271,6 +268,11 @@ TTEST_DDCt <- function(x,
                     Lower.se.log2FC = a$Lower.se.log2FC,
                     Upper.se.log2FC = a$Upper.se.log2FC)
 
+  desired_order <- c("gene", "ddCt", "RE", "log2FC", "LCL", "UCL", "se",
+                     "Lower.se.RE", "Upper.se.RE", "Lower.se.log2FC", "Upper.se.log2FC", 
+                     "pvalue", "sig")
+  res <- res[, desired_order]
+  
   
   Result <- res %>%
     dplyr::mutate_if(is.numeric, ~ round(., 5))

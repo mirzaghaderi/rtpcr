@@ -3,11 +3,11 @@
 ## Overview
 
 Tools for analysis of RT-qPCR gene expression data using $\Delta Ct$ and
-$\Delta\Delta Ct$ methods, including t-tests, ANOVA, ANCOVA,
-repeated-measures models, and publication-ready visualizations. The
-package implements a general calculation method adopted from Ganger et
-al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl
-methods. See the [calculation
+$\Delta\Delta Ct$ methods, including t-tests and ANOVA models, and
+publication-ready visualizations. The package implements a general
+calculation method adopted from Ganger et al. (2017) and Taylor et
+al. (2019), covering both the Livak and Pfaffl methods. See the
+[calculation
 method](https://mirzaghaderi.github.io/rtpcr/articles/Method.md) for
 details.
 
@@ -20,8 +20,6 @@ performs different analyses using the following functions.
 |----|----|
 | `ANOVA_DCt` | $\Delta Ct$ ANOVA analysis |
 | `ANOVA_DDCt` | $\Delta\Delta Ct$ ANOVA analysis |
-| `ANCOVA_DDCt` | $\Delta\Delta Ct$ ANCOVA analysis |
-| `REPEATED_DDCt` | $\Delta\Delta Ct$ ANOVA analysis for repeated-measures data |
 | `TTEST_DDCt` | $\Delta\Delta Ct$ method *t*-test analysis |
 | `WILCOX_DDCt` | $\Delta\Delta Ct$ method wilcox.test analysis |
 | `plotFactor` | Bar plot of gene expression for one-, two- or three-factor experiments |
@@ -56,13 +54,12 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
 
 ## Input data structure
 
-For relative expression analysis (using `TTEST_DDCt`, `ANOVA_DCt`,
-`ANOVA_DDCt` and `REPEATED_DDCt` functions), the amplification
-efficiency (`E`) and `Ct` or `Cq` values (the mean of technical
-replicates) is used for the input table. If the `E` values are not
-available you should use ‘2’ instead representing the complete primer
-amplification efficiency. The required column structure of the input
-data is:
+For relative expression analysis (using `TTEST_DDCt`, `WILCOX_DDCt`,
+`ANOVA_DCt`, and `ANOVA_DDCt` functions), the amplification efficiency
+(`E`) and `Ct` or `Cq` values (the mean of technical replicates) is used
+for the input table. If the `E` values are not available you should use
+‘2’ instead representing the complete primer amplification efficiency.
+The required column structure of the input data is:
 
 1.  Experimental condition columns (and one block if available [NOTE
     1](#note-1))
@@ -89,15 +86,16 @@ interaction with any main effect is not considered.
 
 ##### NOTE 2
 
-For `TTEST_DDCt`, `ANOVA_DCt`, and `ANOVA_DDCt`, each row is from a
-separate and unique biological replicate. For example, a dataframe with
-12 rows has come from an experiment with 12 individuals. The
-`REPEATED_DDCt` function is intended for experiments with repeated
-observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate
-column contains identifiers for each individual (id or subject). For
-example, all rows with a `1` at Rep column correspond to a single
-individual, all rows with a `2` correspond to another individual, and so
-on, which have been sampled at specific time points.
+For `TTEST_DDCt` and `WILCOX_DDCt` (independent samples), `ANOVA_DCt`,
+and `ANOVA_DDCt`, each row may come from separate and unique biological
+replicates. For example, a dataframe with 12 rows has come from an
+experiment with 12 individuals. For experiments with repeated
+observations (e.g. time-course data) , a repeated measure model should
+be provided. In this case, the Replicate column should contain
+identifiers for each individual (id or subject). For example, all rows
+with a `1` at Rep column correspond to a single individual, all rows
+with a `2` correspond to another individual, and so on, which have been
+sampled at specific time points.
 
 ##### NOTE 3
 
@@ -134,7 +132,7 @@ rtpcr.
 
 ## Data Analysis
 
-#### Amplification Efficiency
+### Amplification efficiency analysis
 
 The `efficiency` function calculates the amplification efficiency (E),
 slope, and R² statistics for genes, and performs pairwise comparisons of
@@ -185,13 +183,53 @@ $contrasts
  C2H2.01 - GAPDH    -0.1136 0.121 57  -0.938  0.6186
 ```
 
-#### Relative expression
+### Relative expression analysis
+
+[`TTEST_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/TTEST_DDCt.md)
+function is used for relative expression analysis in treatment condition
+compared to control condition. Both paired and unpaired experimental
+designs are supported. if the data doesn’t follow t.test assumptions,
+the
+[`WILCOX_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/WILCOX_DDCt.md)
+function can be used instead.
+[`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
+and
+[`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md)
+functions are used for the analysis of variance of qPCR data. Optional
+custom model formula as a character string can be supplied to these
+functions. If provided, this overrides the automatic formula for
+factorial CRD or RCBD design is generated based on `block` and
+`numOfFactors`. The formula use `wDCt` as the response variable (wDCt is
+automatically created by the function). For mixed models, include random
+effects using `lmer` syntax (e.g., `wDCt ~ Treatment + (1|Block)`).
+Below are a sample of most common models that can be used. Because
+currenly a model can be supplied by user, the `REPEATED_DDCt()` function
+was removed.
+
+| Samples models may be used in ANOVA_DCt() or ANOVA_DDCt() functions | Experimental design |
+|----|----|
+| wDCt ~ Condition | Completely Randomized Design (CRD). Can also be used for t.test with two independent samples. (**default**) |
+| wDCt ~ Factor1 \* Factor2 \* Factor3 | Factorial under Completely Randomized Design (RCBD) (**default**) |
+| wDCt ~ block + Factor1 \* Factor2 | Factorial under Randomized Complete Block Design (**default**) |
+| wDCt ~ time + (1 \| id) | Repeated measure analysis: different time points. Also can be used for t.test with two paired samples. |
+| wDCt ~ Condition \* time + (1 \| id) | Repeated measure analysis: split-plot in time |
+| wDCt ~ wDCt ~ Condition \* time + (1 \| block) + (1 \| id) | Repeated measure analysis: split-plot in time |
+| wDCt ~ Type + Concentration | Analysis of Covariance: Type is covariate |
+| wDCt ~ block + Type + Concentration | Analysis of Covariance with blocking factor: block and Type are covariates |
+
+##### NOTE
+
+For CRD, RCBD, and factorial experiments under CRD or RCBD designs you
+don’t need to define model as as one of these models is appropriately
+selected based on the arguments.
+
+#### Examples
 
 Relative expression analysis can be done using $\Delta\Delta Ct$ or
 $\Delta Ct$ methods through different functions (i.e. `TTEST_DDCt`,
 `WILCOX_DDCt`,
 [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md),
-`REPEATED_DDCt`, and
+and
 [`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md)).
 Below are some examples of expression analysis using $\Delta\Delta Ct$
 method.
@@ -213,12 +251,12 @@ time    id  E_Target    Ct_target   E_Ref      Ct_Ref
    3     3      2       18.09   2   33.40
 
 # Repeated measure analysis
-res <- REPEATED_DDCt(
+res <- ANOVA_DDCt(
   data,
   numOfFactors = 1,
   numberOfrefGenes = 1,
   mainFactor.column = 1,
-  block = NULL)
+  block = NULL, model = wDCt ~ time + (1 | id))
 
 
 # Anova analysis
@@ -255,16 +293,16 @@ res <- ANOVA_DDCt(
 All the functions for relative expression analysis (including
 `TTEST_DDCt`, `WILCOX_DDCt`,
 [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md),
-`REPEATED_DDCt`, and
+and
 [`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md))
 return the relative expression table which include fold change and
 corresponding statistics. The output of
 [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md),
-[`ANCOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANCOVA_DDCt.md),
-`REPEATED_DDCt`, and
+and
 [`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md)
-also include lm models, residuals, raw data and ANOVA table for each
-gene. These outputs for each gene can be obtained as follow:
+also include default or the user defined lm models, residuals, raw data
+and ANOVA table for each gene. These outputs for each gene can be
+obtained as follow:
 
 | Per_gene Output  | Code                                |
 |------------------|-------------------------------------|
@@ -288,7 +326,7 @@ ref2          R   1.0000  0.0000 1.0000     0.0000  0.0000 0.6928      0.6186   
 ref2     S vs R   0.9372 -0.0936 0.9005     0.3145  2.7929 0.2414      0.7927      1.1079         -0.1107         -0.0792
 ```
 
-### Plot output
+## Graphical presentation
 
 A single function of `plotFactor` is used to produce barplots for one-
 to three-factor expression tables.

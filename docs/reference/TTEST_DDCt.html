@@ -13,7 +13,7 @@ of one or more target genes evaluated under two experimental conditions
 
     <a class="navbar-brand me-2" href="../index.html">rtpcr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,8 +58,7 @@ of one or more target genes evaluated under two experimental conditions
 <span>  Factor.level.order <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  paired <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  var.equal <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  p.adj <span class="op">=</span> <span class="st">"none"</span>,</span>
-<span>  order <span class="op">=</span> <span class="st">"none"</span></span>
+<span>  p.adj <span class="op">=</span> <span class="st">"none"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -98,10 +97,6 @@ estimate is used. Otherwise, Welch's t-test is applied.</p></dd>
 <dd><p>Method for p-value adjustment. One of
 <code>"holm"</code>, <code>"hochberg"</code>, <code>"hommel"</code>, <code>"bonferroni"</code>,
 <code>"BH"</code>, <code>"BY"</code>, <code>"fdr"</code>, or <code>"none"</code>. See <code><a href="https://rdrr.io/r/stats/p.adjust.html" class="external-link">p.adjust</a></code>.</p></dd>
-
-
-<dt id="arg-order">order<a class="anchor" aria-label="anchor" href="#arg-order"></a></dt>
-<dd><p>Optional character vector specifying the order of genes in the output plot.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -177,44 +172,44 @@ Statistical Analysis of Real-Time PCR Data.
 <span class="r-in"><span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** 18 target(s) using 1 reference gene(s) was analysed!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** The Control level was used as calibrator.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      gene     ddCt      RE     LCL      UCL  pvalue      se   log2FC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  ANGPT1  0.22175 0.85752 0.16876  4.35732 0.82472 0.28410 -0.22175</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  ANGPT2 -1.45575 2.74299 1.69011  4.45178 0.00222 0.25051  1.45575</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    CCL2  3.14850 0.11277 0.07430  0.17116 0.00001 0.23541 -3.14850</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    CCL5  1.45925 0.36368 0.08320  1.58964 0.14436 0.53962 -1.45925</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    CSF2  1.33800 0.39557 0.06001  2.60767 0.27417 0.80423 -1.33800</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    FGF2 -1.15125 2.22106 1.46374  3.37021 0.00339 0.20688  1.15125</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    IL1A -3.07550 8.42981 5.07767 13.99494 0.00005 0.24035  3.07550</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    IL1B  0.59650 0.66136 0.30574  1.43058 0.23771 0.45245 -0.59650</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     IL6 -0.21300 1.15910 0.70866  1.89583 0.49048 0.23038  0.21300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10    IL8  2.62550 0.16205 0.03805  0.69020 0.02186 0.79514 -2.62550</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  PDGFA  1.34350 0.39406 0.06212  2.49970 0.26354 0.88569 -1.34350</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  PDGFB  0.27450 0.82674 0.21596  3.16494 0.74057 0.58071 -0.27450</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   TGFA  2.29900 0.20320 0.07659  0.53911 0.00715 0.39389 -2.29900</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14   TGFB  1.56325 0.33839 0.13092  0.87464 0.03149 0.53238 -1.56325</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15    TNF -0.02975 1.02084 0.42354  2.46045 0.95612 0.44239  0.02975</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16  VEGFA  1.69900 0.30800 0.12631  0.75105 0.01785 0.40141 -1.69900</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17  VEGFB -0.29875 1.23008 0.63993  2.36445 0.46755 0.15382  0.29875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18  VEGFC -1.89400 3.71664 1.40612  9.82382 0.01631 0.31851  1.89400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Lower.se.RE Upper.se.RE sig Lower.se.log2FC Upper.se.log2FC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0.70425     1.04416            -0.27001        -0.18211</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2.30576     3.26313  **         1.22370         1.73180</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.09579     0.13276 ***        -3.70654        -2.67448</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      0.25020     0.52864            -2.12115        -1.00390</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.22653     0.69075            -2.33644        -0.76623</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      1.92434     2.56353  **         0.99745         1.32876</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      7.13615     9.95799 ***         2.60353         3.63304</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      0.48332     0.90497            -0.81623        -0.43592</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      0.98802     1.35979             0.18156         0.24988</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     0.09339     0.28119   *        -4.55588        -1.51304</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11     0.21328     0.72809            -2.48231        -0.72714</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12     0.55279     1.23645            -0.41054        -0.18354</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13     0.15465     0.26700  **        -3.02073        -1.74971</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14     0.23397     0.48941   *        -2.26095        -1.08085</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15     0.75125     1.38716             0.02189         0.04043</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16     0.23319     0.40680   *        -2.24403        -1.28635</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17     1.10568     1.36848             0.26854         0.33236</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18     2.98036     4.63482   *         1.51879         2.36190</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      gene     ddCt      RE   log2FC     LCL      UCL      se Lower.se.RE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  ANGPT1  0.22175 0.85752 -0.22175 0.16876  4.35732 0.28410     0.70425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  ANGPT2 -1.45575 2.74299  1.45575 1.69011  4.45178 0.25051     2.30576</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    CCL2  3.14850 0.11277 -3.14850 0.07430  0.17116 0.23541     0.09579</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    CCL5  1.45925 0.36368 -1.45925 0.08320  1.58964 0.53962     0.25020</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    CSF2  1.33800 0.39557 -1.33800 0.06001  2.60767 0.80423     0.22653</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    FGF2 -1.15125 2.22106  1.15125 1.46374  3.37021 0.20688     1.92434</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    IL1A -3.07550 8.42981  3.07550 5.07767 13.99494 0.24035     7.13615</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    IL1B  0.59650 0.66136 -0.59650 0.30574  1.43058 0.45245     0.48332</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     IL6 -0.21300 1.15910  0.21300 0.70866  1.89583 0.23038     0.98802</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    IL8  2.62550 0.16205 -2.62550 0.03805  0.69020 0.79514     0.09339</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  PDGFA  1.34350 0.39406 -1.34350 0.06212  2.49970 0.88569     0.21328</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  PDGFB  0.27450 0.82674 -0.27450 0.21596  3.16494 0.58071     0.55279</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   TGFA  2.29900 0.20320 -2.29900 0.07659  0.53911 0.39389     0.15465</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   TGFB  1.56325 0.33839 -1.56325 0.13092  0.87464 0.53238     0.23397</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15    TNF -0.02975 1.02084  0.02975 0.42354  2.46045 0.44239     0.75125</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16  VEGFA  1.69900 0.30800 -1.69900 0.12631  0.75105 0.40141     0.23319</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17  VEGFB -0.29875 1.23008  0.29875 0.63993  2.36445 0.15382     1.10568</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18  VEGFC -1.89400 3.71664  1.89400 1.40612  9.82382 0.31851     2.98036</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1.04416        -0.27001        -0.18211 0.82472    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      3.26313         1.22370         1.73180 0.00222  **</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.13276        -3.70654        -2.67448 0.00001 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      0.52864        -2.12115        -1.00390 0.14436    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.69075        -2.33644        -0.76623 0.27417    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      2.56353         0.99745         1.32876 0.00339  **</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      9.95799         2.60353         3.63304 0.00005 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      0.90497        -0.81623        -0.43592 0.23771    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      1.35979         0.18156         0.24988 0.49048    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     0.28119        -4.55588        -1.51304 0.02186   *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     0.72809        -2.48231        -0.72714 0.26354    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     1.23645        -0.41054        -0.18354 0.74057    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13     0.26700        -3.02073        -1.74971 0.00715  **</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14     0.48941        -2.26095        -1.08085 0.03149   *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15     1.38716         0.02189         0.04043 0.95612    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16     0.40680        -2.24403        -1.28635 0.01785   *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17     1.36848         0.26854         0.33236 0.46755    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18     4.63482         1.51879         2.36190 0.01631   *</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># With amplification efficiencies</span></span></span>
 <span class="r-in"><span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_1factor_one_ref_Eff.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -224,10 +219,10 @@ Statistical Analysis of Real-Time PCR Data.
 <span class="r-in"><span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** 1 target(s) using 1 reference gene(s) was analysed!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** The control level was used as calibrator.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     gene    ddCt      RE    LCL     UCL  pvalue      se   log2FC Lower.se.RE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 target 1.28974 0.40902 0.2388 0.70059 0.00994 0.19848 -1.28974     0.35645</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Upper.se.RE sig Lower.se.log2FC Upper.se.log2FC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     0.46935  **        -1.47996        -1.12397</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     gene    ddCt      RE   log2FC    LCL     UCL      se Lower.se.RE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 target 1.28974 0.40902 -1.28974 0.2388 0.70059 0.19848     0.35645</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     0.46935        -1.47996        -1.12397 0.00994  **</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Two reference genes</span></span></span>
 <span class="r-in"><span><span class="va">data3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_1factor_Two_ref.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -236,10 +231,10 @@ Statistical Analysis of Real-Time PCR Data.
 <span class="r-in"><span>  numberOfrefGenes <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** 1 target(s) using 2 reference gene(s) was analysed!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** The control level was used as calibrator.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   gene    ddCt      RE     LCL     UCL  pvalue      se   log2FC Lower.se.RE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 DER5 1.20386 0.43411 0.19154 0.98387 0.04727 0.42036 -1.20386     0.32438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Upper.se.RE sig Lower.se.log2FC Upper.se.log2FC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     0.58095   *        -1.61108        -0.89957</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   gene    ddCt      RE   log2FC     LCL     UCL      se Lower.se.RE Upper.se.RE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 DER5 1.20386 0.43411 -1.20386 0.19154 0.98387 0.42036     0.32438     0.58095</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Lower.se.log2FC Upper.se.log2FC  pvalue sig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        -1.61108        -0.89957 0.04727   *</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

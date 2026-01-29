@@ -1,8 +1,9 @@
-# Delta Ct ANOVA analysis
+# Delta Ct ANOVA analysis with flexible model specification
 
 Performs Delta Ct (dCt) analysis of the data from a 1-, 2-, or 3-factor
-experiment. Per-gene statistical grouping is also performed for all
-treatment (T) combinations.
+experiment with support for both fixed effects and mixed effects models.
+Per-gene statistical grouping is performed for all treatment
+combinations.
 
 ## Usage
 
@@ -11,10 +12,11 @@ ANOVA_DCt(
   x,
   numOfFactors,
   numberOfrefGenes,
-  block,
+  block = NULL,
   alpha = 0.05,
   p.adj = "none",
-  analyseAllTarget = TRUE
+  analyseAllTarget = TRUE,
+  model = NULL
 )
 ```
 
@@ -46,11 +48,12 @@ ANOVA_DCt(
   to conduct each plate as a randomized block so that at least one
   replicate of each treatment and control is present on a plate. Block
   effect is usually considered as random and its interaction with any
-  main effect is not considered.
+  main effect is not considered. Note: This parameter is ignored if
+  `model` is provided.
 
 - alpha:
 
-  statistical level for comparisons
+  Statistical level for comparisons (default: 0.05).
 
 - p.adj:
 
@@ -63,86 +66,171 @@ ANOVA_DCt(
   are analysed. Alternatively, a character vector specifying the names
   (names of their Efficiency columns) of target genes to be analysed.
 
+- model:
+
+  Optional model formula. If provided, this overrides the automatic
+  formula (CRD or RCBD based on `block` and `numOfFactors`). The formula
+  uses `wDCt` as the response variable. For mixed models, random effects
+  can be defined using `lmer` syntax (e.g.,
+  `"wDCt ~ Treatment + (1|Block)"`). When using `model`, the `block` and
+  `numOfFactors` arguments are ignored for model specification, but
+  still used for data structure identification.
+
+  for fixed effects only, the `"lm"` (ordinary least squares) is used.
+  `"lmer"` is used for mixed effects models (requires the `lmerTest`
+  package). If a custom formula is provided with random effects, the
+  function will use
+  [`lmerTest::lmer()`](https://rdrr.io/pkg/lmerTest/man/lmer.html);
+  otherwise it will use
+  [`stats::lm()`](https://rdrr.io/r/stats/lm.html). Note that `emmeans`
+  supports both model types and will use appropriate degrees of freedom
+  methods (Satterthwaite by default).
+
 ## Value
 
-An object containing expression table, lm models, ANOVA table,
+An object containing expression tables, lm/lmer models, ANOVA tables,
 residuals, and raw data for each gene:
 
-- dCt expression table for all treatment combinations along with the
-  per-gene statistical grouping:
+- `relativeExpression`:
 
-  `object$relativeExpression`
+  dCt expression table for all treatment combinations along with
+  per-gene statistical grouping
 
-- ANOVA table for treatments:
+- `perGene`:
 
-  `object$perGene$gene_name$ANOVA_T`
+  Nested list containing detailed results for each target gene:
 
-- ANOVA table factorial:
+  - `ANOVA_table`: Full factorial ANOVA table
 
-  `object$perGene$gene_name$ANOVA_factorial`
+  - `lm`: lm/lmer model for factorial design
 
-- lm ANOVA for tratments:
+  - `Final_data`: Processed data with wDCt values
 
-  `object$perGene$gene_name$lm_T`
-
-- lm ANOVA factorial:
-
-  `object$perGene$gene_name$lm_factorial`
-
-- Residuals:
-
-  `resid(object$perGene$gene_name$lm_T)`
+  - `resid(object$perGene$gene_name$lm)`: Residuals
 
 ## Details
 
-The function returns analysis of variance components and the expression
-table which include these columns: gene (name of target genes), factor
-columns, dCt (mean weighted delta Ct for each treatment combination), RE
-(relative expression = 2^-dCt), log2FC (log(2) of relative expression),
-LCL (95% lower confidence level), UCL (95% upper confidence level), se
-(standard error of the mean calculated from the weighted delta Ct (wDCt)
-values of each treatment combination), Lower.se.RE (The lower limit
-error bar for RE which is 2^(log2(RE) - se)), Upper.se.RE (The upper
-limit error bar for RE which is 2^(log2(RE) + se)), Lower.se.log2FC (The
-lower limit error bar for log2 RE), Upper.se.log2FC (The upper limit
-error bar for log2 RE), and sig (per-gene significance grouping
-letters).
+The function performs ANOVA analysis on weighted delta Ct (wDCt) values
+and returns variance components along with an expression table
+containing:
+
+- `gene`: Name of target genes
+
+- Factor columns: Experimental design factors
+
+- `dCt`: Mean weighted delta Ct for each treatment combination
+
+- `RE`: Relative expression = 2^-dCt
+
+- `log2FC`: log2 of relative expression
+
+- `LCL`: 95% lower confidence level
+
+- `UCL`: 95% upper confidence level
+
+- `se`: Standard error of the mean calculated from wDCt values
+
+- `Lower.se.RE`: Lower limit error bar for RE (2^(log2(RE) - se))
+
+- `Upper.se.RE`: Upper limit error bar for RE (2^(log2(RE) + se))
+
+- `Lower.se.log2FC`: Lower limit error bar for log2 RE
+
+- `Upper.se.log2FC`: Upper limit error bar for log2 RE
+
+- `sig`: Per-gene significance grouping letters
 
 ## Examples
 
 ``` r
-data <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
-res <- ANOVA_DCt(
-  data,
-  numOfFactors = 3,
-  numberOfrefGenes = 1,
-  block = NULL)
+# Default usage with fixed effects
+result <- ANOVA_DCt(data_2factorBlock3ref, numOfFactors = 2, numberOfrefGenes = 3, 
+                    block = "block")
 #> 
 #> Relative Expression
-#>    gene Type Conc SA      dCt      RE   log2FC     LCL     UCL      se
-#> 1    PO    S    H A2 -2.37667 5.19335  2.37667 8.11969 3.32167 0.13094
-#> 2    PO    S    H A1 -1.57000 2.96905  1.57000 4.64204 1.89900 0.05508
-#> 3    PO    R    H A2 -0.79667 1.73708  0.79667 2.71589 1.11104 0.08373
-#> 4    PO    S    L A2 -0.61667 1.53333  0.61667 2.39732 0.98072 0.08647
-#> 5    PO    R    H A1  0.01667 0.98851 -0.01667 1.54552 0.63225 0.08413
-#> 6    PO    S    L A1  0.33000 0.79554 -0.33000 1.24380 0.50883 0.21284
-#> 7    PO    S    M A2  0.33000 0.79554 -0.33000 1.24380 0.50883 0.25710
-#> 8    PO    R    M A1  0.67333 0.62706 -0.67333 0.98039 0.40107 0.43880
-#> 9    PO    S    M A1  1.27000 0.41466 -1.27000 0.64831 0.26522 0.25403
-#> 10   PO    R    M A2  1.66667 0.31498 -1.66667 0.49246 0.20146 0.28898
-#> 11   PO    R    L A1  1.81000 0.28519 -1.81000 0.44589 0.18241 0.02082
-#> 12   PO    R    L A2  3.96333 0.06411 -3.96333 0.10023 0.04100 0.82277
+#>    gene Type Concentration      dCt      RE   log2FC     LCL     UCL      se
+#> 1    PO    R            L3  0.08550 0.94246 -0.08550 0.11280 0.23190 0.26799
+#> 2    PO    S            L3  1.28189 0.41126 -1.28189 0.06826 0.14033 0.30503
+#> 3    PO    R            L2  1.65834 0.31680 -1.65834 0.21373 0.49442 0.25149
+#> 4    PO    S            L2  2.20079 0.21752 -2.20079 0.13938 0.32241 0.05775
+#> 5    PO    R            L1  2.62828 0.16174 -2.62828 0.65731 1.35132 0.06143
+#> 6    PO    S            L1  3.35294 0.09787 -3.35294 0.28683 0.58967 0.34299
+#> 7   NLM    R            L1 -1.32600 2.50707  1.32600 1.89103 3.32380 0.15025
+#> 8   NLM    R            L3 -0.41248 1.33097  0.41248 0.10027 0.17624 0.40799
+#> 9   NLM    S            L3 -0.29364 1.22573  0.29364 0.05649 0.09928 0.17934
+#> 10  NLM    R            L2  1.00339 0.49883 -1.00339 0.92454 1.62503 0.09128
+#> 11  NLM    S            L2  2.91119 0.13294 -2.91119 0.37625 0.66133 0.10361
+#> 12  NLM    S            L1  3.73911 0.07489 -3.73911 0.96612 1.86180 0.20359
 #>    Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC sig
-#> 1      4.74277     5.68675         2.17046         2.60246   a
-#> 2      2.85784     3.08458         1.51119         1.63109  ab
-#> 3      1.63913     1.84088         0.75175         0.84427  bc
-#> 4      1.44412     1.62805         0.58079         0.65476   c
-#> 5      0.93252     1.04787        -0.01767        -0.01572  cd
-#> 6      0.68642     0.92200        -0.38246        -0.28474   d
-#> 7      0.66568     0.95072        -0.39437        -0.27613   d
-#> 8      0.46261     0.84996        -0.91269        -0.49675  de
-#> 9      0.34771     0.49450        -1.51452        -1.06496  ef
-#> 10     0.25780     0.38484        -2.03630        -1.36413   f
-#> 11     0.28111     0.28934        -1.83631        -1.78407   f
-#> 12     0.03624     0.11340        -7.01032        -2.24070   g
+#> 1      0.78269     1.13484        -0.10295        -0.07100   a
+#> 2      0.33288     0.50808        -1.58370        -1.03760   b
+#> 3      0.26612     0.37713        -1.97415        -1.39305  bc
+#> 4      0.20898     0.22640        -2.29068        -2.11443  cd
+#> 5      0.15499     0.16877        -2.74261        -2.51872  de
+#> 6      0.07716     0.12414        -4.25280        -2.64348   e
+#> 7      2.25910     2.78226         1.19485         1.47155   a
+#> 8      1.00312     1.76598         0.31087         0.54729   b
+#> 9      1.08244     1.38797         0.25931         0.33250   b
+#> 10     0.46824     0.53141        -1.06893        -0.94187   c
+#> 11     0.12372     0.14284        -3.12794        -2.70945   d
+#> 12     0.06503     0.08624        -4.30581        -3.24699   e
+#> 
+#> Note: Using default model for analysis: wDCt ~ block + Type * Concentration 
+
+# Mixed model with random block effect
+result_mixed <- ANOVA_DCt(data_2factorBlock3ref, numOfFactors = 2, numberOfrefGenes = 3,
+                          block = "block")
+#> 
+#> Relative Expression
+#>    gene Type Concentration      dCt      RE   log2FC     LCL     UCL      se
+#> 1    PO    R            L3  0.08550 0.94246 -0.08550 0.11280 0.23190 0.26799
+#> 2    PO    S            L3  1.28189 0.41126 -1.28189 0.06826 0.14033 0.30503
+#> 3    PO    R            L2  1.65834 0.31680 -1.65834 0.21373 0.49442 0.25149
+#> 4    PO    S            L2  2.20079 0.21752 -2.20079 0.13938 0.32241 0.05775
+#> 5    PO    R            L1  2.62828 0.16174 -2.62828 0.65731 1.35132 0.06143
+#> 6    PO    S            L1  3.35294 0.09787 -3.35294 0.28683 0.58967 0.34299
+#> 7   NLM    R            L1 -1.32600 2.50707  1.32600 1.89103 3.32380 0.15025
+#> 8   NLM    R            L3 -0.41248 1.33097  0.41248 0.10027 0.17624 0.40799
+#> 9   NLM    S            L3 -0.29364 1.22573  0.29364 0.05649 0.09928 0.17934
+#> 10  NLM    R            L2  1.00339 0.49883 -1.00339 0.92454 1.62503 0.09128
+#> 11  NLM    S            L2  2.91119 0.13294 -2.91119 0.37625 0.66133 0.10361
+#> 12  NLM    S            L1  3.73911 0.07489 -3.73911 0.96612 1.86180 0.20359
+#>    Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC sig
+#> 1      0.78269     1.13484        -0.10295        -0.07100   a
+#> 2      0.33288     0.50808        -1.58370        -1.03760   b
+#> 3      0.26612     0.37713        -1.97415        -1.39305  bc
+#> 4      0.20898     0.22640        -2.29068        -2.11443  cd
+#> 5      0.15499     0.16877        -2.74261        -2.51872  de
+#> 6      0.07716     0.12414        -4.25280        -2.64348   e
+#> 7      2.25910     2.78226         1.19485         1.47155   a
+#> 8      1.00312     1.76598         0.31087         0.54729   b
+#> 9      1.08244     1.38797         0.25931         0.33250   b
+#> 10     0.46824     0.53141        -1.06893        -0.94187   c
+#> 11     0.12372     0.14284        -3.12794        -2.70945   d
+#> 12     0.06503     0.08624        -4.30581        -3.24699   e
+#> 
+#> Note: Using default model for analysis: wDCt ~ block + Type * Concentration 
+
+# Custom mixed model formula with nested random effects
+result_custom <- ANOVA_DCt(data_repeated_measure_2, numOfFactors = 2, numberOfrefGenes = 1,
+                            block = NULL,
+                            model = wDCt ~ treatment * time + (1 | id))
+#> Using custom formula. Ignoring block and numOfFactors for model specification.
+#> 
+#> Relative Expression
+#>     gene treatment time       dCt       RE   log2FC       LCL       UCL      se
+#> 1 Target   treated    3 -16.32000 81810.59 16.32000  2420.745  44620.87 0.55411
+#> 2 Target untreated    2 -14.22333 19127.14 14.22333  4052.422  74697.09 0.65831
+#> 3 Target   treated    1 -14.08667 17398.40 14.08667  4455.080  82119.16 1.40507
+#> 4 Target   treated    2 -13.86333 14903.19 13.86333  3471.240  63984.34 0.97527
+#> 5 Target untreated    3 -13.80333 14296.09 13.80333  3329.836  61377.88 0.78214
+#> 6 Target untreated    1 -13.34333 10393.06 13.34333 19055.267 351240.05 0.60237
+#>   Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC sig
+#> 1   55719.478   120119.09        11.11521        23.96198   a
+#> 2   12119.302    30187.17         9.01216        22.44780  ab
+#> 3    6569.648    46076.16         5.31914        37.30571   b
+#> 4    7580.446    29299.73         7.05153        27.25537   b
+#> 5    8313.224    24584.72         8.02668        23.73733  ab
+#> 6    6845.630    15778.79         8.78889        20.25790   b
+
 ```

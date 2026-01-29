@@ -4,8 +4,7 @@ Performs relative expression (fold change) analysis based on the Delta
 Delta Ct (ddCt) methods using a fitted model object produced by
 [`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md),
 [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
-or
-[`REPEATED_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/REPEATED_DDCt.md).
+or `REPEATED_DDCt()`.
 
 ## Usage
 
@@ -20,15 +19,14 @@ Means_DDCt(model, specs, p.adj = "none")
   A fitted model object (typically an `lmer` or `lm` object) created by
   [`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md),
   [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
-  or
-  [`REPEATED_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/REPEATED_DDCt.md).
+  or `REPEATED_DDCt()`.
 
 - specs:
 
   A character string or character vector specifying the predictors or
   combinations of predictors over which relative expression values are
   desired. This argument follows the specification syntax used by
-  [`emmeans::emmeans()`](https://rdrr.io/pkg/emmeans/man/emmeans.html)
+  [`emmeans::emmeans()`](https://rvlenth.github.io/emmeans/reference/emmeans.html)
   (e.g., `"Factor"`, `"Factor1 | Factor2"`).
 
 - p.adj:
@@ -74,12 +72,14 @@ res <- ANOVA_DDCt(
   block = NULL)
 #> 
 #> Relative Expression
-#>   gene contrast     ddCt     RE  log2FC pvalue sig     LCL     UCL      se
-#> 1   PO        R  0.00000 1.0000 0.00000      1     0.00000 0.00000 0.39385
-#> 2   PO   S vs R -1.66111 3.1626 1.66111      0 *** 2.44335 4.09358 0.30640
-#>   Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC
-#> 1     0.76109     1.31390         0.00000         0.00000
-#> 2     2.55746     3.91093         1.34327         2.05416
+#>   gene contrast     ddCt     RE  log2FC     LCL     UCL      se Lower.se.RE
+#> 1   PO        R  0.00000 1.0000 0.00000 0.00000 0.00000 0.39385     0.76109
+#> 2   PO   S vs R -1.66111 3.1626 1.66111 2.44335 4.09358 0.30640     2.55746
+#>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC pvalue sig
+#> 1     1.31390         0.00000         0.00000      1    
+#> 2     3.91093         1.34327         2.05416      0 ***
+#> 
+#> Note: Using default model for analysis: wDCt ~ Type * Conc * SA 
 #> The R level was used as calibrator.
 
 # Relative expression values for Type main effect

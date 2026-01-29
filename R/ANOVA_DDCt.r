@@ -27,6 +27,20 @@
 #' If \code{TRUE} (default), all target genes are analysed.
 #' Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
 #' to be analysed.
+#' @param model Optional model formula. If provided, this overrides the automatic formula (CRD or RCBD 
+#' based on \code{block} and \code{numOfFactors}). The formula uses 
+#' \code{wDCt} as the response variable. 
+#' For mixed models, random effects can be defined using \code{lmer} syntax 
+#' (e.g., \code{"wDCt ~ Treatment + (1|Block)"}). When using \code{model}, 
+#' the \code{block} and \code{numOfFactors} arguments are ignored for model 
+#' specification, but still used for data structure identification.
+#'   
+#' for fixed effects only, the \code{"lm"} (ordinary least squares) is used. 
+#' \code{"lmer"} is used for mixed effects models 
+#' (requires the \code{lmerTest} package). If a custom formula is provided with 
+#' random effects, the function will use \code{lmerTest::lmer()}; otherwise 
+#' it will use \code{stats::lm()}. Note that \code{emmeans} supports both 
+#' model types and will use appropriate degrees of freedom methods (Satterthwaite by default).
 #' @param p.adj
 #' Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.
 #' 
@@ -40,14 +54,14 @@
 #' treated as covariates. if the interaction between the main factor and the covariate is significant, ANCOVA is not appropriate.
 #' 
 #' All the functions for relative expression analysis (including `TTEST_DDCt()`, 
-#' `WILCOX_DDCt()`, `ANOVA_DDCt()`, `ANCOVA_DDCt()`, `REPEATED_DDCt()`, and `ANOVA_DCt()`) return the 
+#' `WILCOX_DDCt()`, `ANOVA_DDCt()`, and `ANOVA_DCt()`) return the 
 #' relative expression table which include fold change and corresponding 
-#' statistics. The output of `ANOVA_DDCt()`, `ANCOVA_DDCt()`, `ANCOVA_DDCt()`, `REPEATED_DDCt()`, 
+#' statistics. The output of `ANOVA_DDCt()`, 
 #' and `ANOVA_DCt()` also include lm models, residuals, raw data and ANOVA table 
 #' for each gene. 
 #' 
 #' The expression table returned by `TTEST_DDCt()`, 
-#' `WILCOX_DDCt()`, `ANOVA_DDCt()`, `ANCOVA_DDCt()`, and `REPEATED_DDCt()` functions 
+#' `WILCOX_DDCt()`, and `ANOVA_DDCt()` functions 
 #' include these columns: gene (name of target genes), 
 #' contrast (calibrator level and contrasts for which the relative expression is computed), 
 #' ddCt (mean of weighted delta delta Ct values), RE (relative expression or 
@@ -96,7 +110,7 @@
 #' data1 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
 #' ANOVA_DDCt(x = data1,
 #'            numOfFactors = 2,
-#'            numberOfrefGenes = 2,
+#'            numberOfrefGenes = 3,
 #'            block = "block",
 #'            mainFactor.column = 2,
 #'            p.adj = "none")
@@ -108,9 +122,24 @@
 #'            block = NULL,
 #'            mainFactor.column = 1,
 #'            p.adj = "none")
+#'   
+#' # Repeated measure analysis         
+#' a <- ANOVA_DDCt(data_repeated_measure_1,
+#'            numOfFactors = 1,
+#'            numberOfrefGenes = 1,
+#'            block = NULL,
+#'            mainFactor.column = 1,
+#'            p.adj = "none", model = wDCt ~ time + (1 | id))
+#' 
+#' a$perGene$Target$ANOVA_table
+#' 
+#' 
+#' # Repeated measure analysis: split-plot in time
+#' a <- ANOVA_DDCt(data_repeated_measure_2,
+#'            numOfFactors = 2, numberOfrefGenes = 1,
+#'            mainFactor.column = 2, block = NULL,
+#'            model = wDCt ~ treatment * time + (1 | id))
 #'            
-
-
 
 ANOVA_DDCt <- function(
     x,
@@ -120,17 +149,9 @@ ANOVA_DDCt <- function(
     block,
     mainFactor.level.order = NULL,
     p.adj = "none",
-    analyseAllTarget = TRUE
+    analyseAllTarget = TRUE,
+    model = NULL
 ) {
-  
-
-  # Basic checks
-  if (!is.data.frame(x)) stop("x must be a data.frame")
-  if (!is.numeric(numOfFactors) || numOfFactors < 1) stop("numOfFactors must be a positive integer")
-  if (!is.numeric(numberOfrefGenes) || numberOfrefGenes < 1) stop("numberOfrefGenes must be a positive integer")
-  if (!(isTRUE(analyseAllTarget) || is.character(analyseAllTarget))) {
-    stop("analyseAllTarget must be TRUE or a character vector of target names")
-  }
   
   n <- ncol(x)
   nDesign <- if (is.null(block)) numOfFactors + 1 else numOfFactors + 2
@@ -154,48 +175,263 @@ ANOVA_DDCt <- function(
     targetNames <- targetNames[keep]
   }
   
-
+  # Initialize list to store results for each gene
+  perGene <- list()
+  relativeExpression_list <- list()
+  
   # Analyse each target gene
-  perGene <- lapply(seq_along(targetPairs), function(i) {
+  for (i in seq_along(targetPairs)) {
     
     tc <- targetPairs[[i]]
     gene_name <- targetNames[i]
     
     gene_df <- x[, c(designCols, tc, refCols), drop = FALSE]
     
-    res <- .ANOVA(
-      x = gene_df,
-      numOfFactors = numOfFactors,
-      numberOfrefGenes = numberOfrefGenes,
-      mainFactor.column = mainFactor.column,
-      analysisType = "anova",
-      mainFactor.level.order = mainFactor.level.order,
-      block = block,
-      p.adj = p.adj
-    )
+    # .ANOVA functionality
+    # If user provides a model, we skip automatic model building
+    user_defined_model <- !is.null(model)
     
-    res$Fold_Change$gene <- gene_name
-    res
-  })
+    # Reorder columns
+    gene_df <- gene_df[, c(mainFactor.column, (1:ncol(gene_df))[-mainFactor.column])]
+    
+    # Convert the first numOfFactors columns to factor
+    if (is.null(block)) {
+      gene_df[seq_len(numOfFactors)] <- lapply(
+        gene_df[seq_len(numOfFactors)],
+        function(col) factor(col, levels = unique(col)))
+    } else {
+      gene_df[seq_len(numOfFactors + 1)] <- lapply(
+        gene_df[seq_len(numOfFactors + 1)],
+        function(col) factor(col, levels = unique(col)))
+    }
+    
+    # Handle factor level ordering
+    if (is.null(mainFactor.level.order)) {
+      mainFactor.level.order <- unique(gene_df[,1])
+      calibrator <- gene_df[,1][1]
+    } else if (any(is.na(match(unique(gene_df[,1]), mainFactor.level.order))) == TRUE) {
+      stop("The `mainFactor.level.order` doesn't match main factor levels.")
+    } else {
+      gene_df <- gene_df[order(match(gene_df[,1], mainFactor.level.order)), ]
+      calibrator <- gene_df[,1][1]
+    }
+    
+    # Compute wDCt (assuming compute_wDCt function exists)
+    if (!exists("compute_wDCt")) {
+      stop("compute_wDCt function is required but not found")
+    }
+    gene_df <- compute_wDCt(gene_df, numOfFactors, numberOfrefGenes, block)
+    
+    # Convert factors back to characters and then to factors
+    gene_df[] <- lapply(gene_df, function(x) {
+      if (is.factor(x)) as.character(x) else x
+    })
+    
+    # Convert the first numOfFactors columns to factor
+    if (is.null(block)) {
+      gene_df[seq_len(numOfFactors)] <- lapply(
+        gene_df[seq_len(numOfFactors)],
+        function(col) factor(col, levels = unique(col)))
+    } else {
+      gene_df[seq_len(numOfFactors + 1)] <- lapply(
+        gene_df[seq_len(numOfFactors + 1)],
+        function(col) factor(col, levels = unique(col)))
+    }
+    
+    factors <- colnames(gene_df)[1:numOfFactors]
+    
+    # Initialize variable to store default model
+    default_model_formula <- NULL
+    
+    # Model building logic
+    if (user_defined_model) {
+      if (is.character(model)) {
+        formula_str <- paste("wDCt ~", model)
+        formula_obj <- as.formula(formula_str)
+      } else if (inherits(model, "formula")) {
+        formula_obj <- model
+      } else {
+        stop("model must be either a character string or a formula object")
+      }
+      
+      # Check if the formula contains random effects
+      has_random_effects <- grepl("\\|", as.character(formula_obj)[3])
+      
+      if (has_random_effects) {
+        # Mixed model with random effects
+        if (!requireNamespace("lmerTest", quietly = TRUE)) {
+          stop("lmerTest package is required for mixed models")
+        }
+        lm_fit <- suppressMessages(lmerTest::lmer(formula_obj, data = gene_df))
+      } else {
+        # Fixed effects model
+        lm_fit <- lm(formula_obj, data = gene_df)
+      }
+      
+      lm_formula <- formula(lm_fit)
+      ANOVA_table <- stats::anova(lm_fit)
+      
+    } else {
+      # Original automatic model building
+      # Analysis of variance (no blocking factor)
+      if (is.null(block)) {
+        # ANOVA (default for ANOVA_DDCt is always "anova")
+        formula_ANOVA <- as.formula(
+          paste("wDCt ~", paste(factors, collapse = " * "))
+        )
+        default_model_formula <- deparse(formula_ANOVA)
+        lm_fit <- lm(formula_ANOVA, data = gene_df)
+        lm_formula <- formula(lm_fit)
+        ANOVA_table <- stats::anova(lm_fit)
+        
+      } else {
+        # Analysis of variance with blocking factor
+        formula_ANOVA <- as.formula(
+          paste("wDCt ~", block, "+", paste(factors, collapse = " * "))
+        )
+        default_model_formula <- deparse(formula_ANOVA)
+        lm_fit <- lm(formula_ANOVA, data = gene_df)
+        lm_formula <- formula(lm_fit)
+        ANOVA_table <- stats::anova(lm_fit)
+      }
+    }
+    
+    # Post-hoc tests with emmeans
+    if (!requireNamespace("emmeans", quietly = TRUE)) {
+      stop("emmeans package is required for post-hoc tests")
+    }
+    
+    pp1 <- suppressMessages(emmeans::emmeans(lm_fit, colnames(gene_df)[1], data = gene_df, 
+                                             adjust = p.adj, mode = "satterthwaite"))
+    pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
+    pp3 <- pp2[1:length(mainFactor.level.order)-1,]
+    ci  <- as.data.frame(stats::confint(graphics::pairs(pp1)), adjust = p.adj)[1:length(unique(gene_df[,1]))-1,]
+    pp  <- cbind(pp3, lower.CL = ci$lower.CL, upper.CL = ci$upper.CL)
+    
+    # Standard error calculation
+    bwDCt <- gene_df$wDCt
+    if (!requireNamespace("dplyr", quietly = TRUE)) {
+      stop("dplyr package is required")
+    }
+    se <- dplyr::summarise(
+      dplyr::group_by(data.frame(factor = gene_df[,1], bwDCt = bwDCt), gene_df[,1]),
+      se = stats::sd(bwDCt, na.rm = TRUE)/sqrt(length(bwDCt)))
+    
+    sig <- .convert_to_character(pp$p.value)
+    contrast <- pp$contrast
+    post_hoc_test <- data.frame(contrast,
+                                ddCt = - pp$estimate,
+                                RE = 1/(2^-(pp$estimate)),
+                                log2FC = log2(1/(2^-(pp$estimate))),
+                                pvalue = pp$p.value,
+                                sig = sig,
+                                LCL = 1/(2^-pp$lower.CL),
+                                UCL = 1/(2^-pp$upper.CL),
+                                se = se$se[-1])
+    
+    reference <- data.frame(contrast = mainFactor.level.order[1],
+                            ddCt = 0,
+                            RE = 1,
+                            log2FC = 0,
+                            pvalue = 1,
+                            sig = " ",
+                            LCL = 0,
+                            UCL = 0,
+                            se = se$se[1])
+    
+    tableC <- rbind(reference, post_hoc_test)
+    
+    tableC$contrast <- as.character(tableC$contrast)
+    tableC$contrast <- sapply(strsplit(tableC$contrast, " - "), function(x) paste(rev(x), collapse = " vs "))
+    
+    # Calculate confidence intervals for SE
+    tableC <- data.frame(tableC,
+                         Lower.se.RE = 2^(log2(tableC$RE) - tableC$se),
+                         Upper.se.RE = 2^(log2(tableC$RE) + tableC$se),
+                         Lower.se.log2FC = 0,
+                         Upper.se.log2FC = 0)
+    
+    for (j in 1:length(tableC$RE)) {
+      if (tableC$RE[j] < 1) {
+        tableC$Lower.se.log2FC[j] <- (tableC$Upper.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+        tableC$Upper.se.log2FC[j] <- (tableC$Lower.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+      } else {
+        tableC$Lower.se.log2FC[j] <- (tableC$Lower.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+        tableC$Upper.se.log2FC[j] <- (tableC$Upper.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+      }
+    }
+    
+    # Round tableC to 5 decimal places
+    if (requireNamespace("dplyr", quietly = TRUE)) {
+      tableC <- dplyr::mutate_if(tableC, is.numeric, ~ round(., 5))
+    } else {
+      tableC[] <- lapply(tableC, function(x) if(is.numeric(x)) round(x, 5) else x)
+    }
+    
+    # Add gene name to the table
+    tableC$gene <- gene_name
+    
+    # Create result object for this gene
+    res <- list(Final_data = gene_df,
+                lm = lm_fit,
+                ANOVA_table = ANOVA_table,
+                Fold_Change = tableC,
+                lm_formula = lm_formula,
+                user_defined_model = user_defined_model,
+                default_model_formula = default_model_formula)
+    
+    # Add to perGene list
+    perGene[[gene_name]] <- res
+    
+    # Add to relative Expression list
+    relativeExpression_list[[i]] <- tableC
+    
+  }
   
-
   # Combine fold-change tables
-  relativeExpression <- do.call(rbind, lapply(perGene, function(g) g$Fold_Change))
+  relativeExpression <- do.call(rbind, relativeExpression_list)
   rownames(relativeExpression) <- NULL
   
-  relativeExpression <- relativeExpression[, c(ncol(relativeExpression), 1:(ncol(relativeExpression) - 1))]
+  # Reorder columns to put gene first
+  gene_col <- which(names(relativeExpression) == "gene")
+  other_cols <- setdiff(seq_len(ncol(relativeExpression)), gene_col)
+  relativeExpression <- relativeExpression[, c(gene_col, other_cols)]
+
+  desired_order <- c("gene", "contrast", "ddCt", "RE", "log2FC", "LCL", "UCL", "se",
+                     "Lower.se.RE", "Upper.se.RE", "Lower.se.log2FC", "Upper.se.log2FC", 
+                     "pvalue", "sig")
+  relativeExpression <- relativeExpression[, desired_order]
   
-  # Print automatically
+  # Print results
   cat("\nRelative Expression\n")
   print(relativeExpression)
+  cat("\n")
+  
+  # Show default model message if no user-defined model was provided
+  if (is.null(model) && length(perGene) > 0) {
+    default_formula <- perGene[[1]]$default_model_formula
+    if (!is.null(default_formula)) {
+      cat("Note: Using default model for analysis:", default_formula, "\n")
+    }
+  }
+
+  
+  
   
   # Return list with all results
   res_list <- list(
-    perGene = setNames(perGene, targetNames),
+    perGene = perGene,
     relativeExpression = relativeExpression
   )
-  on.exit(cat(paste("The", res_list$relativeExpression$contrast[1], "level was used as calibrator.\n")))
+  
+  # Add calibrator message
+  if (length(perGene) > 0) {
+    first_gene_res <- perGene[[1]]
+    if (!is.null(first_gene_res$Fold_Change)) {
+      calibrator_level <- strsplit(first_gene_res$Fold_Change$contrast[1], " vs ")[[1]][1]
+      cat(paste("The", calibrator_level, "level was used as calibrator.\n"))
+    }
+  }
+  
   invisible(res_list)
 }
-
-

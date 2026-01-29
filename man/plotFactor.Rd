@@ -75,7 +75,7 @@ data <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "
 
 res <- ANOVA_DDCt(x = data,
   numOfFactors = 2,
-  numberOfrefGenes = 2,
+  numberOfrefGenes = 3,
   block = "block",
   mainFactor.column = 2,
   p.adj = "none")

@@ -14,11 +14,11 @@ version](https://www.r-pkg.org/badges/version/rtpcr)](https://CRAN.R-project.org
 ⁠<!-- badges: end -->
 
 rtpcr is a tool for analysis of RT-qPCR gene expression data using
-$\Delta Ct$ and $\Delta\Delta Ct$ methods, including t-tests, ANOVA,
-ANCOVA, repeated-measures models, and publication-ready visualizations.
-The package implements a general calculation method adopted from Ganger
-et al. (2017) and Taylor et al. (2019), covering both the Livak and
-Pfaffl methods.
+$\Delta Ct$ and $\Delta\Delta Ct$ methods, including t-tests and ANOVA,
+repeated-measures models, and publication-ready visualizations. The
+package implements a general calculation method adopted from Ganger et
+al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl
+methods.
 
 - [Functions](#functions)
 - [Quick start](#quick-start)
@@ -47,8 +47,6 @@ performs different analyses using the following functions.
 |----|----|
 | `ANOVA_DCt` | $\Delta Ct$ ANOVA analysis |
 | `ANOVA_DDCt` | $\Delta\Delta Ct$ ANOVA analysis |
-| `ANCOVA_DDCt` | $\Delta\Delta Ct$ ANCOVA analysis |
-| `REPEATED_DDCt` | $\Delta\Delta Ct$ ANOVA analysis for repeated-measures data |
 | `TTEST_DDCt` | $\Delta\Delta Ct$ method *t*-test analysis |
 | `WILCOX_DDCt` | $\Delta\Delta Ct$ method wilcox.test analysis |
 | `plotFactor` | Bar plot of gene expression for one-, two- or three-factor experiments |
@@ -84,12 +82,11 @@ devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
 # Input data structure
 
 For relative expression analysis (using `TTEST_DDCt`, `WILCOX_DDCt`,
-`ANOVA_DCt`, `ANCOVA_DDCt`, `ANOVA_DDCt` and `REPEATED_DDCt` functions),
-the amplification efficiency (`E`) and `Ct` or `Cq` values (the mean of
-technical replicates) is used for the input table. If the `E` values are
-not available you should use ‘2’ instead representing the complete
-primer amplification efficiency. The required column structure of the
-input data is:
+`ANOVA_DCt`, and `ANOVA_DDCt` functions), the amplification efficiency
+(`E`) and `Ct` or `Cq` values (the mean of technical replicates) is used
+for the input table. If the `E` values are not available you should use
+‘2’ instead representing the complete primer amplification efficiency.
+The required column structure of the input data is:
 
 1.  Experimental condition columns (and one block if available [NOTE
     1](#note-1))
@@ -216,11 +213,37 @@ efficiency(data)
 
 ### Relative expression
 
-Relative expression analysis can be done using $\Delta\Delta Ct$ or
-$\Delta Ct$ methods through different functions (i.e. `TTEST_DDCt`,
-`WILCOX_DDCt`, `ANOVA_DDCt()`, `REPEATED_DDCt`, and `ANOVA_DCt()`).
-Below are some examples of expression analysis using $\Delta\Delta Ct$
-method.
+`TTEST_DDCt()` function is used for relative expression analysis in
+treatment condition compared to control condition. Both paired and
+unpaired experimental designs are supported. if the data doesn’t follow
+t.test assumptions, the `WILCOX_DDCt()` function can be used instead.
+`ANOVA_DDCt()` and `ANOVA_DCt()` functions are used for the analysis of
+variance of qPCR data. Optional custom model formula as a character
+string can be supplied to these functions. If provided, this overrides
+the automatic formula for factorial CRD or RCBD design is generated
+based on `block` and `numOfFactors`. The formula use `wDCt` as the
+response variable (wDCt is automatically created by the function). For
+mixed models, include random effects using `lmer` syntax (e.g.,
+`wDCt ~ Treatment + (1|Block)`). Below are a sample of most common
+models that can be used. Because currenly a model can be supplied by
+user, the `REPEATED_DDCt()` function was removed.
+
+| Samples models may be used in ANOVA_DCt() or ANOVA_DDCt() functions | Experimental design |
+|----|----|
+| wDCt ~ Condition | Completely Randomized Design (CRD). Can also be used for t.test with two independent samples. (**default**) |
+| wDCt ~ Factor1 \* Factor2 \* Factor3 | Factorial under Completely Randomized Design (RCBD) (**default**) |
+| wDCt ~ block + Factor1 \* Factor2 | Factorial under Randomized Complete Block Design (**default**) |
+| wDCt ~ time + (1 \| id) | Repeated measure analysis: different time points. Also can be used for t.test with two paired samples. |
+| wDCt ~ Condition \* time + (1 \| id) | Repeated measure analysis: split-plot in time |
+| wDCt ~ wDCt ~ Condition \* time + (1 \| block) + (1 \| id) | Repeated measure analysis: split-plot in time |
+| wDCt ~ Type + Concentration | Analysis of Covariance: Type is covariate |
+| wDCt ~ block + Type + Concentration | Analysis of Covariance with blocking factor: block and Type are covariates |
+
+#### NOTE
+
+For CRD, RCBD, and factorial experiments under CRD or RCBD designs you
+don’t need to define model as as one of these models is appropriately
+selected based on the arguments.
 
 ``` r
 # An example of a properly arranged dataset from a repeated-measures experiment.
@@ -239,12 +262,12 @@ data
 #    3   3      2       18.09   2   33.40
 
 # Repeated measure analysis
-res <- REPEATED_DDCt(
+res <- ANOVA_DDCt(
   data,
   numOfFactors = 1,
   numberOfrefGenes = 1,
   mainFactor.column = 1,
-  block = NULL)
+  block = NULL, model = wDCt ~ time + (1 | id))
 
 
 # Anova analysis

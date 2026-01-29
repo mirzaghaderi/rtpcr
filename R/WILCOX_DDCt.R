@@ -61,8 +61,6 @@
 #' \code{"holm"}, \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"},
 #' \code{"BH"}, \code{"BY"}, \code{"fdr"}, or \code{"none"}. See \code{\link[stats]{p.adjust}}.
 #'
-#' @param order
-#' Optional character vector specifying the order of genes in the output plot.
 #'
 #' @return
 #' A table containing RE values, log2FC, p-values, significance, 
@@ -95,8 +93,7 @@ WILCOX_DDCt <- function(x,
                        numberOfrefGenes,
                        Factor.level.order = NULL,
                        paired = FALSE,
-                       p.adj = "none",
-                       order = "none") {
+                       p.adj = "none") {
   
   stopifnot(is.data.frame(x))
   stopifnot(numberOfrefGenes >= 1)
@@ -226,6 +223,12 @@ WILCOX_DDCt <- function(x,
   res <- data.frame(res, 
                     Lower.se.log2FC = a$Lower.se.log2FC,
                     Upper.se.log2FC = a$Upper.se.log2FC)
+  
+  desired_order <- c("gene", "ddCt", "RE", "log2FC", "LCL", "UCL", "se",
+                     "Lower.se.RE", "Upper.se.RE", "Lower.se.log2FC", "Upper.se.log2FC", 
+                     "pvalue", "sig")
+  res <- res[, desired_order]
+  
 
   
   Result <- res %>%

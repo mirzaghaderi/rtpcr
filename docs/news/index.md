@@ -1,6 +1,33 @@
 # Changelog
 
+## rtpcr 2.1.3
+
+### New features
+
+- In current version, optional custom model formula can be supplied to
+  [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
+  and
+  [`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md)
+  functions. If provided, this overrides the automatic formula
+  (factorial CRD or RCBD design based on the availability of block and
+  the number of factors). The formula uses `wDCt` as the response
+  variable. For mixed models, random effects can be supplied (e.g.,
+  `wDCt ~ Treatment * (1|Block)`).
+
+- Because, currently a model can be supplied
+  [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
+  by user, the `REPEATED_DDCt()` function was removed.
+
+- Refer to the vignette for a sample of most common models and
+  description
+
+- For CRD, RCBD, and factorial experiments under CRD or RCBD designs no
+  model is required as as one of these models is appropriately selected
+  based on the arguments.
+
 ## rtpcr 2.1.2
+
+CRAN release: 2026-01-23
 
 ### New features
 
@@ -12,9 +39,8 @@
 - ANCOVA analysis which already was performed via the
   `analysisType = "ancova"` argument of the
   [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
-  function, now is performed using the
-  [`ANCOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANCOVA_DDCt.md)
-  new function. The `analysisType` argument was removed.
+  function, now is performed using the `ANCOVA_DDCt()` new function. The
+  `analysisType` argument was removed.
 
 - A function named
   [`compute_wDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/compute_wDCt.md)
@@ -22,9 +48,8 @@
   values. Handling missing data by this function has been described in
   the function details.
 
-- Two arguments of the
-  [`REPEATED_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/REPEATED_DDCt.md)
-  function were updated in order to be similar to those of the
+- Two arguments of the `REPEATED_DDCt()` function were updated in order
+  to be similar to those of the
   [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
   function: The `repeatedFactor` and `calibratorLevel` arguments were
   changed to `mainFactor.column` and `mainFactor.level.order`,
@@ -37,9 +62,8 @@
 - It is now possible to return the lm formula that is used for variance
   analysis in
   [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md),
-  and
-  [`REPEATED_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/REPEATED_DDCt.md)
-  functions using `object$perGene$gene_name$lm_formula` command.
+  and `REPEATED_DDCt()` functions using
+  `object$perGene$gene_name$lm_formula` command.
 
 ## rtpcr 2.1.1
 
@@ -52,20 +76,16 @@ CRAN release: 2026-01-08
   geometric mean of reference genes considering efficiency values.
 
 - Missing data can be denoted by NA in the input data frame. Values such
-  as ‘0’ and ‘undetermined’ (for any E and Ct) are automatically
-  converted to NA before passing to the downstream analysis. For target
-  genes, NA for E or Ct measurements cause returning NA for the
-  corresponding ΔCt for that replicate which is passed along to
-  downstream statistical analyses. If there are more than one reference
-  genes, NA in the place of the E or the Ct value of any reference gene
-  cause skipping that reference gene and remaining genes are averaged in
-  that replicate.
+  as “0” and “undetermined” (for any E or Ct) are automatically
+  converted to NA before being passed to downstream analyses. For target
+  genes, NA values for E or Ct measurements result in NA for the
+  corresponding ΔCt for that replicate, which is then propagated through
+  downstream statistical analyses. When more than one reference gene is
+  used, NA values in either the E or Ct field for any reference gene
+  cause that reference gene to be skipped, and the remaining reference
+  genes are geometrically averaged.
 
 - The
   [`long_to_wide()`](https://mirzaghaderi.github.io/rtpcr/reference/long_to_wide.md)
   function was added to convert a 4-column qPCR data with long format to
   wide.
-
-- The last gene name in the plot output of the
-  [`TTEST_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/TTEST_DDCt.md)
-  function was fixed.

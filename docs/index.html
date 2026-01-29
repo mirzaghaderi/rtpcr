@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">rtpcr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@
 <!-- badges: start -->
 
 <p>⁠<!-- badges: end --></p>
-<p>rtpcr is a tool for analysis of RT-qPCR gene expression data using <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta Ct</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package implements a general calculation method adopted from Ganger et al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl methods.</p>
+<p>rtpcr is a tool for analysis of RT-qPCR gene expression data using <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta Ct</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> methods, including t-tests and ANOVA, repeated-measures models, and publication-ready visualizations. The package implements a general calculation method adopted from Ganger et al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl methods.</p>
 <ul>
 <li><a href="#functions">Functions</a></li>
 <li>
@@ -123,16 +123,6 @@
 <td><code>ANOVA_DDCt</code></td>
 <td>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> ANOVA analysis</td>
-</tr>
-<tr class="odd">
-<td><code>ANCOVA_DDCt</code></td>
-<td>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> ANCOVA analysis</td>
-</tr>
-<tr class="even">
-<td><code>REPEATED_DDCt</code></td>
-<td>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> ANOVA analysis for repeated-measures data</td>
 </tr>
 <tr class="odd">
 <td><code>TTEST_DDCt</code></td>
@@ -191,13 +181,13 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mirzaghaderi.github.io/rtpcr/">rtpcr</a></span><span class="op">)</span></span></code></pre></div>
 <p>Or from from GitHub (developing version):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mirzaghaderi/rtpcr"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mirzaghaderi/rtpcr"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level1">
 <h1 id="input-data-structure">Input data structure<a class="anchor" aria-label="anchor" href="#input-data-structure"></a>
 </h1>
-<p>For relative expression analysis (using <code>TTEST_DDCt</code>, <code>ANOVA_DCt</code>, <code>ANOVA_DDCt</code> and <code>REPEATED_DDCt</code> functions), the amplification efficiency (<code>E</code>) and <code>Ct</code> or <code>Cq</code> values (the mean of technical replicates) is used for the input table. If the <code>E</code> values are not available you should use ‘2’ instead representing the complete primer amplification efficiency. The required column structure of the input data is:</p>
+<p>For relative expression analysis (using <code>TTEST_DDCt</code>, <code>WILCOX_DDCt</code>, <code>ANOVA_DCt</code>, and <code>ANOVA_DDCt</code> functions), the amplification efficiency (<code>E</code>) and <code>Ct</code> or <code>Cq</code> values (the mean of technical replicates) is used for the input table. If the <code>E</code> values are not available you should use ‘2’ instead representing the complete primer amplification efficiency. The required column structure of the input data is:</p>
 <ol style="list-style-type: decimal">
 <li>Experimental condition columns (and one block if available <a href="#note-1">NOTE 1</a>)</li>
 <li>Replicates information (biological replicates or subjects; see <a href="#note-2">NOTE 2</a>, and <a href="#note-3">NOTE 3</a>)<br>
@@ -215,7 +205,7 @@
 <div class="section level4">
 <h4 id="note-2">NOTE 2<a class="anchor" aria-label="anchor" href="#note-2"></a>
 </h4>
-<p>For <code>TTEST_DDCt</code>, <code>ANOVA_DCt</code>, and <code>ANOVA_DDCt</code>, each row is from a separate and unique biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The <code>REPEATED_DDCt</code> function is intended for experiments with repeated observations (e.g. time-course data). For <code>REPEATED_DDCt</code>, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a <code>1</code> at Rep column correspond to a single individual, all rows with a <code>2</code> correspond to another individual, and so on, which have been sampled at specific time points.</p>
+<p>For <code>TTEST_DDCt</code> and <code>WILCOX_DDCt</code> (independent samples), <code>ANOVA_DCt</code>, <code>ANCOVA_DDCt</code>, and <code>ANOVA_DDCt</code> each row is from a separate and unique biological replicate. For example, a dataframe with 12 rows has come from an experiment with 12 individuals. The <code>REPEATED_DDCt</code> function is intended for experiments with repeated observations (e.g. time-course data). For <code>REPEATED_DDCt</code>, the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a <code>1</code> at Rep column correspond to a single individual, all rows with a <code>2</code> correspond to another individual, and so on, which have been sampled at specific time points.</p>
 </div>
 <div class="section level4">
 <h4 id="note-3">NOTE 3<a class="anchor" aria-label="anchor" href="#note-3"></a>
@@ -286,7 +276,55 @@
 <div class="section level3">
 <h3 id="relative-expression">Relative expression<a class="anchor" aria-label="anchor" href="#relative-expression"></a>
 </h3>
-<p>Relative expression analysis can be done using <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> or <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta Ct</annotation></semantics></math> methods through different functions (i.e. <code>TTEST_DDCt</code>, <code>WILCOX_DDCt</code>, <code><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code>, <code>REPEATED_DDCt</code>, and <code><a href="reference/ANOVA_DCt.html">ANOVA_DCt()</a></code>). Below are some examples of expression analysis using <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> method.</p>
+<p><code><a href="reference/TTEST_DDCt.html">TTEST_DDCt()</a></code> function is used for relative expression analysis in treatment condition compared to control condition. Both paired and unpaired experimental designs are supported. if the data doesn’t follow t.test assumptions, the <code><a href="reference/WILCOX_DDCt.html">WILCOX_DDCt()</a></code> function can be used instead. <code><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> and <code><a href="reference/ANOVA_DCt.html">ANOVA_DCt()</a></code> functions are used for the analysis of variance of qPCR data. Optional custom model formula as a character string can be supplied to these functions. If provided, this overrides the automatic formula for factorial CRD or RCBD design is generated based on <code>block</code> and <code>numOfFactors</code>. The formula use <code>wDCt</code> as the response variable (wDCt is automatically created by the function). For mixed models, include random effects using <code>lmer</code> syntax (e.g., <code>wDCt ~ Treatment + (1|Block)</code>). Below are a sample of most common models that can be used. Because currenly a model can be supplied by user, the <code>REPEATED_DDCt()</code> function was removed.</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>Samples models may be used in ANOVA_DCt() or ANOVA_DDCt() functions</th>
+<th>Experimental design</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>wDCt ~ Condition</td>
+<td>Completely Randomized Design (CRD). Can also be used for t.test with two independent samples. (<strong>default</strong>)</td>
+</tr>
+<tr class="even">
+<td>wDCt ~ Factor1 * Factor2 * Factor3</td>
+<td>Factorial under Completely Randomized Design (RCBD) (<strong>default</strong>)</td>
+</tr>
+<tr class="odd">
+<td>wDCt ~ block + Factor1 * Factor2</td>
+<td>Factorial under Randomized Complete Block Design (<strong>default</strong>)</td>
+</tr>
+<tr class="even">
+<td>wDCt ~ time + (1 | id)</td>
+<td>Repeated measure analysis: different time points. Also can be used for t.test with two paired samples.</td>
+</tr>
+<tr class="odd">
+<td>wDCt ~ Condition * time + (1 | id)</td>
+<td>Repeated measure analysis: split-plot in time</td>
+</tr>
+<tr class="even">
+<td>wDCt ~ wDCt ~ Condition * time + (1 | block) + (1 | id)</td>
+<td>Repeated measure analysis: split-plot in time</td>
+</tr>
+<tr class="odd">
+<td>wDCt ~ Type + Concentration</td>
+<td>Analysis of Covariance: Type is covariate</td>
+</tr>
+<tr class="even">
+<td>wDCt ~ block + Type + Concentration</td>
+<td>Analysis of Covariance with blocking factor: block and Type are covariates</td>
+</tr>
+</tbody>
+</table>
+<div class="section level4">
+<h4 id="note">NOTE<a class="anchor" aria-label="anchor" href="#note"></a>
+</h4>
+<p>For CRD, RCBD, and factorial experiments under CRD or RCBD designs you don’t need to define model as as one of these models is appropriately selected based on the arguments.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># An example of a properly arranged dataset from a repeated-measures experiment.</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_repeated_measure_1.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
@@ -304,12 +342,12 @@
 <span><span class="co">#    3   3      2       18.09   2   33.40</span></span>
 <span></span>
 <span><span class="co"># Repeated measure analysis</span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/REPEATED_DDCt.html">REPEATED_DDCt</a></span><span class="op">(</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  numOfFactors <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  mainFactor.column <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  block <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span>  block <span class="op">=</span> <span class="cn">NULL</span>, model <span class="op">=</span> <span class="va">wDCt</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># Anova analysis</span></span>
@@ -337,6 +375,7 @@
 <span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  block <span class="op">=</span> <span class="st">"block"</span>,</span>
 <span>  analyseAllTarget <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 </div>
 <div class="section level1">
@@ -583,7 +622,7 @@
 <p>If the residuals from a <code>t.test</code> or an <code>lm</code> or and <code>lmer</code> object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test - also known as the Wilcoxon rank-sum test, (implemented via <code><a href="reference/WILCOX_DDCt.html">WILCOX_DDCt()</a></code> in the rtpcr package), is an alternative to t.test, and <code><a href="https://rdrr.io/r/stats/kruskal.test.html" class="external-link">kruskal.test()</a></code> is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the <code>t.test</code> function (also the <code>TTEST_DDCt</code> function described above) includes the <code>var.equal</code> argument. When set to <code>FALSE</code>, performs <code>t.test</code> under the unequal variances hypothesis. Residuals (from <code>ANOVA_DCt</code>, <code>ANOVA_DDCt</code>, and <code>REPEATED_DDCt</code> functions) objects can be extracted from <code>lm</code>and plotted as follow:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_repeated_measure_1.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/REPEATED_DDCt.html">REPEATED_DDCt</a></span><span class="op">(</span></span>
+<span><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu">REPEATED_DDCt</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  numOfFactors <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span>

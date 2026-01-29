@@ -1,7 +1,7 @@
 Package: rtpcr
 Type: Package
 Title: qPCR Data Analysis
-Version: 2.1.2
+Version: 2.1.3
 Authors@R: c(person("Ghader", "Mirzaghaderi", role=c("aut", "cre", "cph"), email = "mirzaghaderi@gmail.com"))
 Description: Tools for qPCR data analysis using Delta Ct and Delta Delta Ct methods, including t-tests, ANOVA, ANCOVA, repeated-measures models, and publication-ready visualizations. The package supports multiple target, and multiple reference genes, and uses a calculation framework adopted from Ganger et al. (2017) <doi:10.1186/s12859-017-1949-5> and Taylor et al. (2019) <doi:10.1016/j.tibtech.2018.12.002>, covering both the Livak and Pfaffl methods.
 URL: https://mirzaghaderi.github.io/rtpcr/, https://github.com/mirzaghaderi/rtpcr

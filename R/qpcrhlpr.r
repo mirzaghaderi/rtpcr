@@ -20,7 +20,6 @@
 
 
 
-
 .cleanup <- function(x, numOfFactors, block) {
   
   # define factor columns 
@@ -69,10 +68,6 @@
 
 
 
-
-
-
-
 .wide_to_long <- function(df) {
   
   if (ncol(df) < 6) {
@@ -117,8 +112,6 @@
 
 
 
-
-
 .long_to_wide <- function(df) {
   
   if (ncol(df) < 4) {
@@ -155,8 +148,6 @@
 
 
 
-
-
 .geom_pub_cols <- function(col_width = 0.8,
                            err_width = 0.15,
                            fill_colors = NULL,
@@ -177,8 +168,6 @@
   
   layers
 }
-
-
 
 
 .theme_pub <- function(base_size = 12,

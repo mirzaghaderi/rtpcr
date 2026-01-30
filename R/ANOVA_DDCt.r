@@ -229,7 +229,6 @@ ANOVA_DDCt <- function(
     factors <- colnames(gene_df)[1:numOfFactors]
     default_model_formula <- NULL
     
-    ## ---- NEW: initialize singular tracking ----
     is_mixed_model <- FALSE
     is_singular <- FALSE
     
@@ -255,9 +254,9 @@ ANOVA_DDCt <- function(
         }
         
         is_mixed_model <- TRUE
-        lm_fit <- lmerTest::lmer(formula_obj, data = gene_df)
+        lm_fit <- suppressMessages(lmerTest::lmer(formula_obj, data = gene_df))
         
-        ## ---- NEW: singularity check ----
+        # singularity check 
         is_singular <- lme4::isSingular(lm_fit, tol = 1e-4)
         
       } else {
@@ -364,8 +363,7 @@ ANOVA_DDCt <- function(
     
     tableC[] <- lapply(tableC, function(x) if(is.numeric(x)) round(x, 5) else x)
     tableC$gene <- gene_name
-    
-    ## ---- NEW: store singular info per gene ----
+     
     res <- list(
       Final_data = gene_df,
       lm = lm_fit,
@@ -401,14 +399,15 @@ ANOVA_DDCt <- function(
   calibrator_level <- strsplit(first_gene_res$Fold_Change$contrast[1], " vs ")[[1]][1]
   cat(paste("The", calibrator_level, "level was used as calibrator.\n"))
   
-  ## ---- NEW: report singular genes ----
   singular_genes <- names(perGene)[
     vapply(perGene, function(z) isTRUE(z$singular), logical(1))
   ]
   
   if (length(singular_genes) > 0) {
-    cat("WARNING: Singular mixed-model fits detected for the following genes. These random-effect structures may be overparameterized.\n")
-    cat(paste(" -", singular_genes, collapse = "\n"), "\n")
+    warning(
+    "Singular fit detected for the following genes:\n  ",
+    paste(singular_genes, collapse = ", ")
+    )
   }
   
   if (is.null(model) && length(perGene) > 0) {
@@ -419,7 +418,6 @@ ANOVA_DDCt <- function(
   }
   
 
-  
   invisible(list(
     perGene = perGene,
     relativeExpression = relativeExpression

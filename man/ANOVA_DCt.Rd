@@ -12,7 +12,8 @@ ANOVA_DCt(
   alpha = 0.05,
   p.adj = "none",
   analyseAllTarget = TRUE,
-  model = NULL
+  model = NULL,
+  singular.tol = 1e-04
 )
 }
 \arguments{

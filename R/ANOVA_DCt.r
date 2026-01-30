@@ -101,41 +101,33 @@ ANOVA_DCt <- function(
     alpha = 0.05,
     p.adj = "none",
     analyseAllTarget = TRUE,
-    model = NULL
+    model = NULL,
+    singular.tol = 1e-4
 ) {
-
   
-  # Store default model formula for messaging
   default_model_formula <- NULL
   
-  # If model is provided, ignore other formula-related arguments
+  # Handle custom vs default model
   if (!is.null(model)) {
-    if (!inherits(model, "formula")) {
-      model <- as.formula(model)
-    }
-    message("Using custom formula. Ignoring block and numOfFactors for model specification.")
+    if (!inherits(model, "formula")) model <- as.formula(model)
+    message("Using user defined formula. Ignoring block and numOfFactors for model specification.")
   } else {
-    # Create default model formula for message
     factors <- colnames(x)[1:numOfFactors]
-    if (is.null(block)) {
-      default_model_formula <- paste("wDCt ~", paste(factors, collapse = " * "))
+    rhs <- paste(factors, collapse = " * ")
+    default_model_formula <- if (is.null(block)) {
+      paste("wDCt ~", rhs)
     } else {
-      default_model_formula <- paste("wDCt ~", block, "+", paste(factors, collapse = " * "))
+      paste("wDCt ~", block, "+", rhs)
     }
   }
   
   n <- ncol(x)
-  
-  # Design columns
-  nDesign <- if (is.null(block)) numOfFactors + 1 else numOfFactors + 2
+  nDesign <- numOfFactors + if (is.null(block)) 1 else 2
   if (nDesign >= n) stop("Not enough columns for target and reference genes")
+  
   designCols <- seq_len(nDesign)
+  refCols <- (n - 2 * numberOfrefGenes + 1):n
   
-  # Reference gene columns
-  nRefCols <- 2 * numberOfrefGenes
-  refCols  <- (n - nRefCols + 1):n
-  
-  # Target gene columns
   targetCols <- setdiff(seq_len(n), c(designCols, refCols))
   if (length(targetCols) == 0 || length(targetCols) %% 2 != 0) {
     stop("Target genes must be supplied as E/Ct column pairs")
@@ -144,7 +136,6 @@ ANOVA_DCt <- function(
   targetPairs <- split(targetCols, ceiling(seq_along(targetCols) / 2))
   targetNames <- vapply(targetPairs, function(tc) colnames(x)[tc[1]], character(1))
   
-  # Subset target genes if requested
   if (!isTRUE(analyseAllTarget)) {
     keep <- targetNames %in% analyseAllTarget
     if (!any(keep)) stop("None of the specified target genes were found in the data.")
@@ -152,256 +143,172 @@ ANOVA_DCt <- function(
     targetNames <- targetNames[keep]
   }
   
-  # Analyse each target gene
   perGene <- lapply(seq_along(targetPairs), function(i) {
     
-    tc <- targetPairs[[i]]
     gene_name <- targetNames[i]
+    gene_df <- x[, c(designCols, targetPairs[[i]], refCols), drop = FALSE] 
+
+    if (!is.data.frame(gene_df)) stop("`x` must be a data.frame")
     
-    gene_df <- x[, c(designCols, tc, refCols), drop = FALSE]
+    gene_df <- compute_wDCt(gene_df, numOfFactors, numberOfrefGenes, block)
     
-    res <- .ANOVA_DCt_uniTarget(
-      x = gene_df,
-      numOfFactors = numOfFactors,
-      numberOfrefGenes = numberOfrefGenes,
-      block = block,
-      alpha = alpha,
-      p.adj = p.adj,
-      model = model
+    gene_df[] <- lapply(gene_df, function(z) if (is.factor(z)) as.character(z) else z)
+    
+    nFac <- if (is.null(block)) numOfFactors else numOfFactors + 1
+    gene_df[seq_len(nFac)] <- lapply(
+      gene_df[seq_len(nFac)],
+      function(col) factor(col, levels = unique(col))
     )
     
-    # Add gene name to results
-    res$Results$gene <- gene_name
-    res
+    factors <- colnames(gene_df)[1:numOfFactors]
+    gene_df$T <- factor(do.call(paste, c(gene_df[factors], sep = ":")))
+    
+    if (is.null(model)) {
+      rhs <- paste(factors, collapse = " * ")
+      model_i <- if (is.null(block)) {
+        as.formula(paste("wDCt ~", rhs))
+      } else {
+        as.formula(paste("wDCt ~", block, "+", rhs))
+      }
+    } else {
+      model_i <- model
+    }
+    
+    has_random_effects <- grepl("\\|", as.character(model_i)[3])
+    
+    is_singular <- FALSE
+    
+    lm <- if (has_random_effects) {
+      fit <- suppressMessages(lmerTest::lmer(model_i, data = gene_df))
+      
+      is_singular <- lme4::isSingular(fit, tol = singular.tol)
+      
+      fit
+    } else {
+      stats::lm(model_i, data = gene_df)
+    }
+    
+    ANOVA_table <- stats::anova(lm)
+    lm_formula <- formula(lm)
+    
+    ABC <- as.formula(paste("pairwise ~", paste(factors, collapse = " * ")))
+    
+    emm_obj <- suppressMessages(
+      emmeans::emmeans(lm, specs = ABC, adjust = p.adj, mode = "satterthwaite")
+    )[[1]]
+    
+    emm_df <- as.data.frame(emm_obj)
+    ROWS <- do.call(paste, c(emm_df[factors], sep = ":"))
+    
+    meanPairs_df <- as.data.frame(
+      multcomp::cld(emm_obj, adjust = p.adj, alpha = alpha,
+                    reversed = FALSE, Letters = letters)
+    )
+    
+    bwDCt <- gene_df$wDCt
+    obs_mean <- tapply(bwDCt, gene_df$T, mean, na.rm = TRUE)
+    obs_sd   <- tapply(bwDCt, gene_df$T, stats::sd, na.rm = TRUE)
+    obs_n    <- tapply(bwDCt, gene_df$T, function(z) sum(!is.na(z)))
+    obs_se   <- obs_sd / sqrt(obs_n)
+    
+    dCt <- obs_mean[match(ROWS, names(obs_mean))]
+    se  <- obs_se[match(ROWS, names(obs_se))]
+    
+    RE <- 2^(-dCt)
+    log2FC <- log2(RE)
+    
+    RE_LCL <- 2^(-meanPairs_df$upper.CL)
+    RE_UCL <- 2^(-meanPairs_df$lower.CL)
+    
+    Results <- data.frame(
+      row.names = ROWS,
+      dCt = dCt,
+      RE = RE,
+      log2FC = log2FC,
+      LCL = RE_LCL,
+      UCL = RE_UCL,
+      se = se,
+      sig = trimws(meanPairs_df$.group),
+      stringsAsFactors = FALSE
+    )
+    
+    parts <- do.call(rbind, strsplit(rownames(Results), ":", fixed = TRUE))
+    colnames(parts) <- factors
+    
+    Results_combined <- cbind(as.data.frame(parts, stringsAsFactors = FALSE), Results)
+    
+    Results_combined$Lower.se.RE <- 2^(log2(Results_combined$RE) - Results_combined$se)
+    Results_combined$Upper.se.RE <- 2^(log2(Results_combined$RE) + Results_combined$se)
+    
+    idx_less1 <- Results_combined$RE < 1
+    idx_ge1   <- !idx_less1
+    
+    Results_combined$Lower.se.log2FC <- Results_combined$Upper.se.log2FC <- 0
+    
+    Results_combined$Lower.se.log2FC[idx_less1] <-
+      (Results_combined$Upper.se.RE[idx_less1] * log2(Results_combined$RE[idx_less1])) /
+      Results_combined$RE[idx_less1]
+    
+    Results_combined$Upper.se.log2FC[idx_less1] <-
+      (Results_combined$Lower.se.RE[idx_less1] * log2(Results_combined$RE[idx_less1])) /
+      Results_combined$RE[idx_less1]
+    
+    Results_combined$Lower.se.log2FC[idx_ge1] <-
+      (Results_combined$Lower.se.RE[idx_ge1] * log2(Results_combined$RE[idx_ge1])) /
+      Results_combined$RE[idx_ge1]
+    
+    Results_combined$Upper.se.log2FC[idx_ge1] <-
+      (Results_combined$Upper.se.RE[idx_ge1] * log2(Results_combined$RE[idx_ge1])) /
+      Results_combined$RE[idx_ge1]
+    
+    result_cols <- c("dCt", "RE", "log2FC", "LCL", "UCL", "se",
+                     "Lower.se.RE", "Upper.se.RE",
+                     "Lower.se.log2FC", "Upper.se.log2FC", "sig")
+    
+    Results_final <- Results_combined[, c(factors, result_cols), drop = FALSE]
+    
+    xx <- gene_df[, setdiff(names(gene_df), "T"), drop = FALSE]
+    
+    Results_final <- Results_final %>%
+      dplyr::mutate_if(is.numeric, ~ round(., 5))
+    
+    Results_final$gene <- gene_name
+    
+    list(
+      Final_data = xx,
+      lm = lm,
+      lm_formula = lm_formula,
+      ANOVA_table = ANOVA_table,
+      Results = Results_final,
+      is_singular = is_singular
+    )
   })
   
-  # Combine results for all genes
-  relativeExpression <- do.call(rbind, lapply(perGene, function(g) g$Results))
+  relativeExpression <- do.call(rbind, lapply(perGene, `[[`, "Results"))
   rownames(relativeExpression) <- NULL
+  relativeExpression <- relativeExpression[, c(ncol(relativeExpression), seq_len(ncol(relativeExpression) - 1))]
   
-  re_col <- which(names(relativeExpression) == "RE")
-  
-  relativeExpression <- relativeExpression[, c(ncol(relativeExpression), 1:(ncol(relativeExpression) - 1))]
-  
-  # Print combined results automatically
   cat("\nRelative Expression\n")
   print(relativeExpression)
   
-  # Add default model message if no user-defined model was provided
+  singular_vec <- vapply(perGene, `[[`, logical(1), "is_singular")
+  singular_genes <- targetNames[which(singular_vec)]
+  
+  if (any(singular_vec)) {
+    warning(
+      "Singular fit detected for the following genes:\n  ",
+      paste(singular_genes, collapse = ", ")
+    )
+  }
+  
   if (is.null(model) && !is.null(default_model_formula)) {
     cat("\nNote: Using default model for analysis:", default_model_formula, "\n")
   }
   
-  # Return full structured object invisibly
   invisible(list(
-    perGene = setNames(perGene, targetNames),  # All individual gene outputs with models
-    relativeExpression = relativeExpression,    # Combined table
-    default_model_formula = default_model_formula  # Store default formula in output
+    perGene = setNames(perGene, targetNames),
+    relativeExpression = relativeExpression,
+    singular_genes = singular_genes,
+    default_model_formula = default_model_formula
   ))
-}
-
-# Internal helper function
-.ANOVA_DCt_uniTarget <- function(
-    x,
-    numOfFactors,
-    numberOfrefGenes,
-    block,
-    alpha = 0.05,
-    p.adj = "none",
-    model = NULL,
-    verbose = FALSE
-) {
-  
-  # basic argument checks
-  if (!is.data.frame(x)) {
-    stop("`x` must be a data.frame")
-  }
-  if (!is.numeric(numberOfrefGenes) || length(numberOfrefGenes) != 1) {
-    stop("`numberOfrefGenes` must be a single numeric value")
-  }
-  
-  # Compute wDCt values (these are what we'll compare statistically)
-  x <- compute_wDCt(x, numOfFactors, numberOfrefGenes, block)
-  
-  # Convert all factor columns to character
-  x[] <- lapply(x, function(x) {
-    if (is.factor(x)) as.character(x) else x
-  })
-  
-  # Convert the first numOfFactors columns to factor with proper levels
-  if (is.null(block)) {
-    x[seq_len(numOfFactors)] <- lapply(
-      x[seq_len(numOfFactors)],
-      function(col) factor(col, levels = unique(col)))
-  } else {
-    x[seq_len(numOfFactors + 1)] <- lapply(
-      x[seq_len(numOfFactors + 1)],
-      function(col) factor(col, levels = unique(col)))
-  }
-  
-  # Get names of factor columns
-  factors <- colnames(x)[1:numOfFactors]
-  
-  # Create T factor for grouping (treatment combinations)
-  x$T <- do.call(paste, c(x[1:length(factors)], sep = ":"))
-  x$T <- as.factor(x$T)
-  
-  # Handle custom formula or generate default
-  if (!is.null(model)) {
-    model <- model
-  } else {
-    if (is.null(block)) {
-      model <- as.formula(paste("wDCt ~", paste(factors, collapse = " * ")))
-    } else {
-      model <- as.formula(paste("wDCt ~", block, "+", paste(factors, collapse = " * ")))
-    }
-  }
-  
-  # detect model_type based on formula
-  formula_text <- as.character(model)[3]  # Get RHS of formula
-  has_random_effects <- grepl("\\|", formula_text)
-  
-  if (has_random_effects) {
-    lm <- lmerTest::lmer(model, data = x)    # suppressMessages
-  } else {
-    lm <- stats::lm(model, data = x)
-  }
-  
-  # Get ANOVA table
-  ANOVA_table <- stats::anova(lm)
-  lm_formula <- formula(lm)
-  
-  # Create emmeans specification
-  ABC <- as.formula(paste("pairwise ~", paste(factors, collapse = " * ")))
-  
-  # Get emmeans from the model for statistical comparisons
-  emg <- suppressMessages(
-    emmeans::emmeans(lm, specs = ABC,
-                     adjust = p.adj, mode = "satterthwaite")
-  )
-  
-  emm_obj <- emg[[1]]
-  emm_df <- as.data.frame(emm_obj)
-  # Get treatment levels in the order they appear in emmeans
-  ROWS <- do.call(paste, c(emm_df[factors], sep = ":"))
-  
-  # Use cld() to get statistical groupings
-  meanPairs <- multcomp::cld(emm_obj, adjust = p.adj, alpha = alpha,
-                             reversed = FALSE, Letters = letters)
-  meanPairs_df <- as.data.frame(meanPairs)
-  
-  # Extract model estimates and confidence intervals
-  model_estimates <- meanPairs_df$emmean
-  model_lcl <- meanPairs_df$lower.CL
-  model_ucl <- meanPairs_df$upper.CL
-  letters_grp <- trimws(meanPairs_df$.group)
-  
-  # Calculate OBSERVED wDCt values
-  bwDCt <- x$wDCt
-  T <- do.call(paste, c(x[factors], sep = ":"))
-  observed_means <- tapply(bwDCt, x$T, function(z) mean(z, na.rm = TRUE))
-  observed_sds <- tapply(bwDCt, x$T, function(z) stats::sd(z, na.rm = TRUE))
-  observed_n <- tapply(bwDCt, x$T, function(z) sum(!is.na(z)))
-  observed_se <- observed_sds / sqrt(observed_n)
-  
-  # Match observed values to the order used by emmeans (ROWS)
-  dCt_observed <- observed_means[match(ROWS, names(observed_means))]
-  se_observed <- observed_se[match(ROWS, names(observed_se))]
-  
-  # Calculate Relative Expression (RE) from wDCt
-  RE_observed <- 2^(-dCt_observed)
-  log2FC_observed <- log2(RE_observed)
-  
-  # Transform model confidence intervals for RE
-  RE_LCL <- 2^(-model_ucl)
-  RE_UCL <- 2^(-model_lcl)
-  
-  # build Results table
-  Results <- data.frame(row.names = ROWS,
-                        dCt = dCt_observed,
-                        RE = RE_observed,
-                        log2FC = log2FC_observed,
-                        LCL = RE_LCL,
-                        UCL = RE_UCL,
-                        se = se_observed,
-                        stringsAsFactors = FALSE)
-  
-  Results <- Results[order(Results[[1]]), ]
-  Results <- data.frame(Results, sig = letters_grp)
-  
-  # Add factor columns by splitting T
-  Results$RowNames <- rownames(Results)
-  
-  # split RowNames back to factor columns
-  parts <- strsplit(Results$RowNames, ":", fixed = TRUE)
-  parts_mat <- do.call(rbind, lapply(parts, function(p) {
-    length(p) <- length(factors)
-    p
-  }))
-  parts_df <- as.data.frame(parts_mat, stringsAsFactors = FALSE)
-  names(parts_df) <- factors
-  
-  # combine parts_df with Results
-  Results_combined <- cbind(parts_df, Results)
-  rownames(Results_combined) <- NULL
-  
-  # compute Lower/Upper SE for RE and log2FC (based on observed SE)
-  Results_combined$Lower.se.RE <- 2^(log2(Results_combined$RE) - Results_combined$se)
-  Results_combined$Upper.se.RE <- 2^(log2(Results_combined$RE) + Results_combined$se)
-  
-  Results_combined$Lower.se.log2FC <- 0
-  Results_combined$Upper.se.log2FC <- 0
-  
-  idx_less1 <- Results_combined$RE < 1
-  idx_ge1   <- !idx_less1
-  
-  # Calculate SE bounds for log2FC
-  Results_combined$Lower.se.log2FC[idx_less1] <- (Results_combined$Upper.se.RE[idx_less1] *
-                                                    log2(Results_combined$RE[idx_less1])) / Results_combined$RE[idx_less1]
-  Results_combined$Upper.se.log2FC[idx_less1] <- (Results_combined$Lower.se.RE[idx_less1] *
-                                                    log2(Results_combined$RE[idx_less1])) / Results_combined$RE[idx_less1]
-  
-  Results_combined$Lower.se.log2FC[idx_ge1] <- (Results_combined$Lower.se.RE[idx_ge1] *
-                                                  log2(Results_combined$RE[idx_ge1])) / Results_combined$RE[idx_ge1]
-  Results_combined$Upper.se.log2FC[idx_ge1] <- (Results_combined$Upper.se.RE[idx_ge1] *
-                                                  log2(Results_combined$RE[idx_ge1])) / Results_combined$RE[idx_ge1]
-  
-  # Reorder columns: put factor columns first, then results
-  cols <- colnames(Results_combined)
-  
-  # Identify which columns are factor columns
-  factor_cols <- factors
-  other_cols <- setdiff(cols, factor_cols)
-  
-  # Create new order
-  # Remove RowNames if present
-  other_cols <- other_cols[other_cols != "RowNames"]
-  
-  # Define preferred order for result columns
-  result_cols_order <- c("dCt", "RE", "log2FC", "LCL", "UCL", "se",
-                         "Lower.se.RE", "Upper.se.RE",
-                         "Lower.se.log2FC", "Upper.se.log2FC", "sig")
-  
-  # Keep only columns that exist
-  result_cols_order <- result_cols_order[result_cols_order %in% other_cols]
-  
-  # Add any remaining columns
-  remaining_cols <- setdiff(other_cols, result_cols_order)
-  final_cols_order <- c(factor_cols, result_cols_order, remaining_cols)
-  
-  Results_final <- Results_combined[, final_cols_order, drop = FALSE]
-  
-  # remove the temporary column T from original data
-  xx <- x[, setdiff(names(x), "T"), drop = FALSE]
-  
-  # Round numeric columns
-  Results_final <- Results_final %>%
-    dplyr::mutate_if(is.numeric, ~ round(., 5))
-  
-  # Return output list
-  list(Final_data = xx,
-       lm = lm,
-       lm_formula = lm_formula,
-       ANOVA_table = ANOVA_table,
-       Results = Results_final)
 }

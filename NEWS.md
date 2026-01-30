@@ -4,6 +4,8 @@
 
 - In current version, optional custom model formula can be supplied to `ANOVA_DDCt()` and `ANOVA_DCt()` functions. If provided, this overrides the automatic formula (factorial CRD or RCBD design based on the availability of block and the number of factors). The formula uses `wDCt` as the response variable.  For mixed models, random effects can be supplied (e.g., `wDCt ~ Treatment * (1|Block)`). 
 
+- The functions detect singular fits when a user-defined mixed model (lmer) is used, and store a per-gene flag (singular = TRUE/FALSE). Genes that have singular fits after the analysis will be reported.
+
 - Because, currently a model can be supplied `ANOVA_DDCt()` by user, the `REPEATED_DDCt()` function was removed. 
 
 - Refer to the vignette for a sample of most common models and description

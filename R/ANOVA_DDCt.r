@@ -53,15 +53,15 @@
 #' analysis of covariance is performed for the levels of the \code{mainFactor.column} and the other factors are 
 #' treated as covariates. if the interaction between the main factor and the covariate is significant, ANCOVA is not appropriate.
 #' 
-#' All the functions for relative expression analysis (including `TTEST_DDCt()`, 
-#' `WILCOX_DDCt()`, `ANOVA_DDCt()`, and `ANOVA_DCt()`) return the 
+#' All the functions for relative expression analysis (including \code{TTEST_DDCt()}, 
+#' \code{WILCOX_DDCt()}, \code{ANOVA_DDCt()}, and \code{ANOVA_DCt()}) return the 
 #' relative expression table which include fold change and corresponding 
-#' statistics. The output of `ANOVA_DDCt()`, 
-#' and `ANOVA_DCt()` also include lm models, residuals, raw data and ANOVA table 
+#' statistics. The output of \code{ANOVA_DDCt()}, 
+#' and \code{ANOVA_DCt()} also include lm models, residuals, raw data and ANOVA table 
 #' for each gene. 
 #' 
-#' The expression table returned by `TTEST_DDCt()`, 
-#' `WILCOX_DDCt()`, and `ANOVA_DDCt()` functions 
+#' The expression table returned by \code{TTEST_DDCt()}, 
+#' \code{WILCOX_DDCt()}, and \code{ANOVA_DDCt()} functions 
 #' include these columns: gene (name of target genes), 
 #' contrast (calibrator level and contrasts for which the relative expression is computed), 
 #' ddCt (mean of weighted delta delta Ct values), RE (relative expression or 

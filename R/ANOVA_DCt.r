@@ -262,7 +262,7 @@ ANOVA_DCt <- function(
   has_random_effects <- grepl("\\|", formula_text)
   
   if (has_random_effects) {
-    lm <- suppressMessages(lmerTest::lmer(model, data = x))
+    lm <- lmerTest::lmer(model, data = x)    # suppressMessages
   } else {
     lm <- stats::lm(model, data = x)
   }

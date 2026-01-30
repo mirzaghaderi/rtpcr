@@ -302,7 +302,7 @@ ANOVA_DCt <- function(
   }
   
   if (is.null(model) && !is.null(default_model_formula)) {
-    cat("\nNote: Using default model for analysis:", default_model_formula, "\n")
+    cat("\nNote: Using default model for statistical analysis:", default_model_formula, "\n")
   }
   
   invisible(list(

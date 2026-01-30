@@ -413,7 +413,7 @@ ANOVA_DDCt <- function(
   if (is.null(model) && length(perGene) > 0) {
     default_formula <- perGene[[1]]$default_model_formula
     if (!is.null(default_formula)) {
-      cat("Note: Using default model for analysis:", default_formula, "\n")
+      cat("Note: Using default model for statistical analysis:", default_formula, "\n")
     }
   }
   

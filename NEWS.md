@@ -2,11 +2,13 @@
 
 ## New features
 
-- In version 2.1.3, optional custom model formula can be supplied by user to `ANOVA_DDCt()` and `ANOVA_DCt()` functions. If provided, this overrides the automatic formula (factorial CRD or RCBD design based on the availability of block and the number of factors). The formula uses `wDCt` as the response variable.  For mixed models, random effects can be supplied (e.g., `wDCt ~ Treatment * (1| id)`). 
+- In version 2.1.3, optional custom model formula can be supplied by user to `ANOVA_DDCt()` and `ANOVA_DCt()` functions via `model` argument. If provided, this overrides the automatic formula (factorial CRD or RCBD design based on the availability of block and the number of factors). The formula uses `wDCt` as the response variable.  For mixed models, random effects can be supplied (e.g., `wDCt ~ Treatment * (1| id)`). 
+
+- Handling missing Ct values for target genes using the `set_missing_target_Ct_to_40` function. If `TRUE`, missing target gene Ct values become 40; if `FALSE` (default), they become NA. missing Ct values of reference genes are always converted to NA.
 
 - The  `ANOVA_DDCt()` and `ANOVA_DCt()` functions detect singular fits when a user-defined mixed model (lmer) is used, and genes that have singular fits after the analysis will be reported.
 
-- Because, currently a model can be supplied to `ANOVA_DDCt()` by user, the `REPEATED_DDCt()` function was removed. Refer to the vignette for a sample of most common models and description
+- Because, currently a model (including repeated measure and ancova models) can be supplied to `ANOVA_DDCt()` by user, `REPEATED_DDCt()` and `ANCOVA_DDCt()`functions were removed. Refer to the vignette for a sample of most common models and description
 
 - For CRD, RCBD, and factorial experiments under CRD or RCBD designs no model is required as one of these models is appropriately selected based on the input arguments.
 

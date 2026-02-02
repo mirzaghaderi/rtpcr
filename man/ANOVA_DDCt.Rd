@@ -13,7 +13,8 @@ ANOVA_DDCt(
   mainFactor.level.order = NULL,
   p.adj = "none",
   analyseAllTarget = TRUE,
-  model = NULL
+  model = NULL,
+  set_missing_target_Ct_to_40 = FALSE
 )
 }
 \arguments{
@@ -62,6 +63,8 @@ for fixed effects only, the \code{"lm"} (ordinary least squares) is used.
 random effects, the function will use \code{lmerTest::lmer()}; otherwise 
 it will use \code{stats::lm()}. Note that \code{emmeans} supports both 
 model types and will use appropriate degrees of freedom methods (Satterthwaite by default).}
+
+\item{set_missing_target_Ct_to_40}{If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA.}
 }
 \value{
 An object containing expression table, lm model, residuals, raw data and ANOVA table for each gene:

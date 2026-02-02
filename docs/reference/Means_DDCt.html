@@ -116,16 +116,16 @@ to fold change values using the ddCt framework.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   PO   S vs R -1.66111 3.1626 1.66111 2.44335 4.09358 0.30640     2.55746</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC pvalue sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.31390         0.00000         0.00000      1    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     3.91093         1.34327         2.05416      0 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     3.91093         1.34327         2.05416      0    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Note: Using default model for analysis: wDCt ~ Type * Conc * SA </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The R level was used as calibrator.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Note: Using default model for statistical analysis: wDCt ~ Type * Conc * SA </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Relative expression values for Type main effect</span></span></span>
 <span class="r-in"><span><span class="va">lm</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">perGene</span><span class="op">$</span><span class="va">PO</span><span class="op">$</span><span class="va">lm</span></span></span>
 <span class="r-in"><span><span class="fu">Means_DDCt</span><span class="op">(</span><span class="va">lm</span>, specs <span class="op">=</span> <span class="st">"Type"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  contrast     RE        SE df      LCL      UCL p.value sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  S vs R   3.1626 0.1803631 24 2.443349 4.093578 &lt;0.0001 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  S vs R   3.1626 0.1803631 24 2.443349 4.093578 &lt;0.0001    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Results are averaged over the levels of: Conc, SA </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence level used: 0.95 </span>
@@ -134,8 +134,8 @@ to fold change values using the ddCt framework.</p>
 <span class="r-in"><span><span class="fu">Means_DDCt</span><span class="op">(</span><span class="va">lm</span>, specs <span class="op">=</span> <span class="st">"Conc"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  contrast       RE        SE df      LCL      UCL p.value sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  M vs L   1.307369 0.2208988 24 0.953136 1.793254  0.0928 .  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L   5.869889 0.2208988 24 4.279436 8.051436 &lt;0.0001 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs M   4.489848 0.2208988 24 3.273318 6.158502 &lt;0.0001 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L   5.869889 0.2208988 24 4.279436 8.051436 &lt;0.0001    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs M   4.489848 0.2208988 24 3.273318 6.158502 &lt;0.0001    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Results are averaged over the levels of: Type, SA </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence level used: 0.95 </span>
@@ -144,15 +144,15 @@ to fold change values using the ddCt framework.</p>
 <span class="r-in"><span><span class="fu">Means_DDCt</span><span class="op">(</span><span class="va">lm</span>, specs <span class="op">=</span> <span class="st">"Conc | Type"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Type = R:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  contrast       RE        SE df      LCL       UCL p.value sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  M vs L   3.286761 0.3123981 24 2.102213  5.138776 &lt;0.0001 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L   9.691142 0.3123981 24 6.198455 15.151878 &lt;0.0001 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs M   2.948538 0.3123981 24 1.885885  4.609972 &lt;0.0001 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  M vs L   3.286761 0.3123981 24 2.102213  5.138776 &lt;0.0001    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L   9.691142 0.3123981 24 6.198455 15.151878 &lt;0.0001    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs M   2.948538 0.3123981 24 1.885885  4.609972 &lt;0.0001    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Type = S:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  contrast       RE        SE df      LCL       UCL p.value sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  M vs L   0.520030 0.3123981 24 0.332611  0.813055  0.0059 ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L   3.555371 0.3123981 24 2.274015  5.558741 &lt;0.0001 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs M   6.836857 0.3123981 24 4.372854 10.689270 &lt;0.0001 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L   3.555371 0.3123981 24 2.274015  5.558741 &lt;0.0001    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs M   6.836857 0.3123981 24 4.372854 10.689270 &lt;0.0001    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Results are averaged over the levels of: SA </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence level used: 0.95 </span>
@@ -162,26 +162,26 @@ to fold change values using the ddCt framework.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Type = R, SA = A1:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  contrast        RE        SE df       LCL      UCL p.value sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  M vs L    2.198724 0.4417977 24  1.168649  4.13673  0.0167 *  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L    3.466148 0.4417977 24  1.842300  6.52130  0.0005 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L    3.466148 0.4417977 24  1.842300  6.52130  0.0005    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  H vs M    1.576436 0.4417977 24  0.837895  2.96595  0.1502    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Type = S, SA = A1:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  contrast        RE        SE df       LCL      UCL p.value sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  M vs L    0.521233 0.4417977 24  0.277042  0.98066  0.0438 *  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L    3.732132 0.4417977 24  1.983673  7.02173  0.0002 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs M    7.160201 0.4417977 24  3.805733 13.47138 &lt;0.0001 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L    3.732132 0.4417977 24  1.983673  7.02173  0.0002    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs M    7.160201 0.4417977 24  3.805733 13.47138 &lt;0.0001    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Type = R, SA = A2:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  contrast        RE        SE df       LCL      UCL p.value sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  M vs L    4.913213 0.4417977 24  2.611432  9.24384 &lt;0.0001 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L   27.095850 0.4417977 24 14.401772 50.97880 &lt;0.0001 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs M    5.514895 0.4417977 24  2.931233 10.37586 &lt;0.0001 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  M vs L    4.913213 0.4417977 24  2.611432  9.24384 &lt;0.0001    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L   27.095850 0.4417977 24 14.401772 50.97880 &lt;0.0001    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs M    5.514895 0.4417977 24  2.931233 10.37586 &lt;0.0001    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Type = S, SA = A2:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  contrast        RE        SE df       LCL      UCL p.value sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  M vs L    0.518830 0.4417977 24  0.275764  0.97614  0.0425 *  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L    3.386981 0.4417977 24  1.800221  6.37235  0.0005 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs M    6.528116 0.4417977 24  3.469773 12.28216 &lt;0.0001 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs L    3.386981 0.4417977 24  1.800221  6.37235  0.0005    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  H vs M    6.528116 0.4417977 24  3.469773 12.28216 &lt;0.0001    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence level used: 0.95 </span>
 <span class="r-in"><span></span></span>

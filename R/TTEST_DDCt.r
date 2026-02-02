@@ -48,12 +48,15 @@
 #'
 #' @param Factor.level.order
 #' Optional character vector specifying the order of factor levels.
-#' If \code{NULL}, the first level of the factor column is used as the calibrator.
+#' If \code{NULL}, the first level of the factor column is used as the calibrator. 
 #'
 #' @param p.adj
 #' Method for p-value adjustment. One of
 #' \code{"holm"}, \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"},
 #' \code{"BH"}, \code{"BY"}, \code{"fdr"}, or \code{"none"}. See \code{\link[stats]{p.adjust}}.
+#' 
+#' @param set_missing_target_Ct_to_40 If \code{TRUE}, missing target gene Ct 
+#'   values become 40; if \code{FALSE} (default), they become NA.
 #'
 #' 
 #' @details
@@ -136,7 +139,8 @@ TTEST_DDCt <- function(x,
                        Factor.level.order = NULL,
                        paired = FALSE,
                        var.equal = TRUE,
-                       p.adj = "none") {
+                       p.adj = "none",
+                       set_missing_target_Ct_to_40 = FALSE) {
   
   stopifnot(is.data.frame(x))
   stopifnot(numberOfrefGenes >= 1)
@@ -197,6 +201,7 @@ TTEST_DDCt <- function(x,
       x = tmp,
       numOfFactors = 1, 
       numberOfrefGenes = numberOfrefGenes, 
+      set_missing_target_Ct_to_40 = set_missing_target_Ct_to_40,
       block = NULL
     )
     
@@ -212,7 +217,7 @@ TTEST_DDCt <- function(x,
       var.equal = var.equal
     )
     
-    dif <- mean(trt_vals) - mean(cal_vals)
+    dif <- mean(trt_vals, na.rm = TRUE) - mean(cal_vals, na.rm = TRUE)
     
     res[i, ] <- c(
       gene_names[i],
@@ -221,7 +226,7 @@ TTEST_DDCt <- function(x,
       2^(-tt$conf.int[2]),
       2^(-tt$conf.int[1]),
       tt$p.value,
-      stats::sd(trt_vals) / sqrt(r)
+      stats::sd(trt_vals, na.rm = TRUE) / sqrt(r)
     )
   }
   
@@ -247,7 +252,7 @@ TTEST_DDCt <- function(x,
     labels = c("***", "**", "*", ".", " ")
   )
   default.order <- unique(res$Gene)      
-  
+  #res$sig[res$RE < 0.001] <- "ND" 
   
 
   a <- data.frame(res, d = 0, Lower.se.log2FC = 0, Upper.se.log2FC = 0)

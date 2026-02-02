@@ -57,7 +57,8 @@ of one or more target genes evaluated under two experimental conditions
 <span>  <span class="va">numberOfrefGenes</span>,</span>
 <span>  Factor.level.order <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  paired <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  p.adj <span class="op">=</span> <span class="st">"none"</span></span>
+<span>  p.adj <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>  set_missing_target_Ct_to_40 <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -91,6 +92,11 @@ If <code>NULL</code>, the first level of the factor column is used as the calibr
 <dd><p>Method for p-value adjustment. One of
 <code>"holm"</code>, <code>"hochberg"</code>, <code>"hommel"</code>, <code>"bonferroni"</code>,
 <code>"BH"</code>, <code>"BY"</code>, <code>"fdr"</code>, or <code>"none"</code>. See <code><a href="https://rdrr.io/r/stats/p.adjust.html" class="external-link">p.adjust</a></code>.</p></dd>
+
+
+<dt id="arg-set-missing-target-ct-to-">set_missing_target_Ct_to_40<a class="anchor" aria-label="anchor" href="#arg-set-missing-target-ct-to-"></a></dt>
+<dd><p>If <code>TRUE</code>, missing target gene Ct
+values become 40; if <code>FALSE</code> (default), they become NA.</p></dd>
 
 </dl></div>
     <div class="section level2">

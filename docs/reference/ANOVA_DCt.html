@@ -57,7 +57,8 @@ grouping is performed for all treatment combinations.</p>
 <span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>  p.adj <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>  analyseAllTarget <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  model <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  model <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  set_missing_target_Ct_to_40 <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -109,18 +110,16 @@ to be analysed.</p></dd>
 
 <dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
 <dd><p>Optional model formula. If provided, this overrides the automatic formula (CRD or RCBD
-  based on <code>block</code> and <code>numOfFactors</code>). The formula uses
-  <code>wDCt</code> as the response variable.
-  For mixed models, random effects can be defined using <code>lmer</code> syntax
-  (e.g., <code>"wDCt ~ Treatment + (1|Block)"</code>). When using <code>model</code>,
-  the <code>block</code> and <code>numOfFactors</code> arguments are ignored for model
-  specification, but still used for data structure identification.</p>
-<p>for fixed effects only, the <code>"lm"</code> (ordinary least squares) is used.
-<code>"lmer"</code> is used for mixed effects models
-(requires the <code>lmerTest</code> package). If a custom formula is provided with
-random effects, the function will use <code><a href="https://rdrr.io/pkg/lmerTest/man/lmer.html" class="external-link">lmerTest::lmer()</a></code>; otherwise
-it will use <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">stats::lm()</a></code>. Note that <code>emmeans</code> supports both
-model types and will use appropriate degrees of freedom methods (Satterthwaite by default).</p></dd>
+based on <code>block</code> and <code>numOfFactors</code>). The formula uses
+<code>wDCt</code> as the response variable.
+For mixed models, random effects can be defined using <code>lmer</code> syntax
+(e.g., <code>"wDCt ~ Treatment + (1|Block)"</code>). When using <code>model</code>,
+the <code>block</code> and <code>numOfFactors</code> arguments are ignored for model
+specification, but still used for data structure identification.</p></dd>
+
+
+<dt id="arg-set-missing-target-ct-to-">set_missing_target_Ct_to_40<a class="anchor" aria-label="anchor" href="#arg-set-missing-target-ct-to-"></a></dt>
+<dd><p>If <code>TRUE</code>, missing target gene Ct values become 40; if <code>FALSE</code> (default), they become NA.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -165,33 +164,33 @@ variance components along with an expression table containing:</p><ul><li><p><co
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative Expression</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    gene Type Concentration      dCt      RE   log2FC     LCL     UCL      se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    PO    R            L3  0.08550 0.94246 -0.08550 0.11280 0.23190 0.26799</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    PO    S            L3  1.28189 0.41126 -1.28189 0.06826 0.14033 0.30503</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    PO    R            L2  1.65834 0.31680 -1.65834 0.21373 0.49442 0.25149</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    PO    S            L2  2.20079 0.21752 -2.20079 0.13938 0.32241 0.05775</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    PO    R            L1  2.62828 0.16174 -2.62828 0.65731 1.35132 0.06143</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    PO    S            L1  3.35294 0.09787 -3.35294 0.28683 0.58967 0.34299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   NLM    R            L1 -1.32600 2.50707  1.32600 1.89103 3.32380 0.15025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   NLM    R            L3 -0.41248 1.33097  0.41248 0.10027 0.17624 0.40799</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   NLM    S            L3 -0.29364 1.22573  0.29364 0.05649 0.09928 0.17934</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  NLM    R            L2  1.00339 0.49883 -1.00339 0.92454 1.62503 0.09128</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  NLM    S            L2  2.91119 0.13294 -2.91119 0.37625 0.66133 0.10361</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  NLM    S            L1  3.73911 0.07489 -3.73911 0.96612 1.86180 0.20359</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    PO    R            L1  2.62828 0.16174 -2.62828 0.68199 1.30241 0.06143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    PO    S            L1  3.12306 0.11478 -3.12306 0.29760 0.56833 0.21472</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    PO    R            L2  1.65834 0.31680 -1.65834 0.22089 0.46897 0.25149</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    PO    S            L2  2.20079 0.21752 -2.20079 0.14694 0.31197 0.05775</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    PO    R            L3  0.08550 0.94246 -0.08550 0.11704 0.22351 0.26799</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    PO    S            L3  1.28189 0.41126 -1.28189 0.08306 0.15862 0.30503</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   NLM    R            L1 -1.32600 2.50707  1.32600 1.92666 3.26233 0.15025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   NLM    S            L1  3.50923 0.08782 -3.50923 0.97812 1.80481 0.11980</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   NLM    R            L2  1.00339 0.49883 -1.00339 0.94196 1.59498 0.09128</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  NLM    S            L2  2.91119 0.13294 -2.91119 0.38334 0.64910 0.10361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  NLM    R            L3 -0.41248 1.33097  0.41248 0.10216 0.17298 0.40799</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  NLM    S            L3 -0.29364 1.22573  0.29364 0.06749 0.11428 0.17934</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0.78269     1.13484        -0.10295        -0.07100   a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.33288     0.50808        -1.58370        -1.03760   b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0.15499     0.16877        -2.74261        -2.51872   a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.09891     0.13320        -3.62425        -2.69118   b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.26612     0.37713        -1.97415        -1.39305  bc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4      0.20898     0.22640        -2.29068        -2.11443  cd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.15499     0.16877        -2.74261        -2.51872  de</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.07716     0.12414        -4.25280        -2.64348   e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.78269     1.13484        -0.10295        -0.07100  de</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.33288     0.50808        -1.58370        -1.03760   e</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7      2.25910     2.78226         1.19485         1.47155   a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      1.00312     1.76598         0.31087         0.54729   b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      1.08244     1.38797         0.25931         0.33250   b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     0.46824     0.53141        -1.06893        -0.94187   c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11     0.12372     0.14284        -3.12794        -2.70945   d</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12     0.06503     0.08624        -4.30581        -3.24699   e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      0.08083     0.09543        -3.81308        -3.22959   b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      0.46824     0.53141        -1.06893        -0.94187   b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     0.12372     0.14284        -3.12794        -2.70945   c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     1.00312     1.76598         0.31087         0.54729   d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     1.08244     1.38797         0.25931         0.33250   e</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Note: Using default model for analysis: wDCt ~ block + Type * Concentration </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Note: Using default model for statistical analysis: wDCt ~ block + Type * Concentration </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Mixed model with random block effect</span></span></span>
 <span class="r-in"><span><span class="va">result_mixed</span> <span class="op">&lt;-</span> <span class="fu">ANOVA_DCt</span><span class="op">(</span><span class="va">data_2factorBlock3ref</span>, numOfFactors <span class="op">=</span> <span class="fl">2</span>, numberOfrefGenes <span class="op">=</span> <span class="fl">3</span>,</span></span>
@@ -199,55 +198,55 @@ variance components along with an expression table containing:</p><ul><li><p><co
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative Expression</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    gene Type Concentration      dCt      RE   log2FC     LCL     UCL      se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    PO    R            L3  0.08550 0.94246 -0.08550 0.11280 0.23190 0.26799</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    PO    S            L3  1.28189 0.41126 -1.28189 0.06826 0.14033 0.30503</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    PO    R            L2  1.65834 0.31680 -1.65834 0.21373 0.49442 0.25149</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    PO    S            L2  2.20079 0.21752 -2.20079 0.13938 0.32241 0.05775</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    PO    R            L1  2.62828 0.16174 -2.62828 0.65731 1.35132 0.06143</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    PO    S            L1  3.35294 0.09787 -3.35294 0.28683 0.58967 0.34299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   NLM    R            L1 -1.32600 2.50707  1.32600 1.89103 3.32380 0.15025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   NLM    R            L3 -0.41248 1.33097  0.41248 0.10027 0.17624 0.40799</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   NLM    S            L3 -0.29364 1.22573  0.29364 0.05649 0.09928 0.17934</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  NLM    R            L2  1.00339 0.49883 -1.00339 0.92454 1.62503 0.09128</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  NLM    S            L2  2.91119 0.13294 -2.91119 0.37625 0.66133 0.10361</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  NLM    S            L1  3.73911 0.07489 -3.73911 0.96612 1.86180 0.20359</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    PO    R            L1  2.62828 0.16174 -2.62828 0.68199 1.30241 0.06143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    PO    S            L1  3.12306 0.11478 -3.12306 0.29760 0.56833 0.21472</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    PO    R            L2  1.65834 0.31680 -1.65834 0.22089 0.46897 0.25149</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    PO    S            L2  2.20079 0.21752 -2.20079 0.14694 0.31197 0.05775</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    PO    R            L3  0.08550 0.94246 -0.08550 0.11704 0.22351 0.26799</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    PO    S            L3  1.28189 0.41126 -1.28189 0.08306 0.15862 0.30503</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   NLM    R            L1 -1.32600 2.50707  1.32600 1.92666 3.26233 0.15025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   NLM    S            L1  3.50923 0.08782 -3.50923 0.97812 1.80481 0.11980</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   NLM    R            L2  1.00339 0.49883 -1.00339 0.94196 1.59498 0.09128</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  NLM    S            L2  2.91119 0.13294 -2.91119 0.38334 0.64910 0.10361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  NLM    R            L3 -0.41248 1.33097  0.41248 0.10216 0.17298 0.40799</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  NLM    S            L3 -0.29364 1.22573  0.29364 0.06749 0.11428 0.17934</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0.78269     1.13484        -0.10295        -0.07100   a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.33288     0.50808        -1.58370        -1.03760   b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0.15499     0.16877        -2.74261        -2.51872   a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.09891     0.13320        -3.62425        -2.69118   b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.26612     0.37713        -1.97415        -1.39305  bc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4      0.20898     0.22640        -2.29068        -2.11443  cd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.15499     0.16877        -2.74261        -2.51872  de</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.07716     0.12414        -4.25280        -2.64348   e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.78269     1.13484        -0.10295        -0.07100  de</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.33288     0.50808        -1.58370        -1.03760   e</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7      2.25910     2.78226         1.19485         1.47155   a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      1.00312     1.76598         0.31087         0.54729   b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      1.08244     1.38797         0.25931         0.33250   b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     0.46824     0.53141        -1.06893        -0.94187   c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11     0.12372     0.14284        -3.12794        -2.70945   d</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12     0.06503     0.08624        -4.30581        -3.24699   e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      0.08083     0.09543        -3.81308        -3.22959   b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      0.46824     0.53141        -1.06893        -0.94187   b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     0.12372     0.14284        -3.12794        -2.70945   c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     1.00312     1.76598         0.31087         0.54729   d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     1.08244     1.38797         0.25931         0.33250   e</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Note: Using default model for analysis: wDCt ~ block + Type * Concentration </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Note: Using default model for statistical analysis: wDCt ~ block + Type * Concentration </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Custom mixed model formula with nested random effects</span></span></span>
 <span class="r-in"><span><span class="va">result_custom</span> <span class="op">&lt;-</span> <span class="fu">ANOVA_DCt</span><span class="op">(</span><span class="va">data_repeated_measure_2</span>, numOfFactors <span class="op">=</span> <span class="fl">2</span>, numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>                            block <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>                            model <span class="op">=</span> <span class="va">wDCt</span> <span class="op">~</span> <span class="va">treatment</span> <span class="op">*</span> <span class="va">time</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Using custom formula. Ignoring block and numOfFactors for model specification.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using user defined formula. Ignoring block and numOfFactors for model specification.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative Expression</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     gene treatment time       dCt       RE   log2FC       LCL       UCL      se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Target   treated    3 -16.32000 81810.59 16.32000  2420.745  44620.87 0.55411</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Target untreated    2 -14.22333 19127.14 14.22333  4052.422  74697.09 0.65831</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Target   treated    1 -14.08667 17398.40 14.08667  4455.080  82119.16 1.40507</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Target untreated    1 -13.34333 10393.06 13.34333 19055.267 351240.05 0.60237</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Target   treated    1 -14.08667 17398.40 14.08667  4455.080  82119.16 1.40507</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Target untreated    2 -14.22333 19127.14 14.22333  4052.422  74697.09 0.65831</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 Target   treated    2 -13.86333 14903.19 13.86333  3471.240  63984.34 0.97527</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 Target untreated    3 -13.80333 14296.09 13.80333  3329.836  61377.88 0.78214</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Target untreated    1 -13.34333 10393.06 13.34333 19055.267 351240.05 0.60237</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Target   treated    3 -16.32000 81810.59 16.32000  2420.745  44620.87 0.55411</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   55719.478   120119.09        11.11521        23.96198   a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   12119.302    30187.17         9.01216        22.44780  ab</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    6569.648    46076.16         5.31914        37.30571   b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    6845.630    15778.79         8.78889        20.25790   a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    6569.648    46076.16         5.31914        37.30571  ab</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   12119.302    30187.17         9.01216        22.44780   b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4    7580.446    29299.73         7.05153        27.25537   b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5    8313.224    24584.72         8.02668        23.73733  ab</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    6845.630    15778.79         8.78889        20.25790   b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   55719.478   120119.09        11.11521        23.96198   b</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

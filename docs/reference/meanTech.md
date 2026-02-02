@@ -7,7 +7,14 @@ analyses to simplify comparisons between experimental groups.
 ## Usage
 
 ``` r
-meanTech(x, groups, numOfFactors, block)
+meanTech(
+  x,
+  groups,
+  numOfFactors,
+  numberOfrefGenes,
+  block,
+  set_missing_target_Ct_to_40 = FALSE
+)
 ```
 
 ## Arguments
@@ -25,9 +32,18 @@ meanTech(x, groups, numOfFactors, block)
 
   Integer. Number of experimental factor columns
 
+- numberOfrefGenes:
+
+  Integer. Number of reference genes.
+
 - block:
 
   Character. Block column name or `NULL`.
+
+- set_missing_target_Ct_to_40:
+
+  If `TRUE`, missing target gene Ct values become 40; if `FALSE`
+  (default), they become NA.
 
 ## Value
 
@@ -54,6 +70,7 @@ data1 <- read.csv(system.file("extdata", "data_withTechRep.csv", package = "rtpc
 meanTech(data1,
          groups = 1:2,
          numOfFactors = 1,
+         numberOfrefGenes = 1,
          block = NULL)
 #>   Condition biolrep target Ct_target ref   Ct_ref
 #> 1      Ctrl       1      2  28.89400   2 30.29300
@@ -67,6 +84,7 @@ meanTech(data1,
 data2 <- read.csv(system.file("extdata", "data_Lee_etal2020qPCR.csv", package = "rtpcr"))
 meanTech(data2, groups = 1:3,
          numOfFactors = 2,
+         numberOfrefGenes = 1,
          block = NULL)
 #>    factor1  DS biolRep  APOE Ct_APOE GAPDH Ct_GAPDH
 #> 1    DSWHi D12       1 2.120  24.710 2.190   14.675

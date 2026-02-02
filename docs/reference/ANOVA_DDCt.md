@@ -15,7 +15,8 @@ ANOVA_DDCt(
   mainFactor.level.order = NULL,
   p.adj = "none",
   analyseAllTarget = TRUE,
-  model = NULL
+  model = NULL,
+  set_missing_target_Ct_to_40 = FALSE
 )
 ```
 
@@ -91,6 +92,11 @@ ANOVA_DDCt(
   supports both model types and will use appropriate degrees of freedom
   methods (Satterthwaite by default).
 
+- set_missing_target_Ct_to_40:
+
+  If `TRUE`, missing target gene Ct values become 40; if `FALSE`
+  (default), they become NA.
+
 ## Value
 
 An object containing expression table, lm model, residuals, raw data and
@@ -128,18 +134,24 @@ the main factor and the covariate is significant, ANCOVA is not
 appropriate.
 
 All the functions for relative expression analysis (including
-\`TTEST_DDCt()\`, \`WILCOX_DDCt()\`, \`ANOVA_DDCt()\`, and
-\`ANOVA_DCt()\`) return the relative expression table which include fold
-change and corresponding statistics. The output of \`ANOVA_DDCt()\`, and
-\`ANOVA_DCt()\` also include lm models, residuals, raw data and ANOVA
-table for each gene.
+[`TTEST_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/TTEST_DDCt.md),
+[`WILCOX_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/WILCOX_DDCt.md),
+`ANOVA_DDCt()`, and
+[`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md))
+return the relative expression table which include fold change and
+corresponding statistics. The output of `ANOVA_DDCt()`, and
+[`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md)
+also include lm models, residuals, raw data and ANOVA table for each
+gene.
 
-The expression table returned by \`TTEST_DDCt()\`, \`WILCOX_DDCt()\`,
-and \`ANOVA_DDCt()\` functions include these columns: gene (name of
-target genes), contrast (calibrator level and contrasts for which the
-relative expression is computed), ddCt (mean of weighted delta delta Ct
-values), RE (relative expression or fold change = 2^-ddCt), log2FC
-(log(2) of relative expression or fold change), pvalue, sig (per-gene
+The expression table returned by
+[`TTEST_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/TTEST_DDCt.md),
+[`WILCOX_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/WILCOX_DDCt.md),
+and `ANOVA_DDCt()` functions include these columns: gene (name of target
+genes), contrast (calibrator level and contrasts for which the relative
+expression is computed), ddCt (mean of weighted delta delta Ct values),
+RE (relative expression or fold change = 2^-ddCt), log2FC (log(2) of
+relative expression or fold change), pvalue, sig (per-gene
 significance), LCL (95% lower confidence level), UCL (95% upper
 confidence level), se (standard error of mean calculated from the
 weighted delta Ct values of each of the main factor levels), Lower.se.RE
@@ -179,22 +191,22 @@ ANOVA_DDCt(x = data1,
 #> 
 #> Relative Expression
 #>   gene contrast     ddCt      RE   log2FC     LCL     UCL      se Lower.se.RE
-#> 1   PO       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.21159     0.86358
-#> 2   PO L2 vs L1 -1.06105 2.08644  1.06105 1.29842 3.35272 0.14499     1.88695
-#> 3   PO L3 vs L1 -2.30692 4.94825  2.30692 3.18964 7.67647 0.29402     4.03592
-#> 4  NLM       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.96436     0.51251
-#> 5  NLM L2 vs L1  0.75074 0.59430 -0.75074 0.42164 0.83767 0.36616     0.46108
-#> 6  NLM L3 vs L1 -1.56512 2.95901  1.56512 2.06844 4.23303 0.17132     2.62768
+#> 1   PO       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.13940     0.90790
+#> 2   PO L2 vs L1 -0.94610 1.92666  0.94610 1.25860 2.94934 0.14499     1.74245
+#> 3   PO L3 vs L1 -2.19198 4.56931  2.19198 3.08069 6.77724 0.29402     3.72685
+#> 4  NLM       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.91809     0.52921
+#> 5  NLM L2 vs L1  0.86568 0.54879 -0.86568 0.39830 0.75614 0.36616     0.42577
+#> 6  NLM L3 vs L1 -1.44341 2.71964  1.44341 1.94670 3.79946 0.17132     2.41511
 #>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig
-#> 1     1.15797         0.00000         0.00000 1.00000    
-#> 2     2.30703         0.95960         1.17322 0.00110  **
-#> 3     6.06681         1.88158         2.82840 0.00000 ***
-#> 4     1.95119         0.00000         0.00000 1.00000    
-#> 5     0.76601        -0.96764        -0.58245 0.00124  **
-#> 6     3.33212         1.38987         1.76246 0.00000 ***
+#> 1     1.10144         0.00000         0.00000 1.00000    
+#> 2     2.13036         0.85564         1.04613 0.00116  **
+#> 3     5.60221         1.78783         2.68748 0.00000    
+#> 4     1.88962         0.00000         0.00000 1.00000    
+#> 5     0.70734        -1.11579        -0.67163 0.00018    
+#> 6     3.06256         1.28179         1.62542 0.00000    
 #> 
-#> Note: Using default model for analysis: wDCt ~ block + Concentration * Type 
 #> The L1 level was used as calibrator.
+#> Note: Using default model for statistical analysis: wDCt ~ block + Concentration * Type 
            
 data2 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))          
 ANOVA_DDCt(x = data2,
@@ -220,8 +232,8 @@ ANOVA_DDCt(x = data2,
 #> 5 0.18502     0.87964     1.13683         0.00000         0.00000 1.00000    
 #> 6 0.21127     1.42280     1.90695         0.62192         0.83355 0.06239   .
 #> 
-#> Note: Using default model for analysis: wDCt ~ Condition 
 #> The control level was used as calibrator.
+#> Note: Using default model for statistical analysis: wDCt ~ Condition 
   
 # Repeated measure analysis         
 a <- ANOVA_DDCt(data_repeated_measure_1,

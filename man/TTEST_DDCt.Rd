@@ -10,7 +10,8 @@ TTEST_DDCt(
   Factor.level.order = NULL,
   paired = FALSE,
   var.equal = TRUE,
-  p.adj = "none"
+  p.adj = "none",
+  set_missing_target_Ct_to_40 = FALSE
 )
 }
 \arguments{
@@ -34,6 +35,9 @@ estimate is used. Otherwise, Welch's t-test is applied.}
 \item{p.adj}{Method for p-value adjustment. One of
 \code{"holm"}, \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"},
 \code{"BH"}, \code{"BY"}, \code{"fdr"}, or \code{"none"}. See \code{\link[stats]{p.adjust}}.}
+
+\item{set_missing_target_Ct_to_40}{If \code{TRUE}, missing target gene Ct 
+values become 40; if \code{FALSE} (default), they become NA.}
 }
 \value{
 A list with the following components:

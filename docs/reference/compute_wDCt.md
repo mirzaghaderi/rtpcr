@@ -8,7 +8,13 @@ advance of expression analysis functions.
 ## Usage
 
 ``` r
-compute_wDCt(x, numOfFactors, numberOfrefGenes, block)
+compute_wDCt(
+  x,
+  numOfFactors,
+  numberOfrefGenes,
+  block,
+  set_missing_target_Ct_to_40 = FALSE
+)
 ```
 
 ## Arguments
@@ -35,6 +41,11 @@ compute_wDCt(x, numOfFactors, numberOfrefGenes, block)
   experiment is done in multiple qPCR plates, each plate is considered
   as a random block so that at least one replicate of each treatment and
   control is present on a plate.
+
+- set_missing_target_Ct_to_40:
+
+  If `TRUE`, missing target gene Ct values become 40; if `FALSE`
+  (default), they become NA.
 
 ## Value
 
@@ -118,11 +129,11 @@ compute_wDCt(x = data,
 #> 3     R            L1     2   3 1.88 33.34 1.9  28.48 1.75   31.50    2   30.03
 #> 4     R            L1     2   4 1.88 33.34 1.9  28.64 1.75   30.50    2   30.03
 #> 5     R            L2     1   1 1.88 32.73 1.9  31.17 1.75   31.30    2   29.91
-#> 6     R            L2     1   2   NA    NA 1.9  31.05 1.75   32.55    2   30.05
+#> 6     R            L2     1   2 1.88    NA 1.9  31.05 1.75   32.55    2   30.05
 #> 7     R            L2     2   3 1.88 32.60 1.9  31.42 1.75   31.92    2   29.99
 #> 8     R            L2     2   4 1.88 32.15 1.9  31.40 1.75   30.81    2   30.55
 #> 9     R            L3     1   1 1.88 31.48 1.9  30.19 1.75   33.30    2   30.10
-#> 10    R            L3     1   2 1.88 31.27  NA     NA 1.75   33.37    2   30.17
+#> 10    R            L3     1   2 1.88 31.27 1.9     NA 1.75   33.37    2   30.17
 #> 11    R            L3     2   3 1.88 31.32 1.9  30.22 1.75   33.35    2   30.51
 #> 12    R            L3     2   4 1.88 31.32 1.9  30.40 1.75   29.35    2   30.51
 #> 13    S            L1     1   1 1.88 32.85 1.9  32.26 1.75   26.94    2   30.73
@@ -131,7 +142,7 @@ compute_wDCt(x = data,
 #> 16    S            L1     2   4 1.88 32.89 1.9  32.75 1.75   27.36    2   30.71
 #> 17    S            L2     1   1 1.88 32.41 1.9  32.97 1.75   28.70    2   30.58
 #> 18    S            L2     1   2 1.88 32.49 1.9  32.83 1.75   28.66    2   30.03
-#> 19    S            L2     2   3   NA    NA 1.9  32.60 1.75   28.71    2   31.06
+#> 19    S            L2     2   3 1.88    NA 1.9  32.60 1.75   28.71    2   31.06
 #> 20    S            L2     2   4 1.88 32.30 1.9  32.33 1.75   28.72    2   31.06
 #> 21    S            L3     1   1 1.88 31.03 1.9  29.40 1.75   30.61    2   31.14
 #> 22    S            L3     1   2 1.88 31.73 1.9  29.76 1.75   30.20    2   30.24
@@ -152,7 +163,7 @@ compute_wDCt(x = data,
 #> 12    2   29.51  0.27745548
 #> 13    2   27.70  3.28655511
 #> 14    2   27.68  3.60944806
-#> 15   NA      NA  4.26074112
+#> 15    2      NA  3.34120975
 #> 16    2   27.11  3.79970050
 #> 17    2   28.70  3.09910490
 #> 18    2   28.92  3.07813001

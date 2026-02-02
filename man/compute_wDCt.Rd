@@ -4,7 +4,13 @@
 \alias{compute_wDCt}
 \title{Cleaning data and weighted delta Ct (wDCt) calculation}
 \usage{
-compute_wDCt(x, numOfFactors, numberOfrefGenes, block)
+compute_wDCt(
+  x,
+  numOfFactors,
+  numberOfrefGenes,
+  block,
+  set_missing_target_Ct_to_40 = FALSE
+)
 }
 \arguments{
 \item{x}{A data frame containing experimental design columns, replicates (integer), target gene
@@ -20,6 +26,9 @@ columns must be located at the end of the data frame.}
 When a qPCR experiment is done in multiple qPCR plates, each plate is considered as a random block 
 so that at least one replicate of each treatment and control is present 
 on a plate.}
+
+\item{set_missing_target_Ct_to_40}{If \code{TRUE}, missing target gene Ct 
+values become 40; if \code{FALSE} (default), they become NA.}
 }
 \value{
 The original data frame along with the weighted delta Ct column.

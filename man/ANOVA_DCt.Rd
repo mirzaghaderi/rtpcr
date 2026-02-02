@@ -13,7 +13,7 @@ ANOVA_DCt(
   p.adj = "none",
   analyseAllTarget = TRUE,
   model = NULL,
-  singular.tol = 1e-04
+  set_missing_target_Ct_to_40 = FALSE
 )
 }
 \arguments{
@@ -46,19 +46,14 @@ specifying the names (names of their Efficiency columns) of target genes
 to be analysed.}
 
 \item{model}{Optional model formula. If provided, this overrides the automatic formula (CRD or RCBD 
-  based on \code{block} and \code{numOfFactors}). The formula uses 
-  \code{wDCt} as the response variable. 
-  For mixed models, random effects can be defined using \code{lmer} syntax 
-  (e.g., \code{"wDCt ~ Treatment + (1|Block)"}). When using \code{model}, 
-  the \code{block} and \code{numOfFactors} arguments are ignored for model 
-  specification, but still used for data structure identification.
-  
-for fixed effects only, the \code{"lm"} (ordinary least squares) is used. 
-\code{"lmer"} is used for mixed effects models 
-(requires the \code{lmerTest} package). If a custom formula is provided with 
-random effects, the function will use \code{lmerTest::lmer()}; otherwise 
-it will use \code{stats::lm()}. Note that \code{emmeans} supports both 
-model types and will use appropriate degrees of freedom methods (Satterthwaite by default).}
+based on \code{block} and \code{numOfFactors}). The formula uses 
+\code{wDCt} as the response variable. 
+For mixed models, random effects can be defined using \code{lmer} syntax 
+(e.g., \code{"wDCt ~ Treatment + (1|Block)"}). When using \code{model}, 
+the \code{block} and \code{numOfFactors} arguments are ignored for model 
+specification, but still used for data structure identification.}
+
+\item{set_missing_target_Ct_to_40}{If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA.}
 }
 \value{
 An object containing expression tables, lm/lmer models, ANOVA tables, 

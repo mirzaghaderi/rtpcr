@@ -14,6 +14,8 @@
 #' When a qPCR experiment is done in multiple qPCR plates, each plate is considered as a random block 
 #' so that at least one replicate of each treatment and control is present 
 #' on a plate.
+#' @param set_missing_target_Ct_to_40 If \code{TRUE}, missing target gene Ct 
+#'   values become 40; if \code{FALSE} (default), they become NA.
 #' 
 #' @importFrom stats setNames
 #'
@@ -44,7 +46,8 @@
 compute_wDCt <- function(x, 
                           numOfFactors,
                           numberOfrefGenes, 
-                          block) {
+                          block,
+                          set_missing_target_Ct_to_40 = FALSE) {
   
   if (is.null(block)) {
     x[seq_len(numOfFactors)] <- lapply(
@@ -58,7 +61,8 @@ compute_wDCt <- function(x,
     )
   }
   
-  x <- .cleanup(x, numOfFactors, block)
+  x <- .cleanup(x = x, numOfFactors = numOfFactors, numberOfrefGenes = numberOfrefGenes, block = block,
+                set_missing_target_Ct_to_40 = set_missing_target_Ct_to_40)
   
   stopifnot(numberOfrefGenes >= 1)
   nRef <- numberOfrefGenes

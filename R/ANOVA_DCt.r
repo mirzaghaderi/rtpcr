@@ -52,13 +52,7 @@
 #'   (e.g., \code{"wDCt ~ Treatment + (1|Block)"}). When using \code{model}, 
 #'   the \code{block} and \code{numOfFactors} arguments are ignored for model 
 #'   specification, but still used for data structure identification.
-#'   
-#' for fixed effects only, the \code{"lm"} (ordinary least squares) is used. 
-#' \code{"lmer"} is used for mixed effects models 
-#' (requires the \code{lmerTest} package). If a custom formula is provided with 
-#' random effects, the function will use \code{lmerTest::lmer()}; otherwise 
-#' it will use \code{stats::lm()}. Note that \code{emmeans} supports both 
-#' model types and will use appropriate degrees of freedom methods (Satterthwaite by default).
+#' @param set_missing_target_Ct_to_40 If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA. 
 #'
 #' @return
 #' An object containing expression tables, lm/lmer models, ANOVA tables, 
@@ -102,7 +96,7 @@ ANOVA_DCt <- function(
     p.adj = "none",
     analyseAllTarget = TRUE,
     model = NULL,
-    singular.tol = 1e-4
+    set_missing_target_Ct_to_40 = FALSE
 ) {
   
   default_model_formula <- NULL
@@ -150,7 +144,7 @@ ANOVA_DCt <- function(
 
     if (!is.data.frame(gene_df)) stop("`x` must be a data.frame")
     
-    gene_df <- compute_wDCt(gene_df, numOfFactors, numberOfrefGenes, block)
+    gene_df <- compute_wDCt(gene_df, numOfFactors, numberOfrefGenes, block, set_missing_target_Ct_to_40 = set_missing_target_Ct_to_40)
     
     gene_df[] <- lapply(gene_df, function(z) if (is.factor(z)) as.character(z) else z)
     
@@ -180,8 +174,8 @@ ANOVA_DCt <- function(
     
     lm <- if (has_random_effects) {
       fit <- suppressMessages(lmerTest::lmer(model_i, data = gene_df))
-      
-      is_singular <- lme4::isSingular(fit, tol = singular.tol)
+      fit <- stats::update(fit, control = lme4::lmerControl(optCtrl = list(xtol_abs = 1e-10, ftol_abs = 1e-10)))
+      is_singular <- lme4::isSingular(fit, tol = 1e-10)
       
       fit
     } else {

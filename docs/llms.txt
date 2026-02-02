@@ -132,19 +132,13 @@ and 0.70% amplification efficiencies.
 
 # Handling missing data
 
-The rtpcr package does not replace a Ct value with a predetermined value
-(such as a predefined value of 40, mean Ct values of other replicates,
-or any imputed value). However missing data can be denoted by NA in the
-input data frame. Values such as ‘0’ and ‘undetermined’ (for any E and
-Ct) are automatically converted to NA before passing to the downstream
-analysis. For target genes, NA for E or Ct measurements cause returning
-NA for the corresponding ΔCt for that replicate which is passed along to
-downstream statistical analyses. If there are more than one reference
-gene, NA in the place of the E or the Ct value of cause skipping that
-gene and remaining references are geometrically averaged in that
-replicate. If more sophisticated handling of missing Ct values is
-desired, qPCR imputation tools can be used in advance of analysis with
-rtpcr.
+Missing Ct values for target genes is Handled using the
+`set_missing_target_Ct_to_40` function. If `TRUE`, missing target gene
+Ct values become 40; if `FALSE` (default), they become NA. missing Ct
+values of reference genes are always converted to NA. If there are more
+than one reference gene, NA in the place of the E or the Ct value of
+cause skipping that gene and remaining references are geometrically
+averaged in that replicate.
 
 # Data Analysis
 
@@ -419,7 +413,7 @@ plotFactor(
 ``` r
 # Heffer et al., 2020, PlosOne
 library(dplyr)
-df <- read.csv(system.file("extdata", "Heffer2020PlosOne.csv", package = "rtpcr"))
+df <- read.csv(system.file("extdata", "data_Heffer2020PlosOne.csv", package = "rtpcr"))
 
 res <- ANOVA_DDCt(
   df,

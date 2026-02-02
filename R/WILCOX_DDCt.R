@@ -60,6 +60,9 @@
 #' Method for p-value adjustment. One of
 #' \code{"holm"}, \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"},
 #' \code{"BH"}, \code{"BY"}, \code{"fdr"}, or \code{"none"}. See \code{\link[stats]{p.adjust}}.
+#' 
+#' @param set_missing_target_Ct_to_40 If \code{TRUE}, missing target gene Ct 
+#'   values become 40; if \code{FALSE} (default), they become NA.
 #'
 #'
 #' @return
@@ -93,11 +96,12 @@ WILCOX_DDCt <- function(x,
                        numberOfrefGenes,
                        Factor.level.order = NULL,
                        paired = FALSE,
-                       p.adj = "none") {
+                       p.adj = "none",
+                       set_missing_target_Ct_to_40 = FALSE) {
   
   stopifnot(is.data.frame(x))
   stopifnot(numberOfrefGenes >= 1)
-  
+
   
   # Factor handling
   if (is.null(Factor.level.order)) {
@@ -154,6 +158,7 @@ WILCOX_DDCt <- function(x,
       x = tmp,
       numOfFactors = 1, 
       numberOfrefGenes = numberOfrefGenes, 
+      set_missing_target_Ct_to_40 = set_missing_target_Ct_to_40,
       block = NULL
     )
     
@@ -178,7 +183,7 @@ WILCOX_DDCt <- function(x,
       2^(-tt$conf.int[2]),
       2^(-tt$conf.int[1]),
       tt$p.value,
-      stats::sd(trt_vals) / sqrt(r)
+      stats::sd(trt_vals, na.rm = TRUE) / sqrt(r)
     )
   }
   
@@ -203,7 +208,7 @@ WILCOX_DDCt <- function(x,
     labels = c("***", "**", "*", ".", " ")
   )
   default.order <- unique(res$Gene)      
-  
+  #res$sig[res$RE < 0.001] <- "ND" 
   
 
   a <- data.frame(res, d = 0, Lower.se.log2FC = 0, Upper.se.log2FC = 0)

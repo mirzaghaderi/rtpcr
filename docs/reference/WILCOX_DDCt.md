@@ -13,7 +13,8 @@ WILCOX_DDCt(
   numberOfrefGenes,
   Factor.level.order = NULL,
   paired = FALSE,
-  p.adj = "none"
+  p.adj = "none",
+  set_missing_target_Ct_to_40 = FALSE
 )
 ```
 
@@ -49,6 +50,11 @@ WILCOX_DDCt(
   Method for p-value adjustment. One of `"holm"`, `"hochberg"`,
   `"hommel"`, `"bonferroni"`, `"BH"`, `"BY"`, `"fdr"`, or `"none"`. See
   [`p.adjust`](https://rdrr.io/r/stats/p.adjust.html).
+
+- set_missing_target_Ct_to_40:
+
+  If `TRUE`, missing target gene Ct values become 40; if `FALSE`
+  (default), they become NA.
 
 ## Value
 

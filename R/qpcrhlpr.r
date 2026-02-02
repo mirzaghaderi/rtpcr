@@ -1,69 +1,80 @@
-# convert_to_character function
 .convert_to_character <- function(numbers) {
-  characters <- character(length(numbers))  # Initialize a character vector to store the results
-  
-  for (i in seq_along(numbers)) {
-    if (numbers[i] < 0.001) {
-      characters[i] <- "***"
-    } else if (numbers[i] < 0.01) {
-      characters[i] <- "**"
-    } else if (numbers[i] < 0.05) {
-      characters[i] <- "*"
-    } else if (numbers[i] < 0.1) {
-      characters[i] <- "."
-    } else {
-      characters[i] <- " "
-    }
-  }
+  characters <- rep(" ", length(numbers))
+  ok <- !is.na(numbers)
+  characters[ok & numbers >= 0.001 & numbers < 0.01] <- "**"
+  characters[ok & numbers >= 0.01  & numbers < 0.05] <- "*"
+  characters[ok & numbers >= 0.05  & numbers < 0.1 ] <- "."
   return(characters)
 }
 
 
 
-.cleanup <- function(x, numOfFactors, block) {
-  
-  # define factor columns 
-  if (is.null(block)) {
-    x[seq_len(numOfFactors)] <- lapply(x[seq_len(numOfFactors)], factor)
-  } else {
-    x[seq_len(numOfFactors + 1)] <- lapply(x[seq_len(numOfFactors + 1)], factor)
-  }
 
-  # pairwise cleanup (from last to first) 
-  n <- ncol(x)
+.cleanup <- function(
+    x,
+    numOfFactors,
+    numberOfrefGenes,
+    block = NULL,
+    set_missing_target_Ct_to_40 = FALSE  # Default FALSE = NA, TRUE = 40
+) {
   
-  for (i in seq(from = n, to = 2, by = -2)) {
-    
-    colA <- x[[i - 1]]
-    colB <- x[[i]]
-    
-    # skip if either column is a factor
-    if (is.factor(colA) || is.factor(colB)) next
-    
-    badA <- suppressWarnings(is.na(as.numeric(colA))) | colA == 0
-    badB <- suppressWarnings(is.na(as.numeric(colB))) | colB == 0
-    
-    colA[badB] <- NA
-    colB[badA] <- NA
-    
-    x[[i - 1]] <- colA
-    x[[i]]     <- colB
+  x <- as.data.frame(x)
+  
+  # Set missing value based on parameter
+  missing_value <- if (set_missing_target_Ct_to_40) 40 else NA
+  
+  # Number of non-gene columns
+  n_meta <- numOfFactors + if (!is.null(block)) 2 else 1
+  
+  # Total gene columns
+  gene_cols <- (n_meta + 1):ncol(x)
+  
+  if (length(gene_cols) %% 2 != 0) stop("Gene columns must be in E/Ct pairs")
+  
+  # Split into pairs
+  gene_pairs <- split(gene_cols, ceiling(seq_along(gene_cols) / 2))
+  
+  # Reference vs target genes
+  ref_pairs <- tail(gene_pairs, numberOfrefGenes)
+  target_pairs <- utils::head(gene_pairs, length(gene_pairs) - numberOfrefGenes)
+  
+  # Helper: check invalid (NA or any string/non-numeric)
+  is_invalid <- function(v) {
+    is.na(v) | is.na(suppressWarnings(as.numeric(v)))
   }
-
   
-  x[] <- lapply(x, function(col) {
-    if (is.factor(col)) return(col)
-    if (is.character(col)) {
-      col[col %in% c("Undetermined", "undetermined")] <- NA
-      suppressWarnings(col <- as.numeric(col))
-    }
-    if (is.numeric(col)) {
-      col[col == 0] <- NA
-    }
-    col
-  })
-  x
+  # Reference genes: NA for invalid values 
+  for (pair in ref_pairs) {
+    E_col <- pair[1]
+    Ct_col <- pair[2]
+    
+    bad_E <- is_invalid(x[[E_col]])
+    x[[E_col]][bad_E] <- NA
+    x[[E_col]] <- as.numeric(x[[E_col]])
+    
+    bad_Ct <- is_invalid(x[[Ct_col]])
+    x[[Ct_col]][bad_Ct] <- NA  # Always NA for reference genes
+    x[[Ct_col]] <- as.numeric(x[[Ct_col]])
+  }
+  
+  # Target genes - use parameter choice ----
+  for (pair in target_pairs) {
+    E_col  <- pair[1]
+    Ct_col <- pair[2]
+    
+    bad_E <- is_invalid(x[[E_col]])
+    x[[E_col]][bad_E] <- NA
+    x[[E_col]] <- as.numeric(x[[E_col]])
+    
+    bad_Ct <- is_invalid(x[[Ct_col]])
+    x[[Ct_col]][bad_Ct] <- missing_value  # NA or 40 based on parameter
+    x[[Ct_col]] <- as.numeric(x[[Ct_col]])
+  }
+  
+  return(x)
 }
+
+
 
 
 

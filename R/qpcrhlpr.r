@@ -1,6 +1,7 @@
 .convert_to_character <- function(numbers) {
   characters <- rep(" ", length(numbers))
   ok <- !is.na(numbers)
+  characters[ok & numbers < 0.001] <- "***"
   characters[ok & numbers >= 0.001 & numbers < 0.01] <- "**"
   characters[ok & numbers >= 0.01  & numbers < 0.05] <- "*"
   characters[ok & numbers >= 0.05  & numbers < 0.1 ] <- "."

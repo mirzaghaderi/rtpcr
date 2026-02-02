@@ -43,11 +43,13 @@
 #'              block = "block")
 #' 
 
+
+
 compute_wDCt <- function(x, 
-                          numOfFactors,
-                          numberOfrefGenes, 
-                          block,
-                          set_missing_target_Ct_to_40 = FALSE) {
+                         numOfFactors,
+                         numberOfrefGenes, 
+                         block,
+                         set_missing_target_Ct_to_40 = FALSE) {
   
   if (is.null(block)) {
     x[seq_len(numOfFactors)] <- lapply(
@@ -75,8 +77,10 @@ compute_wDCt <- function(x,
   target_E_col  <- ref_E_cols[1] - 2
   target_Ct_col <- ref_E_cols[1] - 1
   
-  # Target term
+  # Target term - handle NA/Inf
   target_term <- log2(x[[target_E_col]]) * x[[target_Ct_col]]
+  # Convert Inf/-Inf to NA
+  target_term[!is.finite(target_term)] <- NA_real_
   
   # Reference matrices
   E_mat  <- as.matrix(x[, ref_E_cols])
@@ -85,24 +89,60 @@ compute_wDCt <- function(x,
   # Row-wise geometric mean of reference efficiencies (NA-aware)
   geoMeanE <- apply(E_mat, 1, function(z) {
     k <- sum(!is.na(z))
-    if (k > 0) prod(z, na.rm = TRUE)^(1 / k) else NA_real_
+    if (k > 0) {
+      # Check for zeros or negative values
+      if (any(z <= 0, na.rm = TRUE)) {
+        return(NA_real_)
+      }
+      prod(z, na.rm = TRUE)^(1 / k)
+    } else {
+      NA_real_
+    }
   })
   
   # Reference term (Excel-consistent)
   ref_term <- numeric(nrow(x))
   for (r in seq_len(nrow(x))) {
     
-    tmp <- log2(geoMeanE[r]) * Ct_mat[r, ]
-    k   <- sum(!is.na(tmp))
+    # Check if geoMeanE is valid (positive and finite)
+    if (is.na(geoMeanE[r]) || geoMeanE[r] <= 0 || !is.finite(geoMeanE[r])) {
+      ref_term[r] <- NA_real_
+      next
+    }
+    
+    logE <- log2(geoMeanE[r])
+    
+    # Check if logE is finite
+    if (!is.finite(logE)) {
+      ref_term[r] <- NA_real_
+      next
+    }
+    
+    tmp <- logE * Ct_mat[r, ]
+    
+    # Remove NA values
+    tmp <- tmp[!is.na(tmp)]
+    k   <- length(tmp)
     
     if (k > 0) {
-      ref_term[r] <- prod(tmp, na.rm = TRUE)^(1 / k)
+      # Check if any tmp values are infinite
+      if (any(!is.finite(tmp))) {
+        ref_term[r] <- NA_real_
+      } else {
+        # Calculate geometric mean
+        result <- prod(tmp)^(1 / k)
+        # Check if result is finite
+        ref_term[r] <- if (is.finite(result)) result else NA_real_
+      }
     } else {
       ref_term[r] <- NA_real_
     }
   }
   
-  # Final wDCt
+  # Final wDCt - handle cases where either term is NA
   x$wDCt <- target_term - ref_term
+  # Convert any remaining Inf/-Inf to NA
+  x$wDCt[!is.finite(x$wDCt)] <- NA_real_
+  
   x
 }

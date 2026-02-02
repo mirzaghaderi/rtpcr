@@ -187,32 +187,40 @@ ANOVA_DCt <- function(
     
     ABC <- as.formula(paste("pairwise ~", paste(factors, collapse = " * ")))
     
-    emm_obj <- suppressMessages(
-      emmeans::emmeans(lm, specs = ABC, adjust = p.adj, mode = "satterthwaite")
-    )[[1]]
+    emm_obj <- suppressMessages(emmeans::emmeans(lm, specs = ABC, adjust = p.adj, mode = "satterthwaite"))[[1]]
     
     emm_df <- as.data.frame(emm_obj)
+    
+    
     ROWS <- do.call(paste, c(emm_df[factors], sep = ":"))
     
-    meanPairs_df <- as.data.frame(
-      multcomp::cld(emm_obj, adjust = p.adj, alpha = alpha,
-                    reversed = FALSE, Letters = letters)
-    )
+    meanPairs_df <- as.data.frame(multcomp::cld(emm_obj, adjust = p.adj, alpha = alpha,
+                                                reversed = FALSE, Letters = letters))
     
+    # Ensure meanPairs_df has row names matching factor combinations
+    meanPairs_rows <- do.call(paste, c(meanPairs_df[factors], sep = ":"))
+    # Calculate statistics
     bwDCt <- gene_df$wDCt
     obs_mean <- tapply(bwDCt, gene_df$T, mean, na.rm = TRUE)
     obs_sd   <- tapply(bwDCt, gene_df$T, stats::sd, na.rm = TRUE)
     obs_n    <- tapply(bwDCt, gene_df$T, function(z) sum(!is.na(z)))
     obs_se   <- obs_sd / sqrt(obs_n)
     
-    dCt <- obs_mean[match(ROWS, names(obs_mean))]
-    se  <- obs_se[match(ROWS, names(obs_se))]
+    # Match to meanPairs_df order
+    match_idx <- match(meanPairs_rows, names(obs_mean))
     
+    dCt <- obs_mean[match_idx]
+    se  <- obs_se[match_idx]
+    
+    # Calculate fold change
     RE <- 2^(-dCt)
     log2FC <- log2(RE)
-    
-    RE_LCL <- 2^(-meanPairs_df$upper.CL)
+    RE_LCL <- 2^(-meanPairs_df$upper.CL)      
     RE_UCL <- 2^(-meanPairs_df$lower.CL)
+    
+    
+    
+    
     
     Results <- data.frame(
       row.names = ROWS,

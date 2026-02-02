@@ -294,11 +294,10 @@ ANOVA_DDCt <- function(
       stop("emmeans package is required for post-hoc tests")
     }
 
+    
     pp1 <- suppressMessages(
       emmeans::emmeans(lm_fit, colnames(gene_df)[1],
-                       data = gene_df, adjust = p.adj,
-                       mode = "satterthwaite")
-    )
+                       adjust = p.adj))    # mode = "satterthwaite"      data = gene_df, 
 
     pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
     pp3 <- pp2[1:length(mainFactor.level.order)-1,]
@@ -345,8 +344,7 @@ ANOVA_DDCt <- function(
       ddCt = 0, RE = 1, log2FC = 0,
       pvalue = 1, sig = " ",
       LCL = 0, UCL = 0,
-      se = se$se[1]
-    )
+      se = se$se[1])
 
     tableC <- rbind(reference, post_hoc_test)
 
@@ -376,26 +374,6 @@ ANOVA_DDCt <- function(
         tableC$Upper.se.log2FC[j] <- (tableC$Upper.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
       }
     }
-
-    
-    
-    # format_pval <- function(x, digits = 5) {
-    #   threshold <- 10^(-digits)
-    #   
-    #   ifelse(
-    #     is.na(x),
-    #     NA,
-    #     ifelse(
-    #       x > 0 & x < threshold,
-    #       paste0("<", formatC(threshold, format = "f", digits = digits)),
-    #       formatC(round(x, digits), format = "f", digits = digits)
-    #     )
-    #   )
-    # }
-    # tableC[] <- lapply(tableC, function(col) {
-    #   if (is.numeric(col)) format_pval(col)
-    #   else col
-    # })
     
     
     

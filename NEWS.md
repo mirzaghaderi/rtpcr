@@ -2,7 +2,7 @@
 
 ## New features
 
-- A function called `plotSingleGene()` was added that creates a bar plot of relative gene expression (fold change) values from single gene analysis showing all pairwise significance.
+- A function called `plotSingleGene()` was added that creates a bar plot of relative gene expression (fold change) values from single gene analysis showing all pairwise significances.
 
 
 # rtpcr 2.1.3

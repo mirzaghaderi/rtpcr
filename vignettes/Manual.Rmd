@@ -420,9 +420,26 @@ plotFactor(
 
 ![](../man/figures/Rplot03.png){.center height="700px"}
 
+### Plot output: example 4
+
+The function `plotSingleGene()` creates a bar plot of relative gene expression (fold change) values from single gene analysis showing all pairwise significances.
+
+```
+res <- ANOVA_DDCt(
+  data_Heffer2020PlosOne,
+  numOfFactors = 1,
+  mainFactor.column = 1,
+  numberOfrefGenes = 1,
+  block = NULL,
+  analyseAllTarget = "Tnfa") 
+
+plotSingleGene(res, fill = "cyan4", color = "black", base_size = 12)
+```
+![](../man/figures/signif.png){.center height="500px"}
 
 
 # Post-hoc analysis
+
 Although all the expression analysis functions perform statistical comparisons for the levels of the analysed factor, further Post-hoc analysis is still possible. 
 The `Means_DDCt` function performs post-hoc comparisons using a fitted model object produced by `ANOVA_DCt`, `ANOVA_DDCt`, `ANCOVA_DDCt`  or `REPEATED_DDCt`. It applies pairwise statistical comparisons of relative expression (RE) values for user-specified effects via the `specs` argument. Supported effects include simple effects, interactions, and slicing, provided the underlying model is an ANOVA. For ANCOVA models returned by this package, the `Means_DDCt` output is limited to simple effects only.
 

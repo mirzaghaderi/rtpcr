@@ -466,12 +466,17 @@ plotFactor(
 
 ### Plot output: example 4
 
+The function `plotSingleGene()` creates a bar plot of relative gene
+expression (fold change) values from single gene analysis showing all
+pairwise significances.
+
     res <- ANOVA_DDCt(
-    data_2factor,
-    numOfFactors = 2,
-    mainFactor.column = 2,
-    numberOfrefGenes = 1,
-    block = NULL) # If you have multi-target gene data, specify a single target gene using `analyseAllTarget = "Target_name"`.
+      data_Heffer2020PlosOne,
+      numOfFactors = 1,
+      mainFactor.column = 1,
+      numberOfrefGenes = 1,
+      block = NULL,
+      analyseAllTarget = "Tnfa") 
 
     plotSingleGene(res, fill = "cyan4", color = "black", base_size = 12)
 

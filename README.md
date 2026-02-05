@@ -136,6 +136,8 @@ use the `meanTech` function correctly, the technical replicate column
 must appear immediately after the biological replicate column (see [Mean
 of technical replicates](#mean-of-technical-replicates) for an example).
 
+<img src="man/figures/base.png" class="center" style="width:100.0%" />
+
 #### NOTE 4
 
 Complete amplification efficiency (E) in the rtpcr package is denoted by
@@ -214,15 +216,15 @@ t.test assumptions, the `WILCOX_DDCt()` function can be used instead.
 `ANOVA_DDCt()` and `ANOVA_DCt()` functions are used for the analysis of
 variance of qPCR data. Optional custom model formula as a character
 string can be supplied to these functions. If provided, this overrides
-the automatic formula for factorial CRD or RCBD design is generated
-based on `block` and `numOfFactors`. The formula use `wDCt` as the
-response variable (wDCt is automatically created by the function). For
-mixed models, include random effects using `lmer` syntax (e.g.,
-`wDCt ~ Treatment + (1|Block)`). Below are a sample of most common
-models that can be used. Because currenly a model can be supplied by
-user, the `REPEATED_DDCt()` function was removed.
+the default formula (uni- or multi-factorial CRD or RCBD design based on
+`block` and `numOfFactors`). The formula use `wDCt` as the response
+variable (wDCt is automatically created by the function). For mixed
+models, include random effects using `lmer` syntax (e.g.,
+`wDCt ~ Treatment + (1 | id)`). Below are a sample of most common models
+that can be used. Because currently a model can be supplied by user, the
+`REPEATED_DDCt()` function was removed.
 
-| Samples models may be used in ANOVA_DCt() or ANOVA_DDCt() functions | Experimental design |
+| Samples models may be used in `ANOVA_DCt()` or `ANOVA_DDCt()` functions | Experimental design |
 |----|----|
 | wDCt ~ Condition | Completely Randomized Design (CRD). Can also be used for t.test with two independent samples. (**default**) |
 | wDCt ~ Factor1 \* Factor2 \* Factor3 | Factorial under Completely Randomized Design (RCBD) (**default**) |
@@ -238,6 +240,19 @@ user, the `REPEATED_DDCt()` function was removed.
 For CRD, RCBD, and factorial experiments under CRD or RCBD designs you
 don’t need to define model as as one of these models is appropriately
 selected based on the arguments.
+
+#### NOTE
+
+Sometime samples are independent or paired (Repeated measure
+experiments). Examples: 1) Analysing gene expression before and after
+treatment in the sampe biological replicates; 2) Analysing gene
+expression between two tissue types within the same organism. For such
+analysis types we can use the `TTEST_DDCt` with the argument
+`paired = TRUE`; or `ANOVA_DDCt` with a repeated measure model such as
+`wDCt ~ Treatment + ( 1 | id)` or `wDCt ~ Treatment + ( 1 | Rep)`.
+
+<img src="man/figures/repeated_measure.png" class="center"
+style="width:100.0%" />
 
 ``` r
 # An example of a properly arranged dataset from a repeated-measures experiment.
@@ -448,6 +463,19 @@ plotFactor(
 ```
 
 <img src="man/figures/Rplot03.png" class="center" height="700" />
+
+### Plot output: example 4
+
+    res <- ANOVA_DDCt(
+    data_2factor,
+    numOfFactors = 2,
+    mainFactor.column = 2,
+    numberOfrefGenes = 1,
+    block = NULL) # If you have multi-target gene data, specify a single target gene using `analyseAllTarget = "Target_name"`.
+
+    plotSingleGene(res, fill = "cyan4", color = "black", base_size = 12)
+
+<img src="man/figures/signif.png" class="center" height="700" />
 
 # Post-hoc analysis
 

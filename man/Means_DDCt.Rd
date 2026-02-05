@@ -8,7 +8,7 @@ Means_DDCt(model, specs, p.adj = "none")
 }
 \arguments{
 \item{model}{A fitted model object (typically an \code{lmer} or \code{lm} object)
-created by \code{ANOVA_DCt()}, \code{ANOVA_DDCt()} or \code{REPEATED_DDCt()}.}
+created by \code{ANOVA_DCt()}, \code{ANOVA_DDCt()}.}
 
 \item{specs}{A character string or character vector specifying the predictors or
 combinations of predictors over which relative expression values are desired.
@@ -27,7 +27,7 @@ model.
 \description{
 Performs relative expression (fold change) analysis based on the
 Delta Delta Ct (ddCt) methods using a fitted model object produced by
-\code{ANOVA_DCt()}, \code{ANOVA_DDCt()} or \code{REPEATED_DDCt()}.
+\code{ANOVA_DCt()} or \code{ANOVA_DDCt()}.
 }
 \details{
 The \code{Means_DDCt} function performs pairwise comparisons of relative expression values fo all combinations using

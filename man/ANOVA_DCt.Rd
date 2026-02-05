@@ -2,7 +2,7 @@
 % Please edit documentation in R/ANOVA_DCt.R
 \name{ANOVA_DCt}
 \alias{ANOVA_DCt}
-\title{Delta Ct ANOVA analysis with flexible model specification}
+\title{Delta Ct ANOVA analysis with optional model specification}
 \usage{
 ANOVA_DCt(
   x,

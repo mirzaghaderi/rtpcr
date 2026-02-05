@@ -2,7 +2,7 @@
 % Please edit documentation in R/ANOVA_DDCt.R
 \name{ANOVA_DDCt}
 \alias{ANOVA_DDCt}
-\title{Delta Delta Ct ANOVA analysis}
+\title{Delta Delta Ct ANOVA analysis with optional model specification}
 \usage{
 ANOVA_DDCt(
   x,
@@ -49,11 +49,11 @@ If \code{TRUE} (default), all target genes are analysed.
 Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
 to be analysed.}
 
-\item{model}{Optional model formula. If provided, this overrides the automatic formula (CRD or RCBD 
+\item{model}{Optional model formula. If provided, this overrides the automatic formula (uni - or multi-factorial CRD or RCBD 
 based on \code{block} and \code{numOfFactors}). The formula uses 
 \code{wDCt} as the response variable. 
 For mixed models, random effects can be defined using \code{lmer} syntax 
-(e.g., \code{"wDCt ~ Treatment + (1|Block)"}). When using \code{model}, 
+(e.g., \code{"wDCt ~ Treatment + (1 | id)"}). When using \code{model}, 
 the \code{block} and \code{numOfFactors} arguments are ignored for model 
 specification, but still used for data structure identification.
   

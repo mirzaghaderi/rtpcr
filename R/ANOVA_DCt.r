@@ -1,4 +1,4 @@
-#' Delta Ct ANOVA analysis with flexible model specification
+#' Delta Ct ANOVA analysis with optional model specification
 #'
 #' Performs Delta Ct (dCt) analysis of the data from a 1-, 2-, or 3-factor experiment 
 #' with support for both fixed effects and mixed effects models. Per-gene statistical 

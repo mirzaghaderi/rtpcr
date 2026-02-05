@@ -1,4 +1,4 @@
-#' Delta Delta Ct ANOVA analysis
+#' Delta Delta Ct ANOVA analysis with optional model specification
 #'
 #' Apply Delta Delta Ct (ddCt) analysis to each target gene
 #' and performs per-gene statistical analysis.
@@ -27,11 +27,11 @@
 #' If \code{TRUE} (default), all target genes are analysed.
 #' Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
 #' to be analysed.
-#' @param model Optional model formula. If provided, this overrides the automatic formula (CRD or RCBD 
+#' @param model Optional model formula. If provided, this overrides the automatic formula (uni - or multi-factorial CRD or RCBD 
 #' based on \code{block} and \code{numOfFactors}). The formula uses 
 #' \code{wDCt} as the response variable. 
 #' For mixed models, random effects can be defined using \code{lmer} syntax 
-#' (e.g., \code{"wDCt ~ Treatment + (1|Block)"}). When using \code{model}, 
+#' (e.g., \code{"wDCt ~ Treatment + (1 | id)"}). When using \code{model}, 
 #' the \code{block} and \code{numOfFactors} arguments are ignored for model 
 #' specification, but still used for data structure identification.
 #'   

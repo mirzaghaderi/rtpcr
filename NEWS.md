@@ -1,8 +1,15 @@
+# rtpcr 2.1.4
+
+## New features
+
+- A function called `plotSingleGene()` was added that creates a bar plot of relative gene expression (fold change) values from single gene analysis showing all pairwise significance.
+
+
 # rtpcr 2.1.3
 
 ## New features
 
-- In version 2.1.3, optional custom model formula can be supplied by user to `ANOVA_DDCt()` and `ANOVA_DCt()` functions via `model` argument. If provided, this overrides the automatic formula (factorial CRD or RCBD design based on the availability of block and the number of factors). The formula uses `wDCt` as the response variable.  For mixed models, random effects can be supplied (e.g., `wDCt ~ Treatment * (1| id)`). 
+- In version 2.1.3, optional custom model formula can be supplied by user to `ANOVA_DDCt()` and `ANOVA_DCt()` functions via `model` argument. If provided, this overrides the default formula (single- or multi-factorial CRD or RCBD design based on the availability of block and the number of factors). The formula uses `wDCt` as the response variable.  For mixed models, random effects can be supplied (e.g., `wDCt ~ Treatment * (1| id)`). 
 
 - Handling missing Ct values for target genes using the `set_missing_target_Ct_to_40` function. If `TRUE`, missing target gene Ct values become 40; if `FALSE` (default), they become NA. missing Ct values of reference genes are always converted to NA.
 

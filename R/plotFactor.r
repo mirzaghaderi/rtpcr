@@ -1,4 +1,4 @@
-#' @title Bar plot of gene expression for 1-, 2-, or 3-factor experiments
+#' @title Bar plot of gene(s) expression for 1-, 2-, or 3-factor experiments
 #'
 #' @description
 #' Creates a bar plot of relative gene expression (fold change) values

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotFactor.R
 \name{plotFactor}
 \alias{plotFactor}
-\title{Bar plot of gene expression for 1-, 2-, or 3-factor experiments}
+\title{Bar plot of gene(s) expression for 1-, 2-, or 3-factor experiments}
 \usage{
 plotFactor(
   data,

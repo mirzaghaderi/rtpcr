@@ -47,5 +47,6 @@ mainFactor.column = 2,
 numberOfrefGenes = 1,
 block = NULL,
 analyseAllTarget = TRUE) # If you have multi-target gene data, specify a single target gene.
+
 plotSingleGene(res, fill = "cyan4", color = "black", base_size = 12)
 }

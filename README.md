@@ -86,7 +86,8 @@ For relative expression analysis (using `TTEST_DDCt`, `WILCOX_DDCt`,
 (`E`) and `Ct` or `Cq` values (the mean of technical replicates) is used
 for the input table. If the `E` values are not available you should use
 ‘2’ instead representing the complete primer amplification efficiency.
-The required column structure of the input data is:
+The input data table should include the following columns from left to
+wright:
 
 1.  Experimental condition columns (and one block if available [NOTE
     1](#note-1))
@@ -100,8 +101,27 @@ The package supports **one or more target or reference gene(s)**,
 supplied as efficiency–Ct column pairs. Reference gene columns must
 always appear last. A sample input data is presented below.
 
+<BR>
+
+<figure>
+<img src="man/figures/sampleData1.png" class="center"
+style="width:100.0%"
+alt="Figure 1: A sample input data with one experimetal factor, replicate column and E/Ct information of target and reference genes" />
+<figcaption aria-hidden="true">Figure 1: A sample input data with one
+experimetal factor, replicate column and E/Ct information of target and
+reference genes</figcaption>
+</figure>
+
+<BR>
+
+<figure>
 <img src="man/figures/dataStructure1.png" class="center"
-style="width:100.0%" />
+style="width:100.0%"
+alt="Figure 2: A sample input data with two experimetal factors, blocking factor, replicate column and E/Ct information of target and reference genes" />
+<figcaption aria-hidden="true">Figure 2: A sample input data with two
+experimetal factors, blocking factor, replicate column and E/Ct
+information of target and reference genes</figcaption>
+</figure>
 
 #### NOTE 1
 
@@ -212,19 +232,23 @@ efficiency(data)
 
 ### Relative expression
 
-`TTEST_DDCt()` function is used for relative expression analysis in
-treatment condition compared to control condition. Both paired and
-unpaired experimental designs are supported. if the data doesn’t follow
-t.test assumptions, the `WILCOX_DDCt()` function can be used instead.
-`ANOVA_DDCt()` and `ANOVA_DCt()` functions are used for the analysis of
-variance of qPCR data. Optional custom model formula as a character
-string can be supplied to these functions. If provided, this overrides
-the default formula (uni- or multi-factorial CRD or RCBD design based on
-`block` and `numOfFactors`). The formula use `wDCt` as the response
-variable (wDCt is automatically created by the function). For mixed
-models, include random effects using `lmer` syntax (e.g.,
-`wDCt ~ Treatment + (1 | id)`). Below are a sample of most common models
-that can be used.
+**Single factor experiment with two levels (e.g. Control and
+Treatment):** `TTEST_DDCt()` function is used for relative expression
+analysis in treatment condition compared to control condition. Both
+paired and unpaired experimental designs are supported. if the data
+doesn’t follow t.test assumptions, the `WILCOX_DDCt()` function can be
+used instead.
+
+**Single factor experiment with more than two levels, or multi-factor
+experiments:** In these cases, `ANOVA_DDCt()` and `ANOVA_DCt()`
+functions are used for the analysis of qPCR data. Optional custom model
+formula as a character string can be supplied to these functions. If
+provided, this overrides the default formula (uni- or multi-factorial
+CRD or RCBD design based on `numOfFactors` and the availability of
+`block`). The formula use `wDCt` as the response variable (wDCt is
+automatically created by the function). For mixed models, include random
+effects using `lmer` syntax (e.g., `wDCt ~ Treatment + (1 | id)`). Below
+are a sample of most common models that can be used.
 
 | Samples models may be used in `ANOVA_DCt()` or `ANOVA_DDCt()` functions | Experimental design |
 |----|----|
@@ -246,7 +270,7 @@ selected based on the arguments.
 #### NOTE
 
 Sometime samples are independent or paired (Repeated measure
-experiments). Examples: 1) Analysing gene expression in different time
+experiments). Examples: 1) Analyzing gene expression in different time
 points, or before and after treatment in each biological replicate; 2)
 Analysing gene expression between two tissue types within the same
 organism. For such analysis types, if there are only two time points, we

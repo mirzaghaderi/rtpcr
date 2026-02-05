@@ -106,14 +106,17 @@ on, which have been sampled at specific time points.
 
 #### NOTE 3
 
-Your data table may also include a column of technical replicates (so
-there would be both biological replicates and technical replicate
-columns in the data). In this case, the `meanTech` function should be
+Your data table may also include a column of technical replicates (For example, 
+using one target and one reference genes, if you want to have 4 biological 
+and 3 technical replicates under Control and Treatment conditions,
+there would be a table of 24 rows containing both biological 
+replicates and technical replicate columns in the data). 
+In this case, the `meanTech` function should be
 applied first to calculate the mean of the technical replicates. The
-resulting table is then used as the input for expression analysis. To
+resulting collapsed table is then used as the input for expression analysis. To
 use the `meanTech` function correctly, the technical replicate column
 must appear immediately after the biological replicate column (see [Mean
-of technical replicates](#mean-of-technical-replicates) for an example). 
+of technical replicates](#mean-of-technical-replicates) for an example).
 
 ![](../man/figures/base.png){.center height="400px"}
 

@@ -116,14 +116,14 @@ interaction with any main effect is not considered.
 
 For `TTEST_DDCt` and `WILCOX_DDCt` (independent samples), `ANOVA_DCt`,
 `ANCOVA_DDCt`, and `ANOVA_DDCt` each row is from a separate and unique
-biological replicate. For example, a dataframe with 12 rows has come
-from an experiment with 12 individuals. The `REPEATED_DDCt` function is
+biological replicate. For example, a data frame with 12 rows has come
+from an experiment with 12 individuals. The repeated measure models are
 intended for experiments with repeated observations (e.g. time-course
-data). For `REPEATED_DDCt`, the Replicate column contains identifiers
-for each individual (id or subject). For example, all rows with a `1` at
-Rep column correspond to a single individual, all rows with a `2`
-correspond to another individual, and so on, which have been sampled at
-specific time points.
+data). In repeated measure experiments the Replicate column contains
+identifiers for each individual (id or subject). For example, all rows
+with a `1` at Rep column correspond to a single individual, all rows
+with a `2` correspond to another individual, and so on, which have been
+sampled at specific time points.
 
 #### NOTE 3
 
@@ -224,8 +224,7 @@ the default formula (uni- or multi-factorial CRD or RCBD design based on
 variable (wDCt is automatically created by the function). For mixed
 models, include random effects using `lmer` syntax (e.g.,
 `wDCt ~ Treatment + (1 | id)`). Below are a sample of most common models
-that can be used. Because currently a model can be supplied by user, the
-`REPEATED_DDCt()` function was removed.
+that can be used.
 
 | Samples models may be used in `ANOVA_DCt()` or `ANOVA_DDCt()` functions | Experimental design |
 |----|----|
@@ -317,12 +316,11 @@ res <- ANOVA_DDCt(
 ## Data output
 
 All the functions for relative expression analysis (including
-`TTEST_DDCt`, `WILCOX_DDCt`, `ANOVA_DDCt()`, `REPEATED_DDCt`, and
-`ANOVA_DCt()`) return the relative expression table which include fold
-change and corresponding statistics. The output of `ANOVA_DDCt()`,
-`REPEATED_DDCt`, and `ANOVA_DCt()` also include lm models, residuals,
-raw data and ANOVA table for each gene. These outputs for each gene can
-be obtained as follow:
+`TTEST_DDCt`, `WILCOX_DDCt`, `ANOVA_DDCt()`, and `ANOVA_DCt()`) return
+the relative expression table which include fold change and
+corresponding statistics. The output of `ANOVA_DDCt()`, and
+`ANOVA_DCt()` also include lm model, residuals, raw data and ANOVA table
+for each gene. These outputs for each gene can be obtained as follow:
 
 | Per_gene Output  | Code                                |
 |------------------|-------------------------------------|
@@ -493,13 +491,13 @@ pairwise significances.
 Although all the expression analysis functions perform statistical
 comparisons for the levels of the analysed factor, further Post-hoc
 analysis is still possible. The `Means_DDCt` function performs post-hoc
-comparisons using a fitted model object produced by `ANOVA_DCt`,
-`ANOVA_DDCt`, `ANCOVA_DDCt` or `REPEATED_DDCt`. It applies pairwise
-statistical comparisons of relative expression (RE) values for
-user-specified effects via the `specs` argument. Supported effects
-include simple effects, interactions, and slicing, provided the
-underlying model is an ANOVA. For ANCOVA models returned by this
-package, the `Means_DDCt` output is limited to simple effects only.
+comparisons using a fitted model object produced by `ANOVA_DCt` and
+`ANOVA_DDCt`. It applies pairwise statistical comparisons of relative
+expression (RE) values for user-specified effects via the `specs`
+argument. Supported effects include simple effects, interactions, and
+slicing, provided the underlying model is an ANOVA. For ANCOVA models
+returned by this package, the `Means_DDCt` output is limited to simple
+effects only.
 
 ``` r
 res <- ANOVA_DDCt(
@@ -555,18 +553,18 @@ analysis of variance. These tests assess differences between population
 medians using independent samples. However, the `t.test` function (also
 the `TTEST_DDCt` function described above) includes the `var.equal`
 argument. When set to `FALSE`, performs `t.test` under the unequal
-variances hypothesis. Residuals (from `ANOVA_DCt`, `ANOVA_DDCt`, and
-`REPEATED_DDCt` functions) objects can be extracted from `lm`and plotted
-as follow:
+variances hypothesis. Residuals (from `ANOVA_DCt` and `ANOVA_DDCt`
+functions) objects can be extracted from `lm`and plotted as follow:
 
 ``` r
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
-res3 <- REPEATED_DDCt(
+res3 <- ANOVA_DDCt(
   data,
   numOfFactors = 1,
   numberOfrefGenes = 1,
   mainFactor.column = 1,
-  block = NULL
+  block = NULL,
+  model = wDCt ~ time + (1 | id)
 )
 residuals <- resid(res3$perGene$Target$lm)
 shapiro.test(residuals) 

@@ -120,10 +120,10 @@ When a qPCR experiment is done in multiple qPCR plates, variation resulting from
 #### NOTE 2
 
 For `TTEST_DDCt` and `WILCOX_DDCt` (independent samples), `ANOVA_DCt`, `ANCOVA_DDCt`, and `ANOVA_DDCt` each row is from a
-separate and unique biological replicate. For example, a dataframe with
+separate and unique biological replicate. For example, a data frame with
 12 rows has come from an experiment with 12 individuals. The
-`REPEATED_DDCt` function is intended for experiments with repeated
-observations (e.g. time-course data). For `REPEATED_DDCt`, the Replicate
+repeated measure models are intended for experiments with repeated
+observations (e.g. time-course data). In repeated measure experiments the Replicate
 column contains identifiers for each individual (id or subject). For
 example, all rows with a `1` at Rep column correspond to a single
 individual, all rows with a `2` correspond to another individual, and so
@@ -213,7 +213,7 @@ efficiency(data)
 ### Relative expression
 
 `TTEST_DDCt()` function is used for relative expression analysis in treatment condition compared to control condition. Both paired and unpaired experimental designs are supported. if the data doesn't follow t.test assumptions, the `WILCOX_DDCt()` function can be used instead. 
-`ANOVA_DDCt()` and `ANOVA_DCt()` functions are used for the analysis of variance of qPCR data. Optional custom model formula as a character string can be supplied to these functions. If provided, this overrides the default formula (uni- or multi-factorial CRD or RCBD design based on `block` and `numOfFactors`). The formula use `wDCt` as the response variable (wDCt is automatically created by the function).  For mixed models, include random effects using `lmer` syntax (e.g., `wDCt ~ Treatment + (1 | id)`). Below are a sample of most common models that can be used. Because currently a model can be supplied by user, the `REPEATED_DDCt()` function was removed.
+`ANOVA_DDCt()` and `ANOVA_DCt()` functions are used for the analysis of variance of qPCR data. Optional custom model formula as a character string can be supplied to these functions. If provided, this overrides the default formula (uni- or multi-factorial CRD or RCBD design based on `block` and `numOfFactors`). The formula use `wDCt` as the response variable (wDCt is automatically created by the function).  For mixed models, include random effects using `lmer` syntax (e.g., `wDCt ~ Treatment + (1 | id)`). Below are a sample of most common models that can be used. 
 
 | Samples models may be used in `ANOVA_DCt()` or `ANOVA_DDCt()` functions | Experimental design            |
 |---------------------------------------------------|--------------------------------------------------|
@@ -293,7 +293,7 @@ res <- ANOVA_DDCt(
 
 # Output
 ## Data output
-All the functions for relative expression analysis (including `TTEST_DDCt`, `WILCOX_DDCt`, `ANOVA_DDCt()`, `REPEATED_DDCt`, and `ANOVA_DCt()`) return the relative expression table which include fold change and corresponding statistics. The output of `ANOVA_DDCt()`, `REPEATED_DDCt`, and `ANOVA_DCt()` also include lm models, residuals, raw data and ANOVA table for each gene. These outputs for each gene can be obtained as follow:
+All the functions for relative expression analysis (including `TTEST_DDCt`, `WILCOX_DDCt`, `ANOVA_DDCt()`, and `ANOVA_DCt()`) return the relative expression table which include fold change and corresponding statistics. The output of `ANOVA_DDCt()`, and `ANOVA_DCt()` also include lm model, residuals, raw data and ANOVA table for each gene. These outputs for each gene can be obtained as follow:
 
 | Per_gene Output    | Code                                                  |
 |--------------------|-------------------------------------------------------|
@@ -466,7 +466,7 @@ plotSingleGene(res, fill = "cyan4", color = "black", base_size = 12)
 
 # Post-hoc analysis
 Although all the expression analysis functions perform statistical comparisons for the levels of the analysed factor, further Post-hoc analysis is still possible. 
-The `Means_DDCt` function performs post-hoc comparisons using a fitted model object produced by `ANOVA_DCt`, `ANOVA_DDCt`, `ANCOVA_DDCt` or `REPEATED_DDCt`. It applies pairwise statistical comparisons of relative expression (RE) values for user-specified effects via the `specs` argument. Supported effects include simple effects, interactions, and slicing, provided the underlying model is an ANOVA. For ANCOVA models returned by this package, the `Means_DDCt` output is limited to simple effects only.
+The `Means_DDCt` function performs post-hoc comparisons using a fitted model object produced by `ANOVA_DCt` and `ANOVA_DDCt`. It applies pairwise statistical comparisons of relative expression (RE) values for user-specified effects via the `specs` argument. Supported effects include simple effects, interactions, and slicing, provided the underlying model is an ANOVA. For ANCOVA models returned by this package, the `Means_DDCt` output is limited to simple effects only.
 
 ```{r eval= F}
 res <- ANOVA_DDCt(
@@ -512,16 +512,17 @@ Means_DDCt(model, specs = "Conc | Type * SA")
 
 # Checking normality of residuals
 
-If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test - also known as the Wilcoxon rank-sum test, (implemented via `WILCOX_DDCt()` in the rtpcr package), is an alternative to t.test, and `kruskal.test()` is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the `t.test` function (also the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, performs `t.test` under the unequal variances hypothesis. Residuals (from `ANOVA_DCt`, `ANOVA_DDCt`, and `REPEATED_DDCt` functions) objects can be extracted from `lm`and plotted as follow:
+If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test - also known as the Wilcoxon rank-sum test, (implemented via `WILCOX_DDCt()` in the rtpcr package), is an alternative to t.test, and `kruskal.test()` is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the `t.test` function (also the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, performs `t.test` under the unequal variances hypothesis. Residuals (from `ANOVA_DCt` and `ANOVA_DDCt` functions) objects can be extracted from `lm`and plotted as follow:
 
 ```{r eval= F}
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
-res3 <- REPEATED_DDCt(
+res3 <- ANOVA_DDCt(
   data,
   numOfFactors = 1,
   numberOfrefGenes = 1,
   mainFactor.column = 1,
-  block = NULL
+  block = NULL,
+  model = wDCt ~ time + (1 | id)
 )
 residuals <- resid(res3$perGene$Target$lm)
 shapiro.test(residuals) 

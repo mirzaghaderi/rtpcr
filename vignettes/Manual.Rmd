@@ -208,7 +208,7 @@ as one of these models is appropriately selected based on the arguments.
 
 #### NOTE
 
-Sometime samples are independent or paired (Repeated measure experiments). Examples: 1) Analysing gene expression before and after treatment in the sampe biological replicates;  2) Analysing gene expression between two tissue types within the same organism. For such analysis types we can use the `TTEST_DDCt` with the argument `paired = TRUE`; or `ANOVA_DDCt` with a repeated measure model such as `wDCt ~ Treatment + ( 1 | id)`  or `wDCt ~ Treatment + ( 1 | Rep)`.
+Sometime samples are independent or paired (Repeated measure experiments). Examples: 1) Analysing gene expression in different time points, or before and after treatment in each biological replicate;  2) Analysing gene expression between two tissue types within the same organism. For such analysis types, if there are only two time points, we can use the `TTEST_DDCt` with the argument `paired = TRUE`; or `ANOVA_DDCt` (if there are two or more time points) with a repeated measure model such as `wDCt ~ Treatment + ( 1 | id)`  or `wDCt ~ Treatment + ( 1 | Rep)`.
 
 ![](../man/figures/repeated_measure.png){.center height="280px"}
 

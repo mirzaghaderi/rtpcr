@@ -247,17 +247,30 @@ selected based on the arguments.
 #### NOTE
 
 Sometime samples are independent or paired (Repeated measure
-experiments). Examples: 1) Analysing gene expression before and after
-treatment in the sampe biological replicates; 2) Analysing gene
-expression between two tissue types within the same organism. For such
-analysis types we can use the `TTEST_DDCt` with the argument
-`paired = TRUE`; or `ANOVA_DDCt` with a repeated measure model such as
-`wDCt ~ Treatment + ( 1 | id)` or `wDCt ~ Treatment + ( 1 | Rep)`.
+experiments). Examples: 1) Analysing gene expression in different time
+points, or before and after treatment in each biological replicate; 2)
+Analysing gene expression between two tissue types within the same
+organism. For such analysis types, if there are only two time points, we
+can use the `TTEST_DDCt` with the argument `paired = TRUE`; or
+`ANOVA_DDCt` (if there are two or more time points) with a repeated
+measure model such as `wDCt ~ Treatment + ( 1 | id)` or
+`wDCt ~ Treatment + ( 1 | Rep)`.
 
 <img src="man/figures/repeated_measure.png" class="center"
 style="width:100.0%" />
 
 ``` r
+data <- read.csv(system.file("extdata", "data_Yuan2006PMCBioinf.csv", package = "rtpcr"))
+data
+
+# Anova analysis
+ANOVA_DDCt(
+  data,
+  mainFactor.column = 1,
+  numOfFactors = 1,
+  numberOfrefGenes = 1,
+  block = NULL)
+
 # An example of a properly arranged dataset from a repeated-measures experiment.
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))
 data
@@ -282,15 +295,6 @@ res <- ANOVA_DDCt(
   block = NULL, model = wDCt ~ time + (1 | id))
 
 
-# Anova analysis
-ANOVA_DDCt(
-  data,
-  mainFactor.column = 1,
-  numOfFactors = 1,
-  numberOfrefGenes = 1,
-  block = NULL)
-
-
 # Paired t.test (equivalent to repeated measure analysis, but not always the same results, due to different calculation methods!)
 TTEST_DDCt(
   data[1:6,], 
@@ -305,8 +309,7 @@ res <- ANOVA_DDCt(
   mainFactor.column = 1,
   numOfFactors = 2,
   numberOfrefGenes = 1,
-  block = "block",
-  analyseAllTarget = TRUE)
+  block = "block")
 ```
 
 # Output
@@ -483,7 +486,7 @@ pairwise significances.
 
     plotSingleGene(res, fill = "cyan4", color = "black", base_size = 12)
 
-<img src="man/figures/signif.png" class="center" height="700" />
+<img src="man/figures/signif.png" class="center" height="400" />
 
 # Post-hoc analysis
 

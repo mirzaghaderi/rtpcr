@@ -586,13 +586,17 @@ if the data doesn’t follow t.test assumptions, the
 <p><strong>Single factor experiment with more than two levels, or
 multi-factor experiments:</strong> In these cases,
 <code>ANOVA_DDCt()</code> and <code>ANOVA_DCt()</code> functions are
-used for the analysis of qPCR data. Optional custom model formula as a
-character string can be supplied to these functions. If provided, this
-overrides the default formula (uni- or multi-factorial CRD or RCBD
-design based on <code>numOfFactors</code> and the availability of
-<code>block</code>). The formula use <code>wDCt</code> as the response
-variable (wDCt is automatically created by the function). For mixed
-models, include random effects using <code>lmer</code> syntax (e.g.,
+used for the analysis of qPCR data. By default, statistical analysis is
+performed based on uni- or multi-factorial Completely Randomized Design
+(CRD) or Randomized Complete Block Design (RCBD) design based on
+<code>numOfFactors</code> and the availability of <code>block</code>.
+However, optional custom model formula as a character string can be
+supplied to these functions. If provided, this overrides the default
+formula (uni- or multi-factorial CRD or RCBD design based on
+<code>numOfFactors</code> and the availability of <code>block</code>).
+The formula uses <code>wDCt</code> as the response variable (wDCt is
+automatically created by the function). For mixed models, include random
+effects using <code>lmer</code> syntax (e.g.,
 <code>wDCt ~ Treatment + (1 | id)</code>). Below are a sample of most
 common models that can be used.</p>
 <table>
@@ -649,16 +653,18 @@ covariates</td>
 </table>
 <div id="note" class="section level4">
 <h4>NOTE</h4>
-<p>For CRD, RCBD, and factorial experiments under CRD or RCBD designs
-you don’t need to define model as as one of these models is
-appropriately selected based on the arguments.</p>
+<p>For CRD, RCBD, and factorial experiments arranged in either CRD or
+RCBD designs, you do not need to explicitly define a model. The package
+automatically selects an appropriate model based on the provided
+arguments. If no model is specified, the default model used is printed
+along with the output expression table.</p>
 </div>
 <div id="note-5" class="section level4">
 <h4>NOTE</h4>
 <p>Sometime samples are independent or paired (Repeated measure
-experiments). Examples: 1) Analysing gene expression in different time
+experiments). Examples: 1) Analyzing gene expression in different time
 points, or before and after treatment in each biological replicate; 2)
-Analysing gene expression between two tissue types within the same
+Analyzing gene expression between two tissue types within the same
 organism. For such analysis types, if there are only two time points, we
 can use the <code>TTEST_DDCt</code> with the argument
 <code>paired = TRUE</code>; or <code>ANOVA_DDCt</code> (if there are two
@@ -673,55 +679,65 @@ or more time points) with a repeated measure model such as
 functions (i.e. <code>TTEST_DDCt</code>, <code>WILCOX_DDCt</code>,
 <code>ANOVA_DDCt()</code>, and <code>ANOVA_DCt()</code>). Below are some
 examples of expression analysis using <span class="math inline">\(\Delta\Delta Ct\)</span> method.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># An example of a properly arranged dataset from a repeated-measures experiment.</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;data_repeated_measure_1.csv&quot;</span>, <span class="at">package =</span> <span class="st">&quot;rtpcr&quot;</span>))</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>data</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>time    id  E_Target    Ct_target   E_Ref      Ct_Ref</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>   <span class="dv">1</span>     <span class="dv">1</span>      <span class="dv">2</span>       <span class="fl">18.92</span>   <span class="dv">2</span>   <span class="fl">32.77</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>   <span class="dv">1</span>     <span class="dv">2</span>      <span class="dv">2</span>       <span class="fl">15.82</span>   <span class="dv">2</span>   <span class="fl">32.45</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>   <span class="dv">1</span>     <span class="dv">3</span>      <span class="dv">2</span>       <span class="fl">19.84</span>   <span class="dv">2</span>   <span class="fl">31.62</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>   <span class="dv">2</span>     <span class="dv">1</span>      <span class="dv">2</span>       <span class="fl">19.46</span>   <span class="dv">2</span>   <span class="fl">33.03</span></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>   <span class="dv">2</span>     <span class="dv">2</span>      <span class="dv">2</span>       <span class="fl">17.56</span>   <span class="dv">2</span>   <span class="fl">33.24</span></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>   <span class="dv">2</span>     <span class="dv">3</span>      <span class="dv">2</span>       <span class="fl">19.74</span>   <span class="dv">2</span>   <span class="fl">32.08</span></span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>   <span class="dv">3</span>     <span class="dv">1</span>      <span class="dv">2</span>       <span class="fl">15.73</span>   <span class="dv">2</span>   <span class="fl">32.95</span></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>   <span class="dv">3</span>     <span class="dv">2</span>      <span class="dv">2</span>       <span class="fl">17.21</span>   <span class="dv">2</span>   <span class="fl">33.64</span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>   <span class="dv">3</span>     <span class="dv">3</span>      <span class="dv">2</span>       <span class="fl">18.09</span>   <span class="dv">2</span>   <span class="fl">33.40</span></span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co"># Repeated measure analysis</span></span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ANOVA_DDCt</span>(</span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>  data,</span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">1</span>,</span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>,</span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">1</span>,</span>
-<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>  <span class="at">block =</span> <span class="cn">NULL</span>, <span class="at">model =</span> wDCt <span class="sc">~</span> time <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> id))</span>
-<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co"># Anova analysis</span></span>
-<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="fu">ANOVA_DDCt</span>(</span>
-<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>  data,</span>
-<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">1</span>,</span>
-<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">1</span>,</span>
-<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>,</span>
-<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>  <span class="at">block =</span> <span class="cn">NULL</span>)</span>
-<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a></span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;data_Yuan2006PMCBioinf.csv&quot;</span>, <span class="at">package =</span> <span class="st">&quot;rtpcr&quot;</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>data1</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>      Con r target target_Ct Actin Actin_Ct</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  control <span class="dv">1</span>   <span class="fl">1.88</span>  <span class="fl">21.13000</span>  <span class="fl">1.67</span> <span class="fl">20.70333</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  control <span class="dv">2</span>   <span class="fl">1.88</span>  <span class="fl">21.55667</span>  <span class="fl">1.67</span> <span class="fl">20.35000</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  control <span class="dv">3</span>   <span class="fl">1.88</span>  <span class="fl">21.33000</span>  <span class="fl">1.67</span> <span class="fl">20.75333</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>treatment <span class="dv">1</span>   <span class="fl">1.88</span>  <span class="fl">22.09000</span>  <span class="fl">1.67</span> <span class="fl">20.24333</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>treatment <span class="dv">2</span>   <span class="fl">1.88</span>  <span class="fl">22.69667</span>  <span class="fl">1.67</span> <span class="fl">20.54000</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>treatment <span class="dv">3</span>   <span class="fl">1.88</span>  <span class="fl">23.05333</span>  <span class="fl">1.67</span> <span class="fl">20.50000</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co"># Anova analysis</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="fu">ANOVA_DDCt</span>(</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  data1,</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">1</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">1</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>  <span class="at">block =</span> <span class="cn">NULL</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co"># An example of a properly arranged dataset from a repeated-measures experiment.</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;data_repeated_measure_1.csv&quot;</span>, <span class="at">package =</span> <span class="st">&quot;rtpcr&quot;</span>))</span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>data2</span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>time    id  E_Target    Ct_target   E_Ref      Ct_Ref</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>   <span class="dv">1</span>     <span class="dv">1</span>      <span class="dv">2</span>       <span class="fl">18.92</span>   <span class="dv">2</span>   <span class="fl">32.77</span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>   <span class="dv">1</span>     <span class="dv">2</span>      <span class="dv">2</span>       <span class="fl">15.82</span>   <span class="dv">2</span>   <span class="fl">32.45</span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>   <span class="dv">1</span>     <span class="dv">3</span>      <span class="dv">2</span>       <span class="fl">19.84</span>   <span class="dv">2</span>   <span class="fl">31.62</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>   <span class="dv">2</span>     <span class="dv">1</span>      <span class="dv">2</span>       <span class="fl">19.46</span>   <span class="dv">2</span>   <span class="fl">33.03</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>   <span class="dv">2</span>     <span class="dv">2</span>      <span class="dv">2</span>       <span class="fl">17.56</span>   <span class="dv">2</span>   <span class="fl">33.24</span></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>   <span class="dv">2</span>     <span class="dv">3</span>      <span class="dv">2</span>       <span class="fl">19.74</span>   <span class="dv">2</span>   <span class="fl">32.08</span></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>   <span class="dv">3</span>     <span class="dv">1</span>      <span class="dv">2</span>       <span class="fl">15.73</span>   <span class="dv">2</span>   <span class="fl">32.95</span></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>   <span class="dv">3</span>     <span class="dv">2</span>      <span class="dv">2</span>       <span class="fl">17.21</span>   <span class="dv">2</span>   <span class="fl">33.64</span></span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>   <span class="dv">3</span>     <span class="dv">3</span>      <span class="dv">2</span>       <span class="fl">18.09</span>   <span class="dv">2</span>   <span class="fl">33.40</span></span>
 <span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a></span>
-<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co"># Paired t.test (equivalent to repeated measure analysis, but not always the same results, due to different calculation methods!)</span></span>
-<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="fu">TTEST_DDCt</span>(</span>
-<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>  data[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,], </span>
-<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>, </span>
-<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a>  <span class="at">paired =</span> T)</span>
-<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a></span>
-<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a></span>
-<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co"># Anova analysis</span></span>
-<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;data_2factorBlock3ref.csv&quot;</span>, <span class="at">package =</span> <span class="st">&quot;rtpcr&quot;</span>))</span>
-<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ANOVA_DDCt</span>(</span>
-<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a>  <span class="at">x =</span> data,</span>
-<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">1</span>,</span>
-<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">2</span>,</span>
-<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>,</span>
-<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a>  <span class="at">block =</span> <span class="st">&quot;block&quot;</span>,</span>
-<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a>  <span class="at">analyseAllTarget =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co"># Repeated measure analysis</span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ANOVA_DDCt</span>(</span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>  data2,</span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">1</span>,</span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>,</span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">1</span>,</span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a>  <span class="at">block =</span> <span class="cn">NULL</span>, <span class="at">model =</span> wDCt <span class="sc">~</span> time <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> id))</span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a></span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co"># Paired t.test (equivalent to repeated measure analysis, but not always the same results, due to different calculation methods!)</span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="fu">TTEST_DDCt</span>(</span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a>  data2[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,], </span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>, </span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a>  <span class="at">paired =</span> T)</span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a></span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a><span class="co"># Anova analysis</span></span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a>data3 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;data_2factorBlock3ref.csv&quot;</span>, <span class="at">package =</span> <span class="st">&quot;rtpcr&quot;</span>))</span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a></span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ANOVA_DDCt</span>(</span>
+<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a>  <span class="at">x =</span> data3,</span>
+<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">2</span>,</span>
+<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">2</span>,</span>
+<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">3</span>,</span>
+<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a>  <span class="at">block =</span> <span class="st">&quot;block&quot;</span>,</span>
+<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a>  <span class="at">analyseAllTarget =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -772,16 +788,40 @@ for each gene can be obtained as follow:</p>
 </tbody>
 </table>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Relative expression table for the specified column in the input data:</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> res<span class="sc">$</span>relativeExpression</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>df</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>Relative Expression</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>gene   contrast       RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>PO            R   <span class="fl">1.0000</span>  <span class="fl">0.0000</span> <span class="fl">1.0000</span>     <span class="fl">0.0000</span>  <span class="fl">0.0000</span> <span class="fl">0.5506</span>      <span class="fl">0.6828</span>      <span class="fl">1.4647</span>          <span class="fl">0.0000</span>          <span class="fl">0.0000</span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>PO       S vs R  <span class="fl">11.6130</span>  <span class="fl">3.5377</span> <span class="fl">0.0001</span> <span class="sc">**</span><span class="er">*</span> <span class="fl">4.4233</span> <span class="fl">30.4888</span> <span class="fl">0.2286</span>      <span class="fl">9.9115</span>     <span class="fl">13.6066</span>          <span class="fl">3.0193</span>          <span class="fl">4.1450</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>GAPDH         R   <span class="fl">1.0000</span>  <span class="fl">0.0000</span> <span class="fl">1.0000</span>     <span class="fl">0.0000</span>  <span class="fl">0.0000</span> <span class="fl">0.4815</span>      <span class="fl">0.7162</span>      <span class="fl">1.3962</span>          <span class="fl">0.0000</span>          <span class="fl">0.0000</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>GAPDH    S vs R   <span class="fl">6.6852</span>  <span class="fl">2.7410</span> <span class="fl">0.0001</span> <span class="sc">**</span><span class="er">*</span> <span class="fl">3.0687</span> <span class="fl">14.5641</span> <span class="fl">0.3820</span>      <span class="fl">5.1301</span>      <span class="fl">8.7118</span>          <span class="fl">2.1034</span>          <span class="fl">3.5719</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>ref2          R   <span class="fl">1.0000</span>  <span class="fl">0.0000</span> <span class="fl">1.0000</span>     <span class="fl">0.0000</span>  <span class="fl">0.0000</span> <span class="fl">0.6928</span>      <span class="fl">0.6186</span>      <span class="fl">1.6164</span>          <span class="fl">0.0000</span>          <span class="fl">0.0000</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>ref2     S vs R   <span class="fl">0.9372</span> <span class="sc">-</span><span class="fl">0.0936</span> <span class="fl">0.9005</span>     <span class="fl">0.3145</span>  <span class="fl">2.7929</span> <span class="fl">0.2414</span>      <span class="fl">0.7927</span>      <span class="fl">1.1079</span>         <span class="sc">-</span><span class="fl">0.1107</span>         <span class="sc">-</span><span class="fl">0.0792</span></span></code></pre></div>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>data3 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;data_2factorBlock3ref.csv&quot;</span>, <span class="at">package =</span> <span class="st">&quot;rtpcr&quot;</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ANOVA_DDCt</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="at">x =</span> data3,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">2</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">2</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">3</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  <span class="at">block =</span> <span class="st">&quot;block&quot;</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="at">analyseAllTarget =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>Relative Expression</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  gene contrast     ddCt      RE   log2FC     LCL     UCL      se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="dv">1</span>   PO       L1  <span class="fl">0.00000</span> <span class="fl">1.00000</span>  <span class="fl">0.00000</span> <span class="fl">0.00000</span> <span class="fl">0.00000</span> <span class="fl">0.13940</span>     <span class="fl">0.90790</span>     <span class="fl">1.10144</span>         <span class="fl">0.00000</span>         <span class="fl">0.00000</span> <span class="fl">1.00000</span>    </span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="dv">2</span>   PO L2 vs L1 <span class="sc">-</span><span class="fl">0.94610</span> <span class="fl">1.92666</span>  <span class="fl">0.94610</span> <span class="fl">1.25860</span> <span class="fl">2.94934</span> <span class="fl">0.14499</span>     <span class="fl">1.74245</span>     <span class="fl">2.13036</span>         <span class="fl">0.85564</span>         <span class="fl">1.04613</span> <span class="fl">0.00116</span>  <span class="sc">**</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="dv">3</span>   PO L3 vs L1 <span class="sc">-</span><span class="fl">2.19198</span> <span class="fl">4.56931</span>  <span class="fl">2.19198</span> <span class="fl">3.08069</span> <span class="fl">6.77724</span> <span class="fl">0.29402</span>     <span class="fl">3.72685</span>     <span class="fl">5.60221</span>         <span class="fl">1.78783</span>         <span class="fl">2.68748</span> <span class="fl">0.00000</span> <span class="sc">**</span><span class="er">*</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="dv">4</span>  NLM       L1  <span class="fl">0.00000</span> <span class="fl">1.00000</span>  <span class="fl">0.00000</span> <span class="fl">0.00000</span> <span class="fl">0.00000</span> <span class="fl">0.91809</span>     <span class="fl">0.52921</span>     <span class="fl">1.88962</span>         <span class="fl">0.00000</span>         <span class="fl">0.00000</span> <span class="fl">1.00000</span>    </span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="dv">5</span>  NLM L2 vs L1  <span class="fl">0.86568</span> <span class="fl">0.54879</span> <span class="sc">-</span><span class="fl">0.86568</span> <span class="fl">0.39830</span> <span class="fl">0.75614</span> <span class="fl">0.36616</span>     <span class="fl">0.42577</span>     <span class="fl">0.70734</span>        <span class="sc">-</span><span class="fl">1.11579</span>        <span class="sc">-</span><span class="fl">0.67163</span> <span class="fl">0.00018</span> <span class="sc">**</span><span class="er">*</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="dv">6</span>  NLM L3 vs L1 <span class="sc">-</span><span class="fl">1.44341</span> <span class="fl">2.71964</span>  <span class="fl">1.44341</span> <span class="fl">1.94670</span> <span class="fl">3.79946</span> <span class="fl">0.17132</span>     <span class="fl">2.41511</span>     <span class="fl">3.06256</span>         <span class="fl">1.28179</span>         <span class="fl">1.62542</span> <span class="fl">0.00000</span> <span class="sc">**</span><span class="er">*</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>The L1 level was used as calibrator.</span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>Note<span class="sc">:</span> Using default model <span class="cf">for</span> statistical analysis<span class="sc">:</span> wDCt <span class="sc">~</span> block <span class="sc">+</span> Concentration <span class="sc">*</span> Type </span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>ANOVA_table <span class="ot">&lt;-</span> res<span class="sc">$</span>perGene<span class="sc">$</span>PO<span class="sc">$</span>ANOVA_table</span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>ANOVA_table</span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>lm <span class="ot">&lt;-</span> res<span class="sc">$</span>perGene<span class="sc">$</span>PO<span class="sc">$</span>lm</span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>lm</span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>lm_formula <span class="ot">&lt;-</span> res<span class="sc">$</span>perGene<span class="sc">$</span>gene_name<span class="sc">$</span>lm_formula</span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a>lm_formula</span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>residuals <span class="ot">&lt;-</span> <span class="fu">resid</span>(res<span class="sc">$</span>perGene<span class="sc">$</span>gene_name<span class="sc">$</span>lm)</span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a>residuals</span></code></pre></div>
 </div>
 </div>
 <div id="graphical-presentation" class="section level1">

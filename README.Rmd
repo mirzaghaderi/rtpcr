@@ -221,6 +221,10 @@ efficiency(data)
 #  C2H2.01 - GAPDH    -0.1136 0.121 57  -0.938  0.6186
 ```
 
+
+![](man/figures/standCur.png){.center width="67%"}
+
+
 ### Relative expression
 
 **Single factor experiment with two levels (e.g. Control and Treatment):** `TTEST_DDCt()` function is used for relative expression analysis in treatment condition compared to control condition. Both paired and unpaired experimental designs are supported. if the data doesn't follow t.test assumptions, the `WILCOX_DDCt()` function can be used instead. 

@@ -231,6 +231,9 @@ efficiency(data)
 #  C2H2.01 - GAPDH    -0.1136 0.121 57  -0.938  0.6186
 ```
 
+<img src="man/figures/standCur.png" class="center"
+style="width:67.0%" />
+
 ### Relative expression
 
 **Single factor experiment with two levels (e.g. Control and

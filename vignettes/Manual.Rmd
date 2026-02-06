@@ -195,6 +195,8 @@ $contrasts
  C2H2.01 - GAPDH    -0.1136 0.121 57  -0.938  0.6186
 ```
 
+![](../man/figures/standCur.png){.center height="200px"}
+
 
 ## Relative expression analysis 
 

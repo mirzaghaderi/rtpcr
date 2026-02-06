@@ -50,6 +50,7 @@ performs different analyses using the following functions.
 | `TTEST_DDCt` | $\Delta\Delta Ct$ method *t*-test analysis |
 | `WILCOX_DDCt` | $\Delta\Delta Ct$ method wilcox.test analysis |
 | `plotFactor` | Bar plot of gene expression for one-, two- or three-factor experiments |
+| `plotSingleGene` | Creates a bar plot of relative gene expression (fold change) values from single gene analysis showing all pairwise significances. |
 | `Means_DDCt` | Pairwise comparison of RE values for any user-specified effect |
 | `efficiency` | Amplification efficiency statistics and standard curves |
 | `meanTech` | Calculate mean of technical replicates |
@@ -351,7 +352,7 @@ All the functions for relative expression analysis (including
 the relative expression table which include fold change and
 corresponding statistics. The output of `ANOVA_DDCt()`, and
 `ANOVA_DCt()` also include lm model, residuals, raw data and ANOVA table
-for each gene. These outputs for each gene can be obtained as follow:
+for each gene. These outputs can be obtained as follow:
 
 | Per_gene Output  | Code                                |
 |------------------|-------------------------------------|

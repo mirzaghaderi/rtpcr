@@ -35,6 +35,7 @@ The `rtpcr` package gets efficiency (E) the Ct values of genes and performs diff
 | `TTEST_DDCt`    | $\Delta\Delta Ct$ method *t*-test analysis   |
 | `WILCOX_DDCt`         | $\Delta\Delta Ct$ method wilcox.test analysis    |
 | `plotFactor`        | Bar plot of gene expression for one-, two- or three-factor experiments    |
+| `plotSingleGene` |   Creates a bar plot of relative gene expression (fold change) values from single gene analysis showing all pairwise significances.|
 | `Means_DDCt`        | Pairwise comparison of RE values for any user-specified effect |
 | `efficiency`        | Amplification efficiency statistics and standard curves     |
 | `meanTech`          | Calculate mean of technical replicates     |
@@ -42,6 +43,8 @@ The `rtpcr` package gets efficiency (E) the Ct values of genes and performs diff
 | `compute_wDCt`	 | Cleaning data and weighted delta Ct (wDCt) calculation    |
 | `long_to_wide`	 | Converts a 4-column qPCR long data format to wide format    |
 
+
+ 
 
 
 
@@ -293,7 +296,7 @@ res <- ANOVA_DDCt(
 
 ## Data output
 
-All the functions for relative expression analysis (including `TTEST_DDCt`, `WILCOX_DDCt`, `ANOVA_DDCt()`, and `ANOVA_DCt()`) return the relative expression table which include fold change and corresponding statistics. The output of `ANOVA_DDCt()`, and `ANOVA_DCt()` also include default or the user defined lm models, residuals, raw data and ANOVA table for each gene. These outputs for each gene can be obtained as follow:
+All the functions for relative expression analysis (including `TTEST_DDCt`, `WILCOX_DDCt`, `ANOVA_DDCt()`, and `ANOVA_DCt()`) return the relative expression table which include fold change and corresponding statistics. The output of `ANOVA_DDCt()`, and `ANOVA_DCt()` also include default or the user defined lm models, residuals, raw data and ANOVA table for each gene. These outputs can be obtained as follow:
 
 | Per_gene Output    | Code                                                  |
 |--------------------|-------------------------------------------------------|

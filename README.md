@@ -110,7 +110,9 @@ experimetal factor, replicate column and E/Ct information of target and
 reference genes</figcaption>
 </figure>
 
-<BR>
+If there is no blocking factor, the corresponding block columns should
+be omitted. However, a column for biological replicates (which may be
+named “Rep,” “ID,” or similar) is always required.
 
 <figure>
 <img src="man/figures/dataStructure1.png" class="center"
@@ -120,8 +122,6 @@ alt="Figure 2: A sample input data with two experimetal factors, blocking factor
 experimetal factors, blocking factor, replicate column and E/Ct
 information of target and reference genes</figcaption>
 </figure>
-
-<BR>
 
 #### NOTE 1
 
@@ -247,9 +247,8 @@ Completely Randomized Design (CRD) or Randomized Complete Block Design
 (RCBD) design based on `numOfFactors` and the availability of `block`.
 However, optional custom model formula as a character string can be
 supplied to these functions. If provided, this overrides the default
-formula (uni- or multi-factorial CRD or RCBD design based on
-`numOfFactors` and the availability of `block`). The formula uses `wDCt`
-as the response variable (wDCt is automatically created by the
+formula (uni- or multi-factorial CRD or RCBD design). The formula uses
+`wDCt` as the response variable (wDCt is automatically created by the
 function). For mixed models, include random effects using `lmer` syntax
 (e.g., `wDCt ~ Treatment + (1 | id)`). Below are a sample of most common
 models that can be used.

@@ -176,6 +176,12 @@ WILCOX_DDCt <- function(x,
     ))
     
     
+    set <- stats::t.test(
+      trt_vals,
+      cal_vals,
+      paired = paired, var.equal = F)
+    se <- set$stderr
+    
     res[i, ] <- c(
       gene_names[i],
       tt$estimate,
@@ -183,7 +189,7 @@ WILCOX_DDCt <- function(x,
       2^(-tt$conf.int[2]),
       2^(-tt$conf.int[1]),
       tt$p.value,
-      stats::sd(trt_vals, na.rm = TRUE) / sqrt(r)
+      se
     )
   }
   

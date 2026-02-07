@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rtpcr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,26 +127,31 @@ method wilcox.test analysis</td>
 experiments</td>
 </tr>
 <tr class="even">
+<td><code>plotSingleGene</code></td>
+<td>Creates a bar plot of relative gene expression (fold change) values
+from single gene analysis showing all pairwise significances.</td>
+</tr>
+<tr class="odd">
 <td><code>Means_DDCt</code></td>
 <td>Pairwise comparison of RE values for any user-specified effect</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>efficiency</code></td>
 <td>Amplification efficiency statistics and standard curves</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>meanTech</code></td>
 <td>Calculate mean of technical replicates</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>multiplot</code></td>
 <td>Combine multiple ggplot objects into a single layout</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>compute_wDCt</code></td>
 <td>Cleaning data and weighted delta Ct (wDCt) calculation</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>long_to_wide</code></td>
 <td>Converts a 4-column qPCR long data format to wide format</td>
 </tr>
@@ -182,8 +187,8 @@ following code in R:</p>
 (<code>E</code>) and <code>Ct</code> or <code>Cq</code> values (the mean
 of technical replicates) is used for the input table. If the
 <code>E</code> values are not available you should use ‘2’ instead
-representing the complete primer amplification efficiency. The required
-column structure of the input data is:</p>
+representing the complete primer amplification efficiency. The input
+data table should include the following columns from left to wright:</p>
 <ol style="list-style-type: decimal">
 <li>Experimental condition columns (and one block if available <a href="#note-1">NOTE 1</a>)</li>
 <li>Replicates information (biological replicates or subjects; see <a href="#note-2">NOTE 2</a>, and <a href="#note-3">NOTE 3</a>)<br>
@@ -195,9 +200,21 @@ gene) <a href="#note-4">NOTE 4</a>.</li>
 </ol>
 <p>The package supports <strong>one or more target or reference
 gene(s)</strong>, supplied as efficiency–Ct column pairs. Reference gene
-columns must always appear last. A sample input data is presented
-below.</p>
-<p><img src="../reference/figures/dataStructure1.png" class="center" height="400"></p>
+columns must always appear last. Two sample input data sets are
+presented below.</p>
+<div class="float">
+<img src="../reference/figures/sampleData1.png" class="center" style="width:100.0%" alt="Figure 1: A sample input data with one experimetal factor, replicate column and E/Ct information of target and reference genes"><div class="figcaption">Figure 1: A sample input data with one
+experimetal factor, replicate column and E/Ct information of target and
+reference genes</div>
+</div>
+<p>If there is no blocking factor, the corresponding block columns
+should be omitted. However, a column for biological replicates (which
+may be named “Rep”, “id”, or similar) is always required.</p>
+<div class="float">
+<img src="../reference/figures/dataStructure1.png" class="center" height="400" alt="Figure 2: A sample input data with two experimetal factors, blocking factor, replicate column and E/Ct information of target and reference genes"><div class="figcaption">Figure 2: A sample input data with two
+experimetal factors, blocking factor, replicate column and E/Ct
+information of target and reference genes</div>
+</div>
 <div class="section level5">
 <h5 id="note-1">NOTE 1<a class="anchor" aria-label="anchor" href="#note-1"></a>
 </h5>
@@ -226,15 +243,18 @@ points.</p>
 <div class="section level5">
 <h5 id="note-3">NOTE 3<a class="anchor" aria-label="anchor" href="#note-3"></a>
 </h5>
-<p>Your data table may also include a column of technical replicates (so
-there would be both biological replicates and technical replicate
-columns in the data). In this case, the <code>meanTech</code> function
-should be applied first to calculate the mean of the technical
-replicates. The resulting table is then used as the input for expression
-analysis. To use the <code>meanTech</code> function correctly, the
-technical replicate column must appear immediately after the biological
-replicate column (see <a href="#mean-of-technical-replicates">Mean of
-technical replicates</a> for an example).</p>
+<p>Your data table may also include a column of technical replicates
+(For example, using one target and one reference genes, if you want to
+have 4 biological and 3 technical replicates under Control and Treatment
+conditions, there would be a table of 24 rows containing both biological
+replicates and technical replicate columns in the data). In this case,
+the <code>meanTech</code> function should be applied first to calculate
+the mean of the technical replicates. The resulting collapsed table is
+then used as the input for expression analysis. To use the
+<code>meanTech</code> function correctly, the technical replicate column
+must appear immediately after the biological replicate column (see <a href="#mean-of-technical-replicates">Mean of technical replicates</a>
+for an example).</p>
+<p><img src="../reference/figures/base.png" class="center" height="400"></p>
 </div>
 <div class="section level5">
 <h5 id="note-4">NOTE 4<a class="anchor" aria-label="anchor" href="#note-4"></a>
@@ -307,34 +327,40 @@ for each gene.</p>
 <span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a> C2H2<span class="fl">.26</span> <span class="sc">-</span> C2H2<span class="fl">.01</span>   <span class="fl">0.1400</span> <span class="fl">0.121</span> <span class="dv">57</span>   <span class="fl">1.157</span>  <span class="fl">0.4837</span></span>
 <span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a> C2H2<span class="fl">.26</span> <span class="sc">-</span> GAPDH     <span class="fl">0.0265</span> <span class="fl">0.121</span> <span class="dv">57</span>   <span class="fl">0.219</span>  <span class="fl">0.9740</span></span>
 <span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a> C2H2<span class="fl">.01</span> <span class="sc">-</span> GAPDH    <span class="sc">-</span><span class="fl">0.1136</span> <span class="fl">0.121</span> <span class="dv">57</span>  <span class="sc">-</span><span class="fl">0.938</span>  <span class="fl">0.6186</span></span></code></pre></div>
+<p><img src="../reference/figures/standCur.png" class="center" height="200"></p>
 </div>
 <div class="section level3">
 <h3 id="relative-expression-analysis">Relative expression analysis<a class="anchor" aria-label="anchor" href="#relative-expression-analysis"></a>
 </h3>
-<p><code><a href="../reference/TTEST_DDCt.html">TTEST_DDCt()</a></code> function is used for relative expression
-analysis in treatment condition compared to control condition. Both
-paired and unpaired experimental designs are supported. if the data
-doesn’t follow t.test assumptions, the <code><a href="../reference/WILCOX_DDCt.html">WILCOX_DDCt()</a></code>
-function can be used instead. <code><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> and
-<code><a href="../reference/ANOVA_DCt.html">ANOVA_DCt()</a></code> functions are used for the analysis of variance
-of qPCR data. Optional custom model formula as a character string can be
-supplied to these functions. If provided, this overrides the automatic
-formula for factorial CRD or RCBD design is generated based on
-<code>block</code> and <code>numOfFactors</code>. The formula use
+<p><strong>Single factor experiment with two levels (e.g. Control and
+Treatment):</strong> <code><a href="../reference/TTEST_DDCt.html">TTEST_DDCt()</a></code> function is used for
+relative expression analysis in treatment condition compared to control
+condition. Both paired and unpaired experimental designs are supported.
+if the data doesn’t follow t.test assumptions, the
+<code><a href="../reference/WILCOX_DDCt.html">WILCOX_DDCt()</a></code> function can be used instead.</p>
+<p><strong>Single factor experiment with more than two levels, or
+multi-factor experiments:</strong> In these cases,
+<code><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> and <code><a href="../reference/ANOVA_DCt.html">ANOVA_DCt()</a></code> functions are
+used for the analysis of qPCR data. By default, statistical analysis is
+performed based on uni- or multi-factorial Completely Randomized Design
+(CRD) or Randomized Complete Block Design (RCBD) design based on
+<code>numOfFactors</code> and the availability of <code>block</code>.
+However, optional custom model formula as a character string can be
+supplied to these functions. If provided, this overrides the default
+formula (uni- or multi-factorial CRD or RCBD design). The formula uses
 <code>wDCt</code> as the response variable (wDCt is automatically
 created by the function). For mixed models, include random effects using
 <code>lmer</code> syntax (e.g.,
-<code>wDCt ~ Treatment + (1|Block)</code>). Below are a sample of most
-common models that can be used. Because currenly a model can be supplied
-by user, the <code>REPEATED_DDCt()</code> function was removed.</p>
+<code>wDCt ~ Treatment + (1 | id)</code>). Below are a sample of most
+common models that can be used.</p>
 <table class="table">
 <colgroup>
 <col width="50%">
 <col width="49%">
 </colgroup>
 <thead><tr class="header">
-<th>Samples models may be used in ANOVA_DCt() or ANOVA_DDCt()
-functions</th>
+<th>Samples models may be used in <code><a href="../reference/ANOVA_DCt.html">ANOVA_DCt()</a></code> or
+<code><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> functions</th>
 <th>Experimental design</th>
 </tr></thead>
 <tbody>
@@ -380,9 +406,26 @@ covariates</td>
 <div class="section level5">
 <h5 id="note">NOTE<a class="anchor" aria-label="anchor" href="#note"></a>
 </h5>
-<p>For CRD, RCBD, and factorial experiments under CRD or RCBD designs
-you don’t need to define model as as one of these models is
-appropriately selected based on the arguments.</p>
+<p>For CRD, RCBD, and factorial experiments arranged in either CRD or
+RCBD designs, you do not need to explicitly define a model. The package
+automatically selects an appropriate model based on the provided
+arguments. If no model is specified, the default model used is printed
+along with the output expression table.</p>
+</div>
+<div class="section level5">
+<h5 id="note-5">NOTE<a class="anchor" aria-label="anchor" href="#note-5"></a>
+</h5>
+<p>Sometime samples are independent or paired (Repeated measure
+experiments). Examples: 1) Analyzing gene expression in different time
+points, or before and after treatment in each biological replicate; 2)
+Analyzing gene expression between two tissue types within the same
+organism. For such analysis types, if there are only two time points, we
+can use the <code>TTEST_DDCt</code> with the argument
+<code>paired = TRUE</code>; or <code>ANOVA_DDCt</code> (if there are two
+or more time points) with a repeated measure model such as
+<code>wDCt ~ Treatment + ( 1 | id)</code> or
+<code>wDCt ~ Treatment + ( 1 | Rep)</code>.</p>
+<p><img src="../reference/figures/repeated_measure.png" class="center" height="280"></p>
 </div>
 <div class="section level4">
 <h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
@@ -397,55 +440,65 @@ methods through different functions (i.e. <code>TTEST_DDCt</code>,
 analysis using
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math>
 method.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># An example of a properly arranged dataset from a repeated-measures experiment.</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"data_repeated_measure_1.csv"</span>, <span class="at">package =</span> <span class="st">"rtpcr"</span>))</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>data</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>time    id  E_Target    Ct_target   E_Ref      Ct_Ref</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>   <span class="dv">1</span>     <span class="dv">1</span>      <span class="dv">2</span>       <span class="fl">18.92</span>   <span class="dv">2</span>   <span class="fl">32.77</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>   <span class="dv">1</span>     <span class="dv">2</span>      <span class="dv">2</span>       <span class="fl">15.82</span>   <span class="dv">2</span>   <span class="fl">32.45</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>   <span class="dv">1</span>     <span class="dv">3</span>      <span class="dv">2</span>       <span class="fl">19.84</span>   <span class="dv">2</span>   <span class="fl">31.62</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>   <span class="dv">2</span>     <span class="dv">1</span>      <span class="dv">2</span>       <span class="fl">19.46</span>   <span class="dv">2</span>   <span class="fl">33.03</span></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>   <span class="dv">2</span>     <span class="dv">2</span>      <span class="dv">2</span>       <span class="fl">17.56</span>   <span class="dv">2</span>   <span class="fl">33.24</span></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>   <span class="dv">2</span>     <span class="dv">3</span>      <span class="dv">2</span>       <span class="fl">19.74</span>   <span class="dv">2</span>   <span class="fl">32.08</span></span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>   <span class="dv">3</span>     <span class="dv">1</span>      <span class="dv">2</span>       <span class="fl">15.73</span>   <span class="dv">2</span>   <span class="fl">32.95</span></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>   <span class="dv">3</span>     <span class="dv">2</span>      <span class="dv">2</span>       <span class="fl">17.21</span>   <span class="dv">2</span>   <span class="fl">33.64</span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>   <span class="dv">3</span>     <span class="dv">3</span>      <span class="dv">2</span>       <span class="fl">18.09</span>   <span class="dv">2</span>   <span class="fl">33.40</span></span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co"># Repeated measure analysis</span></span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ANOVA_DDCt</span>(</span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>  data,</span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">1</span>,</span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>,</span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">1</span>,</span>
-<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>  <span class="at">block =</span> <span class="cn">NULL</span>, <span class="at">model =</span> wDCt <span class="sc">~</span> time <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> id))</span>
-<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co"># Anova analysis</span></span>
-<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="fu">ANOVA_DDCt</span>(</span>
-<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>  data,</span>
-<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">1</span>,</span>
-<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">1</span>,</span>
-<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>,</span>
-<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>  <span class="at">block =</span> <span class="cn">NULL</span>)</span>
-<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a></span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"data_Yuan2006PMCBioinf.csv"</span>, <span class="at">package =</span> <span class="st">"rtpcr"</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>data1</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>      Con r target target_Ct Actin Actin_Ct</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  control <span class="dv">1</span>   <span class="fl">1.88</span>  <span class="fl">21.13000</span>  <span class="fl">1.67</span> <span class="fl">20.70333</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  control <span class="dv">2</span>   <span class="fl">1.88</span>  <span class="fl">21.55667</span>  <span class="fl">1.67</span> <span class="fl">20.35000</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  control <span class="dv">3</span>   <span class="fl">1.88</span>  <span class="fl">21.33000</span>  <span class="fl">1.67</span> <span class="fl">20.75333</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>treatment <span class="dv">1</span>   <span class="fl">1.88</span>  <span class="fl">22.09000</span>  <span class="fl">1.67</span> <span class="fl">20.24333</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>treatment <span class="dv">2</span>   <span class="fl">1.88</span>  <span class="fl">22.69667</span>  <span class="fl">1.67</span> <span class="fl">20.54000</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>treatment <span class="dv">3</span>   <span class="fl">1.88</span>  <span class="fl">23.05333</span>  <span class="fl">1.67</span> <span class="fl">20.50000</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co"># Anova analysis</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="fu">ANOVA_DDCt</span>(</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  data1,</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">1</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">1</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>  <span class="at">block =</span> <span class="cn">NULL</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co"># An example of a properly arranged dataset from a repeated-measures experiment.</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"data_repeated_measure_1.csv"</span>, <span class="at">package =</span> <span class="st">"rtpcr"</span>))</span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>data2</span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>time    id  E_Target    Ct_target   E_Ref      Ct_Ref</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>   <span class="dv">1</span>     <span class="dv">1</span>      <span class="dv">2</span>       <span class="fl">18.92</span>   <span class="dv">2</span>   <span class="fl">32.77</span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>   <span class="dv">1</span>     <span class="dv">2</span>      <span class="dv">2</span>       <span class="fl">15.82</span>   <span class="dv">2</span>   <span class="fl">32.45</span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>   <span class="dv">1</span>     <span class="dv">3</span>      <span class="dv">2</span>       <span class="fl">19.84</span>   <span class="dv">2</span>   <span class="fl">31.62</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>   <span class="dv">2</span>     <span class="dv">1</span>      <span class="dv">2</span>       <span class="fl">19.46</span>   <span class="dv">2</span>   <span class="fl">33.03</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>   <span class="dv">2</span>     <span class="dv">2</span>      <span class="dv">2</span>       <span class="fl">17.56</span>   <span class="dv">2</span>   <span class="fl">33.24</span></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>   <span class="dv">2</span>     <span class="dv">3</span>      <span class="dv">2</span>       <span class="fl">19.74</span>   <span class="dv">2</span>   <span class="fl">32.08</span></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>   <span class="dv">3</span>     <span class="dv">1</span>      <span class="dv">2</span>       <span class="fl">15.73</span>   <span class="dv">2</span>   <span class="fl">32.95</span></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>   <span class="dv">3</span>     <span class="dv">2</span>      <span class="dv">2</span>       <span class="fl">17.21</span>   <span class="dv">2</span>   <span class="fl">33.64</span></span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>   <span class="dv">3</span>     <span class="dv">3</span>      <span class="dv">2</span>       <span class="fl">18.09</span>   <span class="dv">2</span>   <span class="fl">33.40</span></span>
 <span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a></span>
-<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co"># Paired t.test (equivalent to repeated measure analysis, but not always the same results, due to different calculation methods!)</span></span>
-<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="fu">TTEST_DDCt</span>(</span>
-<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>  data[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,], </span>
-<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>, </span>
-<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a>  <span class="at">paired =</span> T)</span>
-<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a></span>
-<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a></span>
-<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co"># Anova analysis</span></span>
-<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"data_2factorBlock3ref.csv"</span>, <span class="at">package =</span> <span class="st">"rtpcr"</span>))</span>
-<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ANOVA_DDCt</span>(</span>
-<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a>  <span class="at">x =</span> data,</span>
-<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">1</span>,</span>
-<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">2</span>,</span>
-<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>,</span>
-<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a>  <span class="at">block =</span> <span class="st">"block"</span>,</span>
-<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a>  <span class="at">analyseAllTarget =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co"># Repeated measure analysis</span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ANOVA_DDCt</span>(</span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>  data2,</span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">1</span>,</span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>,</span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">1</span>,</span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a>  <span class="at">block =</span> <span class="cn">NULL</span>, <span class="at">model =</span> wDCt <span class="sc">~</span> time <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> id))</span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a></span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co"># Paired t.test (equivalent to repeated measure analysis, but not always the same results, due to different calculation methods!)</span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="fu">TTEST_DDCt</span>(</span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a>  data2[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,], </span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>, </span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a>  <span class="at">paired =</span> T)</span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a></span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a><span class="co"># Anova analysis</span></span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a>data3 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"data_2factorBlock3ref.csv"</span>, <span class="at">package =</span> <span class="st">"rtpcr"</span>))</span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a></span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ANOVA_DDCt</span>(</span>
+<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a>  <span class="at">x =</span> data3,</span>
+<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">2</span>,</span>
+<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">2</span>,</span>
+<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">3</span>,</span>
+<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a>  <span class="at">block =</span> <span class="st">"block"</span>,</span>
+<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a>  <span class="at">analyseAllTarget =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -462,7 +515,7 @@ relative expression table which include fold change and corresponding
 statistics. The output of <code><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code>, and
 <code><a href="../reference/ANOVA_DCt.html">ANOVA_DCt()</a></code> also include default or the user defined lm
 models, residuals, raw data and ANOVA table for each gene. These outputs
-for each gene can be obtained as follow:</p>
+can be obtained as follow:</p>
 <table class="table">
 <colgroup>
 <col width="26%">
@@ -495,17 +548,42 @@ for each gene can be obtained as follow:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Relative expression table for the specified column in the input data:</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> res<span class="sc">$</span>relativeExpression</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>df</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>Relative Expression</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>gene   contrast       RE  log2FC pvalue sig    LCL     UCL     se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>PO            R   <span class="fl">1.0000</span>  <span class="fl">0.0000</span> <span class="fl">1.0000</span>     <span class="fl">0.0000</span>  <span class="fl">0.0000</span> <span class="fl">0.5506</span>      <span class="fl">0.6828</span>      <span class="fl">1.4647</span>          <span class="fl">0.0000</span>          <span class="fl">0.0000</span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>PO       S vs R  <span class="fl">11.6130</span>  <span class="fl">3.5377</span> <span class="fl">0.0001</span> <span class="sc">**</span><span class="er">*</span> <span class="fl">4.4233</span> <span class="fl">30.4888</span> <span class="fl">0.2286</span>      <span class="fl">9.9115</span>     <span class="fl">13.6066</span>          <span class="fl">3.0193</span>          <span class="fl">4.1450</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>GAPDH         R   <span class="fl">1.0000</span>  <span class="fl">0.0000</span> <span class="fl">1.0000</span>     <span class="fl">0.0000</span>  <span class="fl">0.0000</span> <span class="fl">0.4815</span>      <span class="fl">0.7162</span>      <span class="fl">1.3962</span>          <span class="fl">0.0000</span>          <span class="fl">0.0000</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>GAPDH    S vs R   <span class="fl">6.6852</span>  <span class="fl">2.7410</span> <span class="fl">0.0001</span> <span class="sc">**</span><span class="er">*</span> <span class="fl">3.0687</span> <span class="fl">14.5641</span> <span class="fl">0.3820</span>      <span class="fl">5.1301</span>      <span class="fl">8.7118</span>          <span class="fl">2.1034</span>          <span class="fl">3.5719</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>ref2          R   <span class="fl">1.0000</span>  <span class="fl">0.0000</span> <span class="fl">1.0000</span>     <span class="fl">0.0000</span>  <span class="fl">0.0000</span> <span class="fl">0.6928</span>      <span class="fl">0.6186</span>      <span class="fl">1.6164</span>          <span class="fl">0.0000</span>          <span class="fl">0.0000</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>ref2     S vs R   <span class="fl">0.9372</span> <span class="sc">-</span><span class="fl">0.0936</span> <span class="fl">0.9005</span>     <span class="fl">0.3145</span>  <span class="fl">2.7929</span> <span class="fl">0.2414</span>      <span class="fl">0.7927</span>      <span class="fl">1.1079</span>         <span class="sc">-</span><span class="fl">0.1107</span>         <span class="sc">-</span><span class="fl">0.0792</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Relative expression table for the specified column in the input data:</span></span>
+<span><span class="va">data3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_2factorBlock3ref.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="va">data3</span>,</span>
+<span>  mainFactor.column <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  numOfFactors <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  numberOfrefGenes <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  block <span class="op">=</span> <span class="st">"block"</span>,</span>
+<span>  analyseAllTarget <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Relative Expression</span></span>
+<span><span class="co">#   gene contrast     ddCt      RE   log2FC     LCL     UCL      se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig</span></span>
+<span><span class="co"># 1   PO       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.13940     0.90790     1.10144         0.00000         0.00000 1.00000    </span></span>
+<span><span class="co"># 2   PO L2 vs L1 -0.94610 1.92666  0.94610 1.25860 2.94934 0.14499     1.74245     2.13036         0.85564         1.04613 0.00116  **</span></span>
+<span><span class="co"># 3   PO L3 vs L1 -2.19198 4.56931  2.19198 3.08069 6.77724 0.29402     3.72685     5.60221         1.78783         2.68748 0.00000 ***</span></span>
+<span><span class="co"># 4  NLM       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.91809     0.52921     1.88962         0.00000         0.00000 1.00000    </span></span>
+<span><span class="co"># 5  NLM L2 vs L1  0.86568 0.54879 -0.86568 0.39830 0.75614 0.36616     0.42577     0.70734        -1.11579        -0.67163 0.00018 ***</span></span>
+<span><span class="co"># 6  NLM L3 vs L1 -1.44341 2.71964  1.44341 1.94670 3.79946 0.17132     2.41511     3.06256         1.28179         1.62542 0.00000 ***</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># The L1 level was used as calibrator.</span></span>
+<span><span class="co"># Note: Using default model for statistical analysis: wDCt ~ block + Concentration * Type </span></span>
+<span></span>
+<span></span>
+<span><span class="va">ANOVA_table</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">perGene</span><span class="op">$</span><span class="va">PO</span><span class="op">$</span><span class="va">ANOVA_table</span></span>
+<span><span class="va">ANOVA_table</span></span>
+<span></span>
+<span><span class="va">lm</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">perGene</span><span class="op">$</span><span class="va">PO</span><span class="op">$</span><span class="va">lm</span></span>
+<span><span class="va">lm</span></span>
+<span></span>
+<span><span class="va">lm_formula</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">perGene</span><span class="op">$</span><span class="va">gene_name</span><span class="op">$</span><span class="va">lm_formula</span></span>
+<span><span class="va">lm_formula</span></span>
+<span></span>
+<span><span class="va">residuals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">resid</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">perGene</span><span class="op">$</span><span class="va">gene_name</span><span class="op">$</span><span class="va">lm</span><span class="op">)</span></span>
+<span><span class="va">residuals</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -648,6 +726,23 @@ layers:</p>
 <span>  legend_position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="co"># more controlling arguments are available.</span></span></code></pre></div>
 <p><img src="../reference/figures/Rplot03.png" class="center" height="700"></p>
 </div>
+<div class="section level4">
+<h4 id="plot-output-example-4">Plot output: example 4<a class="anchor" aria-label="anchor" href="#plot-output-example-4"></a>
+</h4>
+<p>The function <code><a href="../reference/plotSingleGene.html">plotSingleGene()</a></code> creates a bar plot of
+relative gene expression (fold change) values from single gene analysis
+showing all pairwise significances.</p>
+<pre><code><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt</a></span><span class="op">(</span></span>
+<span>  <span class="va">data_Heffer2020PlosOne</span>,</span>
+<span>  numOfFactors <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  mainFactor.column <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  block <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  analyseAllTarget <span class="op">=</span> <span class="st">"Tnfa"</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="fu"><a href="../reference/plotSingleGene.html">plotSingleGene</a></span><span class="op">(</span><span class="va">res</span>, fill <span class="op">=</span> <span class="st">"cyan4"</span>, color <span class="op">=</span> <span class="st">"black"</span>, base_size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></code></pre>
+<p><img src="../reference/figures/signif.png" class="center" height="400"></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="post-hoc-analysis">Post-hoc analysis<a class="anchor" aria-label="anchor" href="#post-hoc-analysis"></a>
@@ -656,81 +751,82 @@ layers:</p>
 comparisons for the levels of the analysed factor, further Post-hoc
 analysis is still possible. The <code>Means_DDCt</code> function
 performs post-hoc comparisons using a fitted model object produced by
-<code>ANOVA_DCt</code>, <code>ANOVA_DDCt</code>,
-<code>ANCOVA_DDCt</code> or <code>REPEATED_DDCt</code>. It applies
-pairwise statistical comparisons of relative expression (RE) values for
+<code>ANOVA_DCt</code> and <code>ANOVA_DDCt</code>. It applies pairwise
+statistical comparisons of relative expression (RE) values for
 user-specified effects via the <code>specs</code> argument. Supported
 effects include simple effects, interactions, and slicing, provided the
 underlying model is an ANOVA. For ANCOVA models returned by this
 package, the <code>Means_DDCt</code> output is limited to simple effects
 only.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ANOVA_DDCt</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  data_3factor,</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">3</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">1</span>,</span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  <span class="at">block =</span> <span class="cn">NULL</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>model <span class="ot">&lt;-</span> res<span class="sc">$</span>perGene<span class="sc">$</span>E_PO<span class="sc">$</span>lm</span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co"># Relative expression values for Concentration main effect</span></span>
-<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="fu">Means_DDCt</span>(model, <span class="at">specs =</span> <span class="st">"Conc"</span>)</span>
-<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a> contrast        RE        SE df       LCL       UCL p.value sig</span>
-<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a> L vs H   <span class="fl">0.1703610</span> <span class="fl">0.2208988</span> <span class="dv">24</span> <span class="fl">0.1242014</span> <span class="fl">0.2336757</span> <span class="sc">&lt;</span><span class="fl">0.0001</span> <span class="sc">**</span><span class="er">*</span></span>
-<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a> M vs H   <span class="fl">0.2227247</span> <span class="fl">0.2208988</span> <span class="dv">24</span> <span class="fl">0.1623772</span> <span class="fl">0.3055004</span> <span class="sc">&lt;</span><span class="fl">0.0001</span> <span class="sc">**</span><span class="er">*</span></span>
-<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a> M vs L   <span class="fl">1.3073692</span> <span class="fl">0.2208988</span> <span class="dv">24</span> <span class="fl">0.9531359</span> <span class="fl">1.7932535</span>  <span class="fl">0.0928</span> .  </span>
-<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>Results are averaged over the levels of<span class="sc">:</span> Type, SA </span>
-<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a>Confidence level used<span class="sc">:</span> <span class="fl">0.95</span> </span>
-<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a></span>
-<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="co"># Relative expression values for Concentration sliced by Type</span></span>
-<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="fu">Means_DDCt</span>(model, <span class="at">specs =</span> <span class="st">"Conc | Type"</span>)</span>
-<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a></span>
-<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a>Type <span class="ot">=</span> R<span class="sc">:</span></span>
-<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a> contrast       RE        SE df       LCL      UCL p.value sig</span>
-<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a> L vs H   <span class="fl">0.103187</span> <span class="fl">0.3123981</span> <span class="dv">24</span> <span class="fl">0.0659984</span> <span class="fl">0.161331</span> <span class="sc">&lt;</span><span class="fl">0.0001</span> <span class="sc">**</span><span class="er">*</span></span>
-<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a> M vs H   <span class="fl">0.339151</span> <span class="fl">0.3123981</span> <span class="dv">24</span> <span class="fl">0.2169210</span> <span class="fl">0.530255</span> <span class="sc">&lt;</span><span class="fl">0.0001</span> <span class="sc">**</span><span class="er">*</span></span>
-<span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a> M vs L   <span class="fl">3.286761</span> <span class="fl">0.3123981</span> <span class="dv">24</span> <span class="fl">2.1022126</span> <span class="fl">5.138776</span> <span class="sc">&lt;</span><span class="fl">0.0001</span> <span class="sc">**</span><span class="er">*</span></span>
-<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a></span>
-<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a>Type <span class="ot">=</span> S<span class="sc">:</span></span>
-<span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a> contrast       RE        SE df       LCL      UCL p.value sig</span>
-<span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a> L vs H   <span class="fl">0.281265</span> <span class="fl">0.3123981</span> <span class="dv">24</span> <span class="fl">0.1798969</span> <span class="fl">0.439751</span> <span class="sc">&lt;</span><span class="fl">0.0001</span> <span class="sc">**</span><span class="er">*</span></span>
-<span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a> M vs H   <span class="fl">0.146266</span> <span class="fl">0.3123981</span> <span class="dv">24</span> <span class="fl">0.0935518</span> <span class="fl">0.228684</span> <span class="sc">&lt;</span><span class="fl">0.0001</span> <span class="sc">**</span><span class="er">*</span></span>
-<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a> M vs L   <span class="fl">0.520030</span> <span class="fl">0.3123981</span> <span class="dv">24</span> <span class="fl">0.3326112</span> <span class="fl">0.813055</span>  <span class="fl">0.0059</span> <span class="sc">**</span> </span>
-<span id="cb9-34"><a href="#cb9-34" tabindex="-1"></a></span>
-<span id="cb9-35"><a href="#cb9-35" tabindex="-1"></a>Results are averaged over the levels of<span class="sc">:</span> SA </span>
-<span id="cb9-36"><a href="#cb9-36" tabindex="-1"></a>Confidence level used<span class="sc">:</span> <span class="fl">0.95</span> </span>
-<span id="cb9-37"><a href="#cb9-37" tabindex="-1"></a></span>
-<span id="cb9-38"><a href="#cb9-38" tabindex="-1"></a><span class="co"># Relative expression values for Concentration sliced by Type and SA</span></span>
-<span id="cb9-39"><a href="#cb9-39" tabindex="-1"></a><span class="fu">Means_DDCt</span>(model, <span class="at">specs =</span> <span class="st">"Conc | Type * SA"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt</a></span><span class="op">(</span></span>
+<span>  <span class="va">data_3factor</span>,</span>
+<span>  numOfFactors <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  mainFactor.column <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  block <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">perGene</span><span class="op">$</span><span class="va">E_PO</span><span class="op">$</span><span class="va">lm</span></span>
+<span><span class="co"># Relative expression values for Concentration main effect</span></span>
+<span><span class="fu"><a href="../reference/Means_DDCt.html">Means_DDCt</a></span><span class="op">(</span><span class="va">model</span>, specs <span class="op">=</span> <span class="st">"Conc"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># contrast        RE        SE df       LCL       UCL p.value sig</span></span>
+<span><span class="co"># L vs H   0.1703610 0.2208988 24 0.1242014 0.2336757 &lt;0.0001 ***</span></span>
+<span><span class="co"># M vs H   0.2227247 0.2208988 24 0.1623772 0.3055004 &lt;0.0001 ***</span></span>
+<span><span class="co"># M vs L   1.3073692 0.2208988 24 0.9531359 1.7932535  0.0928 .  </span></span>
+<span><span class="co">#</span></span>
+<span><span class="co">#Results are averaged over the levels of: Type, SA </span></span>
+<span><span class="co">#Confidence level used: 0.95 </span></span>
+<span></span>
+<span><span class="co"># Relative expression values for Concentration sliced by Type</span></span>
+<span><span class="fu"><a href="../reference/Means_DDCt.html">Means_DDCt</a></span><span class="op">(</span><span class="va">model</span>, specs <span class="op">=</span> <span class="st">"Conc | Type"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#Type = R:</span></span>
+<span><span class="co"># contrast       RE        SE df       LCL      UCL p.value sig</span></span>
+<span><span class="co"># L vs H   0.103187 0.3123981 24 0.0659984 0.161331 &lt;0.0001 ***</span></span>
+<span><span class="co"># M vs H   0.339151 0.3123981 24 0.2169210 0.530255 &lt;0.0001 ***</span></span>
+<span><span class="co"># M vs L   3.286761 0.3123981 24 2.1022126 5.138776 &lt;0.0001 ***</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co">#Type = S:</span></span>
+<span><span class="co"># contrast       RE        SE df       LCL      UCL p.value sig</span></span>
+<span><span class="co"># L vs H   0.281265 0.3123981 24 0.1798969 0.439751 &lt;0.0001 ***</span></span>
+<span><span class="co"># M vs H   0.146266 0.3123981 24 0.0935518 0.228684 &lt;0.0001 ***</span></span>
+<span><span class="co"># M vs L   0.520030 0.3123981 24 0.3326112 0.813055  0.0059 ** </span></span>
+<span><span class="co">#</span></span>
+<span><span class="co">#Results are averaged over the levels of: SA </span></span>
+<span><span class="co">#Confidence level used: 0.95 </span></span>
+<span></span>
+<span><span class="co"># Relative expression values for Concentration sliced by Type and SA</span></span>
+<span><span class="fu"><a href="../reference/Means_DDCt.html">Means_DDCt</a></span><span class="op">(</span><span class="va">model</span>, specs <span class="op">=</span> <span class="st">"Conc | Type * SA"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="checking-normality-of-residuals">Checking normality of residuals<a class="anchor" aria-label="anchor" href="#checking-normality-of-residuals"></a>
 </h2>
-<p>If the residuals from a <code>t.test</code> or an <code>lm</code> or
-and <code>lmer</code> object are not normally distributed, the
-significance results might be violated. In such cases, non-parametric
-tests can be used. For example, the Mann–Whitney test - also known as
-the Wilcoxon rank-sum test, (implemented via <code><a href="../reference/WILCOX_DDCt.html">WILCOX_DDCt()</a></code>
-in the rtpcr package), is an alternative to t.test, and
-<code><a href="https://rdrr.io/r/stats/kruskal.test.html" class="external-link">kruskal.test()</a></code> is an alternative to one-way analysis of
-variance. These tests assess differences between population medians
-using independent samples. However, the <code>t.test</code> function
-(also the <code>TTEST_DDCt</code> function described above) includes the
-<code>var.equal</code> argument. When set to <code>FALSE</code>,
-performs <code>t.test</code> under the unequal variances hypothesis.
-Residuals (from <code>ANOVA_DCt</code>, <code>ANOVA_DDCt</code>, and
-<code>REPEATED_DDCt</code> functions) objects can be extracted from
+<p>If the residuals from a <code>t.test</code> or an <code>lm</code>
+object are not normally distributed, the significance results might be
+violated. In such cases, non-parametric tests can be used. For example,
+the Mann–Whitney test - also known as the Wilcoxon rank-sum test,
+(implemented via <code><a href="../reference/WILCOX_DDCt.html">WILCOX_DDCt()</a></code> in the rtpcr package), is an
+alternative to t.test, and <code><a href="https://rdrr.io/r/stats/kruskal.test.html" class="external-link">kruskal.test()</a></code> is an alternative
+to one-way analysis of variance. These tests assess differences between
+population medians using independent samples. However, the
+<code>t.test</code> function (also the <code>TTEST_DDCt</code> function
+described above) includes the <code>var.equal</code> argument. When set
+to <code>FALSE</code>, performs <code>t.test</code> under the unequal
+variances hypothesis. Residuals from <code>ANOVA_DCt</code> and
+<code>ANOVA_DDCt</code> functions objects can be extracted from
 <code>lm</code>and plotted as follow:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_repeated_measure_1.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu">REPEATED_DDCt</span><span class="op">(</span></span>
+<span><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  numOfFactors <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  mainFactor.column <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  block <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  block <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  model <span class="op">=</span> <span class="va">wDCt</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">residuals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">resid</a></span><span class="op">(</span><span class="va">res3</span><span class="op">$</span><span class="va">perGene</span><span class="op">$</span><span class="va">Target</span><span class="op">$</span><span class="va">lm</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/shapiro.test.html" class="external-link">shapiro.test</a></span><span class="op">(</span><span class="va">residuals</span><span class="op">)</span> </span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
@@ -747,7 +843,7 @@ the <code>meanTech</code> function. The input dataset must follow the
 column structure illustrated in the example data below. Columns used for
 grouping should be explicitly specified via the <code>groups</code>
 argument of the <code>meanTech</code> function.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Example input data frame with technical replicates</span></span>
 <span><span class="va">data1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_withTechRep.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -766,24 +862,24 @@ argument of the <code>meanTech</code> function.</p>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<div class="sourceCode" id="cb12"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>citation("rtpcr")</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>To cite the package ‘rtpcr’ in publications, please use:</span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  Ghader Mirzaghaderi (2025). rtpcr: a package for statistical analysis and graphical</span>
-<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  presentation of qPCR data in R. PeerJ 13:e20185. https://doi.org/10.7717/peerj.20185</span>
-<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>A BibTeX entry for LaTeX users is</span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>  @Article{,</span>
-<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>    title = {rtpcr: A package for statistical analysis and graphical presentation of qPCR data in R},</span>
-<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a>    author = {Ghader Mirzaghaderi},</span>
-<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a>    journal = {PeerJ},</span>
-<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a>    volume = {13},</span>
-<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a>    pages = {e20185},</span>
-<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a>    year = {2025},</span>
-<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a>    doi = {10.7717/peerj.20185},</span>
-<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>citation("rtpcr")</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>To cite the package ‘rtpcr’ in publications, please use:</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  Ghader Mirzaghaderi (2025). rtpcr: a package for statistical analysis and graphical</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  presentation of qPCR data in R. PeerJ 13:e20185. https://doi.org/10.7717/peerj.20185</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>A BibTeX entry for LaTeX users is</span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>  @Article{,</span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>    title = {rtpcr: A package for statistical analysis and graphical presentation of qPCR data in R},</span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>    author = {Ghader Mirzaghaderi},</span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a>    journal = {PeerJ},</span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a>    volume = {13},</span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a>    pages = {e20185},</span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a>    year = {2025},</span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a>    doi = {10.7717/peerj.20185},</span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a>  }</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>

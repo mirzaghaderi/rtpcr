@@ -3,9 +3,9 @@
 ## All functions
 
 - [`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md)
-  : Delta Ct ANOVA analysis with flexible model specification
+  : Delta Ct ANOVA analysis with optional model specification
 - [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
-  : Delta Delta Ct ANOVA analysis
+  : Delta Delta Ct ANOVA analysis with optional model specification
 - [`compute_wDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/compute_wDCt.md)
   : Cleaning data and weighted delta Ct (wDCt) calculation
 - [`data_2factorBlock3ref`](https://mirzaghaderi.github.io/rtpcr/reference/data_2factorBlock3ref.md)
@@ -22,7 +22,9 @@
 - [`multiplot()`](https://mirzaghaderi.github.io/rtpcr/reference/multiplot.md)
   : Combine multiple ggplot objects into a single layout
 - [`plotFactor()`](https://mirzaghaderi.github.io/rtpcr/reference/plotFactor.md)
-  : Bar plot of gene expression for 1-, 2-, or 3-factor experiments
+  : Bar plot of gene(s) expression for 1-, 2-, or 3-factor experiments
+- [`plotSingleGene()`](https://mirzaghaderi.github.io/rtpcr/reference/plotSingleGene.md)
+  : Bar plot of single gene expression (Delta Delta Ct method)
 - [`TTEST_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/TTEST_DDCt.md)
   : Delta Delta Ct method t-test analysis
 - [`WILCOX_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/WILCOX_DDCt.md)

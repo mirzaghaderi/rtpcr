@@ -226,7 +226,7 @@ TTEST_DDCt <- function(x,
       2^(-tt$conf.int[2]),
       2^(-tt$conf.int[1]),
       tt$p.value,
-      stats::sd(trt_vals, na.rm = TRUE) / sqrt(r)
+      tt$stderr
     )
   }
   

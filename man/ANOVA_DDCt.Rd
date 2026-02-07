@@ -14,7 +14,8 @@ ANOVA_DDCt(
   p.adj = "none",
   analyseAllTarget = TRUE,
   model = NULL,
-  set_missing_target_Ct_to_40 = FALSE
+  set_missing_target_Ct_to_40 = FALSE,
+  se.type = c("paired.sample", "two.sample", "single.sample")
 )
 }
 \arguments{
@@ -65,6 +66,13 @@ it will use \code{stats::lm()}. Note that \code{emmeans} supports both
 model types and will use appropriate degrees of freedom methods (Satterthwaite by default).}
 
 \item{set_missing_target_Ct_to_40}{If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA.}
+
+\item{se.type}{Character string specifying how standard error is calculated.
+One of \code{"paired.sample"}, \code{"two.sample"}, or \code{"single.sample"}.
+\code{"paired.sample"} computes SE from paired differences (used when a random
+\code{id} effect is present), \code{"two.sample"} uses the unpaired two-sample
+t-test standard error against the reference level, and \code{"single.sample"}
+computes SE within each level using a one-sample t-test.}
 }
 \value{
 An object containing expression table, lm model, residuals, raw data and ANOVA table for each gene:

@@ -44,6 +44,12 @@
 #' @param p.adj
 #' Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.
 #' @param set_missing_target_Ct_to_40 If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA. 
+#' @param se.type Character string specifying how standard error is calculated.
+#'   One of \code{"paired.sample"}, \code{"two.sample"}, or \code{"single.sample"}.
+#'   \code{"paired.sample"} computes SE from paired differences (used when a random
+#'   \code{id} effect is present), \code{"two.sample"} uses the unpaired two-sample
+#'   t-test standard error against the reference level, and \code{"single.sample"}
+#'   computes SE within each level using a one-sample t-test.
 #' 
 #' @importFrom stats setNames
 #'
@@ -152,299 +158,399 @@ ANOVA_DDCt <- function(
     p.adj = "none",
     analyseAllTarget = TRUE,
     model = NULL,
-    set_missing_target_Ct_to_40 = FALSE
-) {
-
-  n <- ncol(x)
-  nDesign <- if (is.null(block)) numOfFactors + 1 else numOfFactors + 2
-  designCols <- seq_len(nDesign)
-  nRefCols <- 2 * numberOfrefGenes
-  refCols <- (n - nRefCols + 1):n
-  targetCols <- setdiff(seq_len(n), c(designCols, refCols))
-
-  if (length(targetCols) == 0 || length(targetCols) %% 2 != 0) {
-    stop("Target genes must be supplied as E/Ct column pairs")
-  }
-
-  targetPairs <- split(targetCols, ceiling(seq_along(targetCols)/2))
-  targetNames <- vapply(targetPairs, function(tc) colnames(x)[tc[1]], character(1))
-
-  if (!isTRUE(analyseAllTarget)) {
-    keep <- targetNames %in% analyseAllTarget
-    if (!any(keep)) stop("None of the specified target genes were found in the data.")
-    targetPairs <- targetPairs[keep]
-    targetNames <- targetNames[keep]
-  }
-
-  perGene <- list()
-  relativeExpression_list <- list()
-
-  for (i in seq_along(targetPairs)) {
-
-    tc <- targetPairs[[i]]
-    gene_name <- targetNames[i]
-
-    gene_df <- x[, c(designCols, tc, refCols), drop = FALSE]
-    user_defined_model <- !is.null(model)
-
-    gene_df <- gene_df[, c(mainFactor.column, (1:ncol(gene_df))[-mainFactor.column])]
-
-    if (is.null(block)) {
-      gene_df[seq_len(numOfFactors)] <- lapply(
-        gene_df[seq_len(numOfFactors)],
-        function(col) factor(col, levels = unique(col)))
-    } else {
-      gene_df[seq_len(numOfFactors + 1)] <- lapply(
-        gene_df[seq_len(numOfFactors + 1)],
-        function(col) factor(col, levels = unique(col)))
+    set_missing_target_Ct_to_40 = FALSE,
+    se.type = c("paired.sample", "two.sample", "single.sample")
+  ) {
+    
+  
+  se.type <- match.arg(se.type)
+  
+    n <- ncol(x)
+    nDesign <- if (is.null(block)) numOfFactors + 1 else numOfFactors + 2
+    designCols <- seq_len(nDesign)
+    nRefCols <- 2 * numberOfrefGenes
+    refCols <- (n - nRefCols + 1):n
+    targetCols <- setdiff(seq_len(n), c(designCols, refCols))
+    
+    if (length(targetCols) == 0 || length(targetCols) %% 2 != 0) {
+      stop("Target genes must be supplied as E/Ct column pairs")
     }
-
-    if (is.null(mainFactor.level.order)) {
-      mainFactor.level.order <- unique(gene_df[,1])
-      calibrator <- gene_df[,1][1]
-    } else if (any(is.na(match(unique(gene_df[,1]), mainFactor.level.order)))) {
-      stop("The `mainFactor.level.order` doesn't match main factor levels.")
-    } else {
-      gene_df <- gene_df[order(match(gene_df[,1], mainFactor.level.order)), ]
-      calibrator <- gene_df[,1][1]
+    
+    
+    detect_rep_id_random <- function(model, numOfFactors, block, x) {
+      if (is.null(model)) return(FALSE)
+      ftxt <- paste(deparse(formula(model)), collapse = " ")
+      rep_id_col <- if (is.null(block)) numOfFactors + 1 else numOfFactors + 2
+      rep_id_name <- colnames(x)[rep_id_col]
+      grepl(paste0("\\|\\s*", rep_id_name, "\\b"), ftxt)
     }
-
-    if (!exists("compute_wDCt")) {
-      stop("compute_wDCt function is required but not found")
+    
+    
+    
+    targetPairs <- split(targetCols, ceiling(seq_along(targetCols)/2))
+    targetNames <- vapply(targetPairs, function(tc) colnames(x)[tc[1]], character(1))
+    
+    if (!isTRUE(analyseAllTarget)) {
+      keep <- targetNames %in% analyseAllTarget
+      if (!any(keep)) stop("None of the specified target genes were found in the data.")
+      targetPairs <- targetPairs[keep]
+      targetNames <- targetNames[keep]
     }
-    gene_df <- compute_wDCt(gene_df, numOfFactors, numberOfrefGenes, block,
-                            set_missing_target_Ct_to_40 = set_missing_target_Ct_to_40)
-
-    gene_df[] <- lapply(gene_df, function(x) {
-      if (is.factor(x)) as.character(x) else x
-    })
-
-    if (is.null(block)) {
-      gene_df[seq_len(numOfFactors)] <- lapply(
-        gene_df[seq_len(numOfFactors)],
-        function(col) factor(col, levels = unique(col)))
-    } else {
-      gene_df[seq_len(numOfFactors + 1)] <- lapply(
-        gene_df[seq_len(numOfFactors + 1)],
-        function(col) factor(col, levels = unique(col)))
-    }
-
-    factors <- colnames(gene_df)[1:numOfFactors]
-    default_model_formula <- NULL
-
-    is_mixed_model <- FALSE
-    is_singular <- FALSE
-
-    if (user_defined_model) {
-
-      if (is.character(model)) {
-        formula_str <- paste("wDCt ~", model)
-        formula_obj <- as.formula(formula_str)
-      } else if (inherits(model, "formula")) {
-        formula_obj <- model
-      } else {
-        stop("model must be either a character string or a formula object")
-      }
-
-      has_random_effects <- grepl("\\|", as.character(formula_obj)[3])
-
-      if (has_random_effects) {
-        if (!requireNamespace("lmerTest", quietly = TRUE)) {
-          stop("lmerTest package is required for mixed models")
-        }
-        if (!requireNamespace("lme4", quietly = TRUE)) {
-          stop("lme4 package is required for singularity checks")
-        }
-
-        is_mixed_model <- TRUE
-        lm_fit <- suppressMessages(lmerTest::lmer(formula_obj, data = gene_df))
-
-        # singularity check
-        is_singular <- lme4::isSingular(lm_fit, tol = 1e-4)
-
-      } else {
-        lm_fit <- lm(formula_obj, data = gene_df)
-      }
-
-      lm_formula <- formula(lm_fit)
-      ANOVA_table <- stats::anova(lm_fit)
-
-    } else {
-
+    
+    perGene <- list()
+    relativeExpression_list <- list()
+    
+    for (i in seq_along(targetPairs)) {
+      
+      tc <- targetPairs[[i]]
+      gene_name <- targetNames[i]
+      
+      gene_df <- x[, c(designCols, tc, refCols), drop = FALSE]
+      user_defined_model <- !is.null(model)
+      
+      gene_df <- gene_df[, c(mainFactor.column, (1:ncol(gene_df))[-mainFactor.column])]
+      
       if (is.null(block)) {
-        formula_ANOVA <- as.formula(
-          paste("wDCt ~", paste(factors, collapse = " * "))
-        )
-        default_model_formula <- deparse(formula_ANOVA)
-        lm_fit <- lm(formula_ANOVA, data = gene_df)
-
+        gene_df[seq_len(numOfFactors)] <- lapply(
+          gene_df[seq_len(numOfFactors)],
+          function(col) factor(col, levels = unique(col)))
       } else {
-        formula_ANOVA <- as.formula(
-          paste("wDCt ~", block, "+", paste(factors, collapse = " * "))
-        )
-        default_model_formula <- deparse(formula_ANOVA)
-        lm_fit <- lm(formula_ANOVA, data = gene_df)
+        gene_df[seq_len(numOfFactors + 1)] <- lapply(
+          gene_df[seq_len(numOfFactors + 1)],
+          function(col) factor(col, levels = unique(col)))
       }
-
-      lm_formula <- formula(lm_fit)
-      ANOVA_table <- stats::anova(lm_fit)
-    }
-
-    if (!requireNamespace("emmeans", quietly = TRUE)) {
-      stop("emmeans package is required for post-hoc tests")
-    }
-
-    
-    pp1 <- suppressMessages(
-      emmeans::emmeans(lm_fit, colnames(gene_df)[1],
-                       adjust = p.adj))    # mode = "satterthwaite"      data = gene_df, 
-
-    pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
-    pp3 <- pp2[1:length(mainFactor.level.order)-1,]
-    ci  <- as.data.frame(stats::confint(graphics::pairs(pp1)),   # , na.action = stats::na.pass
-                         adjust = p.adj)[1:length(unique(gene_df[,1]))-1,]
-    pp  <- cbind(pp3, lower.CL = ci$lower.CL, upper.CL = ci$upper.CL)
-
-    
-    
-    bwDCt <- gene_df$wDCt
-    if (!requireNamespace("dplyr", quietly = TRUE)) {
-      stop("dplyr package is required")
-    }
-
-    
-    se <- dplyr::summarise(
-      dplyr::group_by(data.frame(factor = gene_df[,1], bwDCt = bwDCt),
-                      gene_df[,1]),
-      se = stats::sd(bwDCt, na.rm = TRUE)/sqrt(length(bwDCt))
-    )
-
-    
-
-    sig <- .convert_to_character(pp$p.value)
-    post_hoc_test <- data.frame(
-      contrast = pp$contrast,
-      ddCt = - pp$estimate,
-      RE = 1/(2^-(pp$estimate)),
-      log2FC = log2(1/(2^-(pp$estimate))),
-      pvalue = pp$p.value,
-      sig = sig,
-      LCL = 1/(2^-pp$lower.CL),
-      UCL = 1/(2^-pp$upper.CL),
-      se = se$se[-1]
-    )
-    #post_hoc_test$sig[post_hoc_test$RE < 0.001] <- "ND"
-    post_hoc_test$RE[post_hoc_test$pvalue == "NaN"] <- 0
-    post_hoc_test$log2FC[post_hoc_test$pvalue == "NaN"] <- 0
-    post_hoc_test$sig[post_hoc_test$pvalue == "NaN"] <- "ND"
-    
-
-    reference <- data.frame(
-      contrast = mainFactor.level.order[1],
-      ddCt = 0, RE = 1, log2FC = 0,
-      pvalue = 1, sig = " ",
-      LCL = 0, UCL = 0,
-      se = se$se[1])
-
-    tableC <- rbind(reference, post_hoc_test)
-
-    tableC$contrast <- sapply(
-      strsplit(as.character(tableC$contrast), " - "),
-      function(x) paste(rev(x), collapse = " vs ")
-    )
-
-    tableC <- data.frame(
-      tableC,
-      Lower.se.RE = 2^(log2(tableC$RE) - tableC$se),
-      Upper.se.RE = 2^(log2(tableC$RE) + tableC$se),
-      Lower.se.log2FC = 0,
-      Upper.se.log2FC = 0
-    )
-    
-    
-    for (j in seq_len(nrow(tableC))) {
-      if (is.na(tableC$RE[j])) {
-        tableC$Lower.se.log2FC[j] <- NA
-        tableC$Upper.se.log2FC[j] <- NA
-      } else if (tableC$RE[j] < 1) {
-        tableC$Lower.se.log2FC[j] <- (tableC$Upper.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
-        tableC$Upper.se.log2FC[j] <- (tableC$Lower.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+      
+      if (is.null(mainFactor.level.order)) {
+        mainFactor.level.order <- unique(gene_df[,1])
+        calibrator <- gene_df[,1][1]
+      } else if (any(is.na(match(unique(gene_df[,1]), mainFactor.level.order)))) {
+        stop("The `mainFactor.level.order` doesn't match main factor levels.")
       } else {
-        tableC$Lower.se.log2FC[j] <- (tableC$Lower.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
-        tableC$Upper.se.log2FC[j] <- (tableC$Upper.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+        gene_df <- gene_df[order(match(gene_df[,1], mainFactor.level.order)), ]
+        calibrator <- gene_df[,1][1]
+      }
+      
+      if (!exists("compute_wDCt")) {
+        stop("compute_wDCt function is required but not found")
+      }
+      gene_df <- compute_wDCt(gene_df, numOfFactors, numberOfrefGenes, block,
+                              set_missing_target_Ct_to_40 = set_missing_target_Ct_to_40)
+      
+      gene_df[] <- lapply(gene_df, function(x) {
+        if (is.factor(x)) as.character(x) else x
+      })
+      
+      if (is.null(block)) {
+        gene_df[seq_len(numOfFactors)] <- lapply(
+          gene_df[seq_len(numOfFactors)],
+          function(col) factor(col, levels = unique(col)))
+      } else {
+        gene_df[seq_len(numOfFactors + 1)] <- lapply(
+          gene_df[seq_len(numOfFactors + 1)],
+          function(col) factor(col, levels = unique(col)))
+      }
+      
+      factors <- colnames(gene_df)[1:numOfFactors]
+      default_model_formula <- NULL
+      
+      is_mixed_model <- FALSE
+      is_singular <- FALSE
+      
+      
+      if (user_defined_model) {
+        
+        if (is.character(model)) {
+          formula_str <- paste("wDCt ~", model)
+          formula_obj <- as.formula(formula_str)
+        } else if (inherits(model, "formula")) {
+          formula_obj <- model
+        } else {
+          stop("model must be either a character string or a formula object")
+        }
+        
+        # has_random_effects <- grepl("\\|", as.character(formula_obj)[3])
+        has_random_effects <- grepl("\\|", paste(deparse(formula_obj), collapse = " "))
+        
+        if (has_random_effects) {
+          if (!requireNamespace("lmerTest", quietly = TRUE)) {
+            stop("lmerTest package is required for mixed models")
+          }
+          if (!requireNamespace("lme4", quietly = TRUE)) {
+            stop("lme4 package is required for singularity checks")
+          }
+          
+          is_mixed_model <- TRUE
+          lm_fit <- suppressMessages(lmerTest::lmer(formula_obj, data = gene_df))
+          
+          # singularity check
+          is_singular <- lme4::isSingular(lm_fit, tol = 1e-4)
+          
+        } else {
+          lm_fit <- lm(formula_obj, data = gene_df)
+        }
+        
+        lm_formula <- formula(lm_fit)
+        ANOVA_table <- stats::anova(lm_fit)
+        
+      } else {
+        
+        if (is.null(block)) {
+          formula_ANOVA <- as.formula(
+            paste("wDCt ~", paste(factors, collapse = " * "))
+          )
+          default_model_formula <- deparse(formula_ANOVA)
+          lm_fit <- lm(formula_ANOVA, data = gene_df)
+          
+        } else {
+          formula_ANOVA <- as.formula(
+            paste("wDCt ~", block, "+", paste(factors, collapse = " * "))
+          )
+          default_model_formula <- deparse(formula_ANOVA)
+          lm_fit <- lm(formula_ANOVA, data = gene_df)
+        }
+        
+        lm_formula <- formula(lm_fit)
+        ANOVA_table <- stats::anova(lm_fit)
+      }
+      
+      if (!requireNamespace("emmeans", quietly = TRUE)) {
+        stop("emmeans package is required for post-hoc tests")
+      }
+      
+      
+      pp1 <- suppressMessages(
+        emmeans::emmeans(lm_fit, colnames(gene_df)[1],
+                         adjust = p.adj))    # mode = "satterthwaite"      data = gene_df, 
+      
+      pp2 <- as.data.frame(graphics::pairs(pp1), adjust = p.adj)
+      pp3 <- pp2[1:length(mainFactor.level.order)-1,]
+      ci  <- as.data.frame(stats::confint(graphics::pairs(pp1)),   # , na.action = stats::na.pass
+                           adjust = p.adj)[1:length(unique(gene_df[,1]))-1,]
+      pp  <- cbind(pp3, lower.CL = ci$lower.CL, upper.CL = ci$upper.CL)
+      
+      
+      
+      bwDCt <- gene_df$wDCt
+      if (!requireNamespace("dplyr", quietly = TRUE)) {
+        stop("dplyr package is required")
+      }
+      
+      
+      ##############################
+      idRand <- detect_rep_id_random(model = model,
+                                     numOfFactors = numOfFactors,
+                                     block = block,
+                                     x = x)
+      
+      se.type <- match.arg(se.type, c("single.sample", "two.sample", "paired.sample"))
+      
+      grp_levels <- levels(factor(gene_df[[1]]))
+      n_groups  <- length(grp_levels)
+      ref_level <- grp_levels[1]
+      
+      
+      if (idRand) {
+        if (se.type != "paired.sample")
+          warning("id random effect detected: using paired SE")  
+        # id column is immediately before E/Ct gene columns
+        id_col <- min(tc) - 1
+        
+        df_se <- data.frame(
+          factor = factor(gene_df[[1]]),
+          wDCt   = bwDCt,
+          id     = x[[id_col]]
+        )
+        
+        ref <- grp_levels[1]
+        se_vec <- numeric(n_groups)
+        se_vec[1] <- 0
+        
+        for (k in 2:n_groups) {
+          
+          ref_data <- df_se[df_se$factor == ref, ]
+          grp_data <- df_se[df_se$factor == grp_levels[k], ]
+          
+          # pair strictly by id
+          ref_data <- ref_data[match(grp_data$id, ref_data$id), ]
+          d <- ref_data$wDCt - grp_data$wDCt
+          d <- d[!is.na(d)]
+          
+          if (length(d) > 1) {
+            se_vec[k] <- sqrt(stats::var(d) / length(d))
+          } else {
+            se_vec[k] <- NA_real_
+          }
+        }
+        
+        se <- data.frame(factor = grp_levels, se = se_vec)
+        
+      } else {
+        if (se.type == "single.sample") { 
+        df_se <- data.frame(
+          factor = gene_df[[1]],
+          wDCt   = bwDCt
+        )
+        
+          se <- dplyr::summarise(
+            dplyr::group_by(df_se, factor),
+            se = tryCatch(
+              stats::t.test(wDCt)$stderr,
+              error = function(e) NA_real_
+            ),
+            .groups = "drop"
+          )
+          
+        } else {  # two.sample unpaired vs ref
+          
+          df_se <- data.frame(
+            factor = gene_df[[1]],
+            wDCt   = bwDCt
+          )
+          
+          ref_vals <- df_se$wDCt[df_se$factor == ref_level]
+          
+          se <- data.frame(
+            factor = grp_levels,
+            se = sapply(grp_levels, function(g) {
+              if (g == ref_level) return(0)
+              grp_vals <- df_se$wDCt[df_se$factor == g]
+              
+              tryCatch(
+                stats::t.test(grp_vals, ref_vals, paired = FALSE)$stderr,
+                error = function(e) NA_real_
+              )
+            })
+          )
+        }
+      }
+#################
+      
+      
+      
+      sig <- .convert_to_character(pp$p.value)
+      post_hoc_test <- data.frame(
+        contrast = pp$contrast,
+        ddCt = - pp$estimate,
+        RE = 1/(2^-(pp$estimate)),
+        log2FC = log2(1/(2^-(pp$estimate))),
+        pvalue = pp$p.value,
+        sig = sig,
+        LCL = 1/(2^-pp$lower.CL),
+        UCL = 1/(2^-pp$upper.CL),
+        se = se$se[-1]
+      )
+      #post_hoc_test$sig[post_hoc_test$RE < 0.001] <- "ND"
+      post_hoc_test$RE[post_hoc_test$pvalue == "NaN"] <- 0
+      post_hoc_test$log2FC[post_hoc_test$pvalue == "NaN"] <- 0
+      post_hoc_test$sig[post_hoc_test$pvalue == "NaN"] <- "ND"
+      
+      
+      reference <- data.frame(
+        contrast = mainFactor.level.order[1],
+        ddCt = 0, RE = 1, log2FC = 0,
+        pvalue = 1, sig = " ",
+        LCL = 0, UCL = 0,
+        se = se$se[1])
+      
+      tableC <- rbind(reference, post_hoc_test)
+      
+      tableC$contrast <- sapply(
+        strsplit(as.character(tableC$contrast), " - "),
+        function(x) paste(rev(x), collapse = " vs ")
+      )
+      
+      tableC <- data.frame(
+        tableC,
+        Lower.se.RE = 2^(log2(tableC$RE) - tableC$se),
+        Upper.se.RE = 2^(log2(tableC$RE) + tableC$se),
+        Lower.se.log2FC = 0,
+        Upper.se.log2FC = 0
+      )
+      
+      
+      for (j in seq_len(nrow(tableC))) {
+        if (is.na(tableC$RE[j])) {
+          tableC$Lower.se.log2FC[j] <- NA
+          tableC$Upper.se.log2FC[j] <- NA
+        } else if (tableC$RE[j] < 1) {
+          tableC$Lower.se.log2FC[j] <- (tableC$Upper.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+          tableC$Upper.se.log2FC[j] <- (tableC$Lower.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+        } else {
+          tableC$Lower.se.log2FC[j] <- (tableC$Lower.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+          tableC$Upper.se.log2FC[j] <- (tableC$Upper.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+        }
+      }
+      
+      
+      
+      tableC$gene <- gene_name
+      
+      res <- list(
+        Final_data = gene_df,
+        lm = lm_fit,
+        ANOVA_table = ANOVA_table,
+        Fold_Change = tableC,
+        lm_formula = lm_formula,
+        user_defined_model = user_defined_model,
+        default_model_formula = default_model_formula,
+        is_mixed_model = is_mixed_model,
+        singular = is_singular
+      )
+      
+      perGene[[gene_name]] <- res
+      relativeExpression_list[[i]] <- tableC
+    }
+    
+    relativeExpression <- do.call(rbind, relativeExpression_list)
+    rownames(relativeExpression) <- NULL
+    
+    relativeExpression <- relativeExpression[, c(
+      "gene","contrast","ddCt","RE","log2FC",
+      "LCL","UCL","se",
+      "Lower.se.RE","Upper.se.RE",
+      "Lower.se.log2FC","Upper.se.log2FC",
+      "pvalue","sig"
+    )]
+    
+    
+    for (col in names(relativeExpression)) {
+      if (is.numeric(relativeExpression[[col]])) {
+        relativeExpression[[col]] <- round(relativeExpression[[col]], 5)
       }
     }
     
     
     
-    tableC$gene <- gene_name
-
-    res <- list(
-      Final_data = gene_df,
-      lm = lm_fit,
-      ANOVA_table = ANOVA_table,
-      Fold_Change = tableC,
-      lm_formula = lm_formula,
-      user_defined_model = user_defined_model,
-      default_model_formula = default_model_formula,
-      is_mixed_model = is_mixed_model,
-      singular = is_singular
-    )
-
-    perGene[[gene_name]] <- res
-    relativeExpression_list[[i]] <- tableC
-  }
-
-  relativeExpression <- do.call(rbind, relativeExpression_list)
-  rownames(relativeExpression) <- NULL
-
-  relativeExpression <- relativeExpression[, c(
-    "gene","contrast","ddCt","RE","log2FC",
-    "LCL","UCL","se",
-    "Lower.se.RE","Upper.se.RE",
-    "Lower.se.log2FC","Upper.se.log2FC",
-    "pvalue","sig"
-  )]
-  
-  
-  for (col in names(relativeExpression)) {
-    if (is.numeric(relativeExpression[[col]])) {
-      relativeExpression[[col]] <- round(relativeExpression[[col]], 5)
+    
+    cat("\nRelative Expression\n")
+    print(relativeExpression)
+    cat("\n")
+    
+    first_gene_res <- perGene[[1]]
+    calibrator_level <- strsplit(first_gene_res$Fold_Change$contrast[1], " vs ")[[1]][1]
+    cat(paste("The", calibrator_level, "level was used as calibrator.\n"))
+    
+    singular_genes <- names(perGene)[
+      vapply(perGene, function(z) isTRUE(z$singular), logical(1))
+    ]
+    
+    if (length(singular_genes) > 0) {
+      warning(
+        "Singular fit detected for the following genes:\n  ",
+        paste(singular_genes, collapse = ", ")
+      )
     }
-  }
-  
-  
-  
-
-  cat("\nRelative Expression\n")
-  print(relativeExpression)
-  cat("\n")
-
-  first_gene_res <- perGene[[1]]
-  calibrator_level <- strsplit(first_gene_res$Fold_Change$contrast[1], " vs ")[[1]][1]
-  cat(paste("The", calibrator_level, "level was used as calibrator.\n"))
-
-  singular_genes <- names(perGene)[
-    vapply(perGene, function(z) isTRUE(z$singular), logical(1))
-  ]
-
-  if (length(singular_genes) > 0) {
-    warning(
-    "Singular fit detected for the following genes:\n  ",
-    paste(singular_genes, collapse = ", ")
-    )
-  }
-
-  if (is.null(model) && length(perGene) > 0) {
-    default_formula <- perGene[[1]]$default_model_formula
-    if (!is.null(default_formula)) {
-      cat("Note: Using default model for statistical analysis:", default_formula, "\n")
+    
+    if (is.null(model) && length(perGene) > 0) {
+      default_formula <- perGene[[1]]$default_model_formula
+      if (!is.null(default_formula)) {
+        cat("Note: Using default model for statistical analysis:", default_formula, "\n")
+      }
     }
+    
+    
+    invisible(list(
+      perGene = perGene,
+      relativeExpression = relativeExpression
+    ))
   }
-
-
-  invisible(list(
-    perGene = perGene,
-    relativeExpression = relativeExpression
-  ))
-}

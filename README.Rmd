@@ -114,7 +114,7 @@ The package supports **one or more target or reference gene(s)**, supplied as ef
 
 
 
-If there is no blocking factor, the corresponding block columns should be omitted. However, a column for biological replicates (which may be named "Rep," "ID," or similar) is always required.
+If there is no blocking factor, the corresponding block columns should be omitted. However, a column for biological replicates (which may be named "Rep", "id" or similar) is always required.
 
 
 ![Figure 2: A sample input data with two experimetal factors, blocking factor, replicate column and E/Ct information of target and reference genes](man/figures/dataStructure1.png){.center width="100%"}
@@ -130,7 +130,7 @@ When a qPCR experiment is done in multiple qPCR plates, variation resulting from
 
 #### NOTE 2
 
-For `TTEST_DDCt` and `WILCOX_DDCt` (independent samples), `ANOVA_DCt`, `ANCOVA_DDCt`, and `ANOVA_DDCt` each row is from a
+For `TTEST_DDCt` and `WILCOX_DDCt` (independent samples), `ANOVA_DCt`, and `ANOVA_DDCt` each row is from a
 separate and unique biological replicate. For example, a data frame with
 12 rows has come from an experiment with 12 individuals. The
 repeated measure models are intended for experiments with repeated
@@ -334,17 +334,17 @@ res <- ANOVA_DDCt(
   block = "block",
   analyseAllTarget = TRUE)
 
-Relative Expression
-  gene contrast     ddCt      RE   log2FC     LCL     UCL      se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig
-1   PO       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.13940     0.90790     1.10144         0.00000         0.00000 1.00000    
-2   PO L2 vs L1 -0.94610 1.92666  0.94610 1.25860 2.94934 0.14499     1.74245     2.13036         0.85564         1.04613 0.00116  **
-3   PO L3 vs L1 -2.19198 4.56931  2.19198 3.08069 6.77724 0.29402     3.72685     5.60221         1.78783         2.68748 0.00000 ***
-4  NLM       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.91809     0.52921     1.88962         0.00000         0.00000 1.00000    
-5  NLM L2 vs L1  0.86568 0.54879 -0.86568 0.39830 0.75614 0.36616     0.42577     0.70734        -1.11579        -0.67163 0.00018 ***
-6  NLM L3 vs L1 -1.44341 2.71964  1.44341 1.94670 3.79946 0.17132     2.41511     3.06256         1.28179         1.62542 0.00000 ***
-
-The L1 level was used as calibrator.
-Note: Using default model for statistical analysis: wDCt ~ block + Concentration * Type 
+# Relative Expression
+#   gene contrast     ddCt      RE   log2FC     LCL     UCL      se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig
+# 1   PO       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.13940     0.90790     1.10144         0.00000         0.00000 1.00000    
+# 2   PO L2 vs L1 -0.94610 1.92666  0.94610 1.25860 2.94934 0.14499     1.74245     2.13036         0.85564         1.04613 0.00116  **
+# 3   PO L3 vs L1 -2.19198 4.56931  2.19198 3.08069 6.77724 0.29402     3.72685     5.60221         1.78783         2.68748 0.00000 ***
+# 4  NLM       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.91809     0.52921     1.88962         0.00000         0.00000 1.00000    
+# 5  NLM L2 vs L1  0.86568 0.54879 -0.86568 0.39830 0.75614 0.36616     0.42577     0.70734        -1.11579        -0.67163 0.00018 ***
+# 6  NLM L3 vs L1 -1.44341 2.71964  1.44341 1.94670 3.79946 0.17132     2.41511     3.06256         1.28179         1.62542 0.00000 ***
+# 
+# The L1 level was used as calibrator.
+# Note: Using default model for statistical analysis: wDCt ~ block + Concentration * Type 
 
 
 ANOVA_table <- res$perGene$PO$ANOVA_table
@@ -522,13 +522,13 @@ model <- res$perGene$E_PO$lm
 # Relative expression values for Concentration main effect
 Means_DDCt(model, specs = "Conc")
 
- # contrast        RE        SE df       LCL       UCL p.value sig
- # L vs H   0.1703610 0.2208988 24 0.1242014 0.2336757 <0.0001 ***
- # M vs H   0.2227247 0.2208988 24 0.1623772 0.3055004 <0.0001 ***
- # M vs L   1.3073692 0.2208988 24 0.9531359 1.7932535  0.0928 .  
-
-Results are averaged over the levels of: Type, SA 
-Confidence level used: 0.95 
+# contrast        RE        SE df       LCL       UCL p.value sig
+# L vs H   0.1703610 0.2208988 24 0.1242014 0.2336757 <0.0001 ***
+# M vs H   0.2227247 0.2208988 24 0.1623772 0.3055004 <0.0001 ***
+# M vs L   1.3073692 0.2208988 24 0.9531359 1.7932535  0.0928 .  
+#
+#Results are averaged over the levels of: Type, SA 
+#Confidence level used: 0.95 
 
 # Relative expression values for Concentration sliced by Type
 Means_DDCt(model, specs = "Conc | Type")
@@ -538,13 +538,13 @@ Means_DDCt(model, specs = "Conc | Type")
 #  L vs H   0.103187 0.3123981 24 0.0659984 0.161331 <0.0001 ***
 #  M vs H   0.339151 0.3123981 24 0.2169210 0.530255 <0.0001 ***
 #  M vs L   3.286761 0.3123981 24 2.1022126 5.138776 <0.0001 ***
-
+#
 # Type = S:
 #  contrast       RE        SE df       LCL      UCL p.value sig
 #  L vs H   0.281265 0.3123981 24 0.1798969 0.439751 <0.0001 ***
 #  M vs H   0.146266 0.3123981 24 0.0935518 0.228684 <0.0001 ***
 #  M vs L   0.520030 0.3123981 24 0.3326112 0.813055  0.0059 ** 
-
+#
 # Results are averaged over the levels of: SA 
 # Confidence level used: 0.95 
 
@@ -554,7 +554,7 @@ Means_DDCt(model, specs = "Conc | Type * SA")
 
 # Checking normality of residuals
 
-If the residuals from a `t.test` or an `lm` or and `lmer` object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test - also known as the Wilcoxon rank-sum test, (implemented via `WILCOX_DDCt()` in the rtpcr package), is an alternative to t.test, and `kruskal.test()` is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the `t.test` function (also the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, performs `t.test` under the unequal variances hypothesis. Residuals (from `ANOVA_DCt` and `ANOVA_DDCt` functions) objects can be extracted from `lm`and plotted as follow:
+If the residuals from a `t.test` or an `lm` object are not normally distributed, the significance results might be violated. In such cases, non-parametric tests can be used. For example, the Mann–Whitney test - also known as the Wilcoxon rank-sum test, (implemented via `WILCOX_DDCt()` in the rtpcr package), is an alternative to t.test, and `kruskal.test()` is an alternative to one-way analysis of variance. These tests assess differences between population medians using independent samples. However, the `t.test` function (also the `TTEST_DDCt` function described above) includes the `var.equal` argument. When set to `FALSE`, performs `t.test` under the unequal variances hypothesis. Residuals from `ANOVA_DCt` and `ANOVA_DDCt` functions objects can be extracted from `lm`and plotted as follow:
 
 ```{r eval= F}
 data <- read.csv(system.file("extdata", "data_repeated_measure_1.csv", package = "rtpcr"))

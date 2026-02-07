@@ -110,9 +110,9 @@ WILCOX_DDCt(
 #> *** 1 target(s) using 1 reference gene(s) was analysed!
 #> *** The control level was used as calibrator.
 #>     gene   ddCt      RE  log2FC     LCL     UCL      se Lower.se.RE Upper.se.RE
-#> 1 target 0.6354 0.64376 -0.6354 0.54318 0.74603 0.07964     0.60919      0.6803
+#> 1 target 0.6354 0.64376 -0.6354 0.54318 0.74603 0.13025     0.58819     0.70459
 #>   Lower.se.log2FC Upper.se.log2FC pvalue sig
-#> 1        -0.67146        -0.60127      0 ***
+#> 1        -0.69544        -0.58055      0 ***
 
 
 # Two reference genes
@@ -124,7 +124,7 @@ WILCOX_DDCt(
 #> *** 1 target(s) using 2 reference gene(s) was analysed!
 #> *** The control level was used as calibrator.
 #>   gene    ddCt      RE   log2FC     LCL     UCL      se Lower.se.RE Upper.se.RE
-#> 1 DER5 1.36522 0.38817 -1.36522 0.25981 0.81119 0.42036     0.29006     0.51948
+#> 1 DER5 1.36522 0.38817 -1.36522 0.25981 0.81119 0.42515      0.2891     0.52121
 #>   Lower.se.log2FC Upper.se.log2FC pvalue sig
-#> 1        -1.82702        -1.02015    0.1   .
+#> 1         -1.8331        -1.01676    0.1   .
 ```

@@ -1,6 +1,50 @@
 # Changelog
 
+## rtpcr 2.1.4
+
+### New features
+
+- In
+  [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
+  function the `se.type` argument was added to control how standard
+  errors (SE) are calculated for relative expression (RE = fold change)
+  estimates.
+
+- `"paired.sample"`: computes SE from paired differences between factor
+  levels, matching samples by `id`. This is automatically used when an
+  `id` random effect is detected in a mixed model.
+
+- `"two.sample"`: computes SE using an unpaired samples against the
+  reference level.
+
+- `"single.sample"`: computes SE within each factor level.
+
+- Standard error calculations now correctly respect repeated-measures
+  designs when an `id` random effect is present in the user-specified
+  model.
+
+- Paired SEs are calculated strictly by matching observations on `id`,
+  improving accuracy for longitudinal and paired experimental designs.
+
+- SE calculations are now robust to missing values by relying on
+  [`t.test()`](https://rdrr.io/r/stats/t.test.html) internals.
+
+- When a random `id` effect is detected in the model, paired standard
+  errors are used automatically (with a warning if another `se.type` is
+  requested).
+
+- The reference level is always assigned an SE of zero for consistency
+  with fold-change reporting.
+
+- A function called
+  [`plotSingleGene()`](https://mirzaghaderi.github.io/rtpcr/reference/plotSingleGene.md)
+  was added that creates a bar plot of relative gene expression (fold
+  change) values from single gene analysis showing all pairwise
+  significances.
+
 ## rtpcr 2.1.3
+
+CRAN release: 2026-02-03
 
 ### New features
 
@@ -10,10 +54,10 @@
   and
   [`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md)
   functions via `model` argument. If provided, this overrides the
-  automatic formula (factorial CRD or RCBD design based on the
-  availability of block and the number of factors). The formula uses
-  `wDCt` as the response variable. For mixed models, random effects can
-  be supplied (e.g., `wDCt ~ Treatment * (1| id)`).
+  default formula (single- or multi-factorial CRD or RCBD design based
+  on the availability of block and the number of factors). The formula
+  uses `wDCt` as the response variable. For mixed models, random effects
+  can be supplied (e.g., `wDCt ~ Treatment * (1| id)`).
 
 - Handling missing Ct values for target genes using the
   `set_missing_target_Ct_to_40` function. If `TRUE`, missing target gene

@@ -263,7 +263,36 @@ can use the `TTEST_DDCt` with the argument `paired = TRUE`; or
 measure model such as `wDCt ~ Treatment + ( 1 | id)` or
 `wDCt ~ Treatment + ( 1 | Rep)`.
 
-![](../reference/figures/repeated_measure.png)
+![Figure 5: Calculation of standard error (se) for ddCt–based relative
+expression in the ANOVA_DDCt() function of the rtpcr package. The
+schematic illustrates how weighted dCt (wdCt) and weighted ddCt (wddCt)
+values are combined under different experimental designs, and how the
+standard error is computed depending on the se.type argument.
+"paired.sample" computes se from paired differences (used when a random
+id effect is present), "two.sample" uses the unpaired two-sample t-test
+standard error against the reference level, and "single.sample" computes
+se within each level using a one-sample t-test. For independent samples,
+ANOVA_DDCt() automatically uses se.type = "two.sample", and if
+repeated‐measure or paired design model is specified, ANOVA_DDCt()
+automatically selects se.type =
+"paired.sample"](../reference/figures/repeated_measure.png)
+
+Figure 5: Calculation of standard error (se) for ddCt–based relative
+expression in the
+[`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
+function of the rtpcr package. The schematic illustrates how weighted
+dCt (wdCt) and weighted ddCt (wddCt) values are combined under different
+experimental designs, and how the standard error is computed depending
+on the `se.type` argument. `"paired.sample"` computes se from paired
+differences (used when a random id effect is present), `"two.sample"`
+uses the unpaired two-sample t-test standard error against the reference
+level, and `"single.sample"` computes se within each level using a
+one-sample t-test. For independent samples,
+[`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
+automatically uses `se.type = "two.sample"`, and if repeated‐measure or
+paired design model is specified,
+[`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
+automatically selects `se.type = "paired.sample"`
 
 #### Examples
 
@@ -540,7 +569,7 @@ single gene analysis showing all pairwise significances.
 ## Post-hoc analysis
 
 Although all the expression analysis functions perform statistical
-comparisons for the levels of the analysed factor, further Post-hoc
+comparisons for the levels of the analysed factor, further post-hoc
 analysis is still possible. The `Means_DDCt` function performs post-hoc
 comparisons using a fitted model object produced by `ANOVA_DCt` and
 `ANOVA_DDCt`. It applies pairwise statistical comparisons of relative

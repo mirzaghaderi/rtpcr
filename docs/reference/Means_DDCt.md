@@ -25,7 +25,7 @@ Means_DDCt(model, specs, p.adj = "none")
   A character string or character vector specifying the predictors or
   combinations of predictors over which relative expression values are
   desired. This argument follows the specification syntax used by
-  [`emmeans::emmeans()`](https://rdrr.io/pkg/emmeans/man/emmeans.html)
+  [`emmeans::emmeans()`](https://rvlenth.github.io/emmeans/reference/emmeans.html)
   (e.g., `"Factor"`, `"Factor1 | Factor2"`).
 
 - p.adj:

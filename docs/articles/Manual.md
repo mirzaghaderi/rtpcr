@@ -294,6 +294,8 @@ paired design model is specified,
 [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
 automatically selects `se.type = "paired.sample"`
 
+  
+
 #### Examples
 
 Relative expression analysis can be done using $\Delta\Delta Ct$ or

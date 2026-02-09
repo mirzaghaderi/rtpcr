@@ -313,7 +313,17 @@ paired designs model is specified,
 automatically selects `se.type = “paired.sample”`
 
   
-  
+
+### Examples
+
+Relative expression analysis can be done using $\Delta\Delta Ct$ or
+$\Delta Ct$ methods through different functions (i.e. `TTEST_DDCt`,
+`WILCOX_DDCt`,
+[`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md),
+and
+[`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md)).
+Below are some examples of expression analysis using $\Delta\Delta Ct$
+method.
 
 ``` r
 data <- read.csv(system.file("extdata", "data_Yuan2006PMCBioinf.csv", package = "rtpcr"))

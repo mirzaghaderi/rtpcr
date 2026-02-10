@@ -98,9 +98,13 @@ genes](reference/figures/sampleData1.png)
 Figure 1: A sample input data with one experimetal factor, replicate
 column and E/Ct information of target and reference genes
 
+  
+
 If there is no blocking factor, the corresponding block columns should
 be omitted. However, a column for biological replicates (which may be
 named “Rep”, “id” or similar) is always required.
+
+  
 
 ![Figure 2: A sample input data with two experimetal factors, blocking
 factor, replicate column and E/Ct information of target and reference

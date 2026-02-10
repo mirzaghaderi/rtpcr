@@ -87,6 +87,233 @@
 #' @export
 
 
+# ANOVA_DCt <- function(
+#     x,
+#     numOfFactors,
+#     numberOfrefGenes,
+#     block = NULL,
+#     alpha = 0.05,
+#     p.adj = "none",
+#     analyseAllTarget = TRUE,
+#     model = NULL,
+#     set_missing_target_Ct_to_40 = FALSE
+# ) {
+#   
+#   default_model_formula <- NULL
+#   
+#   # Handle custom vs default model
+#   if (!is.null(model)) {
+#     if (!inherits(model, "formula")) model <- as.formula(model)
+#     message("Using user defined formula. Ignoring block and numOfFactors for model specification.")
+#   } else {
+#     factors <- colnames(x)[1:numOfFactors]
+#     rhs <- paste(factors, collapse = " * ")
+#     default_model_formula <- if (is.null(block)) {
+#       paste("wDCt ~", rhs)
+#     } else {
+#       paste("wDCt ~", block, "+", rhs)
+#     }
+#   }
+#   
+#   n <- ncol(x)
+#   nDesign <- numOfFactors + if (is.null(block)) 1 else 2
+#   if (nDesign >= n) stop("Not enough columns for target and reference genes")
+#   
+#   designCols <- seq_len(nDesign)
+#   refCols <- (n - 2 * numberOfrefGenes + 1):n
+#   
+#   targetCols <- setdiff(seq_len(n), c(designCols, refCols))
+#   if (length(targetCols) == 0 || length(targetCols) %% 2 != 0) {
+#     stop("Target genes must be supplied as E/Ct column pairs")
+#   }
+#   
+#   targetPairs <- split(targetCols, ceiling(seq_along(targetCols) / 2))
+#   targetNames <- vapply(targetPairs, function(tc) colnames(x)[tc[1]], character(1))
+#   
+#   if (!isTRUE(analyseAllTarget)) {
+#     keep <- targetNames %in% analyseAllTarget
+#     if (!any(keep)) stop("None of the specified target genes were found in the data.")
+#     targetPairs <- targetPairs[keep]
+#     targetNames <- targetNames[keep]
+#   }
+#   
+#   perGene <- lapply(seq_along(targetPairs), function(i) {
+#     
+#     gene_name <- targetNames[i]
+#     gene_df <- x[, c(designCols, targetPairs[[i]], refCols), drop = FALSE] 
+# 
+#     if (!is.data.frame(gene_df)) stop("`x` must be a data.frame")
+#     
+#     gene_df <- compute_wDCt(gene_df, numOfFactors, numberOfrefGenes, block, set_missing_target_Ct_to_40 = set_missing_target_Ct_to_40)
+#     
+#     gene_df[] <- lapply(gene_df, function(z) if (is.factor(z)) as.character(z) else z)
+#     
+#     nFac <- if (is.null(block)) numOfFactors else numOfFactors + 1
+#     gene_df[seq_len(nFac)] <- lapply(
+#       gene_df[seq_len(nFac)],
+#       function(col) factor(col, levels = unique(col))
+#     )
+#     
+#     factors <- colnames(gene_df)[1:numOfFactors]
+#     gene_df$T <- factor(do.call(paste, c(gene_df[factors], sep = ":")))
+#     
+#     if (is.null(model)) {
+#       rhs <- paste(factors, collapse = " * ")
+#       model_i <- if (is.null(block)) {
+#         as.formula(paste("wDCt ~", rhs))
+#       } else {
+#         as.formula(paste("wDCt ~", block, "+", rhs))
+#       }
+#     } else {
+#       model_i <- model
+#     }
+#     
+#     has_random_effects <- grepl("\\|", as.character(model_i)[3])
+#     
+#     is_singular <- FALSE
+#     
+#     lm <- if (has_random_effects) {
+#       fit <- suppressMessages(lmerTest::lmer(model_i, data = gene_df))
+#       fit <- stats::update(fit, control = lme4::lmerControl(optCtrl = list(xtol_abs = 1e-10, ftol_abs = 1e-10)))
+#       is_singular <- lme4::isSingular(fit, tol = 1e-10)
+#       
+#       fit
+#     } else {
+#       stats::lm(model_i, data = gene_df)
+#     }
+#     
+#     ANOVA_table <- stats::anova(lm)
+#     lm_formula <- formula(lm)
+#     
+#     ABC <- as.formula(paste("pairwise ~", paste(factors, collapse = " * ")))
+#     
+#     emm_obj <- suppressMessages(emmeans::emmeans(lm, specs = ABC, adjust = p.adj, mode = "satterthwaite"))[[1]]
+#     
+#     emm_df <- as.data.frame(emm_obj)
+#     
+#     
+#     ROWS <- do.call(paste, c(emm_df[factors], sep = ":"))
+#     
+#     meanPairs_df <- as.data.frame(multcomp::cld(emm_obj, adjust = p.adj, alpha = alpha,
+#                                                 reversed = FALSE, Letters = letters))
+#     
+#     # Ensure meanPairs_df has row names matching factor combinations
+#     meanPairs_rows <- do.call(paste, c(meanPairs_df[factors], sep = ":"))
+#     # Calculate statistics
+#     bwDCt <- gene_df$wDCt
+#     obs_mean <- tapply(bwDCt, gene_df$T, mean, na.rm = TRUE)
+#     obs_sd   <- tapply(bwDCt, gene_df$T, stats::sd, na.rm = TRUE)
+#     obs_n    <- tapply(bwDCt, gene_df$T, function(z) sum(!is.na(z)))
+#     obs_se   <- obs_sd / sqrt(obs_n)
+#     
+#     # Match to meanPairs_df order
+#     match_idx <- match(meanPairs_rows, names(obs_mean))
+#     
+#     dCt <- obs_mean[match_idx]
+#     se  <- obs_se[match_idx]
+#     
+#     # Calculate fold change
+#     RE <- 2^(-dCt)
+#     log2FC <- log2(RE)
+#     RE_LCL <- 2^(-meanPairs_df$upper.CL)      
+#     RE_UCL <- 2^(-meanPairs_df$lower.CL)
+#     
+#     
+#     
+#     
+#     
+#     Results <- data.frame(
+#       row.names = ROWS,
+#       dCt = dCt,
+#       RE = RE,
+#       log2FC = log2FC,
+#       LCL = RE_LCL,
+#       UCL = RE_UCL,
+#       se = se,
+#       sig = trimws(meanPairs_df$.group),
+#       stringsAsFactors = FALSE
+#     )
+#     
+#     parts <- do.call(rbind, strsplit(rownames(Results), ":", fixed = TRUE))
+#     colnames(parts) <- factors
+#     
+#     Results_combined <- cbind(as.data.frame(parts, stringsAsFactors = FALSE), Results)
+#     
+#     Results_combined$Lower.se.RE <- 2^(log2(Results_combined$RE) - Results_combined$se)
+#     Results_combined$Upper.se.RE <- 2^(log2(Results_combined$RE) + Results_combined$se)
+#     
+#     idx_less1 <- Results_combined$RE < 1
+#     idx_ge1   <- !idx_less1
+#     
+#     Results_combined$Lower.se.log2FC <- Results_combined$Upper.se.log2FC <- 0
+#     
+#     Results_combined$Lower.se.log2FC[idx_less1] <-
+#       (Results_combined$Upper.se.RE[idx_less1] * log2(Results_combined$RE[idx_less1])) /
+#       Results_combined$RE[idx_less1]
+#     
+#     Results_combined$Upper.se.log2FC[idx_less1] <-
+#       (Results_combined$Lower.se.RE[idx_less1] * log2(Results_combined$RE[idx_less1])) /
+#       Results_combined$RE[idx_less1]
+#     
+#     Results_combined$Lower.se.log2FC[idx_ge1] <-
+#       (Results_combined$Lower.se.RE[idx_ge1] * log2(Results_combined$RE[idx_ge1])) /
+#       Results_combined$RE[idx_ge1]
+#     
+#     Results_combined$Upper.se.log2FC[idx_ge1] <-
+#       (Results_combined$Upper.se.RE[idx_ge1] * log2(Results_combined$RE[idx_ge1])) /
+#       Results_combined$RE[idx_ge1]
+#     
+#     result_cols <- c("dCt", "RE", "log2FC", "LCL", "UCL", "se",
+#                      "Lower.se.RE", "Upper.se.RE",
+#                      "Lower.se.log2FC", "Upper.se.log2FC", "sig")
+#     
+#     Results_final <- Results_combined[, c(factors, result_cols), drop = FALSE]
+#     
+#     xx <- gene_df[, setdiff(names(gene_df), "T"), drop = FALSE]
+#     
+#     Results_final <- Results_final %>%
+#       dplyr::mutate_if(is.numeric, ~ round(., 5))
+#     
+#     Results_final$gene <- gene_name
+#     
+#     list(
+#       Final_data = xx,
+#       lm = lm,
+#       lm_formula = lm_formula,
+#       ANOVA_table = ANOVA_table,
+#       Results = Results_final,
+#       is_singular = is_singular
+#     )
+#   })
+#   
+#   relativeExpression <- do.call(rbind, lapply(perGene, `[[`, "Results"))
+#   rownames(relativeExpression) <- NULL
+#   relativeExpression <- relativeExpression[, c(ncol(relativeExpression), seq_len(ncol(relativeExpression) - 1))]
+#   
+#   cat("\nRelative Expression\n")
+#   print(relativeExpression)
+#   
+#   singular_vec <- vapply(perGene, `[[`, logical(1), "is_singular")
+#   singular_genes <- targetNames[which(singular_vec)]
+#   
+#   if (any(singular_vec)) {
+#     warning(
+#       "Singular fit detected for the following genes:\n  ",
+#       paste(singular_genes, collapse = ", ")
+#     )
+#   }
+#   
+#   if (is.null(model) && !is.null(default_model_formula)) {
+#     cat("\nNote: Using default model for statistical analysis:", default_model_formula, "\n")
+#   }
+#   
+#   invisible(list(
+#     perGene = setNames(perGene, targetNames),
+#     relativeExpression = relativeExpression,
+#     singular_genes = singular_genes,
+#     default_model_formula = default_model_formula
+#   ))
+# }
 ANOVA_DCt <- function(
     x,
     numOfFactors,
@@ -101,7 +328,7 @@ ANOVA_DCt <- function(
   
   default_model_formula <- NULL
   
-  # Handle custom vs default model
+  ## Model specification
   if (!is.null(model)) {
     if (!inherits(model, "formula")) model <- as.formula(model)
     message("Using user defined formula. Ignoring block and numOfFactors for model specification.")
@@ -121,8 +348,8 @@ ANOVA_DCt <- function(
   
   designCols <- seq_len(nDesign)
   refCols <- (n - 2 * numberOfrefGenes + 1):n
-  
   targetCols <- setdiff(seq_len(n), c(designCols, refCols))
+  
   if (length(targetCols) == 0 || length(targetCols) %% 2 != 0) {
     stop("Target genes must be supplied as E/Ct column pairs")
   }
@@ -140,13 +367,18 @@ ANOVA_DCt <- function(
   perGene <- lapply(seq_along(targetPairs), function(i) {
     
     gene_name <- targetNames[i]
-    gene_df <- x[, c(designCols, targetPairs[[i]], refCols), drop = FALSE] 
-
-    if (!is.data.frame(gene_df)) stop("`x` must be a data.frame")
+    gene_df <- x[, c(designCols, targetPairs[[i]], refCols), drop = FALSE]
     
-    gene_df <- compute_wDCt(gene_df, numOfFactors, numberOfrefGenes, block, set_missing_target_Ct_to_40 = set_missing_target_Ct_to_40)
+    gene_df <- compute_wDCt(
+      gene_df,
+      numOfFactors,
+      numberOfrefGenes,
+      block,
+      set_missing_target_Ct_to_40 = set_missing_target_Ct_to_40
+    )
     
-    gene_df[] <- lapply(gene_df, function(z) if (is.factor(z)) as.character(z) else z)
+    gene_df[] <- lapply(gene_df, function(z)
+      if (is.factor(z)) as.character(z) else z)
     
     nFac <- if (is.null(block)) numOfFactors else numOfFactors + 1
     gene_df[seq_len(nFac)] <- lapply(
@@ -155,8 +387,11 @@ ANOVA_DCt <- function(
     )
     
     factors <- colnames(gene_df)[1:numOfFactors]
-    gene_df$T <- factor(do.call(paste, c(gene_df[factors], sep = ":")))
     
+    ## Treatment ID (single source of truth)
+    gene_df$T <- do.call(paste, c(gene_df[factors], sep = ":"))
+    
+    ## Model
     if (is.null(model)) {
       rhs <- paste(factors, collapse = " * ")
       model_i <- if (is.null(block)) {
@@ -169,14 +404,17 @@ ANOVA_DCt <- function(
     }
     
     has_random_effects <- grepl("\\|", as.character(model_i)[3])
-    
     is_singular <- FALSE
     
     lm <- if (has_random_effects) {
       fit <- suppressMessages(lmerTest::lmer(model_i, data = gene_df))
-      fit <- stats::update(fit, control = lme4::lmerControl(optCtrl = list(xtol_abs = 1e-10, ftol_abs = 1e-10)))
+      fit <- stats::update(
+        fit,
+        control = lme4::lmerControl(
+          optCtrl = list(xtol_abs = 1e-10, ftol_abs = 1e-10)
+        )
+      )
       is_singular <- lme4::isSingular(fit, tol = 1e-10)
-      
       fit
     } else {
       stats::lm(model_i, data = gene_df)
@@ -185,116 +423,128 @@ ANOVA_DCt <- function(
     ANOVA_table <- stats::anova(lm)
     lm_formula <- formula(lm)
     
-    ABC <- as.formula(paste("pairwise ~", paste(factors, collapse = " * ")))
+    ## Estimated marginal means
+    emm_formula <- as.formula(
+      paste("pairwise ~", paste(factors, collapse = " * "))
+    )
     
-    emm_obj <- suppressMessages(emmeans::emmeans(lm, specs = ABC, adjust = p.adj, mode = "satterthwaite"))[[1]]
+    emm_obj <- suppressMessages(
+      emmeans::emmeans(
+        lm,
+        specs = emm_formula,
+        adjust = p.adj,
+        mode = "satterthwaite"
+      )
+    )[[1]]
     
     emm_df <- as.data.frame(emm_obj)
     
-    
-    ROWS <- do.call(paste, c(emm_df[factors], sep = ":"))
-    
-    meanPairs_df <- as.data.frame(multcomp::cld(emm_obj, adjust = p.adj, alpha = alpha,
-                                                reversed = FALSE, Letters = letters))
-    
-    # Ensure meanPairs_df has row names matching factor combinations
-    meanPairs_rows <- do.call(paste, c(meanPairs_df[factors], sep = ":"))
-    # Calculate statistics
-    bwDCt <- gene_df$wDCt
-    obs_mean <- tapply(bwDCt, gene_df$T, mean, na.rm = TRUE)
-    obs_sd   <- tapply(bwDCt, gene_df$T, stats::sd, na.rm = TRUE)
-    obs_n    <- tapply(bwDCt, gene_df$T, function(z) sum(!is.na(z)))
-    obs_se   <- obs_sd / sqrt(obs_n)
-    
-    # Match to meanPairs_df order
-    match_idx <- match(meanPairs_rows, names(obs_mean))
-    
-    dCt <- obs_mean[match_idx]
-    se  <- obs_se[match_idx]
-    
-    # Calculate fold change
-    RE <- 2^(-dCt)
-    log2FC <- log2(RE)
-    RE_LCL <- 2^(-meanPairs_df$upper.CL)      
-    RE_UCL <- 2^(-meanPairs_df$lower.CL)
-    
-    
-    
-    
-    
-    Results <- data.frame(
-      row.names = ROWS,
-      dCt = dCt,
-      RE = RE,
-      log2FC = log2FC,
-      LCL = RE_LCL,
-      UCL = RE_UCL,
-      se = se,
-      sig = trimws(meanPairs_df$.group),
-      stringsAsFactors = FALSE
+    ## Raw observed means + SE (SAFE MERGE)
+    obs_df <- aggregate(
+      wDCt ~ T,
+      data = gene_df,
+      FUN = function(z) c(
+        mean = mean(z, na.rm = TRUE),
+        se   = stats::sd(z, na.rm = TRUE) / sqrt(sum(!is.na(z)))
+      )
     )
     
-    parts <- do.call(rbind, strsplit(rownames(Results), ":", fixed = TRUE))
-    colnames(parts) <- factors
+    obs_df <- do.call(data.frame, obs_df)
+    colnames(obs_df) <- c("T", "dCt", "se")
     
-    Results_combined <- cbind(as.data.frame(parts, stringsAsFactors = FALSE), Results)
+    ## Treatment ID for emmeans
+    emm_df$T <- do.call(paste, c(emm_df[factors], sep = ":"))
     
-    Results_combined$Lower.se.RE <- 2^(log2(Results_combined$RE) - Results_combined$se)
-    Results_combined$Upper.se.RE <- 2^(log2(Results_combined$RE) + Results_combined$se)
+    merged <- merge(
+      emm_df,
+      obs_df,
+      by = "T",
+      all.x = TRUE,
+      sort = FALSE
+    )
     
-    idx_less1 <- Results_combined$RE < 1
+    ## Fold change
+    RE <- 2^(-merged$dCt)
+    log2FC <- log2(RE)
+    RE_LCL <- 2^(-merged$upper.CL)
+    RE_UCL <- 2^(-merged$lower.CL)
+    
+    ## Compact letter display
+    cld_df <- as.data.frame(
+      multcomp::cld(
+        emm_obj,
+        adjust = p.adj,
+        alpha = alpha,
+        reversed = FALSE,
+        Letters = letters
+      )
+    )
+    
+    merged$sig <- trimws(cld_df$.group)
+    
+    Results <- merged[, c("T", factors, "dCt")]
+    Results$RE <- RE
+    Results$log2FC <- log2FC
+    Results$LCL <- RE_LCL
+    Results$UCL <- RE_UCL
+    Results$se <- merged$se
+    Results$sig <- merged$sig
+    
+    ## SE propagation
+    Results$Lower.se.RE <- 2^(log2(Results$RE) - Results$se)
+    Results$Upper.se.RE <- 2^(log2(Results$RE) + Results$se)
+    
+    idx_less1 <- Results$RE < 1
     idx_ge1   <- !idx_less1
     
-    Results_combined$Lower.se.log2FC <- Results_combined$Upper.se.log2FC <- 0
+    Results$Lower.se.log2FC <- Results$Upper.se.log2FC <- 0
     
-    Results_combined$Lower.se.log2FC[idx_less1] <-
-      (Results_combined$Upper.se.RE[idx_less1] * log2(Results_combined$RE[idx_less1])) /
-      Results_combined$RE[idx_less1]
+    Results$Lower.se.log2FC[idx_less1] <-
+      (Results$Upper.se.RE[idx_less1] * log2(Results$RE[idx_less1])) /
+      Results$RE[idx_less1]
     
-    Results_combined$Upper.se.log2FC[idx_less1] <-
-      (Results_combined$Lower.se.RE[idx_less1] * log2(Results_combined$RE[idx_less1])) /
-      Results_combined$RE[idx_less1]
+    Results$Upper.se.log2FC[idx_less1] <-
+      (Results$Lower.se.RE[idx_less1] * log2(Results$RE[idx_less1])) /
+      Results$RE[idx_less1]
     
-    Results_combined$Lower.se.log2FC[idx_ge1] <-
-      (Results_combined$Lower.se.RE[idx_ge1] * log2(Results_combined$RE[idx_ge1])) /
-      Results_combined$RE[idx_ge1]
+    Results$Lower.se.log2FC[idx_ge1] <-
+      (Results$Lower.se.RE[idx_ge1] * log2(Results$RE[idx_ge1])) /
+      Results$RE[idx_ge1]
     
-    Results_combined$Upper.se.log2FC[idx_ge1] <-
-      (Results_combined$Upper.se.RE[idx_ge1] * log2(Results_combined$RE[idx_ge1])) /
-      Results_combined$RE[idx_ge1]
+    Results$Upper.se.log2FC[idx_ge1] <-
+      (Results$Upper.se.RE[idx_ge1] * log2(Results$RE[idx_ge1])) /
+      Results$RE[idx_ge1]
     
-    result_cols <- c("dCt", "RE", "log2FC", "LCL", "UCL", "se",
-                     "Lower.se.RE", "Upper.se.RE",
-                     "Lower.se.log2FC", "Upper.se.log2FC", "sig")
-    
-    Results_final <- Results_combined[, c(factors, result_cols), drop = FALSE]
-    
-    xx <- gene_df[, setdiff(names(gene_df), "T"), drop = FALSE]
-    
-    Results_final <- Results_final %>%
+    Results <- Results %>%
       dplyr::mutate_if(is.numeric, ~ round(., 5))
     
-    Results_final$gene <- gene_name
+    Results$gene <- gene_name
     
     list(
-      Final_data = xx,
+      Final_data = gene_df,
       lm = lm,
       lm_formula = lm_formula,
       ANOVA_table = ANOVA_table,
-      Results = Results_final,
+      Results = Results,
       is_singular = is_singular
     )
   })
   
   relativeExpression <- do.call(rbind, lapply(perGene, `[[`, "Results"))
   rownames(relativeExpression) <- NULL
-  relativeExpression <- relativeExpression[, c(ncol(relativeExpression), seq_len(ncol(relativeExpression) - 1))]
+  
+  
+  relativeExpression <- relativeExpression[, c("gene",
+    setdiff(colnames(relativeExpression), c("gene", "T", "sig")),
+    "sig"), drop = FALSE]
+  
+  
   
   cat("\nRelative Expression\n")
   print(relativeExpression)
-  
+
   singular_vec <- vapply(perGene, `[[`, logical(1), "is_singular")
-  singular_genes <- targetNames[which(singular_vec)]
+  singular_genes <- targetNames[singular_vec]
   
   if (any(singular_vec)) {
     warning(
@@ -304,7 +554,8 @@ ANOVA_DCt <- function(
   }
   
   if (is.null(model) && !is.null(default_model_formula)) {
-    cat("\nNote: Using default model for statistical analysis:", default_model_formula, "\n")
+    cat("\nNote: Using default model for statistical analysis:",
+        default_model_formula, "\n")
   }
   
   invisible(list(

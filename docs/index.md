@@ -100,9 +100,9 @@ column and E/Ct information of target and reference genes
 
   
 
-If there is no blocking factor, the corresponding block columns should
-be omitted. However, a column for biological replicates (which may be
-named “Rep”, “id” or similar) is always required.
+If there is no blocking factor, the block column should be omitted.
+However, a column for biological replicates (which may be named “Rep”,
+“id” or similar) is always required.
 
   
 

@@ -173,6 +173,7 @@ res <- ANOVA_DCt(
   block = NULL)
 #> 
 #> Relative Expression
+#> 
 #>    gene Type Conc SA      dCt      RE   log2FC     LCL     UCL      se
 #> 1    PO    R    L A1  1.81000 0.28519 -1.81000 0.18241 0.44589 0.02082
 #> 2    PO    S    L A1  0.33000 0.79554 -0.33000 0.50883 1.24380 0.21284

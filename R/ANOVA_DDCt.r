@@ -45,11 +45,11 @@
 #' Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.
 #' @param set_missing_target_Ct_to_40 If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA. 
 #' @param se.type Character string specifying how standard error is calculated.
-#'   One of \code{"paired.sample"}, \code{"two.sample"}, or \code{"single.sample"}.
-#'   \code{"paired.sample"} computes SE from paired differences (used when a random
-#'   \code{id} effect is present), \code{"two.sample"} uses the unpaired two-sample
-#'   t-test standard error against the reference level, and \code{"single.sample"}
-#'   computes SE within each level using a one-sample t-test.
+#'   One of \code{"paired.group"}, \code{"two.group"}, or \code{"single.group"}.
+#'   \code{"paired.group"} computes SE from paired differences (used when a random
+#'   \code{id} effect is present), \code{"two.group"} uses the unpaired two-group
+#'   t-test standard error against the reference level, and \code{"single.group"}
+#'   computes SE within each level using a one-group t-test.
 #' 
 #' @importFrom stats setNames
 #'
@@ -159,7 +159,7 @@ ANOVA_DDCt <- function(
     analyseAllTarget = TRUE,
     model = NULL,
     set_missing_target_Ct_to_40 = FALSE,
-    se.type = c("paired.sample", "two.sample", "single.sample")
+    se.type = c("paired.group", "two.group", "single.group")
   ) {
     
   
@@ -336,13 +336,13 @@ ANOVA_DDCt <- function(
       }
       
       
-      ##############################
+
       idRand <- detect_rep_id_random(model = model,
                                      numOfFactors = numOfFactors,
                                      block = block,
                                      x = x)
       
-      se.type <- match.arg(se.type, c("single.sample", "two.sample", "paired.sample"))
+      se.type <- match.arg(se.type, c("single.group", "two.group", "paired.group"))
       
       grp_levels <- levels(factor(gene_df[[1]]))
       n_groups  <- length(grp_levels)
@@ -350,7 +350,7 @@ ANOVA_DDCt <- function(
       
       
       if (idRand) {
-        if (se.type != "paired.sample")
+        if (se.type != "paired.group")
           warning("id random effect detected: using paired SE")  
         # id column is immediately before E/Ct gene columns
         id_col <- min(tc) - 1
@@ -385,7 +385,7 @@ ANOVA_DDCt <- function(
         se <- data.frame(factor = grp_levels, se = se_vec)
         
       } else {
-        if (se.type == "single.sample") { 
+        if (se.type == "single.group") { 
         df_se <- data.frame(
           factor = gene_df[[1]],
           wDCt   = bwDCt
@@ -400,7 +400,7 @@ ANOVA_DDCt <- function(
             .groups = "drop"
           )
           
-        } else {  # two.sample unpaired vs ref
+        } else {  # two.group unpaired vs ref
           
           df_se <- data.frame(
             factor = gene_df[[1]],
@@ -423,7 +423,6 @@ ANOVA_DDCt <- function(
           )
         }
       }
-#################
       
       
       

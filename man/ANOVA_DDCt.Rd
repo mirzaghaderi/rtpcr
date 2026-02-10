@@ -15,7 +15,7 @@ ANOVA_DDCt(
   analyseAllTarget = TRUE,
   model = NULL,
   set_missing_target_Ct_to_40 = FALSE,
-  se.type = c("paired.sample", "two.sample", "single.sample")
+  se.type = c("paired.group", "two.group", "single.group")
 )
 }
 \arguments{
@@ -68,11 +68,11 @@ model types and will use appropriate degrees of freedom methods (Satterthwaite b
 \item{set_missing_target_Ct_to_40}{If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA.}
 
 \item{se.type}{Character string specifying how standard error is calculated.
-One of \code{"paired.sample"}, \code{"two.sample"}, or \code{"single.sample"}.
-\code{"paired.sample"} computes SE from paired differences (used when a random
-\code{id} effect is present), \code{"two.sample"} uses the unpaired two-sample
-t-test standard error against the reference level, and \code{"single.sample"}
-computes SE within each level using a one-sample t-test.}
+One of \code{"paired.group"}, \code{"two.group"}, or \code{"single.group"}.
+\code{"paired.group"} computes SE from paired differences (used when a random
+\code{id} effect is present), \code{"two.group"} uses the unpaired two-group
+t-test standard error against the reference level, and \code{"single.group"}
+computes SE within each level using a one-group t-test.}
 }
 \value{
 An object containing expression table, lm model, residuals, raw data and ANOVA table for each gene:

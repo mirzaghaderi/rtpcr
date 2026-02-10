@@ -440,7 +440,7 @@ ANOVA_DCt <- function(
     emm_df <- as.data.frame(emm_obj)
     
     ## Raw observed means + SE (SAFE MERGE)
-    obs_df <- aggregate(
+    obs_df <- stats::aggregate(
       wDCt ~ T,
       data = gene_df,
       FUN = function(z) c(
@@ -540,8 +540,13 @@ ANOVA_DCt <- function(
   
   
   
-  cat("\nRelative Expression\n")
-  print(relativeExpression)
+  
+
+    cat("\nRelative Expression\n\n")
+    print(relativeExpression)
+    
+  
+    
 
   singular_vec <- vapply(perGene, `[[`, logical(1), "is_singular")
   singular_genes <- targetNames[singular_vec]

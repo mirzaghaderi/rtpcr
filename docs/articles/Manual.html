@@ -231,7 +231,7 @@ interaction with any main effect is not considered.</p>
 <h5 id="note-2">NOTE 2<a class="anchor" aria-label="anchor" href="#note-2"></a>
 </h5>
 <p>For <code>TTEST_DDCt</code> and <code>WILCOX_DDCt</code> (independent
-samples), <code>ANOVA_DCt</code>, and <code>ANOVA_DDCt</code>, each row
+groups), <code>ANOVA_DCt</code>, and <code>ANOVA_DDCt</code>, each row
 may come from separate and unique biological replicates. For example, a
 dataframe with 12 rows has come from an experiment with 12 individuals.
 For experiments with repeated observations (e.g. time-course data) , a
@@ -256,7 +256,22 @@ then used as the input for expression analysis. To use the
 <code>meanTech</code> function correctly, the technical replicate column
 must appear immediately after the biological replicate column (see <a href="#mean-of-technical-replicates">Mean of technical replicates</a>
 for an example).</p>
-<p><img src="../reference/figures/base.png" class="center" height="400"></p>
+<div class="float">
+<img src="../reference/figures/base.png" class="center" height="400" alt="Figure 3: This schematic illustrates an experimental design with four biological replicates for both Control and Treatment conditions, assuming a single sampling time point, where cDNA samples were analyzed by qPCR. The diagram details the initial dataset containing technical replicates (three technical replicates shown for Biological Replicate 1 under Control, with example amplification efficiencies (E) and cycle threshold (Ct) values for both target and reference genes) and summarizes the data processing step where technical replicates are averaged using the command meanTech(df, groups = 1:2). The resulting condensed dataset, comprising eight rows (one per biological replicate for each condition), is the final data structure used for the downstream relative expression analysis, with example averaged Ct values for target and reference genes displayed for all four Control and four Treatment biological replicates."><div class="figcaption">Figure 3: This schematic illustrates an
+experimental design with four biological replicates for both Control and
+Treatment conditions, assuming a single sampling time point, where cDNA
+samples were analyzed by qPCR. The diagram details the initial dataset
+containing technical replicates (three technical replicates shown for
+Biological Replicate 1 under Control, with example amplification
+efficiencies (E) and cycle threshold (Ct) values for both target and
+reference genes) and summarizes the data processing step where technical
+replicates are averaged using the command meanTech(df, groups = 1:2).
+The resulting condensed dataset, comprising eight rows (one per
+biological replicate for each condition), is the final data structure
+used for the downstream relative expression analysis, with example
+averaged Ct values for target and reference genes displayed for all four
+Control and four Treatment biological replicates.</div>
+</div>
 </div>
 <div class="section level5">
 <h5 id="note-4">NOTE 4<a class="anchor" aria-label="anchor" href="#note-4"></a>
@@ -329,7 +344,14 @@ for each gene.</p>
 <span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a> C2H2<span class="fl">.26</span> <span class="sc">-</span> C2H2<span class="fl">.01</span>   <span class="fl">0.1400</span> <span class="fl">0.121</span> <span class="dv">57</span>   <span class="fl">1.157</span>  <span class="fl">0.4837</span></span>
 <span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a> C2H2<span class="fl">.26</span> <span class="sc">-</span> GAPDH     <span class="fl">0.0265</span> <span class="fl">0.121</span> <span class="dv">57</span>   <span class="fl">0.219</span>  <span class="fl">0.9740</span></span>
 <span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a> C2H2<span class="fl">.01</span> <span class="sc">-</span> GAPDH    <span class="sc">-</span><span class="fl">0.1136</span> <span class="fl">0.121</span> <span class="dv">57</span>  <span class="sc">-</span><span class="fl">0.938</span>  <span class="fl">0.6186</span></span></code></pre></div>
-<p><img src="../reference/figures/standCur.png" class="center" height="200"></p>
+<div class="float">
+<img src="../reference/figures/standCur.png" class="center" height="200" alt="Figure 4: Standard curve plot displaying the relationship between the logarithm of cDNA dilution factors (ranging from -2.0 to 0.0) and their corresponding qPCR cycle threshold (Ct) values for three genes: C2H2.26, C2H2.01, and GAPDH. The accompanying table provides the precise Ct measurements, which is used to determine the amplification efficiency for each gene"><div class="figcaption">Figure 4: Standard curve plot displaying the
+relationship between the logarithm of cDNA dilution factors (ranging
+from -2.0 to 0.0) and their corresponding qPCR cycle threshold (Ct)
+values for three genes: C2H2.26, C2H2.01, and GAPDH. The accompanying
+table provides the precise Ct measurements, which is used to determine
+the amplification efficiency for each gene</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="relative-expression-analysis">Relative expression analysis<a class="anchor" aria-label="anchor" href="#relative-expression-analysis"></a>
@@ -361,7 +383,7 @@ common models that can be used.</p>
 <col width="49%">
 </colgroup>
 <thead><tr class="header">
-<th>Samples models may be used in <code><a href="../reference/ANOVA_DCt.html">ANOVA_DCt()</a></code> or
+<th>Example models may be used in <code><a href="../reference/ANOVA_DCt.html">ANOVA_DCt()</a></code> or
 <code><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> functions</th>
 <th>Experimental design</th>
 </tr></thead>
@@ -369,7 +391,7 @@ common models that can be used.</p>
 <tr class="odd">
 <td>wDCt ~ Condition</td>
 <td>Completely Randomized Design (CRD). Can also be used for t.test with
-two independent samples. (<strong>default</strong>)</td>
+two independent groups. (<strong>default</strong>)</td>
 </tr>
 <tr class="even">
 <td>wDCt ~ Factor1 * Factor2 * Factor3</td>
@@ -384,7 +406,7 @@ two independent samples. (<strong>default</strong>)</td>
 <tr class="even">
 <td>wDCt ~ time + (1 | id)</td>
 <td>Repeated measure analysis: different time points. Also can be used
-for t.test with two paired samples.</td>
+for t.test with two paired groups.</td>
 </tr>
 <tr class="odd">
 <td>wDCt ~ Condition * time + (1 | id)</td>
@@ -417,7 +439,7 @@ along with the output expression table.</p>
 <div class="section level5">
 <h5 id="note-5">NOTE<a class="anchor" aria-label="anchor" href="#note-5"></a>
 </h5>
-<p>Sometime samples are independent or paired (Repeated measure
+<p>Sometime groups are independent or paired (Repeated measure
 experiments). Examples: 1) Analyzing gene expression in different time
 points, or before and after treatment in each biological replicate; 2)
 Analyzing gene expression between two tissue types within the same
@@ -428,21 +450,21 @@ or more time points) with a repeated measure model such as
 <code>wDCt ~ Treatment + ( 1 | id)</code> or
 <code>wDCt ~ Treatment + ( 1 | Rep)</code>.</p>
 <div class="float">
-<img src="../reference/figures/repeated_measure.png" class="center" height="440" alt='Figure 5: Calculation of standard error (se) for ddCt–based relative expression in the ANOVA_DDCt() function of the rtpcr package. The schematic illustrates how weighted dCt (wdCt) and weighted ddCt (wddCt) values are combined under different experimental designs, and how the standard error is computed depending on the se.type argument. "paired.sample" computes se from paired differences (used when a random id effect is present), "two.sample" uses the unpaired two-sample t-test standard error against the reference level, and "single.sample" computes se within each level using a one-sample t-test. For independent samples, ANOVA_DDCt() automatically uses se.type = "two.sample", and if repeated‐measure or paired design model is specified, ANOVA_DDCt() automatically selects se.type = "paired.sample"'><div class="figcaption">Figure 5: Calculation of standard error (se) for
+<img src="../reference/figures/repeated_measure.png" class="center" height="440" alt='Figure 5: Calculation of standard error (se) for ddCt–based relative expression in the ANOVA_DDCt() function of the rtpcr package. The schematic illustrates how weighted dCt (wdCt) and weighted ddCt (wddCt) values are combined under different experimental designs, and how the standard error is computed depending on the se.type argument. "paired.group" computes se from paired differences (used when a random id effect is present), "two.group" uses the unpaired two-group t-test standard error against the reference level, and "single.group" computes se within each level using a one-group t-test. For independent groups, ANOVA_DDCt() automatically uses se.type = "two.group", and if repeated‐measure or paired design model is specified, ANOVA_DDCt() automatically selects se.type = "paired.group"'><div class="figcaption">Figure 5: Calculation of standard error (se) for
 ddCt–based relative expression in the <code><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> function
 of the rtpcr package. The schematic illustrates how weighted dCt (wdCt)
 and weighted ddCt (wddCt) values are combined under different
 experimental designs, and how the standard error is computed depending
-on the <code>se.type</code> argument. <code>"paired.sample"</code>
+on the <code>se.type</code> argument. <code>"paired.group"</code>
 computes se from paired differences (used when a random id effect is
-present), <code>"two.sample"</code> uses the unpaired two-sample t-test
+present), <code>"two.group"</code> uses the unpaired two-group t-test
 standard error against the reference level, and
-<code>"single.sample"</code> computes se within each level using a
-one-sample t-test. For independent samples, <code><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code>
-automatically uses <code>se.type = "two.sample"</code>, and if
+<code>"single.group"</code> computes se within each level using a
+one-group t-test. For independent groups, <code><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code>
+automatically uses <code>se.type = "two.group"</code>, and if
 repeated‐measure or paired design model is specified,
 <code><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> automatically selects
-<code>se.type = "paired.sample"</code>
+<code>se.type = "paired.group"</code>
 </div>
 </div>
 <p><br></p>
@@ -829,7 +851,7 @@ the Mann–Whitney test - also known as the Wilcoxon rank-sum test,
 (implemented via <code><a href="../reference/WILCOX_DDCt.html">WILCOX_DDCt()</a></code> in the rtpcr package), is an
 alternative to t.test, and <code><a href="https://rdrr.io/r/stats/kruskal.test.html" class="external-link">kruskal.test()</a></code> is an alternative
 to one-way analysis of variance. These tests assess differences between
-population medians using independent samples. However, the
+population medians using independent groups. However, the
 <code>t.test</code> function (also the <code>TTEST_DDCt</code> function
 described above) includes the <code>var.equal</code> argument. When set
 to <code>FALSE</code>, performs <code>t.test</code> under the unequal

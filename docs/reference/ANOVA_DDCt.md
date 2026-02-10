@@ -17,7 +17,7 @@ ANOVA_DDCt(
   analyseAllTarget = TRUE,
   model = NULL,
   set_missing_target_Ct_to_40 = FALSE,
-  se.type = c("paired.sample", "two.sample", "single.sample")
+  se.type = c("paired.group", "two.group", "single.group")
 )
 ```
 
@@ -101,12 +101,11 @@ ANOVA_DDCt(
 - se.type:
 
   Character string specifying how standard error is calculated. One of
-  `"paired.sample"`, `"two.sample"`, or `"single.sample"`.
-  `"paired.sample"` computes SE from paired differences (used when a
-  random `id` effect is present), `"two.sample"` uses the unpaired
-  two-sample t-test standard error against the reference level, and
-  `"single.sample"` computes SE within each level using a one-sample
-  t-test.
+  `"paired.group"`, `"two.group"`, or `"single.group"`. `"paired.group"`
+  computes SE from paired differences (used when a random `id` effect is
+  present), `"two.group"` uses the unpaired two-group t-test standard
+  error against the reference level, and `"single.group"` computes SE
+  within each level using a one-group t-test.
 
 ## Value
 

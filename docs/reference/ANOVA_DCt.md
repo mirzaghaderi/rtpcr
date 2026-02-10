@@ -144,6 +144,7 @@ result <- ANOVA_DCt(data_2factorBlock3ref, numOfFactors = 2, numberOfrefGenes = 
                     block = "block")
 #> 
 #> Relative Expression
+#> 
 #>    gene Type Concentration      dCt      RE   log2FC     LCL     UCL      se
 #> 1    PO    R            L1  2.62828 0.16174 -2.62828 0.11704 0.22351 0.06143
 #> 2    PO    S            L1  3.12306 0.11478 -3.12306 0.08306 0.15862 0.21472
@@ -178,6 +179,7 @@ result_mixed <- ANOVA_DCt(data_2factorBlock3ref, numOfFactors = 2, numberOfrefGe
                           block = "block")
 #> 
 #> Relative Expression
+#> 
 #>    gene Type Concentration      dCt      RE   log2FC     LCL     UCL      se
 #> 1    PO    R            L1  2.62828 0.16174 -2.62828 0.11704 0.22351 0.06143
 #> 2    PO    S            L1  3.12306 0.11478 -3.12306 0.08306 0.15862 0.21472
@@ -214,6 +216,7 @@ result_custom <- ANOVA_DCt(data_repeated_measure_2, numOfFactors = 2, numberOfre
 #> Using user defined formula. Ignoring block and numOfFactors for model specification.
 #> 
 #> Relative Expression
+#> 
 #>     gene treatment time       dCt       RE   log2FC       LCL       UCL      se
 #> 1 Target untreated    1 -13.34333 10393.06 13.34333  2420.745  44620.87 0.60237
 #> 2 Target   treated    1 -14.08667 17398.40 14.08667  4052.422  74697.09 1.40507

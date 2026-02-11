@@ -71,12 +71,12 @@ res <- ANOVA_DDCt(
   block = NULL)
 #> 
 #> Relative Expression
-#>   gene contrast     ddCt     RE  log2FC     LCL     UCL    se Lower.se.RE
-#> 1   PO        R  0.00000 1.0000 0.00000 0.00000 0.00000 0.000     1.00000
-#> 2   PO   S vs R -1.66111 3.1626 1.66111 2.44335 4.09358 0.499     2.23785
+#>   gene contrast     ddCt     RE  log2FC     LCL     UCL      se Lower.se.RE
+#> 1   PO        R  0.00000 1.0000 0.00000 0.00000 0.00000 0.00000     1.00000
+#> 2   PO   S vs R -1.66111 3.1626 1.66111 2.44335 4.09358 0.15154     2.84726
 #>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC pvalue sig
-#> 1     1.00000          0.0000         0.00000      1    
-#> 2     4.46949          1.1754         2.34754      0 ***
+#> 1     1.00000         0.00000         0.00000      1    
+#> 2     3.51286         1.49548         1.84508      0 ***
 #> 
 #> The R level was used as calibrator.
 #> Note: Using default model for statistical analysis: wDCt ~ Type * Conc * SA 

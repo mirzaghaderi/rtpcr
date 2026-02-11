@@ -44,12 +44,16 @@
 #' @param p.adj
 #' Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.
 #' @param set_missing_target_Ct_to_40 If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA. 
-#' @param se.type Character string specifying how standard error is calculated.
-#'   One of \code{"paired.group"}, \code{"two.group"}, or \code{"single.group"}.
-#'   \code{"paired.group"} computes SE from paired differences (used when a random
-#'   \code{id} effect is present), \code{"two.group"} uses the unpaired two-group
-#'   t-test standard error against the reference level, and \code{"single.group"}
-#'   computes SE within each level using a one-group t-test.
+#' @param se.type Character string specifying how standard error is calculated. 
+#' One of \code{"paired.group"}, \code{"two.group"}, or \code{"single.group"}. 
+#' \code{"paired.group"} computes SE from paired differences (used when a random 
+#' \code{id} effect is present), \code{"two.group"} uses the unpaired two-group 
+#' t-test standard error against the reference level, and \code{"single.group"} 
+#' computes SE within each level using a one-group t-test.
+#' @param modelBased_se Logical. If \code{TRUE} (default), standard errors are  
+#' calculated from model-based residuals. If \code{FALSE}, standard errors are calculated directly from the observed 
+#' \code{wDCt} values within each treatment group according to the selected \code{se.type}.  
+#' For single factor data, both methods are the same. It is recommended to use modelBased_se = TRUE (default).
 #' 
 #' @importFrom stats setNames
 #'
@@ -159,7 +163,8 @@ ANOVA_DDCt <- function(
     analyseAllTarget = TRUE,
     model = NULL,
     set_missing_target_Ct_to_40 = FALSE,
-    se.type = c("paired.group", "two.group", "single.group")
+    se.type = c("paired.group", "two.group", "single.group"),
+    modelBased_se = TRUE
   ) {
     
   
@@ -280,13 +285,13 @@ ANOVA_DDCt <- function(
           }
           
           is_mixed_model <- TRUE
-          lm_fit <- suppressMessages(lmerTest::lmer(formula_obj, data = gene_df))
+          lm_fit <- suppressMessages(lmerTest::lmer(formula_obj, data = gene_df, na.action = na.exclude))
           
           # singularity check
           is_singular <- lme4::isSingular(lm_fit, tol = 1e-4)
           
         } else {
-          lm_fit <- lm(formula_obj, data = gene_df)
+          lm_fit <- lm(formula_obj, data = gene_df, na.action = na.exclude)
         }
         
         lm_formula <- formula(lm_fit)
@@ -299,22 +304,18 @@ ANOVA_DDCt <- function(
             paste("wDCt ~", paste(factors, collapse = " * "))
           )
           default_model_formula <- deparse(formula_ANOVA)
-          lm_fit <- lm(formula_ANOVA, data = gene_df)
+          lm_fit <- lm(formula_ANOVA, data = gene_df, na.action = na.exclude)
           
         } else {
           formula_ANOVA <- as.formula(
             paste("wDCt ~", block, "+", paste(factors, collapse = " * "))
           )
           default_model_formula <- deparse(formula_ANOVA)
-          lm_fit <- lm(formula_ANOVA, data = gene_df)
+          lm_fit <- lm(formula_ANOVA, data = gene_df, na.action = na.exclude)
         }
         
         lm_formula <- formula(lm_fit)
         ANOVA_table <- stats::anova(lm_fit)
-      }
-      
-      if (!requireNamespace("emmeans", quietly = TRUE)) {
-        stop("emmeans package is required for post-hoc tests")
       }
       
       
@@ -330,100 +331,196 @@ ANOVA_DDCt <- function(
       
       
       
-      bwDCt <- gene_df$wDCt
-      if (!requireNamespace("dplyr", quietly = TRUE)) {
-        stop("dplyr package is required")
+      if (!modelBased_se) {
+        bwDCt <- gene_df$wDCt
+      } else {
+        bwDCt <- residuals(lm_fit, type = "response")
       }
+      
       
       
 
-      idRand <- detect_rep_id_random(model = model,
-                                     numOfFactors = numOfFactors,
-                                     block = block,
-                                     x = x)
-      
-      se.type <- match.arg(se.type, c("single.group", "two.group", "paired.group"))
-      
-      grp_levels <- levels(factor(gene_df[[1]]))
-      n_groups  <- length(grp_levels)
-      ref_level <- grp_levels[1]
-      
-      
-      if (idRand) {
-        if (se.type != "paired.group")
-          warning("id random effect detected: using paired SE")  
-        # id column is immediately before E/Ct gene columns
-        id_col <- min(tc) - 1
+        idRand <- detect_rep_id_random(model = model,
+                                       numOfFactors = numOfFactors,
+                                       block = block, x = x)
         
-        df_se <- data.frame(
-          factor = factor(gene_df[[1]]),
-          wDCt   = bwDCt,
-          id     = x[[id_col]]
-        )
+        se.type <- match.arg(se.type, c("single.group", "two.group", "paired.group"))
         
-        ref <- grp_levels[1]
-        se_vec <- numeric(n_groups)
-        se_vec[1] <- 0
+        grp_levels <- levels(factor(gene_df[[1]]))
+        n_groups  <- length(grp_levels)
+        ref_level <- grp_levels[1]
         
-        for (k in 2:n_groups) {
+        
+        if (idRand) {
+          if (se.type != "paired.group")
+            warning("id random effect detected: using paired SE")  
+          # id column is immediately before E/Ct gene columns
+          id_col <- min(tc) - 1
           
-          ref_data <- df_se[df_se$factor == ref, ]
-          grp_data <- df_se[df_se$factor == grp_levels[k], ]
+          df_se <- data.frame(
+            factor = factor(gene_df[[1]]),
+            wDCt   = bwDCt,
+            id     = x[[id_col]]
+          )
           
-          # pair strictly by id
-          ref_data <- ref_data[match(grp_data$id, ref_data$id), ]
-          d <- ref_data$wDCt - grp_data$wDCt
-          d <- d[!is.na(d)]
+          ref <- grp_levels[1]
+          se_vec <- numeric(n_groups)
+          se_vec[1] <- 0
           
-          if (length(d) > 1) {
-            se_vec[k] <- sqrt(stats::var(d) / length(d))
-          } else {
-            se_vec[k] <- NA_real_
+          for (k in 2:n_groups) {
+            ref_data <- df_se[df_se$factor == ref, ]
+            grp_data <- df_se[df_se$factor == grp_levels[k], ]
+            
+            # pair strictly by id
+            ref_data <- ref_data[match(grp_data$id, ref_data$id), ]
+            d <- ref_data$wDCt - grp_data$wDCt
+            d <- d[!is.na(d)]
+            
+            if (length(d) > 1) {
+              se_vec[k] <- sqrt(stats::var(d) / length(d))
+            } else {
+              se_vec[k] <- NA_real_
+            }
+          }
+          
+          se <- data.frame(factor = grp_levels, se = se_vec)
+          
+        } else {
+          if (se.type == "single.group") { 
+            df_se <- data.frame(
+              factor = gene_df[[1]],
+              wDCt   = bwDCt
+            )
+            
+            se <- dplyr::summarise(
+              dplyr::group_by(df_se, factor),
+              se = tryCatch(
+                stats::t.test(wDCt)$stderr,
+                error = function(e) NA_real_
+              ),
+              .groups = "drop"
+            )
+            
+          } else {  # two.group unpaired vs ref
+            
+            df_se <- data.frame(
+              factor = gene_df[[1]],
+              wDCt   = bwDCt
+            )
+            
+            ref_vals <- df_se$wDCt[df_se$factor == ref_level]
+            
+            se <- data.frame(
+              factor = grp_levels,
+              se = sapply(grp_levels, function(g) {
+                if (g == ref_level) return(0)
+                grp_vals <- df_se$wDCt[df_se$factor == g]
+                
+                tryCatch(
+                  stats::t.test(grp_vals, ref_vals, paired = FALSE)$stderr,
+                  error = function(e) NA_real_
+                )
+              })
+            )
           }
         }
         
-        se <- data.frame(factor = grp_levels, se = se_vec)
-        
-      } else {
-        if (se.type == "single.group") { 
-        df_se <- data.frame(
-          factor = gene_df[[1]],
-          wDCt   = bwDCt
-        )
-        
-          se <- dplyr::summarise(
-            dplyr::group_by(df_se, factor),
-            se = tryCatch(
-              stats::t.test(wDCt)$stderr,
-              error = function(e) NA_real_
-            ),
-            .groups = "drop"
-          )
-          
-        } else {  # two.group unpaired vs ref
-          
-          df_se <- data.frame(
-            factor = gene_df[[1]],
-            wDCt   = bwDCt
-          )
-          
-          ref_vals <- df_se$wDCt[df_se$factor == ref_level]
-          
-          se <- data.frame(
-            factor = grp_levels,
-            se = sapply(grp_levels, function(g) {
-              if (g == ref_level) return(0)
-              grp_vals <- df_se$wDCt[df_se$factor == g]
-              
-              tryCatch(
-                stats::t.test(grp_vals, ref_vals, paired = FALSE)$stderr,
-                error = function(e) NA_real_
-              )
-            })
-          )
-        }
-      }
       
+      # else {
+      #   bwDCt <- residuals(lm_fit, type = "response")
+      #   
+      #   idRand <- detect_rep_id_random(model = model,
+      #                                  numOfFactors = numOfFactors,
+      #                                  block = block,
+      #                                  x = x)
+      #   
+      #   se.type <- match.arg(se.type, c("single.group", "two.group", "paired.group"))
+      #   
+      #   grp_levels <- levels(factor(gene_df[[1]]))
+      #   n_groups  <- length(grp_levels)
+      #   ref_level <- grp_levels[1]
+      #   
+      #   if (idRand) {
+      #     if (se.type != "paired.group")
+      #       warning("id random effect detected: using paired SE")
+      #     
+      #     id_col <- min(tc) - 1
+      #     
+      #     df_se <- data.frame(
+      #       factor = factor(gene_df[[1]]),
+      #       resid  = bwDCt,
+      #       id     = x[[id_col]]
+      #     )
+      #     
+      #     ref <- grp_levels[1]
+      #     se_vec <- numeric(n_groups)
+      #     se_vec[1] <- 0
+      #     
+      #     for (k in 2:n_groups) {
+      #       
+      #       ref_data <- df_se[df_se$factor == ref, ]
+      #       grp_data <- df_se[df_se$factor == grp_levels[k], ]
+      #       
+      #       ref_data <- ref_data[match(grp_data$id, ref_data$id), ]
+      #       d <- ref_data$resid - grp_data$resid
+      #       d <- d[!is.na(d)]
+      #       
+      #       if (length(d) > 1) {
+      #         se_vec[k] <- sqrt(stats::var(d) / length(d))
+      #       } else {
+      #         se_vec[k] <- NA_real_
+      #       }
+      #     }
+      #     
+      #     se <- data.frame(factor = grp_levels, se = se_vec)
+      #     
+      #   } else {
+      #     
+      #     df_se <- data.frame(
+      #       factor = gene_df[[1]],
+      #       resid  = bwDCt
+      #     )
+      #     
+      #     if (se.type == "single.group") {
+      #       
+      #       se <- dplyr::summarise(
+      #         dplyr::group_by(df_se, factor),
+      #         se = if (sum(!is.na(resid)) > 1)
+      #           stats::sd(resid, na.rm = TRUE) /
+      #           sqrt(sum(!is.na(resid)))
+      #         else NA_real_,
+      #         .groups = "drop"
+      #       )
+      #       
+      #     } else {  # two.group
+      #       
+      #       ref_vals <- df_se$resid[df_se$factor == ref_level]
+      #       
+      #       se <- data.frame(
+      #         factor = grp_levels,
+      #         se = sapply(grp_levels, function(g) {
+      #           
+      #           if (g == ref_level) return(0)
+      #           
+      #           grp_vals <- df_se$resid[df_se$factor == g]
+      #           
+      #           tryCatch(
+      #             stats::t.test(grp_vals, ref_vals, paired = FALSE)$stderr,
+      #             error = function(e) NA_real_
+      #           )
+      #         })
+      #       )
+      #     }
+      #   }
+      # }
+      
+      
+      
+      
+      
+      
+
+            
       
       
       sig <- .convert_to_character(pp$p.value)

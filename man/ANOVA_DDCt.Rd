@@ -15,7 +15,8 @@ ANOVA_DDCt(
   analyseAllTarget = TRUE,
   model = NULL,
   set_missing_target_Ct_to_40 = FALSE,
-  se.type = c("paired.group", "two.group", "single.group")
+  se.type = c("paired.group", "two.group", "single.group"),
+  modelBased_se = TRUE
 )
 }
 \arguments{
@@ -67,12 +68,17 @@ model types and will use appropriate degrees of freedom methods (Satterthwaite b
 
 \item{set_missing_target_Ct_to_40}{If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA.}
 
-\item{se.type}{Character string specifying how standard error is calculated.
-One of \code{"paired.group"}, \code{"two.group"}, or \code{"single.group"}.
-\code{"paired.group"} computes SE from paired differences (used when a random
-\code{id} effect is present), \code{"two.group"} uses the unpaired two-group
-t-test standard error against the reference level, and \code{"single.group"}
+\item{se.type}{Character string specifying how standard error is calculated. 
+One of \code{"paired.group"}, \code{"two.group"}, or \code{"single.group"}. 
+\code{"paired.group"} computes SE from paired differences (used when a random 
+\code{id} effect is present), \code{"two.group"} uses the unpaired two-group 
+t-test standard error against the reference level, and \code{"single.group"} 
 computes SE within each level using a one-group t-test.}
+
+\item{modelBased_se}{Logical. If \code{TRUE} (default), standard errors are
+calculated from model-based residuals. If \code{FALSE}, standard errors are calculated directly from the observed 
+\code{wDCt} values within each treatment group according to the selected \code{se.type}.  
+For single factor data, both methods are the same. It is recommended to use modelBased_se = TRUE (default).}
 }
 \value{
 An object containing expression table, lm model, residuals, raw data and ANOVA table for each gene:

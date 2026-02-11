@@ -57,7 +57,8 @@ and performs per-gene statistical analysis.</p>
 <span>  analyseAllTarget <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  model <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  set_missing_target_Ct_to_40 <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  se.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"paired.group"</span>, <span class="st">"two.group"</span>, <span class="st">"single.group"</span><span class="op">)</span></span>
+<span>  se.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"paired.group"</span>, <span class="st">"two.group"</span>, <span class="st">"single.group"</span><span class="op">)</span>,</span>
+<span>  modelBased_se <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -140,6 +141,13 @@ One of <code>"paired.group"</code>, <code>"two.group"</code>, or <code>"single.g
 t-test standard error against the reference level, and <code>"single.group"</code>
 computes SE within each level using a one-group t-test.</p></dd>
 
+
+<dt id="arg-modelbased-se">modelBased_se<a class="anchor" aria-label="anchor" href="#arg-modelbased-se"></a></dt>
+<dd><p>Logical. If <code>TRUE</code> (default), standard errors are
+calculated from model-based residuals. If <code>FALSE</code>, standard errors are calculated directly from the observed
+<code>wDCt</code> values within each treatment group according to the selected <code>se.type</code>.
+For single factor data, both methods are the same. It is recommended to use modelBased_se = TRUE (default).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -218,18 +226,18 @@ Statistical Analysis of Real-Time PCR Data.
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative Expression</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   gene contrast     ddCt      RE   log2FC     LCL     UCL      se Lower.se.RE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   PO       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.00000     1.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   PO L2 vs L1 -0.94610 1.92666  0.94610 1.25860 2.94934 0.21785     1.65663</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   PO L3 vs L1 -2.19198 4.56931  2.19198 3.08069 6.77724 0.32539     3.64669</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   PO L2 vs L1 -0.94610 1.92666  0.94610 1.25860 2.94934 0.16301     1.72082</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   PO L3 vs L1 -2.19198 4.56931  2.19198 3.08069 6.77724 0.20409     3.96657</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4  NLM       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.00000     1.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  NLM L2 vs L1  0.86568 0.54879 -0.86568 0.39830 0.75614 0.98842     0.27661</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  NLM L3 vs L1 -1.44341 2.71964  1.44341 1.94670 3.79946 0.93618     1.42132</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  NLM L2 vs L1  0.86568 0.54879 -0.86568 0.39830 0.75614 0.10971     0.50860</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  NLM L3 vs L1 -1.44341 2.71964  1.44341 1.94670 3.79946 0.20250     2.36347</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.00000         0.00000         0.00000 1.00000    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2.24072         0.81350         1.10032 0.00116  **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     5.72536         1.74938         2.74655 0.00000 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2.15713         0.84502         1.05928 0.00116  **</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     5.26364         1.90283         2.52506 0.00000 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4     1.00000         0.00000         0.00000 1.00000    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     1.08880        -1.71751        -0.43633 0.00018 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     5.20391         0.75435         2.76191 0.00000 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     0.59215        -0.93407        -0.80229 0.00018 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     3.12947         1.25439         1.66093 0.00000 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The L1 level was used as calibrator.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Note: Using default model for statistical analysis: wDCt ~ block + Concentration * Type </span>
@@ -298,12 +306,12 @@ Statistical Analysis of Real-Time PCR Data.
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative Expression</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     gene       contrast     ddCt      RE  log2FC     LCL     UCL      se</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 Target              1  0.00000 1.00000 0.00000 0.00000 0.00000 0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Target time2 vs time1 -0.32833 1.25556 0.32833 0.43805 3.59873 0.45451</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Target time3 vs time1 -1.34667 2.54324 1.34667 0.88731 7.28951 0.70352</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Target time2 vs time1 -0.32833 1.25556 0.32833 0.43805 3.59873 0.38172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Target time3 vs time1 -1.34667 2.54324 1.34667 0.88731 7.28951 0.58112</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.00000     1.00000         0.00000         0.00000 1.00000    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     0.91626     1.72051         0.23960         0.44992 0.55402    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     1.56173     4.14159         0.82695         2.19301 0.03509   *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     0.96367     1.63586         0.25200         0.42778 0.55402    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     1.70001     3.80471         0.90017         2.01463 0.03509   *</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The 1 level was used as calibrator.</span>
 <span class="r-in"><span>           </span></span>

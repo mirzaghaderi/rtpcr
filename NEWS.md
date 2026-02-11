@@ -20,6 +20,8 @@
 
 - The reference level is always assigned an SE of zero for consistency with fold-change reporting.
 
+- The default behavior in `ANOVA_DDCt()` function for standard error calculation has been updated. Standard errors are now calculated from model-based residuals (`modelBased_se = TRUE`) instead of directly from observed wDCt values. Setting `modelBased_se = FALSE` restores the previous behavior. For single factor data, both methods are the same.  It is recommended to use `modelBased_se = TRUE` (default).
+
 - A function called `plotSingleGene()` was added that creates a bar plot of relative gene expression (fold change) values from single gene analysis showing all pairwise significances.
 
 

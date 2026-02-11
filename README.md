@@ -320,16 +320,24 @@ measure model such as `wDCt ~ Treatment + ( 1 | id)` or
 <figure>
 <img src="man/figures/repeated_measure.png" class="center"
 style="width:100.0%"
-alt="Figure 5: Calculation of standard error (se) for ddCt–based relative expression in the ANOVA_DDCt() function of the rtpcr package. The schematic illustrates how weighted dCt (wdCt) and weighted ddCt (wddCt) values are combined under different experimental designs, and how the standard error is computed depending on the se.type argument (One of &quot;paired.group&quot;, &quot;two.group&quot;, or &quot;single.group&quot;). &quot;paired.group&quot; computes se from paired differences (used when a random id effect is present), &quot;two.group&quot; uses the unpaired two-group t-test standard error against the reference level, and &quot;single.group&quot; computes se within each level using a one-group t-test. For independent groups, ANOVA_DDCt() automatically uses se.type = &quot;two.group&quot;, and if repeated‐measure or paired designs model is specified, ANOVA_DDCt() automatically selects se.type = &quot;paired.group&quot;" />
+alt="Figure 5: Calculation of standard error (se) for ddCt–based relative expression in the ANOVA_DDCt() function of the rtpcr package. Standard errors in the ANOVA_DDCt() function are calculated from model-based residuals (modelBased_se = TRUE) by default. By setting modelBased_se = FALSE standard errors are calculated directly from the observed wDCt values within each treatment group according to the selected se.type (One of &quot;paired.group&quot;, &quot;two.group&quot;, or &quot;single.group&quot;). For single factor data, both methods are the same. It is recommended to use modelBased_se = TRUE (default). This figure illustrates how weighted dCt (wdCt) and weighted ddCt (wddCt) values are used under different experimental designs, and how the standard error is computed when modelBased_se = FALSE depending on the se.type argument. &quot;paired.group&quot; computes se from paired differences (used when a random id effect is present), &quot;two.group&quot; uses the unpaired two-group t-test standard error against the reference level, and &quot;single.group&quot; computes se within each level using a one-group t-test. For independent groups, ANOVA_DDCt() automatically uses se.type = &quot;two.group&quot;, and if repeated‐measure or paired designs model is specified, ANOVA_DDCt() automatically selects se.type = &quot;paired.group&quot;" />
 <figcaption aria-hidden="true">Figure 5: Calculation of standard error
 (se) for ddCt–based relative expression in the <code>ANOVA_DDCt()</code>
-function of the rtpcr package. The schematic illustrates how weighted
-dCt (wdCt) and weighted ddCt (wddCt) values are combined under different
-experimental designs, and how the standard error is computed depending
-on the <code>se.type</code> argument (One of
+function of the rtpcr package. Standard errors in the
+<code>ANOVA_DDCt()</code> function are calculated from model-based
+residuals (<code>modelBased_se = TRUE</code>) by default. By setting
+<code>modelBased_se = FALSE</code> standard errors are calculated
+directly from the observed wDCt values within each treatment group
+according to the selected <code>se.type</code> (One of
 <code>"paired.group"</code>, <code>"two.group"</code>, or
-<code>"single.group"</code>). <code>"paired.group"</code> computes se
-from paired differences (used when a random id effect is present),
+<code>"single.group"</code>). For single factor data, both methods are
+the same. It is recommended to use <code>modelBased_se = TRUE</code>
+(default). This figure illustrates how weighted dCt (wdCt) and weighted
+ddCt (wddCt) values are used under different experimental designs, and
+how the standard error is computed when
+<code>modelBased_se = FALSE</code> depending on the <code>se.type</code>
+argument. <code>"paired.group"</code> computes se from paired
+differences (used when a random id effect is present),
 <code>"two.group"</code> uses the unpaired two-group t-test standard
 error against the reference level, and <code>"single.group"</code>
 computes se within each level using a one-group t-test. For independent

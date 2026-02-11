@@ -308,33 +308,48 @@ measure model such as `wDCt ~ Treatment + ( 1 | id)` or
 `wDCt ~ Treatment + ( 1 | Rep)`.
 
 ![Figure 5: Calculation of standard error (se) for ddCt–based relative
-expression in the ANOVA_DDCt() function of the rtpcr package. The
-schematic illustrates how weighted dCt (wdCt) and weighted ddCt (wddCt)
-values are combined under different experimental designs, and how the
-standard error is computed depending on the se.type argument.
-"paired.group" computes se from paired differences (used when a random
-id effect is present), "two.group" uses the unpaired two-group t-test
-standard error against the reference level, and "single.group" computes
-se within each level using a one-group t-test. For independent groups,
-ANOVA_DDCt() automatically uses se.type = "two.group", and if
-repeated‐measure or paired design model is specified, ANOVA_DDCt()
-automatically selects se.type =
-"paired.group"](../reference/figures/repeated_measure.png)
+expression in the ANOVA_DDCt() function of the rtpcr package. Standard
+errors in the ANOVA_DDCt() function are calculated from model-based
+residuals (modelBased_se = TRUE) by default. By setting modelBased_se =
+FALSE standard errors are calculated directly from the observed wDCt
+values within each treatment group according to the selected se.type
+(One of "paired.group", "two.group", or "single.group"). For single
+factor data, both methods are the same. It is recommended to use
+modelBased_se = TRUE (default). This figure illustrates how weighted dCt
+(wdCt) and weighted ddCt (wddCt) values are used under different
+experimental designs, and how the standard error is computed when
+modelBased_se = FALSE depending on the se.type argument. "paired.group"
+computes se from paired differences (used when a random id effect is
+present), "two.group" uses the unpaired two-group t-test standard error
+against the reference level, and "single.group" computes se within each
+level using a one-group t-test. For independent groups, ANOVA_DDCt()
+automatically uses se.type = "two.group", and if repeated‐measure or
+paired designs model is specified, ANOVA_DDCt() automatically selects
+se.type = "paired.group"](../reference/figures/repeated_measure.png)
 
 Figure 5: Calculation of standard error (se) for ddCt–based relative
 expression in the
 [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
-function of the rtpcr package. The schematic illustrates how weighted
-dCt (wdCt) and weighted ddCt (wddCt) values are combined under different
-experimental designs, and how the standard error is computed depending
-on the `se.type` argument. `"paired.group"` computes se from paired
-differences (used when a random id effect is present), `"two.group"`
-uses the unpaired two-group t-test standard error against the reference
-level, and `"single.group"` computes se within each level using a
-one-group t-test. For independent groups,
+function of the rtpcr package. Standard errors in the
+[`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
+function are calculated from model-based residuals
+(`modelBased_se = TRUE`) by default. By setting `modelBased_se = FALSE`
+standard errors are calculated directly from the observed wDCt values
+within each treatment group according to the selected `se.type` (One of
+`"paired.group"`, `"two.group"`, or `"single.group"`). For single factor
+data, both methods are the same. It is recommended to use
+`modelBased_se = TRUE` (default). This figure illustrates how weighted
+dCt (wdCt) and weighted ddCt (wddCt) values are used under different
+experimental designs, and how the standard error is computed when
+`modelBased_se = FALSE` depending on the `se.type` argument.
+`"paired.group"` computes se from paired differences (used when a random
+id effect is present), `"two.group"` uses the unpaired two-group t-test
+standard error against the reference level, and `"single.group"`
+computes se within each level using a one-group t-test. For independent
+groups,
 [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
 automatically uses `se.type = "two.group"`, and if repeated‐measure or
-paired design model is specified,
+paired designs model is specified,
 [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
 automatically selects `se.type = "paired.group"`
 

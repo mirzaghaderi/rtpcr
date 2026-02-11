@@ -49,6 +49,7 @@
 <li><p>SE calculations are now robust to missing values by relying on <code><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test()</a></code> internals.</p></li>
 <li><p>When a random <code>id</code> effect is detected in the model, paired standard errors are used automatically (with a warning if another <code>se.type</code> is requested).</p></li>
 <li><p>The reference level is always assigned an SE of zero for consistency with fold-change reporting.</p></li>
+<li><p>The default behavior in <code><a href="../reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> function for standard error calculation has been updated. Standard errors are now calculated from model-based residuals (<code>modelBased_se = TRUE</code>) instead of directly from observed wDCt values. Setting <code>modelBased_se = FALSE</code> restores the previous behavior. For single factor data, both methods are the same. It is recommended to use <code>modelBased_se = TRUE</code> (default).</p></li>
 <li><p>A function called <code><a href="../reference/plotSingleGene.html">plotSingleGene()</a></code> was added that creates a bar plot of relative gene expression (fold change) values from single gene analysis showing all pairwise significances.</p></li>
 </ul></div>
 </div>

@@ -72,12 +72,12 @@ analyseAllTarget = TRUE) # If you have multi-target gene data, specify a single 
 #> Relative Expression
 #>   gene contrast     ddCt      RE  log2FC     LCL     UCL      se Lower.se.RE
 #> 1   PO       D0  0.00000 1.00000 0.00000 0.00000 0.00000 0.00000     1.00000
-#> 2   PO D1 vs D0 -0.09833 1.07054 0.09833 0.70177 1.63308 0.43345     0.79272
-#> 3   PO D2 vs D0 -1.84667 3.59668 1.84667 2.35774 5.48667 0.49655     2.54932
+#> 2   PO D1 vs D0 -0.09833 1.07054 0.09833 0.70177 1.63308 0.24609     0.90265
+#> 3   PO D2 vs D0 -1.84667 3.59668 1.84667 2.35774 5.48667 0.10568     3.34263
 #>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC pvalue sig
 #> 1     1.00000         0.00000         0.00000 1.0000    
-#> 2     1.44572         0.07281         0.13280 0.6744    
-#> 3     5.07434         1.30891         2.60535 0.0000 ***
+#> 2     1.26965         0.08291         0.11662 0.6744    
+#> 3     3.87004         1.71623         1.98702 0.0000 ***
 #> 
 #> The D0 level was used as calibrator.
 #> Note: Using default model for statistical analysis: wDCt ~ Drought * Genotype 

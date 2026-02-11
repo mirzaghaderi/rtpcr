@@ -480,7 +480,19 @@ ANOVA_DCt <- function(
       )
     )
     
-    merged$sig <- trimws(cld_df$.group)
+    cld_df$T <- do.call(paste, c(cld_df[factors], sep = ":"))
+    cld_df$.group <- trimws(cld_df$.group)
+
+    merged <- merge(merged,
+      cld_df[, c("T", ".group")],
+      by = "T",
+      all.x = TRUE,
+      sort = FALSE)
+    
+    merged$sig <- merged$.group
+    merged$.group <- NULL
+    
+    
     
     Results <- merged[, c("T", factors, "dCt")]
     Results$RE <- RE
@@ -521,7 +533,7 @@ ANOVA_DCt <- function(
     Results$gene <- gene_name
     
     list(
-      Final_data = gene_df,
+      Final_data = gene_df[, -ncol(gene_df)],
       lm = lm,
       lm_formula = lm_formula,
       ANOVA_table = ANOVA_table,

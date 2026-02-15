@@ -2,25 +2,9 @@
 
 ## New features
 
-- In `ANOVA_DDCt()` function the `se.type` argument was added to control how standard errors (SE) are calculated for relative expression (RE = fold change) estimates.
+- In `ANOVA_DDCt()` function the `se.type` argument was added to control how standard errors (SE) are calculated for relative expression (RE = fold change) estimates. If set to `"paired.sample"` the se is computed from paired differences between factor levels, matching samples by `id`. This is automatically used when an `id` random effect is detected in a user-provided mixed model. `"two.sample"` computes SE using an unpaired samples against the reference level, and `"single.sample"` computes SE within each factor level. When a random `id` effect is detected in the model, paired standard errors are used automatically (with a warning if another `se.type` is requested).
 
-- `"paired.sample"`: computes SE from paired differences between factor levels, matching samples by `id`. This is automatically used when an `id` random effect is detected in a mixed model.
-
-- `"two.sample"`: computes SE using an unpaired samples against the reference level.
-
-- `"single.sample"`: computes SE within each factor level.
-
-- Standard error calculations now correctly respect repeated-measures designs when an `id` random effect is present in the user-specified model.
-
-- Paired SEs are calculated strictly by matching observations on `id`, improving accuracy for longitudinal and paired experimental designs.
-
-- SE calculations are now robust to missing values by relying on `t.test()` internals.
-
-- When a random `id` effect is detected in the model, paired standard errors are used automatically (with a warning if another `se.type` is requested).
-
-- The reference level is always assigned an SE of zero for consistency with fold-change reporting.
-
-- The default behavior in `ANOVA_DDCt()` function for standard error calculation has been updated. Standard errors are now calculated from model-based residuals (`modelBased_se = TRUE`) instead of directly from observed wDCt values. Setting `modelBased_se = FALSE` restores the previous behavior. For single factor data, both methods are the same.  It is recommended to use `modelBased_se = TRUE` (default).
+- The default behavior in `ANOVA_DDCt()` function for standard error calculation has been updated. Standard errors are now calculated from model-based residuals (`modelBased_se = TRUE`) by default. Setting `modelBased_se = FALSE` restores the previous behavior i.e. direct computing from observed wDCt values. For single factor data, both methods are the same.  It is recommended let it use `modelBased_se = TRUE` (default).
 
 - A function called `plotSingleGene()` was added that creates a bar plot of relative gene expression (fold change) values from single gene analysis showing all pairwise significances.
 

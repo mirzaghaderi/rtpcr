@@ -115,6 +115,12 @@ plotFactor <- function(data,
                        legend_position = "right",
                        ...) {
   
+  if(any(colnames(data) == "contrast")){
+    calibrator <- tail(strsplit(as.character(data$contrast[1]), " ")[[1]], 1)
+    data <- data[sapply(strsplit(as.character(data$contrast), " "), tail, 1) == calibrator, ]
+  }
+  
+  
   # required columns
   required_cols <- c(x_col, y_col, Lower.se_col, Upper.se_col)
   if (!is.null(group_col)) required_cols <- c(required_cols, group_col)

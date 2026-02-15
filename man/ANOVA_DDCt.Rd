@@ -78,7 +78,7 @@ computes SE within each level using a one-group t-test.}
 \item{modelBased_se}{Logical. If \code{TRUE} (default), standard errors are
 calculated from model-based residuals. If \code{FALSE}, standard errors are calculated directly from the observed 
 \code{wDCt} values within each treatment group according to the selected \code{se.type}.  
-For single factor data, both methods are the same. It is recommended to use modelBased_se = TRUE (default).}
+For single factor data, both methods are the same. It is recommended to use \code{modelBased_se = TRUE} (default).}
 }
 \value{
 An object containing expression table, lm model, residuals, raw data and ANOVA table for each gene:
@@ -123,7 +123,7 @@ Upper.se.log2FC (The upper limit error bar for log2 RE)
 }
 \examples{
 data1 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
-ANOVA_DDCt(x = data1,
+ANOVA_DDCt(data1,
            numOfFactors = 2,
            numberOfrefGenes = 3,
            block = "block",
@@ -131,30 +131,31 @@ ANOVA_DDCt(x = data1,
            p.adj = "none")
            
 data2 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))          
-ANOVA_DDCt(x = data2,
+ANOVA_DDCt(data2,
            numOfFactors = 1,
            numberOfrefGenes = 1,
            block = NULL,
            mainFactor.column = 1,
-           p.adj = "none")
+           p.adj = "none",
+           se.type = "single.group")
   
-# Repeated measure analysis         
-a <- ANOVA_DDCt(data_repeated_measure_1,
-           numOfFactors = 1,
-           numberOfrefGenes = 1,
-           block = NULL,
-           mainFactor.column = 1,
-           p.adj = "none", model = wDCt ~ time + (1 | id))
-
-a$perGene$Target$ANOVA_table
-
-
-# Repeated measure analysis: split-plot in time
-a <- ANOVA_DDCt(data_repeated_measure_2,
-           numOfFactors = 2, numberOfrefGenes = 1,
-           mainFactor.column = 2, block = NULL,
-           model = wDCt ~ treatment * time + (1 | id))
-           
+# # Repeated measure analysis         
+# a <- ANOVA_DDCt(data_repeated_measure_1,
+#            numOfFactors = 1,
+#            numberOfrefGenes = 1,
+#            block = NULL,
+#            mainFactor.column = 1,
+#            p.adj = "none", model = wDCt ~ time + (1 | id))
+# 
+# a$perGene$Target$ANOVA_table
+# 
+# 
+# # Repeated measure analysis: split-plot in time
+# a <- ANOVA_DDCt(data_repeated_measure_2,
+#            numOfFactors = 2, numberOfrefGenes = 1,
+#            mainFactor.column = 2, block = NULL,
+#            model = wDCt ~ treatment * time + (1 | id))
+          
 }
 \references{
 LivakKJ, Schmittgen TD (2001).

@@ -53,7 +53,7 @@
 #' @param modelBased_se Logical. If \code{TRUE} (default), standard errors are  
 #' calculated from model-based residuals. If \code{FALSE}, standard errors are calculated directly from the observed 
 #' \code{wDCt} values within each treatment group according to the selected \code{se.type}.  
-#' For single factor data, both methods are the same. It is recommended to use modelBased_se = TRUE (default).
+#' For single factor data, both methods are the same. It is recommended to use \code{modelBased_se = TRUE} (default).
 #' 
 #' @importFrom stats setNames
 #'
@@ -119,7 +119,7 @@
 #' 
 #' @examples
 #' data1 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
-#' ANOVA_DDCt(x = data1,
+#' ANOVA_DDCt(data1,
 #'            numOfFactors = 2,
 #'            numberOfrefGenes = 3,
 #'            block = "block",
@@ -127,30 +127,31 @@
 #'            p.adj = "none")
 #'            
 #' data2 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))          
-#' ANOVA_DDCt(x = data2,
+#' ANOVA_DDCt(data2,
 #'            numOfFactors = 1,
 #'            numberOfrefGenes = 1,
 #'            block = NULL,
 #'            mainFactor.column = 1,
-#'            p.adj = "none")
+#'            p.adj = "none",
+#'            se.type = "single.group")
 #'   
-#' # Repeated measure analysis         
-#' a <- ANOVA_DDCt(data_repeated_measure_1,
-#'            numOfFactors = 1,
-#'            numberOfrefGenes = 1,
-#'            block = NULL,
-#'            mainFactor.column = 1,
-#'            p.adj = "none", model = wDCt ~ time + (1 | id))
-#' 
-#' a$perGene$Target$ANOVA_table
-#' 
-#' 
-#' # Repeated measure analysis: split-plot in time
-#' a <- ANOVA_DDCt(data_repeated_measure_2,
-#'            numOfFactors = 2, numberOfrefGenes = 1,
-#'            mainFactor.column = 2, block = NULL,
-#'            model = wDCt ~ treatment * time + (1 | id))
-#'            
+#' # # Repeated measure analysis         
+#' # a <- ANOVA_DDCt(data_repeated_measure_1,
+#' #            numOfFactors = 1,
+#' #            numberOfrefGenes = 1,
+#' #            block = NULL,
+#' #            mainFactor.column = 1,
+#' #            p.adj = "none", model = wDCt ~ time + (1 | id))
+#' # 
+#' # a$perGene$Target$ANOVA_table
+#' # 
+#' # 
+#' # # Repeated measure analysis: split-plot in time
+#' # a <- ANOVA_DDCt(data_repeated_measure_2,
+#' #            numOfFactors = 2, numberOfrefGenes = 1,
+#' #            mainFactor.column = 2, block = NULL,
+#' #            model = wDCt ~ treatment * time + (1 | id))
+#'           
 
 ANOVA_DDCt <- function(
     x,
@@ -277,12 +278,6 @@ ANOVA_DDCt <- function(
         has_random_effects <- grepl("\\|", paste(deparse(formula_obj), collapse = " "))
         
         if (has_random_effects) {
-          if (!requireNamespace("lmerTest", quietly = TRUE)) {
-            stop("lmerTest package is required for mixed models")
-          }
-          if (!requireNamespace("lme4", quietly = TRUE)) {
-            stop("lme4 package is required for singularity checks")
-          }
           
           is_mixed_model <- TRUE
           lm_fit <- suppressMessages(lmerTest::lmer(formula_obj, data = gene_df, na.action = na.exclude))
@@ -294,7 +289,7 @@ ANOVA_DDCt <- function(
           lm_fit <- lm(formula_obj, data = gene_df, na.action = na.exclude)
         }
         
-        lm_formula <- formula(lm_fit)
+        lm_formula <- paste(deparse(formula(lm_fit)), collapse = " ")
         ANOVA_table <- stats::anova(lm_fit)
         
       } else {
@@ -314,7 +309,7 @@ ANOVA_DDCt <- function(
           lm_fit <- lm(formula_ANOVA, data = gene_df, na.action = na.exclude)
         }
         
-        lm_formula <- formula(lm_fit)
+        lm_formula <- paste(deparse(formula(lm_fit)), collapse = " ")
         ANOVA_table <- stats::anova(lm_fit)
       }
       
@@ -328,6 +323,11 @@ ANOVA_DDCt <- function(
       ci  <- as.data.frame(stats::confint(graphics::pairs(pp1)),   # , na.action = stats::na.pass
                            adjust = p.adj)[1:length(unique(gene_df[,1]))-1,]
       pp  <- cbind(pp3, lower.CL = ci$lower.CL, upper.CL = ci$upper.CL)
+      
+      
+      
+      
+      
       
       
       
@@ -424,103 +424,6 @@ ANOVA_DDCt <- function(
             )
           }
         }
-        
-      
-      # else {
-      #   bwDCt <- residuals(lm_fit, type = "response")
-      #   
-      #   idRand <- detect_rep_id_random(model = model,
-      #                                  numOfFactors = numOfFactors,
-      #                                  block = block,
-      #                                  x = x)
-      #   
-      #   se.type <- match.arg(se.type, c("single.group", "two.group", "paired.group"))
-      #   
-      #   grp_levels <- levels(factor(gene_df[[1]]))
-      #   n_groups  <- length(grp_levels)
-      #   ref_level <- grp_levels[1]
-      #   
-      #   if (idRand) {
-      #     if (se.type != "paired.group")
-      #       warning("id random effect detected: using paired SE")
-      #     
-      #     id_col <- min(tc) - 1
-      #     
-      #     df_se <- data.frame(
-      #       factor = factor(gene_df[[1]]),
-      #       resid  = bwDCt,
-      #       id     = x[[id_col]]
-      #     )
-      #     
-      #     ref <- grp_levels[1]
-      #     se_vec <- numeric(n_groups)
-      #     se_vec[1] <- 0
-      #     
-      #     for (k in 2:n_groups) {
-      #       
-      #       ref_data <- df_se[df_se$factor == ref, ]
-      #       grp_data <- df_se[df_se$factor == grp_levels[k], ]
-      #       
-      #       ref_data <- ref_data[match(grp_data$id, ref_data$id), ]
-      #       d <- ref_data$resid - grp_data$resid
-      #       d <- d[!is.na(d)]
-      #       
-      #       if (length(d) > 1) {
-      #         se_vec[k] <- sqrt(stats::var(d) / length(d))
-      #       } else {
-      #         se_vec[k] <- NA_real_
-      #       }
-      #     }
-      #     
-      #     se <- data.frame(factor = grp_levels, se = se_vec)
-      #     
-      #   } else {
-      #     
-      #     df_se <- data.frame(
-      #       factor = gene_df[[1]],
-      #       resid  = bwDCt
-      #     )
-      #     
-      #     if (se.type == "single.group") {
-      #       
-      #       se <- dplyr::summarise(
-      #         dplyr::group_by(df_se, factor),
-      #         se = if (sum(!is.na(resid)) > 1)
-      #           stats::sd(resid, na.rm = TRUE) /
-      #           sqrt(sum(!is.na(resid)))
-      #         else NA_real_,
-      #         .groups = "drop"
-      #       )
-      #       
-      #     } else {  # two.group
-      #       
-      #       ref_vals <- df_se$resid[df_se$factor == ref_level]
-      #       
-      #       se <- data.frame(
-      #         factor = grp_levels,
-      #         se = sapply(grp_levels, function(g) {
-      #           
-      #           if (g == ref_level) return(0)
-      #           
-      #           grp_vals <- df_se$resid[df_se$factor == g]
-      #           
-      #           tryCatch(
-      #             stats::t.test(grp_vals, ref_vals, paired = FALSE)$stderr,
-      #             error = function(e) NA_real_
-      #           )
-      #         })
-      #       )
-      #     }
-      #   }
-      # }
-      
-      
-      
-      
-      
-      
-
-            
       
       
       sig <- .convert_to_character(pp$p.value)
@@ -559,24 +462,25 @@ ANOVA_DDCt <- function(
         tableC,
         Lower.se.RE = 2^(log2(tableC$RE) - tableC$se),
         Upper.se.RE = 2^(log2(tableC$RE) + tableC$se),
-        Lower.se.log2FC = 0,
-        Upper.se.log2FC = 0
+        # Lower.se.log2FC = 0,
+        # Upper.se.log2FC = 0,
+        Lower.se.log2FC = log2(tableC$RE) - tableC$se,
+        Upper.se.log2FC = log2(tableC$RE) + tableC$se
       )
       
       
-      for (j in seq_len(nrow(tableC))) {
-        if (is.na(tableC$RE[j])) {
-          tableC$Lower.se.log2FC[j] <- NA
-          tableC$Upper.se.log2FC[j] <- NA
-        } else if (tableC$RE[j] < 1) {
-          tableC$Lower.se.log2FC[j] <- (tableC$Upper.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
-          tableC$Upper.se.log2FC[j] <- (tableC$Lower.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
-        } else {
-          tableC$Lower.se.log2FC[j] <- (tableC$Lower.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
-          tableC$Upper.se.log2FC[j] <- (tableC$Upper.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
-        }
-      }
-      
+      # for (j in seq_len(nrow(tableC))) {
+      #   if (is.na(tableC$RE[j])) {
+      #     tableC$Lower.se.log2FC[j] <- NA
+      #     tableC$Upper.se.log2FC[j] <- NA
+      #   } else if (tableC$RE[j] < 1) {
+      #     tableC$Lower.se.log2FC[j] <- (tableC$Upper.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+      #     tableC$Upper.se.log2FC[j] <- (tableC$Lower.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+      #   } else {
+      #     tableC$Lower.se.log2FC[j] <- (tableC$Lower.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+      #     tableC$Upper.se.log2FC[j] <- (tableC$Upper.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
+      #   }
+      # }
       
       
       tableC$gene <- gene_name
@@ -618,9 +522,9 @@ ANOVA_DDCt <- function(
     
     
     
-    cat("\nRelative Expression\n")
-    print(relativeExpression)
-    cat("\n")
+    # cat("\nRelative Expression\n")
+    # print(relativeExpression)
+    # cat("\n")
     
     first_gene_res <- perGene[[1]]
     calibrator_level <- strsplit(first_gene_res$Fold_Change$contrast[1], " vs ")[[1]][1]

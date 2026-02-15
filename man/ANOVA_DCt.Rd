@@ -2,7 +2,7 @@
 % Please edit documentation in R/ANOVA_DCt.R
 \name{ANOVA_DCt}
 \alias{ANOVA_DCt}
-\title{Delta Ct ANOVA analysis with optional model specification}
+\title{Delta Ct ANOVA analysis}
 \usage{
 ANOVA_DCt(
   x,
@@ -12,7 +12,6 @@ ANOVA_DCt(
   alpha = 0.05,
   p.adj = "none",
   analyseAllTarget = TRUE,
-  model = NULL,
   set_missing_target_Ct_to_40 = FALSE
 )
 }
@@ -33,8 +32,7 @@ is done in multiple qPCR plates, variation resulting from the plates may
 interfere with the actual amount of gene expression. One solution is to 
 conduct each plate as a randomized block so that at least one replicate of 
 each treatment and control is present on a plate. Block effect is usually 
-considered as random and its interaction with any main effect is not considered.
-Note: This parameter is ignored if \code{model} is provided.}
+considered as random and its interaction with any main effect is not considered.}
 
 \item{alpha}{Statistical level for comparisons (default: 0.05).}
 
@@ -44,14 +42,6 @@ Note: This parameter is ignored if \code{model} is provided.}
 detected target genes are analysed. Alternatively, a character vector 
 specifying the names (names of their Efficiency columns) of target genes 
 to be analysed.}
-
-\item{model}{Optional model formula. If provided, this overrides the automatic formula (CRD or RCBD 
-based on \code{block} and \code{numOfFactors}). The formula uses 
-\code{wDCt} as the response variable. 
-For mixed models, random effects can be defined using \code{lmer} syntax 
-(e.g., \code{"wDCt ~ Treatment + (1|Block)"}). When using \code{model}, 
-the \code{block} and \code{numOfFactors} arguments are ignored for model 
-specification, but still used for data structure identification.}
 
 \item{set_missing_target_Ct_to_40}{If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA.}
 }
@@ -71,8 +61,7 @@ residuals, and raw data for each gene:
 }
 }
 \description{
-Performs Delta Ct (dCt) analysis of the data from a 1-, 2-, or 3-factor experiment 
-with support for both fixed effects and mixed effects models. Per-gene statistical 
+Performs Delta Ct (dCt) analysis of the data from a 1-, 2-, or 3-factor experiment. Per-gene statistical 
 grouping is performed for all treatment combinations.
 }
 \details{
@@ -95,18 +84,11 @@ variance components along with an expression table containing:
 }
 }
 \examples{
-# Default usage with fixed effects
 result <- ANOVA_DCt(data_2factorBlock3ref, numOfFactors = 2, numberOfrefGenes = 3, 
                     block = "block")
 
-# Mixed model with random block effect
-result_mixed <- ANOVA_DCt(data_2factorBlock3ref, numOfFactors = 2, numberOfrefGenes = 3,
-                          block = "block")
-
-# Custom mixed model formula with nested random effects
-result_custom <- ANOVA_DCt(data_repeated_measure_2, numOfFactors = 2, numberOfrefGenes = 1,
-                            block = NULL,
-                            model = wDCt ~ treatment * time + (1 | id))
+result <- ANOVA_DCt(data_repeated_measure_2, numOfFactors = 2, numberOfrefGenes = 1,
+                            block = NULL)
 
 
 }

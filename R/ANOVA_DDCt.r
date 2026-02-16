@@ -179,7 +179,7 @@ ANOVA_DDCt <- function(
     targetCols <- setdiff(seq_len(n), c(designCols, refCols))
     
     if (length(targetCols) == 0 || length(targetCols) %% 2 != 0) {
-      stop("Target genes must be supplied as E/Ct column pairs")
+      stop("The supplied arguments don't match the input data.")
     }
     
     
@@ -236,9 +236,7 @@ ANOVA_DDCt <- function(
         calibrator <- gene_df[,1][1]
       }
       
-      if (!exists("compute_wDCt")) {
-        stop("compute_wDCt function is required but not found")
-      }
+
       gene_df <- compute_wDCt(gene_df, numOfFactors, numberOfrefGenes, block,
                               set_missing_target_Ct_to_40 = set_missing_target_Ct_to_40)
       
@@ -462,25 +460,9 @@ ANOVA_DDCt <- function(
         tableC,
         Lower.se.RE = 2^(log2(tableC$RE) - tableC$se),
         Upper.se.RE = 2^(log2(tableC$RE) + tableC$se),
-        # Lower.se.log2FC = 0,
-        # Upper.se.log2FC = 0,
         Lower.se.log2FC = log2(tableC$RE) - tableC$se,
         Upper.se.log2FC = log2(tableC$RE) + tableC$se
       )
-      
-      
-      # for (j in seq_len(nrow(tableC))) {
-      #   if (is.na(tableC$RE[j])) {
-      #     tableC$Lower.se.log2FC[j] <- NA
-      #     tableC$Upper.se.log2FC[j] <- NA
-      #   } else if (tableC$RE[j] < 1) {
-      #     tableC$Lower.se.log2FC[j] <- (tableC$Upper.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
-      #     tableC$Upper.se.log2FC[j] <- (tableC$Lower.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
-      #   } else {
-      #     tableC$Lower.se.log2FC[j] <- (tableC$Lower.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
-      #     tableC$Upper.se.log2FC[j] <- (tableC$Upper.se.RE[j]*log2(tableC$RE[j]))/tableC$RE[j]
-      #   }
-      # }
       
       
       tableC$gene <- gene_name
@@ -522,9 +504,9 @@ ANOVA_DDCt <- function(
     
     
     
-    # cat("\nRelative Expression\n")
-    # print(relativeExpression)
-    # cat("\n")
+    cat("\nRelative Expression\n")
+    print(relativeExpression)
+    cat("\n")
     
     first_gene_res <- perGene[[1]]
     calibrator_level <- strsplit(first_gene_res$Fold_Change$contrast[1], " vs ")[[1]][1]

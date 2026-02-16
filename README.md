@@ -477,6 +477,18 @@ residuals <- resid(res$perGene$gene_name$lm)
 residuals
 ```
 
+<figure>
+<img src="man/figures/out.png" class="center" style="width:100.0%"
+alt="Figure 6: All the functions for relative expression analysis (including TTEST_DDCt, WILCOX_DDCt, ANOVA_DDCt(), and ANOVA_DCt()) return the relative expression table which include fold change and corresponding statistics. The output of ANOVA_DDCt(), and ANOVA_DCt() also include lm model, residuals, raw data and ANOVA table for each gene." />
+<figcaption aria-hidden="true">Figure 6: All the functions for relative
+expression analysis (including <code>TTEST_DDCt</code>,
+<code>WILCOX_DDCt</code>, <code>ANOVA_DDCt()</code>, and
+<code>ANOVA_DCt()</code>) return the relative expression table which
+include fold change and corresponding statistics. The output of
+<code>ANOVA_DDCt()</code>, and <code>ANOVA_DCt()</code> also include lm
+model, residuals, raw data and ANOVA table for each gene.</figcaption>
+</figure>
+
 ## Plot output
 
 A single function of `plotFactor` is used to produce barplots for one-

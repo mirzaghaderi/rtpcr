@@ -40,7 +40,7 @@ plotSingleGene <- function(res,
                            base_size = 12,
                            d = 0.4,
                            ...){
-
+  
   if (length(unique(res$relativeExpression$gene)) == 1){
     gene_name <- unique(res$relativeExpression$gene)
   } else {
@@ -56,7 +56,7 @@ plotSingleGene <- function(res,
   
   
   df2_filt <- df2[df2$sig != " ", ]
-  df2_filt$contrast <- gsub(" vs ", ' ',df2_filt$contrast)  # Just space, no quotes
+  df2_filt$contrast <- gsub(" vs ", ' ', df2_filt$contrast)
   df2_filt$contrast <- strsplit(df2_filt$contrast, " ")
   
   
@@ -64,11 +64,13 @@ plotSingleGene <- function(res,
     geom_col(width = col_width, alpha = alpha, color = color, ...) +
     geom_errorbar(aes(ymin = Lower.se.RE, ymax = Upper.se.RE), width = err_width) +
     scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
-
-  p <- p + geom_signif(comparisons = as.list(df2_filt$contrast),
-                       y_position = seq(max(df1$Upper.se.RE),(max(df1$Upper.se.RE) + ((length(df1$contrast)*length(df1$contrast)))/2), by = d),
-                       annotations = df2_filt$sig)
-
+  
+  if (nrow(df2_filt) > 0) {
+    p <- p + geom_signif(comparisons = as.list(df2_filt$contrast),
+                         y_position = seq(max(df1$Upper.se.RE),(max(df1$Upper.se.RE) + ((length(df1$contrast)*length(df1$contrast)))/2), by = d),
+                         annotations = df2_filt$sig)
+  }
+  
   p + .theme_pub(base_size = base_size) +
     xlab(NULL) +
     theme(axis.text.x = element_text(size = base_size, color = "black", angle = 45, hjust = 1),

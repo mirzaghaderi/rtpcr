@@ -1,6 +1,7 @@
-#' Delta Ct ANOVA analysis
+#' Delta Ct ANOVA analysis with optional model specification
 #'
-#' Performs Delta Ct (dCt) analysis of the data from a 1-, 2-, or 3-factor experiment. Per-gene statistical 
+#' Performs Delta Ct (dCt) analysis of the data from a 1-, 2-, or 3-factor experiment 
+#' with support for both fixed effects and mixed effects models. Per-gene statistical 
 #' grouping is performed for all treatment combinations.
 #'
 #' @details
@@ -37,12 +38,20 @@
 #'   conduct each plate as a randomized block so that at least one replicate of 
 #'   each treatment and control is present on a plate. Block effect is usually 
 #'   considered as random and its interaction with any main effect is not considered.
+#'   Note: This parameter is ignored if \code{model} is provided.
 #' @param alpha Statistical level for comparisons (default: 0.05).
 #' @param p.adj Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.
 #' @param analyseAllTarget Logical or character. If \code{TRUE} (default), all 
 #'   detected target genes are analysed. Alternatively, a character vector 
 #'   specifying the names (names of their Efficiency columns) of target genes 
 #'   to be analysed.
+#' @param model Optional model formula. If provided, this overrides the automatic formula (CRD or RCBD 
+#'   based on \code{block} and \code{numOfFactors}). The formula uses 
+#'   \code{wDCt} as the response variable. 
+#'   For mixed models, random effects can be defined using \code{lmer} syntax 
+#'   (e.g., \code{"wDCt ~ Treatment + (1|Block)"}). When using \code{model}, 
+#'   the \code{block} and \code{numOfFactors} arguments are ignored for model 
+#'   specification, but still used for data structure identification.
 #' @param set_missing_target_Ct_to_40 If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA. 
 #'
 #' @return
@@ -61,11 +70,18 @@
 #' }
 #' 
 #' @examples
+#' # Default usage with fixed effects
 #' result <- ANOVA_DCt(data_2factorBlock3ref, numOfFactors = 2, numberOfrefGenes = 3, 
 #'                     block = "block")
 #'
-#' result <- ANOVA_DCt(data_repeated_measure_2, numOfFactors = 2, numberOfrefGenes = 1,
-#'                             block = NULL)
+#' # Mixed model with random block effect
+#' result_mixed <- ANOVA_DCt(data_2factorBlock3ref, numOfFactors = 2, numberOfrefGenes = 3,
+#'                           block = "block")
+#'
+#' # Custom mixed model formula with nested random effects
+#' result_custom <- ANOVA_DCt(data_repeated_measure_2, numOfFactors = 2, numberOfrefGenes = 1,
+#'                             block = NULL,
+#'                             model = wDCt ~ treatment * time + (1 | id))
 #'
 #'
 #' @export
@@ -79,10 +95,26 @@ ANOVA_DCt <- function(
     alpha = 0.05,
     p.adj = "none",
     analyseAllTarget = TRUE,
+    model = NULL,
+    modelBased_se = TRUE,
     set_missing_target_Ct_to_40 = FALSE
 ) {
   
-
+  default_model_formula <- NULL
+  
+  ## Model specification
+  if (!is.null(model)) {
+    if (!inherits(model, "formula")) model <- as.formula(model)
+    message("Using user defined formula. Ignoring block and numOfFactors for model specification.")
+  } else {
+    factors <- colnames(x)[1:numOfFactors]
+    rhs <- paste(factors, collapse = " * ")
+    default_model_formula <- if (is.null(block)) {
+      paste("wDCt ~", rhs)
+    } else {
+      paste("wDCt ~", block, "+", rhs)
+    }
+  }
   
   n <- ncol(x)
   nDesign <- numOfFactors + if (is.null(block)) 1 else 2
@@ -130,20 +162,36 @@ ANOVA_DCt <- function(
     
     factors <- colnames(gene_df)[1:numOfFactors]
     
-    ## Treatment ID
-    gene_df$T <- apply(gene_df[factors], 1, function(r) paste(r, collapse=":"))
+    ## Treatment ID (single source of truth)
+    gene_df$T <- do.call(paste, c(gene_df[factors], sep = ":"))
     
+    ## Model
+    if (is.null(model)) {
       rhs <- paste(factors, collapse = " * ")
       model_i <- if (is.null(block)) {
         as.formula(paste("wDCt ~", rhs))
       } else {
         as.formula(paste("wDCt ~", block, "+", rhs))
       }
-      
-    lm <- stats::lm(model_i, data = gene_df, na.action = na.exclude)
+    } else {
+      model_i <- model
+    }
+    
+    #has_random_effects <- grepl("\\|", as.character(model_i)[3])
+    has_random_effects <- grepl("\\|", paste(deparse(model_i), collapse = " "))
+    
+    is_singular <- FALSE
+    
+    lm <- if (has_random_effects) {
+      fit <- suppressMessages(lmerTest::lmer(model_i, data = gene_df, na.action = na.exclude))
+      is_singular <- lme4::isSingular(fit)
+      fit
+    } else {
+      stats::lm(model_i, data = gene_df, na.action = na.exclude)
+    }
     
     ANOVA_table <- stats::anova(lm)
-    lm_formula <- paste(deparse(formula(lm)), collapse = " ")
+    lm_formula <- formula(lm)
     
     ## Estimated marginal means
     emm_formula <- as.formula(
@@ -160,6 +208,16 @@ ANOVA_DCt <- function(
     )[[1]]
     
     emm_df <- as.data.frame(emm_obj)
+    
+    
+    
+    
+    if (!modelBased_se) {
+      wDCt <- gene_df$wDCt
+    } else {
+      wDCt <- residuals(lm, type = "response")
+    }
+    
     
     ## Raw means and se
     obs_df <- stats::aggregate(
@@ -259,7 +317,8 @@ ANOVA_DCt <- function(
       lm = lm,
       lm_formula = lm_formula,
       ANOVA_table = ANOVA_table,
-      Results = Results
+      Results = Results,
+      is_singular = is_singular
     )
   })
   
@@ -274,12 +333,26 @@ ANOVA_DCt <- function(
   cat("\nRelative Expression\n\n")
   print(relativeExpression)
   
-  cat("\nNote: Model used for statistical analysis:\n")
-  cat(perGene[[1]]$lm_formula, "\n")
-
+  
+  singular_vec <- vapply(perGene, `[[`, logical(1), "is_singular")
+  singular_genes <- targetNames[singular_vec]
+  
+  if (any(singular_vec)) {
+    warning(
+      "Singular fit detected for the following genes:\n  ",
+      paste(singular_genes, collapse = ", ")
+    )
+  }
+  
+  if (is.null(model) && !is.null(default_model_formula)) {
+    cat("\nNote: Using default model for statistical analysis:",
+        default_model_formula, "\n")
+  }
   
   invisible(list(
     perGene = setNames(perGene, targetNames),
-    relativeExpression = relativeExpression
+    relativeExpression = relativeExpression,
+    singular_genes = singular_genes,
+    default_model_formula = default_model_formula
   ))
 }

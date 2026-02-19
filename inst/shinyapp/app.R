@@ -1,4 +1,6 @@
 if (!requireNamespace("rtpcr", quietly = TRUE)) install.packages("rtpcr")
+if (!requireNamespace("rtpcr", quietly = TRUE)) install.packages("multcompView")
+library(multcompView)
 library(rtpcr)
 library(shiny)
 library(dplyr)
@@ -34,7 +36,7 @@ ui <- fluidPage(
                            #checkboxInput("analyseAll_dc", "Analyse all targets", TRUE),
                            checkboxInput("set40_dc", "Set missing Ct to 40", FALSE),
                            selectInput("pAdj_dc", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
-                           textInput("model_dc", "model (optional)", ""),
+                           #textInput("model_dc", "model (optional)", ""),
                            #checkboxInput("modelSE_dc", "Model-based SE", TRUE),
                            actionButton("run_dc", "Run ANOVA_DCt")
                   ),
@@ -342,7 +344,7 @@ server <- function(input, output, session) {
         numOfFactors = input$numFactors_dc,
         numberOfrefGenes = input$numRefGenes_dc,
         block = if(input$block_dc == "") NULL else input$block_dc,
-        model = if(input$model_dc == "") NULL else input$model_dc,
+        #model = if(input$model_dc == "") NULL else input$model_dc,
         p.adj = input$pAdj_dc,
         #analyseAllTarget = input$analyseAll_dc,
         set_missing_target_Ct_to_40 = input$set40_dc,

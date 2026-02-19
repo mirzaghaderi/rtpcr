@@ -38,6 +38,11 @@ methods.
 - [Citation](#citation)
 - [References](#references)
 
+<img src="man/figures/shiny_rtpcr.png" class="center"
+style="width:100.0%" /> *rtpcr is now available as shiny_rtpcr, a web
+application developed using R/Shiny for interactive analysis of qPCR
+data at <https://mirzaghaderi.shinyapps.io/rtpcr/>*
+
 # Functions
 
 The rtpcr package gets efficiency (E) the Ct values of genes and

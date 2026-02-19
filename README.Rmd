@@ -50,7 +50,8 @@ and $\Delta\Delta Ct$ methods, including t-tests and ANOVA, repeated-measures mo
 - [Citation](#citation)
 - [References](#references)
 
-
+![](man/figures/shiny_rtpcr.png){.center width="100%"}
+*rtpcr is now available as shiny_rtpcr, a web application developed using R/Shiny for interactive analysis of qPCR data at https://mirzaghaderi.shinyapps.io/rtpcr/*
 
 # Functions
 The rtpcr package gets efficiency (E) the Ct values of genes and performs different analyses using the following functions.

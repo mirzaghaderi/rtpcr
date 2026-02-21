@@ -1,4 +1,4 @@
-#if (!requireNamespace("rtpcr", quietly = TRUE)) install.packages("rtpcr")
+devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = FALSE)
 #if (!requireNamespace("rtpcr", quietly = TRUE)) install.packages("multcompView")
 #if (!requireNamespace("markdown", quietly = TRUE)) install.packages("markdown")
 

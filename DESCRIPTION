@@ -6,7 +6,7 @@ Authors@R: c(person("Ghader", "Mirzaghaderi", role=c("aut", "cre", "cph"), email
 Description: Tools for qPCR data analysis using Delta Ct and Delta Delta Ct methods, including t-test, Wilcoxon-test, ANOVA models, and publication-ready visualizations. The package supports multiple target, and multiple reference genes, and uses a calculation framework adopted from Ganger et al. (2017) <doi:10.1186/s12859-017-1949-5> and Taylor et al. (2019) <doi:10.1016/j.tibtech.2018.12.002>, covering both the Livak and Pfaffl methods.
 URL: https://mirzaghaderi.github.io/rtpcr/, https://github.com/mirzaghaderi/rtpcr
 License: GPL-3
-Imports: multcomp, ggplot2, ggsignif, lme4, lmerTest, purrr, reshape2, tidyr, dplyr, grid, emmeans, shiny
+Imports: multcomp, ggplot2, ggsignif, lme4, lmerTest, purrr, reshape2, tidyr, dplyr, grid, emmeans, shiny,
 Encoding: UTF-8
 RoxygenNote: 7.3.3
 NeedsCompilation: no

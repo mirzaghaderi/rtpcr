@@ -20,24 +20,6 @@ package implements a general calculation method adopted from Ganger et
 al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl
 methods.
 
-- [Functions](#functions)
-- [Quick start](#quick-start)
-  - [Installing and loading](#installing-and-loading)
-- [Input data structure](#input-data-structure)
-- [Handling missing data](#handling-missing-data)
-- [Data analysis](#data-analysis)
-  - [Amplification efficiency](#amplification-efficiency)
-  - [Relative expression](#relative-expression)
-- [Output](#output)
-  - [Data output](#data-output)
-  - [Plot output](#plot-output)
-- [Post-hoc analysis](#post-hoc-analysis)
-- [Checking normality of residuals](#checking-normality-of-residuals)
-- [Mean of technical replicates](#mean-of-technical-replicates)
-- [Contact](#contact)
-- [Citation](#citation)
-- [References](#references)
-
 <img src="man/figures/shiny_rtpcr.png" class="center"
 style="width:100.0%" /> *rtpcr is now available as shiny_rtpcr, a web
 application developed using R/Shiny for interactive analysis of qPCR
@@ -377,7 +359,7 @@ data
 # Anova analysis
 ANOVA_DDCt(
   data,
-  mainFactor.column = 1,
+  specs = "condition",
   numOfFactors = 1,
   numberOfrefGenes = 1,
   block = NULL)
@@ -402,7 +384,7 @@ res <- ANOVA_DDCt(
   data,
   numOfFactors = 1,
   numberOfrefGenes = 1,
-  mainFactor.column = 1,
+  specs = "time",
   block = NULL, model = wDCt ~ time + (1 | id))
 
 
@@ -418,7 +400,7 @@ data3 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = 
 
 res <- ANOVA_DDCt(
   x = data3,
-  mainFactor.column = 2,
+  specs = 2,
   numOfFactors = 2,
   numberOfrefGenes = 3,
   block = "block",
@@ -450,7 +432,7 @@ data3 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = 
 
 res <- ANOVA_DDCt(
   x = data3,
-  mainFactor.column = 2,
+  specs = "Concentration",
   numOfFactors = 2,
   numberOfrefGenes = 3,
   block = "block",
@@ -588,7 +570,7 @@ df <- read.csv(system.file("extdata", "data_Heffer2020PlosOne.csv", package = "r
 res <- ANOVA_DDCt(
   df,
   numOfFactors = 1,
-  mainFactor.column = 1,
+  specs = 1,
   numberOfrefGenes = 1,
   block = NULL)
 
@@ -627,7 +609,7 @@ pairwise significances.
     res <- ANOVA_DDCt(
       data_Heffer2020PlosOne,
       numOfFactors = 1,
-      mainFactor.column = 1,
+      specs = "condition",
       numberOfrefGenes = 1,
       block = NULL,
       analyseAllTarget = "Tnfa") 
@@ -654,7 +636,7 @@ res <- ANOVA_DDCt(
   data_3factor,
   numOfFactors = 3,
   numberOfrefGenes = 1,
-  mainFactor.column = 1,
+  specs = "Conc",
   block = NULL)
 
 model <- res$perGene$E_PO$lm
@@ -712,7 +694,7 @@ res3 <- ANOVA_DDCt(
   data,
   numOfFactors = 1,
   numberOfrefGenes = 1,
-  mainFactor.column = 1,
+  specs = "time",
   block = NULL,
   model = wDCt ~ time + (1 | id)
 )

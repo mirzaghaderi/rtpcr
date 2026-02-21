@@ -3,6 +3,7 @@
 export(ANOVA_DCt)
 export(ANOVA_DDCt)
 export(Means_DDCt)
+export(Means_DDCt2)
 export(TTEST_DDCt)
 export(WILCOX_DDCt)
 export(compute_wDCt)

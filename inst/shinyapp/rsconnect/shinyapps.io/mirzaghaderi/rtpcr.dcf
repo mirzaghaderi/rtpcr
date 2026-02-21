@@ -5,6 +5,6 @@ account: mirzaghaderi
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 16716635
-bundleId: 11604116
+bundleId:
 url: https://mirzaghaderi.shinyapps.io/rtpcr/
 version: 1

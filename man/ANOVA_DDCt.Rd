@@ -8,14 +8,14 @@ ANOVA_DDCt(
   x,
   numOfFactors,
   numberOfrefGenes,
-  mainFactor.column,
+  specs,
   block,
-  mainFactor.level.order = NULL,
+  calibratorLevel = NULL,
   p.adj = "none",
   analyseAllTarget = TRUE,
   model = NULL,
   set_missing_target_Ct_to_40 = FALSE,
-  se.type = c("paired.group", "two.group", "single.group"),
+  se.type = c("single.group", "paired.group", "two.group"),
   modelBased_se = TRUE
 )
 }
@@ -30,7 +30,8 @@ structure" in vignettes for details about data structure.}
 
 \item{numberOfrefGenes}{Integer. Number of reference genes.}
 
-\item{mainFactor.column}{Integer. Column index of the factor for which the relative expression analysis is applied.}
+\item{specs}{Example: "A", "A|B" or A|B*C" if A, B and C are name of factor columns in the input data
+The first name (here A) is the factor for which the relative expression analysis is applied.}
 
 \item{block}{Character. Block column name or \code{NULL}. 
 When a qPCR experiment is done in multiple qPCR plates, 
@@ -40,7 +41,8 @@ so that at least one replicate of each treatment and control is present
 on a plate. Block effect is usually considered as random and its interaction 
 with any main effect is not considered.}
 
-\item{mainFactor.level.order}{Optional character vector specifying the order of levels for the main factor.
+\item{calibratorLevel}{NULL or one of the levels of the first selected factor in specs argument. If NULL the first level of that factor is used as calibrator.
+Optional character vector specifying the order of levels for the main factor.
 If \code{NULL}, the first observed level is used as the calibrator.
 If provided, the first element of the vector is used as the calibrator level.}
 
@@ -127,7 +129,7 @@ ANOVA_DDCt(data1,
            numOfFactors = 2,
            numberOfrefGenes = 3,
            block = "block",
-           mainFactor.column = 2,
+           specs = "Concentration",
            p.adj = "none")
            
 data2 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))          
@@ -135,27 +137,11 @@ ANOVA_DDCt(data2,
            numOfFactors = 1,
            numberOfrefGenes = 1,
            block = NULL,
-           mainFactor.column = 1,
+           specs = "Condition",
            p.adj = "none",
            se.type = "single.group")
   
-# # Repeated measure analysis         
-# a <- ANOVA_DDCt(data_repeated_measure_1,
-#            numOfFactors = 1,
-#            numberOfrefGenes = 1,
-#            block = NULL,
-#            mainFactor.column = 1,
-#            p.adj = "none", model = wDCt ~ time + (1 | id))
-# 
-# a$perGene$Target$ANOVA_table
-# 
-# 
-# # Repeated measure analysis: split-plot in time
-# a <- ANOVA_DDCt(data_repeated_measure_2,
-#            numOfFactors = 2, numberOfrefGenes = 1,
-#            mainFactor.column = 2, block = NULL,
-#            model = wDCt ~ treatment * time + (1 | id))
-          
+   
 }
 \references{
 LivakKJ, Schmittgen TD (2001).

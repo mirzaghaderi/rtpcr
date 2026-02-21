@@ -43,7 +43,7 @@
 #'   numOfFactors = 2,
 #'   numberOfrefGenes = 3,
 #'   block = "block",
-#'   mainFactor.column = 2,
+#'   specs = "Concentration",
 #'   p.adj = "none")
 #' 
 #' df <- res$relativeExpression

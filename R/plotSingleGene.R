@@ -25,7 +25,7 @@
 #' res <- ANOVA_DDCt(
 #' data_2factor,
 #' numOfFactors = 2,
-#' mainFactor.column = 2,
+#' specs = "Drought",
 #' numberOfrefGenes = 1,
 #' block = NULL,
 #' analyseAllTarget = TRUE) # If you have multi-target gene data, specify a single target gene.

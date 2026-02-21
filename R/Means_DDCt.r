@@ -53,7 +53,7 @@
 #'   data,
 #'   numOfFactors = 3,
 #'   numberOfrefGenes = 1,
-#'   mainFactor.column = 1,
+#'   specs = "Type",
 #'   block = NULL)
 #'
 #' # Relative expression values for Type main effect

@@ -12,5 +12,5 @@ utils::globalVariables(c(
   "contrast", "RE", "log2FC", "Lower.se", "Upper.se", 
   "Lower.se.RE", "Upper.se.RE", "factors", "as.formula", "tail", "Gene",
   "se", "pvalue", "ave", "reshape", "lm", "formula", "anova", "wDCt", 
-  "na.exclude", "residuals", "block", "bwDCt"
+  "na.exclude", "residuals", "block", "bwDCt", "residual", "p.value"
 ))

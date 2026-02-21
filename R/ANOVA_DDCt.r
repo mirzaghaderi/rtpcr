@@ -305,7 +305,7 @@ ANOVA_DDCt <- function(
     pp1 <- suppressMessages(emmeans::emmeans(lm_fit, specs2, adjust = p.adj))    # mode = "satterthwaite" data = gene_df,
     cld_results <- multcomp::cld(pp1, alpha = 0.05, Letters = letters)
     if(is.null(calibratorLevel)) {calibratorLevel <- levels(factor(gene_df[[mainFactor]]))[1]}
-    confint(pairs(pp1), ref = calibratorLevel)
+    stats::confint(graphics::pairs(pp1), ref = calibratorLevel)
     contrast <- emmeans::contrast(pp1, "trt.vs.ctrl", ref = calibratorLevel, type = "response", adjust = "none")
     conf <- stats::confint(contrast)
     conf$RE <- 2^(-conf$estimate)
@@ -376,7 +376,7 @@ ANOVA_DDCt <- function(
       if (type == "single.group") {
         return(sub_df %>%
                  group_by(!!sym(primary)) %>%
-                 summarise(se = sd(residual, na.rm = TRUE) / sqrt(sum(!is.na(residual))), .groups = "drop"))
+                 summarise(se = stats::sd(residual, na.rm = TRUE) / sqrt(sum(!is.na(residual))), .groups = "drop"))
       } else {
         # For two.group or paired.group
         ref_vals <- sub_df[sub_df[[primary]] == ref_lev, ]
@@ -390,7 +390,7 @@ ANOVA_DDCt <- function(
               # Strict pairing by ID
               paired <- merge(ref_vals, comp_vals, by = id_col_name)
               if(nrow(paired) < 2) return(NA_real_)
-              sd(paired$residual.x - paired$residual.y, na.rm = TRUE) / sqrt(nrow(paired))
+              stats::sd(paired$residual.x - paired$residual.y, na.rm = TRUE) / sqrt(nrow(paired))
             } else {
               # Independent samples t-test stderr
               stats::t.test(comp_vals$residual, ref_vals$residual, paired = FALSE)$stderr

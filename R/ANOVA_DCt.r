@@ -52,6 +52,10 @@
 #'   (e.g., \code{"wDCt ~ Treatment + (1|Block)"}). When using \code{model}, 
 #'   the \code{block} and \code{numOfFactors} arguments are ignored for model 
 #'   specification, but still used for data structure identification.
+#' @param modelBased_se Logical. If \code{TRUE} (default), standard errors are  
+#' calculated from model-based residuals. If \code{FALSE}, standard errors are calculated directly from the observed 
+#' \code{wDCt} values within each treatment group according to the selected \code{se.type}.  
+#' For single factor data, both methods are the same. It is recommended to use \code{modelBased_se = TRUE} (default).
 #' @param set_missing_target_Ct_to_40 If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA. 
 #'
 #' @return

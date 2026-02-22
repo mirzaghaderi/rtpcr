@@ -22,6 +22,8 @@ plotFactor(
   alpha = 1,
   base_size = 12,
   legend_position = "right",
+  removeCalibratorCols = FALSE,
+  removeCalibratorText = FALSE,
   ...
 )
 }
@@ -59,6 +61,10 @@ plotFactor(
 \item{base_size}{Numeric. Base font size for theme (default \code{12})}
 
 \item{legend_position}{Character or numeric vector. Legend position (default \code{right})}
+
+\item{removeCalibratorCols}{= NULL or remove Calibrator Cols}
+
+\item{removeCalibratorText}{= NULL or remove Calibrator text}
 
 \item{...}{Additional ggplot2 layer arguments}
 }

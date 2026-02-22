@@ -38,7 +38,6 @@ ui <- fluidPage(
                            conditionalPanel("input.src_ddct == 'user'", fileInput("file_ddct", "Upload CSV", accept = ".csv")),
                            numericInput("numFactors_ddct", "Number of factors", 1, min = 1),
                            numericInput("numRefGenes_ddct", "Number of reference genes", 1, min = 1),
-                           # CHANGED: Replaced mainFactor column index with specs string
                            textInput("specs_ddct", "Specs (e.g., Concentration or Concentration | Type)", ""),
                            textInput("block_ddct", "Block column (optional)", ""),
                            textInput("calibrator_ddct", "Calibrator Level (NULL or single level; needs character!)", ""),
@@ -83,7 +82,14 @@ ui <- fluidPage(
                            actionButton("run_wx", "Run WILCOX_DDCt")
                   ),
                   tabPanel("plotFactor",
-                           radioButtons("src_pf", "Data Source", choices = c("Upload CSV" = "user", "Sample Data" = "sample"), selected = "user"),
+                           radioButtons("src_pf", "Data Source", 
+                                        choices = c("Upload CSV" = "user", 
+                                                    "Sample Data" = "sample",
+                                                    "Result: ANOVA_DCt" = "res_dc",
+                                                    "Result: ANOVA_DDCt" = "res_ddct",
+                                                    "Result: TTEST_DDCt" = "res_tt",
+                                                    "Result: WILCOX_DDCt" = "res_wx"), 
+                                        selected = "user"),
                            conditionalPanel("input.src_pf == 'user'", fileInput("file_pf", "Upload CSV for Plotting", accept = ".csv")),
                            selectInput("pf_x", "X Axis Column", choices = NULL),
                            selectInput("pf_y", "Y Axis Column", choices = NULL),
@@ -92,6 +98,11 @@ ui <- fluidPage(
                            selectInput("pf_group", "Group (Fill) Column", choices = c("None" = "")),
                            selectInput("pf_facet", "Facet Column", choices = c("None" = "")),
                            selectInput("pf_letters", "Letters Column (Optional)", choices = c("None" = "")),
+                           hr(),
+                           h4("Data Cleaning"),
+                           checkboxInput("pf_removeRows", "Remove Calibrator Cols (Single words)", FALSE),
+                           checkboxInput("pf_removeText", "Remove Calibrator Text (Keep first word)", FALSE),
+                           hr(),
                            numericInput("pf_letters_d", "Letters vertical offset", 0.2, step = 0.05),
                            numericInput("pf_col_width", "Column width", 0.8, step = 0.05),
                            numericInput("pf_err_width", "Error bar width", 0.15, step = 0.05),
@@ -206,7 +217,6 @@ server <- function(input, output, session) {
     if (input$src_ddct == "sample") {
       updateNumericInput(session, "numFactors_ddct", value = 2)
       updateNumericInput(session, "numRefGenes_ddct", value = 3)
-      # CHANGED: Sample specs string
       updateTextInput(session, "specs_ddct", value = "Concentration")
       updateTextInput(session, "block_ddct", value = "block")
     }
@@ -235,7 +245,28 @@ server <- function(input, output, session) {
   data_eff  <- reactive({ get_data(input$src_eff, input$file_eff, "eff/data_efficiency1.csv") })
   data_tt   <- reactive({ get_data(input$src_tt, input$file_tt, "exp/data_ttest18genes.csv") })
   data_wx   <- reactive({ get_data(input$src_wx, input$file_wx, "exp/data_ttest18genes.csv") })
-  df_pf     <- reactive({ get_data(input$src_pf, input$file_pf, "plot/out_ANOVA_DDCt.csv") })
+  
+  # Updated df_pf logic to accept results from memory
+  df_pf <- reactive({ 
+    if (input$src_pf == "user") {
+      req(input$file_pf)
+      read.csv(input$file_pf$datapath)
+    } else if (input$src_pf == "sample") {
+      read.csv("plot/out_ANOVA_DDCt.csv")
+    } else if (input$src_pf == "res_dc") {
+      req(res_dc())
+      res_dc()$relativeExpression
+    } else if (input$src_pf == "res_ddct") {
+      req(res_ddct())
+      res_ddct()$relativeExpression
+    } else if (input$src_pf == "res_tt") {
+      req(res_tt())
+      res_tt()
+    } else if (input$src_pf == "res_wx") {
+      req(res_wx())
+      res_wx()
+    }
+  })
   
   output$preview_dc <- renderTable({ req(data_dc()); head(data_dc(), 50) })
   output$preview_ddct <- renderTable({ req(data_ddct()); head(data_ddct(), 50) })
@@ -315,7 +346,9 @@ server <- function(input, output, session) {
                     letters_d = input$pf_letters_d, col_width = input$pf_col_width, err_width = input$pf_err_width,
                     dodge_width = input$pf_dodge_width, fill_colors = if (input$pf_fill_colors == "") NULL else trimws(unlist(strsplit(input$pf_fill_colors, ","))),
                     color = input$pf_color, alpha = input$pf_alpha, base_size = input$pf_base_size,
-                    legend_position = if (input$pf_legend_none) "none" else c(input$pf_legend_x, input$pf_legend_y))
+                    legend_position = if (input$pf_legend_none) "none" else c(input$pf_legend_x, input$pf_legend_y),
+                    removeCalibratorCols = input$pf_removeRows,
+                    removeCalibratorText = input$pf_removeText)
     
     if (nzchar(trimws(input$extra_pf))) {
       tryCatch({

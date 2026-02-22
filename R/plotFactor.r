@@ -32,6 +32,8 @@
 #' @param alpha Numeric. Transparency of bars (default \code{1})
 #' @param base_size Numeric. Base font size for theme (default \code{12})
 #' @param legend_position Character or numeric vector. Legend position (default \code{right})
+#' @param removeCalibratorCols = NULL or remove Calibrator Cols
+#' @param removeCalibratorText = NULL or remove Calibrator text
 #' @param ... Additional ggplot2 layer arguments
 #' 
 #' @return ggplot2 plot object
@@ -113,13 +115,22 @@ plotFactor <- function(data,
                        alpha = 1,
                        base_size = 12,
                        legend_position = "right",
+                       removeCalibratorCols = FALSE,
+                       removeCalibratorText = FALSE,
                        ...) {
   
-  # if(any(colnames(data) == "contrast")){
-  #   calibrator <- tail(strsplit(as.character(data$contrast[1]), " ")[[1]], 1)
-  #   data <- data[sapply(strsplit(as.character(data$contrast), " "), tail, 1) == calibrator, ]
-  # }
+
+  if (removeCalibratorCols) {
+    if ("contrast" %in% colnames(data)) {
+      data <- data[grepl(" ", data$contrast), ]
+    }
+  }
   
+  if (removeCalibratorText) {
+    if ("contrast" %in% colnames(data)) {
+      data$contrast <- gsub("\\s.*", "", as.character(data$contrast))
+    }
+  }
   
   # required columns
   required_cols <- c(x_col, y_col, Lower.se_col, Upper.se_col)

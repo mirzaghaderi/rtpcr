@@ -1,6 +1,30 @@
 # Changelog
 
+## rtpcr 2.1.5
+
+### New Features
+
+- [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
+  now supports complex experimental designs. Users can perform ddCt
+  analysis across interactions of multiple factors (e.g.,
+  `specs = "FactorA | FactorB"`).
+
+### Deprecated
+
+- `mainFactor.column` (Integer) is now deprecated in favor of `specs`.
+- `specs` now accepts one or more column names as a character (e.g. “A”
+  or “A \| B”, or “A \| B\* C”).
+- `mainFactor.level.order` whic already accepted a vector, is now
+  deprecated in favor of `calibratorLevel` which accepts one of the
+  levels of the main factor (e.g. `A`), Default (NULL) is the first
+  level.
+- This allows for ddCt calculations to be performed separately within
+  each level of a secondary factor or across factor combinations (e.g.,
+  `B`, or `B*C`).
+
 ## rtpcr 2.1.4
+
+CRAN release: 2026-02-12
 
 ### New features
 
@@ -8,42 +32,23 @@
   [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
   function the `se.type` argument was added to control how standard
   errors (SE) are calculated for relative expression (RE = fold change)
-  estimates.
-
-- `"paired.sample"`: computes SE from paired differences between factor
-  levels, matching samples by `id`. This is automatically used when an
-  `id` random effect is detected in a mixed model.
-
-- `"two.sample"`: computes SE using an unpaired samples against the
-  reference level.
-
-- `"single.sample"`: computes SE within each factor level.
-
-- Standard error calculations now correctly respect repeated-measures
-  designs when an `id` random effect is present in the user-specified
-  model.
-
-- Paired SEs are calculated strictly by matching observations on `id`,
-  improving accuracy for longitudinal and paired experimental designs.
-
-- SE calculations are now robust to missing values by relying on
-  [`t.test()`](https://rdrr.io/r/stats/t.test.html) internals.
-
-- When a random `id` effect is detected in the model, paired standard
-  errors are used automatically (with a warning if another `se.type` is
-  requested).
-
-- The reference level is always assigned an SE of zero for consistency
-  with fold-change reporting.
+  estimates. If set to `"paired.sample"` the se is computed from paired
+  differences between factor levels, matching samples by `id`. This is
+  automatically used when an `id` random effect is detected in a
+  user-provided mixed model. `"two.sample"` computes SE using an
+  unpaired samples against the reference level, and `"single.sample"`
+  computes SE within each factor level. When a random `id` effect is
+  detected in the model, paired standard errors are used automatically
+  (with a warning if another `se.type` is requested).
 
 - The default behavior in
   [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
   function for standard error calculation has been updated. Standard
   errors are now calculated from model-based residuals
-  (`modelBased_se = TRUE`) instead of directly from observed wDCt
-  values. Setting `modelBased_se = FALSE` restores the previous
-  behavior. For single factor data, both methods are the same. It is
-  recommended to use `modelBased_se = TRUE` (default).
+  (`modelBased_se = TRUE`) by default. Setting `modelBased_se = FALSE`
+  restores the previous behavior i.e. direct computing from observed
+  wDCt values. For single factor data, both methods are the same. It is
+  recommended let it use `modelBased_se = TRUE` (default).
 
 - A function called
   [`plotSingleGene()`](https://mirzaghaderi.github.io/rtpcr/reference/plotSingleGene.md)

@@ -9,23 +9,9 @@ package implements a general calculation method adopted from Ganger et
 al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl
 methods.
 
-- [Functions](#functions)
-- [Quick start](#quick-start)
-  - [Installing and loading](#installing-and-loading)
-- [Input data structure](#input-data-structure)
-- [Handling missing data](#handling-missing-data)
-- [Data analysis](#data-analysis)
-  - [Amplification efficiency](#amplification-efficiency)
-  - [Relative expression](#relative-expression)
-- [Output](#output)
-  - [Data output](#data-output)
-  - [Plot output](#plot-output)
-- [Post-hoc analysis](#post-hoc-analysis)
-- [Checking normality of residuals](#checking-normality-of-residuals)
-- [Mean of technical replicates](#mean-of-technical-replicates)
-- [Contact](#contact)
-- [Citation](#citation)
-- [References](#references)
+![](reference/figures/shiny_rtpcr.png)*rtpcr is now available as
+shiny_rtpcr, a web application developed using R/Shiny for interactive
+analysis of qPCR data at <https://mirzaghaderi.shinyapps.io/rtpcr/>*
 
 # Functions
 
@@ -313,51 +299,69 @@ along with the output expression table.
 
 #### NOTE
 
-Sometime groups are independent or paired (Repeated measure
-experiments). Examples: 1) Analyzing gene expression in different time
-points, or before and after treatment in each biological replicate; 2)
-Analyzing gene expression between two tissue types within the same
-organism. For such analysis types, if there are only two time points, we
-can use the `TTEST_DDCt` with the argument `paired = TRUE`; or
-`ANOVA_DDCt` (if there are two or more time points) with a repeated
-measure model such as `wDCt ~ Treatment + ( 1 | id)` or
-`wDCt ~ Treatment + ( 1 | Rep)`.
+Sometime groups are paired (Repeated measure experiments). Examples: 1)
+Analyzing gene expression in different time points, or before and after
+treatment in each biological replicate; 2) Analyzing gene expression
+between two tissue types within the same organism. For such analysis
+types, if there are only two time points, we can use the `TTEST_DDCt`
+with the argument `paired = TRUE`; or `ANOVA_DDCt` (if there are two or
+more time points) with a repeated measure model such as
+`wDCt ~ Treatment + ( 1 | id)` or `wDCt ~ Treatment + ( 1 | Rep)`.
 
-![Figure 5: Calculation of standard error (se) for ddCt–based relative
-expression in the ANOVA_DDCt() function of the rtpcr package. Standard
-errors in the ANOVA_DDCt() function are calculated from model-based
-residuals (modelBased_se = TRUE) by default. By setting modelBased_se =
-FALSE standard errors are calculated directly from the observed wDCt
-values within each treatment group according to the selected se.type
-(One of "paired.group", "two.group", or "single.group"). For single
-factor data, both methods are the same. It is recommended to use
-modelBased_se = TRUE (default). This figure illustrates how weighted dCt
-(wdCt) and weighted ddCt (wddCt) values are used under different
-experimental designs, and how the standard error is computed when
-modelBased_se = FALSE depending on the se.type argument. "paired.group"
-computes se from paired differences (used when a random id effect is
-present), "two.group" uses the unpaired two-group t-test standard error
-against the reference level, and "single.group" computes se within each
-level using a one-group t-test. For independent groups, ANOVA_DDCt()
-automatically uses se.type = "two.group", and if repeated‐measure or
-paired designs model is specified, ANOVA_DDCt() automatically selects
-se.type = "paired.group"](reference/figures/repeated_measure.png)
+![Figure 5: A) Basic structure of independent group- or paired
+group-experiments. Examples of paired groups ( or repeated measure
+experiments): 1) Analysing gene expression before and after treatment in
+the sampe biological replicates; 2) Analysing gene expression between
+two tissue types within the same organism. For such analysis types we
+can use the TTEST_DDCt with the argument paired = TRUE; or ANOVA_DDCt
+with a repeated measure model such as wDCt ~ Treatment + ( 1 \| id) or
+wDCt ~ Treatment + ( 1 \| Rep). B) Calculation of standard error (se)
+and confidense interval (CI) for ddCt–based relative expression in the
+ANOVA_DDCt() function of the rtpcr package. Standard errors and
+confidense interval are calculated from model-based residuals by default
+(modelBased_se = TRUE) according to the selected se.type (One of
+"paired.group", "two.group", or "single.group"). By setting
+modelBased_se = FALSE standard errors are calculated directly from the
+observed wDCt values within each group, although for the single factor
+experiments the two cases are the same. Method 4 is based on the pooled
+error from which the confidence interval is calculated and can be used
+in any conditions as it is derived from a fitted model. se: group
+standard error, SE: pooled standard error. The figure illustrates how
+weighted dCt (wdCt) and weighted ddCt (wddCt) values are used under
+different experimental designs, and how the standard error is computed
+when modelBased_se = FALSE, depending on the se.type argument.
+"paired.group" computes se from paired differences (used when a random
+id effect is present), "two.group" uses the unpaired two-group t-test
+standard error against the reference level, and "single.group" computes
+se within each level using a one-group t-test. For independent groups,
+ANOVA_DDCt() automatically uses se.type = "two.group", and if
+repeated‐measure or paired designs model is specified, ANOVA_DDCt()
+automatically selects se.type =
+"paired.group"](reference/figures/repeated_measure.png)
 
-Figure 5: Calculation of standard error (se) for ddCt–based relative
-expression in the
+Figure 5: A) Basic structure of independent group- or paired
+group-experiments. Examples of paired groups ( or repeated measure
+experiments): 1) Analysing gene expression before and after treatment in
+the sampe biological replicates; 2) Analysing gene expression between
+two tissue types within the same organism. For such analysis types we
+can use the TTEST_DDCt with the argument paired = TRUE; or ANOVA_DDCt
+with a repeated measure model such as wDCt ~ Treatment + ( 1 \| id) or
+wDCt ~ Treatment + ( 1 \| Rep). B) Calculation of standard error (se)
+and confidense interval (CI) for ddCt–based relative expression in the
 [`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
-function of the rtpcr package. Standard errors in the
-[`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md)
-function are calculated from model-based residuals
-(`modelBased_se = TRUE`) by default. By setting `modelBased_se = FALSE`
-standard errors are calculated directly from the observed wDCt values
-within each treatment group according to the selected `se.type` (One of
-`“paired.group”`, `“two.group”`, or `“single.group”`). For single factor
-data, both methods are the same. It is recommended to use
-`modelBased_se = TRUE` (default). This figure illustrates how weighted
-dCt (wdCt) and weighted ddCt (wddCt) values are used under different
-experimental designs, and how the standard error is computed when
-`modelBased_se = FALSE` depending on the `se.type` argument.
+function of the rtpcr package. Standard errors and confidense interval
+are calculated from model-based residuals by default
+(`modelBased_se = TRUE`) according to the selected `se.type` (One of
+`“paired.group”`, `“two.group”`, or `“single.group”`). By setting
+`modelBased_se = FALSE` standard errors are calculated directly from the
+observed wDCt values within each group, although for the single factor
+experiments the two cases are the same. Method 4 is based on the pooled
+error from which the confidence interval is calculated and can be used
+in any conditions as it is derived from a fitted model. se: group
+standard error, SE: pooled standard error. The figure illustrates how
+weighted dCt (wdCt) and weighted ddCt (wddCt) values are used under
+different experimental designs, and how the standard error is computed
+when `modelBased_se = FALSE`, depending on the `se.type` argument.
 `“paired.group”` computes se from paired differences (used when a random
 id effect is present), `“two.group”` uses the unpaired two-group t-test
 standard error against the reference level, and `“single.group”`
@@ -389,7 +393,7 @@ data
 # Anova analysis
 ANOVA_DDCt(
   data,
-  mainFactor.column = 1,
+  specs = "condition",
   numOfFactors = 1,
   numberOfrefGenes = 1,
   block = NULL)
@@ -414,7 +418,7 @@ res <- ANOVA_DDCt(
   data,
   numOfFactors = 1,
   numberOfrefGenes = 1,
-  mainFactor.column = 1,
+  specs = "time",
   block = NULL, model = wDCt ~ time + (1 | id))
 
 
@@ -430,7 +434,7 @@ data3 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = 
 
 res <- ANOVA_DDCt(
   x = data3,
-  mainFactor.column = 2,
+  specs = 2,
   numOfFactors = 2,
   numberOfrefGenes = 3,
   block = "block",
@@ -468,7 +472,7 @@ data3 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = 
 
 res <- ANOVA_DDCt(
   x = data3,
-  mainFactor.column = 2,
+  specs = "Concentration",
   numOfFactors = 2,
   numberOfrefGenes = 3,
   block = "block",
@@ -499,6 +503,26 @@ lm_formula
 residuals <- resid(res$perGene$gene_name$lm)
 residuals
 ```
+
+![Figure 6: All the functions for relative expression analysis
+(including TTEST_DDCt, WILCOX_DDCt, ANOVA_DDCt(), and ANOVA_DCt())
+return the relative expression table which include fold change and
+corresponding statistics. The output of ANOVA_DDCt(), and ANOVA_DCt()
+also include lm model, residuals, raw data and ANOVA table for each
+gene.](reference/figures/out.png)
+
+Figure 6: All the functions for relative expression analysis (including
+`TTEST_DDCt`, `WILCOX_DDCt`,
+[`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md),
+and
+[`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md))
+return the relative expression table which include fold change and
+corresponding statistics. The output of
+[`ANOVA_DDCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DDCt.md),
+and
+[`ANOVA_DCt()`](https://mirzaghaderi.github.io/rtpcr/reference/ANOVA_DCt.md)
+also include lm model, residuals, raw data and ANOVA table for each
+gene.
 
 ## Plot output
 
@@ -594,7 +618,7 @@ df <- read.csv(system.file("extdata", "data_Heffer2020PlosOne.csv", package = "r
 res <- ANOVA_DDCt(
   df,
   numOfFactors = 1,
-  mainFactor.column = 1,
+  specs = 1,
   numberOfrefGenes = 1,
   block = NULL)
 
@@ -635,7 +659,7 @@ single gene analysis showing all pairwise significances.
 res <- ANOVA_DDCt(
   data_Heffer2020PlosOne,
   numOfFactors = 1,
-  mainFactor.column = 1,
+  specs = "condition",
   numberOfrefGenes = 1,
   block = NULL,
   analyseAllTarget = "Tnfa") 
@@ -663,7 +687,7 @@ res <- ANOVA_DDCt(
   data_3factor,
   numOfFactors = 3,
   numberOfrefGenes = 1,
-  mainFactor.column = 1,
+  specs = "Conc",
   block = NULL)
 
 model <- res$perGene$E_PO$lm
@@ -723,7 +747,7 @@ res3 <- ANOVA_DDCt(
   data,
   numOfFactors = 1,
   numberOfrefGenes = 1,
-  mainFactor.column = 1,
+  specs = "time",
   block = NULL,
   model = wDCt ~ time + (1 | id)
 )

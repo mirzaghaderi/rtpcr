@@ -9,7 +9,7 @@ and performs per-gene statistical analysis."><meta property="og:image" content="
 
     <a class="navbar-brand me-2" href="../index.html">rtpcr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,15 +50,16 @@ and performs per-gene statistical analysis.</p>
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">numOfFactors</span>,</span>
 <span>  <span class="va">numberOfrefGenes</span>,</span>
-<span>  <span class="va">mainFactor.column</span>,</span>
+<span>  <span class="va">specs</span>,</span>
 <span>  <span class="va">block</span>,</span>
-<span>  mainFactor.level.order <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  calibratorLevel <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  p.adj <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>  analyseAllTarget <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  model <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  set_missing_target_Ct_to_40 <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  se.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"paired.group"</span>, <span class="st">"two.group"</span>, <span class="st">"single.group"</span><span class="op">)</span>,</span>
-<span>  modelBased_se <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  se.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"single.group"</span>, <span class="st">"paired.group"</span>, <span class="st">"two.group"</span><span class="op">)</span>,</span>
+<span>  modelBased_se <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -82,8 +83,9 @@ structure" in vignettes for details about data structure.</p></dd>
 <dd><p>Integer. Number of reference genes.</p></dd>
 
 
-<dt id="arg-mainfactor-column">mainFactor.column<a class="anchor" aria-label="anchor" href="#arg-mainfactor-column"></a></dt>
-<dd><p>Integer. Column index of the factor for which the relative expression analysis is applied.</p></dd>
+<dt id="arg-specs">specs<a class="anchor" aria-label="anchor" href="#arg-specs"></a></dt>
+<dd><p>Example: "A", "A|B" or A|B*C" if A, B and C are name of factor columns in the input data
+The first name (here A) is the factor for which the relative expression analysis is applied.</p></dd>
 
 
 <dt id="arg-block">block<a class="anchor" aria-label="anchor" href="#arg-block"></a></dt>
@@ -96,8 +98,9 @@ on a plate. Block effect is usually considered as random and its interaction
 with any main effect is not considered.</p></dd>
 
 
-<dt id="arg-mainfactor-level-order">mainFactor.level.order<a class="anchor" aria-label="anchor" href="#arg-mainfactor-level-order"></a></dt>
-<dd><p>Optional character vector specifying the order of levels for the main factor.
+<dt id="arg-calibratorlevel">calibratorLevel<a class="anchor" aria-label="anchor" href="#arg-calibratorlevel"></a></dt>
+<dd><p>NULL or one of the levels of the first selected factor in specs argument. If NULL the first level of that factor is used as calibrator.
+Optional character vector specifying the order of levels for the main factor.
 If <code>NULL</code>, the first observed level is used as the calibrator.
 If provided, the first element of the vector is used as the calibrator level.</p></dd>
 
@@ -146,7 +149,11 @@ computes SE within each level using a one-group t-test.</p></dd>
 <dd><p>Logical. If <code>TRUE</code> (default), standard errors are
 calculated from model-based residuals. If <code>FALSE</code>, standard errors are calculated directly from the observed
 <code>wDCt</code> values within each treatment group according to the selected <code>se.type</code>.
-For single factor data, both methods are the same. It is recommended to use modelBased_se = TRUE (default).</p></dd>
+For single factor data, both methods are the same. It is recommended to use <code>modelBased_se = TRUE</code> (default).</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Additional arguments. Included for backward compatibility with deprecated <code>mainFactor.column</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -216,78 +223,79 @@ Statistical Analysis of Real-Time PCR Data.
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">data1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_2factorBlock3ref.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">ANOVA_DDCt</span><span class="op">(</span>x <span class="op">=</span> <span class="va">data1</span>,</span></span>
+<span class="r-in"><span><span class="fu">ANOVA_DDCt</span><span class="op">(</span><span class="va">data1</span>,</span></span>
 <span class="r-in"><span>           numOfFactors <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>           numberOfrefGenes <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>           block <span class="op">=</span> <span class="st">"block"</span>,</span></span>
-<span class="r-in"><span>           mainFactor.column <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>           specs <span class="op">=</span> <span class="st">"Concentration"</span>,</span></span>
 <span class="r-in"><span>           p.adj <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative Expression</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   gene contrast     ddCt      RE   log2FC     LCL     UCL      se Lower.se.RE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   PO       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.00000     1.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   PO L2 vs L1 -0.94610 1.92666  0.94610 1.25860 2.94934 0.16301     1.72082</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   PO L3 vs L1 -2.19198 4.56931  2.19198 3.08069 6.77724 0.20409     3.96657</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  NLM       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.00000     1.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  NLM L2 vs L1  0.86568 0.54879 -0.86568 0.39830 0.75614 0.10971     0.50860</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  NLM L3 vs L1 -1.44341 2.71964  1.44341 1.94670 3.79946 0.20250     2.36347</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.00000         0.00000         0.00000 1.00000    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2.15713         0.84502         1.05928 0.00116  **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     5.26364         1.90283         2.52506 0.00000 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     1.00000         0.00000         0.00000 1.00000    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     0.59215        -0.93407        -0.80229 0.00018 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     3.12947         1.25439         1.66093 0.00000 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   gene contrast     ddCt      RE     LCL     UCL   log2FC      se Lower.se.RE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   PO       L1  0.00000 1.00000 0.00000 0.00000  0.00000 0.09187     0.93830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   PO L2 vs L1 -0.94610 1.92666 1.35851 2.73242 -0.94610 0.13465     1.75497</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   PO L3 vs L1 -2.19198 4.56931 3.30647 6.31447 -2.19198 0.18224     4.02710</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  NLM       L1  0.00000 1.00000 0.00000 0.00000  0.00000 0.09011     0.93945</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  NLM L2 vs L1  0.86568 0.54879 0.42174 0.71411  0.86568 0.06259     0.52549</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  NLM L3 vs L1 -1.44341 2.71964 2.06638 3.57940 -1.44341 0.18135     2.39838</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC p.value sig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.06575        -0.09187         0.09187 1.00000    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2.11515         0.81145         1.08076 0.00116  **</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     5.18453         2.00974         2.37421 0.00000 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     1.06445        -0.09011         0.09011 1.00000    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     0.57312        -0.92826        -0.80309 0.00018 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     3.08392         1.26206         1.62477 0.00000 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The L1 level was used as calibrator.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Note: Using default model for statistical analysis: wDCt ~ block + Concentration * Type </span>
 <span class="r-in"><span>           </span></span>
 <span class="r-in"><span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"data_1factor_one_ref.csv"</span>, package <span class="op">=</span> <span class="st">"rtpcr"</span><span class="op">)</span><span class="op">)</span>          </span></span>
-<span class="r-in"><span><span class="fu">ANOVA_DDCt</span><span class="op">(</span>x <span class="op">=</span> <span class="va">data2</span>,</span></span>
+<span class="r-in"><span><span class="fu">ANOVA_DDCt</span><span class="op">(</span><span class="va">data2</span>,</span></span>
 <span class="r-in"><span>           numOfFactors <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>           numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>           block <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
-<span class="r-in"><span>           mainFactor.column <span class="op">=</span> <span class="fl">1</span>,</span></span>
-<span class="r-in"><span>           p.adj <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>           specs <span class="op">=</span> <span class="st">"Condition"</span>,</span></span>
+<span class="r-in"><span>           p.adj <span class="op">=</span> <span class="st">"none"</span>,</span></span>
+<span class="r-in"><span>           se.type <span class="op">=</span> <span class="st">"single.group"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative Expression</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      gene             contrast     ddCt      RE   log2FC     LCL     UCL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 C2H2_26              control  0.00000 1.00000  0.00000 0.00000 0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 C2H2_26 treatment vs control  1.19333 0.43729 -1.19333 0.19262 0.99273</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 C2H2_01              control  0.00000 1.00000  0.00000 0.00000 0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 C2H2_01 treatment vs control -2.00667 4.01853  2.00667 2.45984 6.56487</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 C2H2_12              control  0.00000 1.00000  0.00000 0.00000 0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 C2H2_12 treatment vs control -0.72000 1.64718  0.72000 0.95945 2.82787</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.00000     1.00000     1.00000         0.00000         0.00000 1.00000    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.42602     0.32548     0.58751        -1.60326        -0.88822 0.04875   *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.00000     1.00000     1.00000         0.00000         0.00000 1.00000    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.25504     3.36738     4.79558         1.68152         2.39469 0.00141  **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.00000     1.00000     1.00000         0.00000         0.00000 1.00000    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.28083     1.35582     2.00115         0.59264         0.87472 0.06239   .</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      gene             contrast     ddCt      RE     LCL     UCL   log2FC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 C2H2_26              control  0.00000 1.00000 0.00000 0.00000  0.00000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 C2H2_26 treatment vs control  1.19333 0.43729 0.19262 0.99273  1.19333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 C2H2_01              control  0.00000 1.00000 0.00000 0.00000  0.00000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 C2H2_01 treatment vs control -2.00667 4.01853 2.45984 6.56487 -2.00667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 C2H2_12              control  0.00000 1.00000 0.00000 0.00000  0.00000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 C2H2_12 treatment vs control -0.72000 1.64718 0.95945 2.82787 -0.72000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC p.value sig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.06009     0.95920     1.04253        -0.06009         0.06009 1.00000    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.42176     0.32644     0.58578        -1.61509        -0.77158 0.04875   *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.13017     0.91372     1.09442        -0.13017         0.13017 1.00000    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.21932     3.45180     4.67830         1.78735         2.22598 0.00141  **</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.18502     0.87964     1.13683        -0.18502         0.18502 1.00000    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.21127     1.42280     1.90695         0.50873         0.93127 0.06239   .</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The control level was used as calibrator.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Note: Using default model for statistical analysis: wDCt ~ Condition </span>
 <span class="r-in"><span>  </span></span>
-<span class="r-in"><span><span class="co"># Repeated measure analysis         </span></span></span>
+<span class="r-in"><span><span class="co"># Repeated measure analysis</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">ANOVA_DDCt</span><span class="op">(</span><span class="va">data_repeated_measure_1</span>,</span></span>
 <span class="r-in"><span>           numOfFactors <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>           numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>           block <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
-<span class="r-in"><span>           mainFactor.column <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>           specs <span class="op">=</span> <span class="st">"time"</span>,</span></span>
 <span class="r-in"><span>           p.adj <span class="op">=</span> <span class="st">"none"</span>, model <span class="op">=</span> <span class="va">wDCt</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative Expression</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     gene       contrast     ddCt      RE   log2FC    LCL      UCL      se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Target              1  0.00000 1.00000  0.00000 0.0000  0.00000 0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Target time2 vs time1  0.22333 0.85658 -0.22333 0.0923  7.94918 0.43682</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Target time3 vs time1 -2.23333 4.70219  2.23333 0.5067 43.63677 1.21754</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.00000     1.00000         0.00000         0.00000 1.00000    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     0.63281     1.15949        -0.30231        -0.16499 0.81660    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     2.02201    10.93496         0.96037         5.19362 0.06847   .</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     gene contrast     ddCt      RE     LCL      UCL   log2FC      se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Target       t1  0.00000 1.00000 0.00000  0.00000  0.00000 0.67643</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Target t2 vs t1  0.22333 0.85658 0.15102  4.85870  0.22333 0.29515</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Target t3 vs t1 -2.23333 4.70219 0.82899 26.67166 -2.23333 0.58051</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC p.value sig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     0.62571     1.59818        -0.67643         0.67643 1.00000    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     0.69810     1.05104        -0.51849         0.07182 0.81660    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     3.14447     7.03157         1.65282         2.81385 0.06847   .</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The 1 level was used as calibrator.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The t1 level was used as calibrator.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">perGene</span><span class="op">$</span><span class="va">Target</span><span class="op">$</span><span class="va">ANOVA_table</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Type III Analysis of Variance Table with Satterthwaite's method</span>
@@ -300,21 +308,21 @@ Statistical Analysis of Real-Time PCR Data.
 <span class="r-in"><span><span class="co"># Repeated measure analysis: split-plot in time</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">ANOVA_DDCt</span><span class="op">(</span><span class="va">data_repeated_measure_2</span>,</span></span>
 <span class="r-in"><span>           numOfFactors <span class="op">=</span> <span class="fl">2</span>, numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span></span>
-<span class="r-in"><span>           mainFactor.column <span class="op">=</span> <span class="fl">2</span>, block <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>           specs <span class="op">=</span> <span class="st">"time"</span>, block <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>           model <span class="op">=</span> <span class="va">wDCt</span> <span class="op">~</span> <span class="va">treatment</span> <span class="op">*</span> <span class="va">time</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative Expression</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     gene       contrast     ddCt      RE  log2FC     LCL     UCL      se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Target              1  0.00000 1.00000 0.00000 0.00000 0.00000 0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Target time2 vs time1 -0.32833 1.25556 0.32833 0.43805 3.59873 0.38172</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Target time3 vs time1 -1.34667 2.54324 1.34667 0.88731 7.28951 0.58112</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.00000     1.00000         0.00000         0.00000 1.00000    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     0.96367     1.63586         0.25200         0.42778 0.55402    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     1.70001     3.80471         0.90017         2.01463 0.03509   *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     gene contrast     ddCt      RE     LCL     UCL   log2FC      se Lower.se.RE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Target       t1  0.00000 1.00000 0.00000 0.00000  0.00000 0.34003     0.79003</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Target t2 vs t1 -0.32833 1.25556 0.53676 2.93695 -0.32833 0.21216     1.08385</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Target t3 vs t1 -1.34667 2.54324 1.08725 5.94901 -1.34667 0.28931     2.08112</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC p.value sig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.26578        -0.34003         0.34003 1.00000    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     1.45447         0.11617         0.54050 0.55402    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     3.10798         1.05736         1.63598 0.03509   *</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The 1 level was used as calibrator.</span>
-<span class="r-in"><span>           </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The t1 level was used as calibrator.</span>
+<span class="r-in"><span>   </span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

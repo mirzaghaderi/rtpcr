@@ -11,7 +11,7 @@ significance annotations."><meta property="og:image" content="https://mirzaghade
 
     <a class="navbar-brand me-2" href="../index.html">rtpcr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,6 +67,8 @@ significance annotations.</p>
 <span>  alpha <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  base_size <span class="op">=</span> <span class="fl">12</span>,</span>
 <span>  legend_position <span class="op">=</span> <span class="st">"right"</span>,</span>
+<span>  removeCalibratorCols <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  removeCalibratorText <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -143,6 +145,14 @@ significance annotations.</p>
 <dd><p>Character or numeric vector. Legend position (default <code>right</code>)</p></dd>
 
 
+<dt id="arg-removecalibratorcols">removeCalibratorCols<a class="anchor" aria-label="anchor" href="#arg-removecalibratorcols"></a></dt>
+<dd><p>= NULL or remove Calibrator Cols</p></dd>
+
+
+<dt id="arg-removecalibratortext">removeCalibratorText<a class="anchor" aria-label="anchor" href="#arg-removecalibratortext"></a></dt>
+<dd><p>= NULL or remove Calibrator text</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional ggplot2 layer arguments</p></dd>
 
@@ -164,24 +174,24 @@ significance annotations.</p>
 <span class="r-in"><span>  numOfFactors <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  numberOfrefGenes <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  block <span class="op">=</span> <span class="st">"block"</span>,</span></span>
-<span class="r-in"><span>  mainFactor.column <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  specs <span class="op">=</span> <span class="st">"Concentration"</span>,</span></span>
 <span class="r-in"><span>  p.adj <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative Expression</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   gene contrast     ddCt      RE   log2FC     LCL     UCL      se Lower.se.RE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   PO       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.00000     1.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   PO L2 vs L1 -0.94610 1.92666  0.94610 1.25860 2.94934 0.16301     1.72082</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   PO L3 vs L1 -2.19198 4.56931  2.19198 3.08069 6.77724 0.20409     3.96657</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  NLM       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.00000     1.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  NLM L2 vs L1  0.86568 0.54879 -0.86568 0.39830 0.75614 0.10971     0.50860</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  NLM L3 vs L1 -1.44341 2.71964  1.44341 1.94670 3.79946 0.20250     2.36347</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.00000         0.00000         0.00000 1.00000    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2.15713         0.84502         1.05928 0.00116  **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     5.26364         1.90283         2.52506 0.00000 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     1.00000         0.00000         0.00000 1.00000    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     0.59215        -0.93407        -0.80229 0.00018 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     3.12947         1.25439         1.66093 0.00000 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   gene contrast     ddCt      RE     LCL     UCL   log2FC      se Lower.se.RE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   PO       L1  0.00000 1.00000 0.00000 0.00000  0.00000 0.09187     0.93830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   PO L2 vs L1 -0.94610 1.92666 1.35851 2.73242 -0.94610 0.13465     1.75497</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   PO L3 vs L1 -2.19198 4.56931 3.30647 6.31447 -2.19198 0.18224     4.02710</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  NLM       L1  0.00000 1.00000 0.00000 0.00000  0.00000 0.09011     0.93945</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  NLM L2 vs L1  0.86568 0.54879 0.42174 0.71411  0.86568 0.06259     0.52549</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  NLM L3 vs L1 -1.44341 2.71964 2.06638 3.57940 -1.44341 0.18135     2.39838</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC p.value sig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.06575        -0.09187         0.09187 1.00000    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2.11515         0.81145         1.08076 0.00116  **</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     5.18453         2.00974         2.37421 0.00000 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     1.06445        -0.09011         0.09011 1.00000    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     0.57312        -0.92826        -0.80309 0.00018 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     3.08392         1.26206         1.62477 0.00000 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The L1 level was used as calibrator.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Note: Using default model for statistical analysis: wDCt ~ block + Concentration * Type </span>

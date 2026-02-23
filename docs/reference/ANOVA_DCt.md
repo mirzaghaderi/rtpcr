@@ -17,6 +17,7 @@ ANOVA_DCt(
   p.adj = "none",
   analyseAllTarget = TRUE,
   model = NULL,
+  modelBased_se = TRUE,
   set_missing_target_Ct_to_40 = FALSE
 )
 ```
@@ -76,6 +77,15 @@ ANOVA_DCt(
   `"wDCt ~ Treatment + (1|Block)"`). When using `model`, the `block` and
   `numOfFactors` arguments are ignored for model specification, but
   still used for data structure identification.
+
+- modelBased_se:
+
+  Logical. If `TRUE` (default), standard errors are calculated from
+  model-based residuals. If `FALSE`, standard errors are calculated
+  directly from the observed `wDCt` values within each treatment group
+  according to the selected `se.type`. For single factor data, both
+  methods are the same. It is recommended to use `modelBased_se = TRUE`
+  (default).
 
 - set_missing_target_Ct_to_40:
 
@@ -218,12 +228,12 @@ result_custom <- ANOVA_DCt(data_repeated_measure_2, numOfFactors = 2, numberOfre
 #> Relative Expression
 #> 
 #>     gene treatment time       dCt       RE   log2FC       LCL       UCL      se
-#> 1 Target untreated    1 -13.34333 10393.06 13.34333  2420.745  44620.87 0.60237
-#> 2 Target   treated    1 -14.08667 17398.40 14.08667  4052.422  74697.09 1.40507
-#> 3 Target untreated    2 -14.22333 19127.14 14.22333  4455.080  82119.16 0.65831
-#> 4 Target   treated    2 -13.86333 14903.19 13.86333  3471.240  63984.34 0.97527
-#> 5 Target untreated    3 -13.80333 14296.09 13.80333  3329.836  61377.88 0.78214
-#> 6 Target   treated    3 -16.32000 81810.59 16.32000 19055.267 351240.05 0.55411
+#> 1 Target untreated   t1 -13.34333 10393.06 13.34333  2420.745  44620.87 0.60237
+#> 2 Target   treated   t1 -14.08667 17398.40 14.08667  4052.422  74697.09 1.40507
+#> 3 Target untreated   t2 -14.22333 19127.14 14.22333  4455.080  82119.16 0.65831
+#> 4 Target   treated   t2 -13.86333 14903.19 13.86333  3471.240  63984.34 0.97527
+#> 5 Target untreated   t3 -13.80333 14296.09 13.80333  3329.836  61377.88 0.78214
+#> 6 Target   treated   t3 -16.32000 81810.59 16.32000 19055.267 351240.05 0.55411
 #>   Lower.se.RE Upper.se.RE Upper.se.log2FC Lower.se.log2FC sig
 #> 1    6845.630    15778.79        20.25790         8.78889   b
 #> 2    6569.648    46076.16        37.30571         5.31914   b

@@ -11,7 +11,7 @@ grouping is performed for all treatment combinations."><meta property="og:image"
 
     <a class="navbar-brand me-2" href="../index.html">rtpcr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,6 +58,7 @@ grouping is performed for all treatment combinations.</p>
 <span>  p.adj <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>  analyseAllTarget <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  model <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  modelBased_se <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  set_missing_target_Ct_to_40 <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -116,6 +117,13 @@ For mixed models, random effects can be defined using <code>lmer</code> syntax
 (e.g., <code>"wDCt ~ Treatment + (1|Block)"</code>). When using <code>model</code>,
 the <code>block</code> and <code>numOfFactors</code> arguments are ignored for model
 specification, but still used for data structure identification.</p></dd>
+
+
+<dt id="arg-modelbased-se">modelBased_se<a class="anchor" aria-label="anchor" href="#arg-modelbased-se"></a></dt>
+<dd><p>Logical. If <code>TRUE</code> (default), standard errors are
+calculated from model-based residuals. If <code>FALSE</code>, standard errors are calculated directly from the observed
+<code>wDCt</code> values within each treatment group according to the selected <code>se.type</code>.
+For single factor data, both methods are the same. It is recommended to use <code>modelBased_se = TRUE</code> (default).</p></dd>
 
 
 <dt id="arg-set-missing-target-ct-to-">set_missing_target_Ct_to_40<a class="anchor" aria-label="anchor" href="#arg-set-missing-target-ct-to-"></a></dt>
@@ -237,12 +245,12 @@ variance components along with an expression table containing:</p><ul><li><p><co
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative Expression</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     gene treatment time       dCt       RE   log2FC       LCL       UCL      se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Target untreated    1 -13.34333 10393.06 13.34333  2420.745  44620.87 0.60237</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Target   treated    1 -14.08667 17398.40 14.08667  4052.422  74697.09 1.40507</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Target untreated    2 -14.22333 19127.14 14.22333  4455.080  82119.16 0.65831</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Target   treated    2 -13.86333 14903.19 13.86333  3471.240  63984.34 0.97527</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Target untreated    3 -13.80333 14296.09 13.80333  3329.836  61377.88 0.78214</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Target   treated    3 -16.32000 81810.59 16.32000 19055.267 351240.05 0.55411</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Target untreated   t1 -13.34333 10393.06 13.34333  2420.745  44620.87 0.60237</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Target   treated   t1 -14.08667 17398.40 14.08667  4052.422  74697.09 1.40507</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Target untreated   t2 -14.22333 19127.14 14.22333  4455.080  82119.16 0.65831</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Target   treated   t2 -13.86333 14903.19 13.86333  3471.240  63984.34 0.97527</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Target untreated   t3 -13.80333 14296.09 13.80333  3329.836  61377.88 0.78214</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Target   treated   t3 -16.32000 81810.59 16.32000 19055.267 351240.05 0.55411</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Lower.se.RE Upper.se.RE Upper.se.log2FC Lower.se.log2FC sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    6845.630    15778.79        20.25790         8.78889   b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    6569.648    46076.16        37.30571         5.31914   b</span>

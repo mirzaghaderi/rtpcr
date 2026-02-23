@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">rtpcr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,37 +68,7 @@
 
 <p>⁠<!-- badges: end --></p>
 <p>rtpcr is a tool for analysis of RT-qPCR gene expression data using <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta Ct</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>Δ</mi><mi>C</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta\Delta Ct</annotation></semantics></math> methods, including t-tests and ANOVA, repeated-measures models, and publication-ready visualizations. The package implements a general calculation method adopted from Ganger et al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl methods.</p>
-<ul>
-<li><a href="#functions">Functions</a></li>
-<li>
-<a href="#quick-start">Quick start</a>
-<ul>
-<li><a href="#installing-and-loading">Installing and loading</a></li>
-</ul>
-</li>
-<li><a href="#input-data-structure">Input data structure</a></li>
-<li><a href="#handling-missing-data">Handling missing data</a></li>
-<li>
-<a href="#data-analysis">Data analysis</a>
-<ul>
-<li><a href="#amplification-efficiency">Amplification efficiency</a></li>
-<li><a href="#relative-expression">Relative expression</a></li>
-</ul>
-</li>
-<li>
-<a href="#output">Output</a>
-<ul>
-<li><a href="#data-output">Data output</a></li>
-<li><a href="#plot-output">Plot output</a></li>
-</ul>
-</li>
-<li><a href="#post-hoc-analysis">Post-hoc analysis</a></li>
-<li><a href="#checking-normality-of-residuals">Checking normality of residuals</a></li>
-<li><a href="#mean-of-technical-replicates">Mean of technical replicates</a></li>
-<li><a href="#contact">Contact</a></li>
-<li><a href="#citation">Citation</a></li>
-<li><a href="#references">References</a></li>
-</ul>
+<p><img src="reference/figures/shiny_rtpcr.png" class="center" style="width:100.0%"><em>rtpcr is now available as shiny_rtpcr, a web application developed using R/Shiny for interactive analysis of qPCR data at <a href="https://mirzaghaderi.shinyapps.io/rtpcr/" class="external-link uri">https://mirzaghaderi.shinyapps.io/rtpcr/</a></em></p>
 </div>
 <div class="section level1">
 <h1 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
@@ -185,7 +155,7 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mirzaghaderi.github.io/rtpcr/">rtpcr</a></span><span class="op">)</span></span></code></pre></div>
 <p>Or from from GitHub (developing version):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mirzaghaderi/rtpcr"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mirzaghaderi/rtpcr"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level1">
@@ -346,9 +316,9 @@ Figure 4: Standard curve plot displaying the relationship between the logarithm 
 <div class="section level4">
 <h4 id="note-5">NOTE<a class="anchor" aria-label="anchor" href="#note-5"></a>
 </h4>
-<p>Sometime groups are independent or paired (Repeated measure experiments). Examples: 1) Analyzing gene expression in different time points, or before and after treatment in each biological replicate; 2) Analyzing gene expression between two tissue types within the same organism. For such analysis types, if there are only two time points, we can use the <code>TTEST_DDCt</code> with the argument <code>paired = TRUE</code>; or <code>ANOVA_DDCt</code> (if there are two or more time points) with a repeated measure model such as <code>wDCt ~ Treatment + ( 1 | id)</code> or <code>wDCt ~ Treatment + ( 1 | Rep)</code>.</p>
-<figure><img src="reference/figures/repeated_measure.png" class="center" style="width:100.0%" alt='Figure 5: Calculation of standard error (se) for ddCt–based relative expression in the ANOVA_DDCt() function of the rtpcr package. Standard errors in the ANOVA_DDCt() function are calculated from model-based residuals (modelBased_se = TRUE) by default. By setting modelBased_se = FALSE standard errors are calculated directly from the observed wDCt values within each treatment group according to the selected se.type (One of "paired.group", "two.group", or "single.group"). For single factor data, both methods are the same. It is recommended to use modelBased_se = TRUE (default). This figure illustrates how weighted dCt (wdCt) and weighted ddCt (wddCt) values are used under different experimental designs, and how the standard error is computed when modelBased_se = FALSE depending on the se.type argument. "paired.group" computes se from paired differences (used when a random id effect is present), "two.group" uses the unpaired two-group t-test standard error against the reference level, and "single.group" computes se within each level using a one-group t-test. For independent groups, ANOVA_DDCt() automatically uses se.type = "two.group", and if repeated‐measure or paired designs model is specified, ANOVA_DDCt() automatically selects se.type = "paired.group"'><figcaption aria-hidden="true">
-Figure 5: Calculation of standard error (se) for ddCt–based relative expression in the <code><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> function of the rtpcr package. Standard errors in the <code><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> function are calculated from model-based residuals (<code>modelBased_se = TRUE</code>) by default. By setting <code>modelBased_se = FALSE</code> standard errors are calculated directly from the observed wDCt values within each treatment group according to the selected <code>se.type</code> (One of <code>“paired.group”</code>, <code>“two.group”</code>, or <code>“single.group”</code>). For single factor data, both methods are the same. It is recommended to use <code>modelBased_se = TRUE</code> (default). This figure illustrates how weighted dCt (wdCt) and weighted ddCt (wddCt) values are used under different experimental designs, and how the standard error is computed when <code>modelBased_se = FALSE</code> depending on the <code>se.type</code> argument. <code>“paired.group”</code> computes se from paired differences (used when a random id effect is present), <code>“two.group”</code> uses the unpaired two-group t-test standard error against the reference level, and <code>“single.group”</code> computes se within each level using a one-group t-test. For independent groups, <code><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> automatically uses <code>se.type = “two.group”</code>, and if repeated‐measure or paired designs model is specified, <code><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> automatically selects <code>se.type = “paired.group”</code>
+<p>Sometime groups are paired (Repeated measure experiments). Examples: 1) Analyzing gene expression in different time points, or before and after treatment in each biological replicate; 2) Analyzing gene expression between two tissue types within the same organism. For such analysis types, if there are only two time points, we can use the <code>TTEST_DDCt</code> with the argument <code>paired = TRUE</code>; or <code>ANOVA_DDCt</code> (if there are two or more time points) with a repeated measure model such as <code>wDCt ~ Treatment + ( 1 | id)</code> or <code>wDCt ~ Treatment + ( 1 | Rep)</code>.</p>
+<figure><img src="reference/figures/repeated_measure.png" class="center" style="width:100.0%" alt='Figure 5: A) Basic structure of independent group- or paired group-experiments. Examples of paired groups ( or repeated measure experiments): 1) Analysing gene expression before and after treatment in the sampe biological replicates; 2) Analysing gene expression between two tissue types within the same organism. For such analysis types we can use the TTEST_DDCt with the argument paired = TRUE; or ANOVA_DDCt with a repeated measure model such as wDCt ~ Treatment + ( 1 | id) or wDCt ~ Treatment + ( 1 | Rep). B) Calculation of standard error (se) and confidense interval (CI) for ddCt–based relative expression in the ANOVA_DDCt() function of the rtpcr package. Standard errors and confidense interval are calculated from model-based residuals by default (modelBased_se = TRUE) according to the selected se.type (One of "paired.group", "two.group", or "single.group"). By setting modelBased_se = FALSE standard errors are calculated directly from the observed wDCt values within each group, although for the single factor experiments the two cases are the same. Method 4 is based on the pooled error from which the confidence interval is calculated and can be used in any conditions as it is derived from a fitted model. se: group standard error, SE: pooled standard error. The figure illustrates how weighted dCt (wdCt) and weighted ddCt (wddCt) values are used under different experimental designs, and how the standard error is computed when modelBased_se = FALSE, depending on the se.type argument. "paired.group" computes se from paired differences (used when a random id effect is present), "two.group" uses the unpaired two-group t-test standard error against the reference level, and "single.group" computes se within each level using a one-group t-test. For independent groups, ANOVA_DDCt() automatically uses se.type = "two.group", and if repeated‐measure or paired designs model is specified, ANOVA_DDCt() automatically selects se.type = "paired.group"'><figcaption aria-hidden="true">
+Figure 5: A) Basic structure of independent group- or paired group-experiments. Examples of paired groups ( or repeated measure experiments): 1) Analysing gene expression before and after treatment in the sampe biological replicates; 2) Analysing gene expression between two tissue types within the same organism. For such analysis types we can use the TTEST_DDCt with the argument paired = TRUE; or ANOVA_DDCt with a repeated measure model such as wDCt ~ Treatment + ( 1 | id) or wDCt ~ Treatment + ( 1 | Rep). B) Calculation of standard error (se) and confidense interval (CI) for ddCt–based relative expression in the <code><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> function of the rtpcr package. Standard errors and confidense interval are calculated from model-based residuals by default (<code>modelBased_se = TRUE</code>) according to the selected <code>se.type</code> (One of <code>“paired.group”</code>, <code>“two.group”</code>, or <code>“single.group”</code>). By setting <code>modelBased_se = FALSE</code> standard errors are calculated directly from the observed wDCt values within each group, although for the single factor experiments the two cases are the same. Method 4 is based on the pooled error from which the confidence interval is calculated and can be used in any conditions as it is derived from a fitted model. se: group standard error, SE: pooled standard error. The figure illustrates how weighted dCt (wdCt) and weighted ddCt (wddCt) values are used under different experimental designs, and how the standard error is computed when <code>modelBased_se = FALSE</code>, depending on the <code>se.type</code> argument. <code>“paired.group”</code> computes se from paired differences (used when a random id effect is present), <code>“two.group”</code> uses the unpaired two-group t-test standard error against the reference level, and <code>“single.group”</code> computes se within each level using a one-group t-test. For independent groups, <code><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> automatically uses <code>se.type = “two.group”</code>, and if repeated‐measure or paired designs model is specified, <code><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code> automatically selects <code>se.type = “paired.group”</code>
 </figcaption></figure><p><br></p>
 </div>
 </div>
@@ -363,7 +333,7 @@ Figure 5: Calculation of standard error (se) for ddCt–based relative expressio
 <span><span class="co"># Anova analysis</span></span>
 <span><span class="fu"><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  mainFactor.column <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  specs <span class="op">=</span> <span class="st">"condition"</span>,</span>
 <span>  numOfFactors <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  block <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
@@ -388,7 +358,7 @@ Figure 5: Calculation of standard error (se) for ddCt–based relative expressio
 <span>  <span class="va">data</span>,</span>
 <span>  numOfFactors <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  mainFactor.column <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  specs <span class="op">=</span> <span class="st">"time"</span>,</span>
 <span>  block <span class="op">=</span> <span class="cn">NULL</span>, model <span class="op">=</span> <span class="va">wDCt</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span></span>
@@ -404,7 +374,7 @@ Figure 5: Calculation of standard error (se) for ddCt–based relative expressio
 <span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt</a></span><span class="op">(</span></span>
 <span>  x <span class="op">=</span> <span class="va">data3</span>,</span>
-<span>  mainFactor.column <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  specs <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  numOfFactors <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  numberOfrefGenes <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  block <span class="op">=</span> <span class="st">"block"</span>,</span>
@@ -452,7 +422,7 @@ Figure 5: Calculation of standard error (se) for ddCt–based relative expressio
 <span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt</a></span><span class="op">(</span></span>
 <span>  x <span class="op">=</span> <span class="va">data3</span>,</span>
-<span>  mainFactor.column <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  specs <span class="op">=</span> <span class="st">"Concentration"</span>,</span>
 <span>  numOfFactors <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  numberOfrefGenes <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  block <span class="op">=</span> <span class="st">"block"</span>,</span>
@@ -482,6 +452,9 @@ Figure 5: Calculation of standard error (se) for ddCt–based relative expressio
 <span></span>
 <span><span class="va">residuals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">resid</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">perGene</span><span class="op">$</span><span class="va">gene_name</span><span class="op">$</span><span class="va">lm</span><span class="op">)</span></span>
 <span><span class="va">residuals</span></span></code></pre></div>
+<figure><img src="reference/figures/out.png" class="center" style="width:100.0%" alt="Figure 6: All the functions for relative expression analysis (including TTEST_DDCt, WILCOX_DDCt, ANOVA_DDCt(), and ANOVA_DCt()) return the relative expression table which include fold change and corresponding statistics. The output of ANOVA_DDCt(), and ANOVA_DCt() also include lm model, residuals, raw data and ANOVA table for each gene."><figcaption aria-hidden="true">
+Figure 6: All the functions for relative expression analysis (including <code>TTEST_DDCt</code>, <code>WILCOX_DDCt</code>, <code><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code>, and <code><a href="reference/ANOVA_DCt.html">ANOVA_DCt()</a></code>) return the relative expression table which include fold change and corresponding statistics. The output of <code><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt()</a></code>, and <code><a href="reference/ANOVA_DCt.html">ANOVA_DCt()</a></code> also include lm model, residuals, raw data and ANOVA table for each gene.
+</figcaption></figure>
 </div>
 <div class="section level2">
 <h2 id="plot-output">Plot output<a class="anchor" aria-label="anchor" href="#plot-output"></a>
@@ -600,7 +573,7 @@ Figure 5: Calculation of standard error (se) for ddCt–based relative expressio
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ANOVA_DDCt.html">ANOVA_DDCt</a></span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  numOfFactors <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  mainFactor.column <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  specs <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  block <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
@@ -635,7 +608,7 @@ Figure 5: Calculation of standard error (se) for ddCt–based relative expressio
 <div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ANOVA_DDCt</span>(</span>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  data_Heffer2020PlosOne,</span>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="at">numOfFactors =</span> <span class="dv">1</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">mainFactor.column =</span> <span class="dv">1</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">specs =</span> <span class="st">"condition"</span>,</span>
 <span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="at">numberOfrefGenes =</span> <span class="dv">1</span>,</span>
 <span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  <span class="at">block =</span> <span class="cn">NULL</span>,</span>
 <span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  <span class="at">analyseAllTarget =</span> <span class="st">"Tnfa"</span>) </span>
@@ -653,7 +626,7 @@ Figure 5: Calculation of standard error (se) for ddCt–based relative expressio
 <span>  <span class="va">data_3factor</span>,</span>
 <span>  numOfFactors <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  mainFactor.column <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  specs <span class="op">=</span> <span class="st">"Conc"</span>,</span>
 <span>  block <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">perGene</span><span class="op">$</span><span class="va">E_PO</span><span class="op">$</span><span class="va">lm</span></span>
@@ -699,7 +672,7 @@ Figure 5: Calculation of standard error (se) for ddCt–based relative expressio
 <span>  <span class="va">data</span>,</span>
 <span>  numOfFactors <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  numberOfrefGenes <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  mainFactor.column <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  specs <span class="op">=</span> <span class="st">"time"</span>,</span>
 <span>  block <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  model <span class="op">=</span> <span class="va">wDCt</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">id</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>

@@ -25,6 +25,8 @@ plotFactor(
   alpha = 1,
   base_size = 12,
   legend_position = "right",
+  removeCalibratorCols = FALSE,
+  removeCalibratorText = FALSE,
   ...
 )
 ```
@@ -99,6 +101,14 @@ plotFactor(
 
   Character or numeric vector. Legend position (default `right`)
 
+- removeCalibratorCols:
+
+  = NULL or remove Calibrator Cols
+
+- removeCalibratorText:
+
+  = NULL or remove Calibrator text
+
 - ...:
 
   Additional ggplot2 layer arguments
@@ -120,24 +130,24 @@ res <- ANOVA_DDCt(x = data,
   numOfFactors = 2,
   numberOfrefGenes = 3,
   block = "block",
-  mainFactor.column = 2,
+  specs = "Concentration",
   p.adj = "none")
 #> 
 #> Relative Expression
-#>   gene contrast     ddCt      RE   log2FC     LCL     UCL      se Lower.se.RE
-#> 1   PO       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.00000     1.00000
-#> 2   PO L2 vs L1 -0.94610 1.92666  0.94610 1.25860 2.94934 0.16301     1.72082
-#> 3   PO L3 vs L1 -2.19198 4.56931  2.19198 3.08069 6.77724 0.20409     3.96657
-#> 4  NLM       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.00000     1.00000
-#> 5  NLM L2 vs L1  0.86568 0.54879 -0.86568 0.39830 0.75614 0.10971     0.50860
-#> 6  NLM L3 vs L1 -1.44341 2.71964  1.44341 1.94670 3.79946 0.20250     2.36347
-#>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig
-#> 1     1.00000         0.00000         0.00000 1.00000    
-#> 2     2.15713         0.84502         1.05928 0.00116  **
-#> 3     5.26364         1.90283         2.52506 0.00000 ***
-#> 4     1.00000         0.00000         0.00000 1.00000    
-#> 5     0.59215        -0.93407        -0.80229 0.00018 ***
-#> 6     3.12947         1.25439         1.66093 0.00000 ***
+#>   gene contrast     ddCt      RE     LCL     UCL   log2FC      se Lower.se.RE
+#> 1   PO       L1  0.00000 1.00000 0.00000 0.00000  0.00000 0.09187     0.93830
+#> 2   PO L2 vs L1 -0.94610 1.92666 1.35851 2.73242 -0.94610 0.13465     1.75497
+#> 3   PO L3 vs L1 -2.19198 4.56931 3.30647 6.31447 -2.19198 0.18224     4.02710
+#> 4  NLM       L1  0.00000 1.00000 0.00000 0.00000  0.00000 0.09011     0.93945
+#> 5  NLM L2 vs L1  0.86568 0.54879 0.42174 0.71411  0.86568 0.06259     0.52549
+#> 6  NLM L3 vs L1 -1.44341 2.71964 2.06638 3.57940 -1.44341 0.18135     2.39838
+#>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC p.value sig
+#> 1     1.06575        -0.09187         0.09187 1.00000    
+#> 2     2.11515         0.81145         1.08076 0.00116  **
+#> 3     5.18453         2.00974         2.37421 0.00000 ***
+#> 4     1.06445        -0.09011         0.09011 1.00000    
+#> 5     0.57312        -0.92826        -0.80309 0.00018 ***
+#> 6     3.08392         1.26206         1.62477 0.00000 ***
 #> 
 #> The L1 level was used as calibrator.
 #> Note: Using default model for statistical analysis: wDCt ~ block + Concentration * Type 

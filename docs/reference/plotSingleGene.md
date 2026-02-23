@@ -64,20 +64,20 @@ A bar plot of Delta Delta Ct showing pairwise significance
 res <- ANOVA_DDCt(
 data_2factor,
 numOfFactors = 2,
-mainFactor.column = 2,
+specs = "Drought",
 numberOfrefGenes = 1,
 block = NULL,
 analyseAllTarget = TRUE) # If you have multi-target gene data, specify a single target gene.
 #> 
 #> Relative Expression
-#>   gene contrast     ddCt      RE  log2FC     LCL     UCL      se Lower.se.RE
-#> 1   PO       D0  0.00000 1.00000 0.00000 0.00000 0.00000 0.00000     1.00000
-#> 2   PO D1 vs D0 -0.09833 1.07054 0.09833 0.70177 1.63308 0.24609     0.90265
-#> 3   PO D2 vs D0 -1.84667 3.59668 1.84667 2.35774 5.48667 0.10568     3.34263
-#>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC pvalue sig
-#> 1     1.00000         0.00000         0.00000 1.0000    
-#> 2     1.26965         0.08291         0.11662 0.6744    
-#> 3     3.87004         1.71623         1.98702 0.0000 ***
+#>   gene contrast     ddCt      RE     LCL     UCL   log2FC      se Lower.se.RE
+#> 1   PO       D0  0.00000 1.00000 0.00000 0.00000  0.00000 0.09564     0.93586
+#> 2   PO D1 vs D0 -0.09833 1.07054 0.75825 1.51143 -0.09833 0.22675     0.91483
+#> 3   PO D2 vs D0 -1.84667 3.59668 2.54751 5.07795 -1.84667 0.04497     3.48630
+#>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC p.value sig
+#> 1     1.06854        -0.09564         0.09564  1.0000    
+#> 2     1.25274        -0.12842         0.32508  0.6744    
+#> 3     3.71056         1.80170         1.89164  0.0000 ***
 #> 
 #> The D0 level was used as calibrator.
 #> Note: Using default model for statistical analysis: wDCt ~ Drought * Genotype 

@@ -25,7 +25,7 @@ Means_DDCt(model, specs, p.adj = "none")
   A character string or character vector specifying the predictors or
   combinations of predictors over which relative expression values are
   desired. This argument follows the specification syntax used by
-  [`emmeans::emmeans()`](https://rdrr.io/pkg/emmeans/man/emmeans.html)
+  [`emmeans::emmeans()`](https://rvlenth.github.io/emmeans/reference/emmeans.html)
   (e.g., `"Factor"`, `"Factor1 | Factor2"`).
 
 - p.adj:
@@ -67,16 +67,16 @@ res <- ANOVA_DDCt(
   data,
   numOfFactors = 3,
   numberOfrefGenes = 1,
-  mainFactor.column = 1,
+  specs = "Type",
   block = NULL)
 #> 
 #> Relative Expression
-#>   gene contrast     ddCt     RE  log2FC     LCL     UCL      se Lower.se.RE
-#> 1   PO        R  0.00000 1.0000 0.00000 0.00000 0.00000 0.00000     1.00000
-#> 2   PO   S vs R -1.66111 3.1626 1.66111 2.44335 4.09358 0.15154     2.84726
-#>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC pvalue sig
-#> 1     1.00000         0.00000         0.00000      1    
-#> 2     3.51286         1.49548         1.84508      0 ***
+#>   gene contrast     ddCt     RE     LCL     UCL   log2FC      se Lower.se.RE
+#> 1   PO        R  0.00000 1.0000 0.00000 0.00000  0.00000 0.13774     0.90894
+#> 2   PO   S vs R -1.66111 3.1626 2.44335 4.09358 -1.66111 0.06318     3.02709
+#>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC p.value sig
+#> 1     1.10018        -0.13774         0.13774       1    
+#> 2     3.30418         1.59793         1.72429       0 ***
 #> 
 #> The R level was used as calibrator.
 #> Note: Using default model for statistical analysis: wDCt ~ Type * Conc * SA 

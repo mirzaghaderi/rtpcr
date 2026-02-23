@@ -10,15 +10,16 @@ ANOVA_DDCt(
   x,
   numOfFactors,
   numberOfrefGenes,
-  mainFactor.column,
+  specs,
   block,
-  mainFactor.level.order = NULL,
+  calibratorLevel = NULL,
   p.adj = "none",
   analyseAllTarget = TRUE,
   model = NULL,
   set_missing_target_Ct_to_40 = FALSE,
-  se.type = c("paired.group", "two.group", "single.group"),
-  modelBased_se = TRUE
+  se.type = c("single.group", "paired.group", "two.group"),
+  modelBased_se = TRUE,
+  ...
 )
 ```
 
@@ -41,10 +42,11 @@ ANOVA_DDCt(
 
   Integer. Number of reference genes.
 
-- mainFactor.column:
+- specs:
 
-  Integer. Column index of the factor for which the relative expression
-  analysis is applied.
+  Example: "A", "A\|B" or A\|B\*C" if A, B and C are name of factor
+  columns in the input data The first name (here A) is the factor for
+  which the relative expression analysis is applied.
 
 - block:
 
@@ -56,12 +58,14 @@ ANOVA_DDCt(
   effect is usually considered as random and its interaction with any
   main effect is not considered.
 
-- mainFactor.level.order:
+- calibratorLevel:
 
-  Optional character vector specifying the order of levels for the main
-  factor. If `NULL`, the first observed level is used as the calibrator.
-  If provided, the first element of the vector is used as the calibrator
-  level.
+  NULL or one of the levels of the first selected factor in specs
+  argument. If NULL the first level of that factor is used as
+  calibrator. Optional character vector specifying the order of levels
+  for the main factor. If `NULL`, the first observed level is used as
+  the calibrator. If provided, the first element of the vector is used
+  as the calibrator level.
 
 - p.adj:
 
@@ -114,8 +118,13 @@ ANOVA_DDCt(
   model-based residuals. If `FALSE`, standard errors are calculated
   directly from the observed `wDCt` values within each treatment group
   according to the selected `se.type`. For single factor data, both
-  methods are the same. It is recommended to use modelBased_se = TRUE
+  methods are the same. It is recommended to use `modelBased_se = TRUE`
   (default).
+
+- ...:
+
+  Additional arguments. Included for backward compatibility with
+  deprecated `mainFactor.column`.
 
 ## Value
 
@@ -202,78 +211,79 @@ Real-Time PCR Data. *BMC Bioinformatics*, 7, 85.
 
 ``` r
 data1 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
-ANOVA_DDCt(x = data1,
+ANOVA_DDCt(data1,
            numOfFactors = 2,
            numberOfrefGenes = 3,
            block = "block",
-           mainFactor.column = 2,
+           specs = "Concentration",
            p.adj = "none")
 #> 
 #> Relative Expression
-#>   gene contrast     ddCt      RE   log2FC     LCL     UCL      se Lower.se.RE
-#> 1   PO       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.00000     1.00000
-#> 2   PO L2 vs L1 -0.94610 1.92666  0.94610 1.25860 2.94934 0.16301     1.72082
-#> 3   PO L3 vs L1 -2.19198 4.56931  2.19198 3.08069 6.77724 0.20409     3.96657
-#> 4  NLM       L1  0.00000 1.00000  0.00000 0.00000 0.00000 0.00000     1.00000
-#> 5  NLM L2 vs L1  0.86568 0.54879 -0.86568 0.39830 0.75614 0.10971     0.50860
-#> 6  NLM L3 vs L1 -1.44341 2.71964  1.44341 1.94670 3.79946 0.20250     2.36347
-#>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig
-#> 1     1.00000         0.00000         0.00000 1.00000    
-#> 2     2.15713         0.84502         1.05928 0.00116  **
-#> 3     5.26364         1.90283         2.52506 0.00000 ***
-#> 4     1.00000         0.00000         0.00000 1.00000    
-#> 5     0.59215        -0.93407        -0.80229 0.00018 ***
-#> 6     3.12947         1.25439         1.66093 0.00000 ***
+#>   gene contrast     ddCt      RE     LCL     UCL   log2FC      se Lower.se.RE
+#> 1   PO       L1  0.00000 1.00000 0.00000 0.00000  0.00000 0.09187     0.93830
+#> 2   PO L2 vs L1 -0.94610 1.92666 1.35851 2.73242 -0.94610 0.13465     1.75497
+#> 3   PO L3 vs L1 -2.19198 4.56931 3.30647 6.31447 -2.19198 0.18224     4.02710
+#> 4  NLM       L1  0.00000 1.00000 0.00000 0.00000  0.00000 0.09011     0.93945
+#> 5  NLM L2 vs L1  0.86568 0.54879 0.42174 0.71411  0.86568 0.06259     0.52549
+#> 6  NLM L3 vs L1 -1.44341 2.71964 2.06638 3.57940 -1.44341 0.18135     2.39838
+#>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC p.value sig
+#> 1     1.06575        -0.09187         0.09187 1.00000    
+#> 2     2.11515         0.81145         1.08076 0.00116  **
+#> 3     5.18453         2.00974         2.37421 0.00000 ***
+#> 4     1.06445        -0.09011         0.09011 1.00000    
+#> 5     0.57312        -0.92826        -0.80309 0.00018 ***
+#> 6     3.08392         1.26206         1.62477 0.00000 ***
 #> 
 #> The L1 level was used as calibrator.
 #> Note: Using default model for statistical analysis: wDCt ~ block + Concentration * Type 
            
 data2 <- read.csv(system.file("extdata", "data_1factor_one_ref.csv", package = "rtpcr"))          
-ANOVA_DDCt(x = data2,
+ANOVA_DDCt(data2,
            numOfFactors = 1,
            numberOfrefGenes = 1,
            block = NULL,
-           mainFactor.column = 1,
-           p.adj = "none")
+           specs = "Condition",
+           p.adj = "none",
+           se.type = "single.group")
 #> 
 #> Relative Expression
-#>      gene             contrast     ddCt      RE   log2FC     LCL     UCL
-#> 1 C2H2_26              control  0.00000 1.00000  0.00000 0.00000 0.00000
-#> 2 C2H2_26 treatment vs control  1.19333 0.43729 -1.19333 0.19262 0.99273
-#> 3 C2H2_01              control  0.00000 1.00000  0.00000 0.00000 0.00000
-#> 4 C2H2_01 treatment vs control -2.00667 4.01853  2.00667 2.45984 6.56487
-#> 5 C2H2_12              control  0.00000 1.00000  0.00000 0.00000 0.00000
-#> 6 C2H2_12 treatment vs control -0.72000 1.64718  0.72000 0.95945 2.82787
-#>        se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig
-#> 1 0.00000     1.00000     1.00000         0.00000         0.00000 1.00000    
-#> 2 0.42602     0.32548     0.58751        -1.60326        -0.88822 0.04875   *
-#> 3 0.00000     1.00000     1.00000         0.00000         0.00000 1.00000    
-#> 4 0.25504     3.36738     4.79558         1.68152         2.39469 0.00141  **
-#> 5 0.00000     1.00000     1.00000         0.00000         0.00000 1.00000    
-#> 6 0.28083     1.35582     2.00115         0.59264         0.87472 0.06239   .
+#>      gene             contrast     ddCt      RE     LCL     UCL   log2FC
+#> 1 C2H2_26              control  0.00000 1.00000 0.00000 0.00000  0.00000
+#> 2 C2H2_26 treatment vs control  1.19333 0.43729 0.19262 0.99273  1.19333
+#> 3 C2H2_01              control  0.00000 1.00000 0.00000 0.00000  0.00000
+#> 4 C2H2_01 treatment vs control -2.00667 4.01853 2.45984 6.56487 -2.00667
+#> 5 C2H2_12              control  0.00000 1.00000 0.00000 0.00000  0.00000
+#> 6 C2H2_12 treatment vs control -0.72000 1.64718 0.95945 2.82787 -0.72000
+#>        se Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC p.value sig
+#> 1 0.06009     0.95920     1.04253        -0.06009         0.06009 1.00000    
+#> 2 0.42176     0.32644     0.58578        -1.61509        -0.77158 0.04875   *
+#> 3 0.13017     0.91372     1.09442        -0.13017         0.13017 1.00000    
+#> 4 0.21932     3.45180     4.67830         1.78735         2.22598 0.00141  **
+#> 5 0.18502     0.87964     1.13683        -0.18502         0.18502 1.00000    
+#> 6 0.21127     1.42280     1.90695         0.50873         0.93127 0.06239   .
 #> 
 #> The control level was used as calibrator.
 #> Note: Using default model for statistical analysis: wDCt ~ Condition 
   
-# Repeated measure analysis         
+# Repeated measure analysis
 a <- ANOVA_DDCt(data_repeated_measure_1,
            numOfFactors = 1,
            numberOfrefGenes = 1,
            block = NULL,
-           mainFactor.column = 1,
+           specs = "time",
            p.adj = "none", model = wDCt ~ time + (1 | id))
 #> 
 #> Relative Expression
-#>     gene       contrast     ddCt      RE   log2FC    LCL      UCL      se
-#> 1 Target              1  0.00000 1.00000  0.00000 0.0000  0.00000 0.00000
-#> 2 Target time2 vs time1  0.22333 0.85658 -0.22333 0.0923  7.94918 0.43682
-#> 3 Target time3 vs time1 -2.23333 4.70219  2.23333 0.5067 43.63677 1.21754
-#>   Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig
-#> 1     1.00000     1.00000         0.00000         0.00000 1.00000    
-#> 2     0.63281     1.15949        -0.30231        -0.16499 0.81660    
-#> 3     2.02201    10.93496         0.96037         5.19362 0.06847   .
+#>     gene contrast     ddCt      RE     LCL      UCL   log2FC      se
+#> 1 Target       t1  0.00000 1.00000 0.00000  0.00000  0.00000 0.67643
+#> 2 Target t2 vs t1  0.22333 0.85658 0.15102  4.85870  0.22333 0.29515
+#> 3 Target t3 vs t1 -2.23333 4.70219 0.82899 26.67166 -2.23333 0.58051
+#>   Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC p.value sig
+#> 1     0.62571     1.59818        -0.67643         0.67643 1.00000    
+#> 2     0.69810     1.05104        -0.51849         0.07182 0.81660    
+#> 3     3.14447     7.03157         1.65282         2.81385 0.06847   .
 #> 
-#> The 1 level was used as calibrator.
+#> The t1 level was used as calibrator.
 
 a$perGene$Target$ANOVA_table
 #> Type III Analysis of Variance Table with Satterthwaite's method
@@ -286,19 +296,19 @@ a$perGene$Target$ANOVA_table
 # Repeated measure analysis: split-plot in time
 a <- ANOVA_DDCt(data_repeated_measure_2,
            numOfFactors = 2, numberOfrefGenes = 1,
-           mainFactor.column = 2, block = NULL,
+           specs = "time", block = NULL,
            model = wDCt ~ treatment * time + (1 | id))
 #> 
 #> Relative Expression
-#>     gene       contrast     ddCt      RE  log2FC     LCL     UCL      se
-#> 1 Target              1  0.00000 1.00000 0.00000 0.00000 0.00000 0.00000
-#> 2 Target time2 vs time1 -0.32833 1.25556 0.32833 0.43805 3.59873 0.38172
-#> 3 Target time3 vs time1 -1.34667 2.54324 1.34667 0.88731 7.28951 0.58112
-#>   Lower.se.RE Upper.se.RE Lower.se.log2FC Upper.se.log2FC  pvalue sig
-#> 1     1.00000     1.00000         0.00000         0.00000 1.00000    
-#> 2     0.96367     1.63586         0.25200         0.42778 0.55402    
-#> 3     1.70001     3.80471         0.90017         2.01463 0.03509   *
+#>     gene contrast     ddCt      RE     LCL     UCL   log2FC      se Lower.se.RE
+#> 1 Target       t1  0.00000 1.00000 0.00000 0.00000  0.00000 0.34003     0.79003
+#> 2 Target t2 vs t1 -0.32833 1.25556 0.53676 2.93695 -0.32833 0.21216     1.08385
+#> 3 Target t3 vs t1 -1.34667 2.54324 1.08725 5.94901 -1.34667 0.28931     2.08112
+#>   Upper.se.RE Lower.se.log2FC Upper.se.log2FC p.value sig
+#> 1     1.26578        -0.34003         0.34003 1.00000    
+#> 2     1.45447         0.11617         0.54050 0.55402    
+#> 3     3.10798         1.05736         1.63598 0.03509   *
 #> 
-#> The 1 level was used as calibrator.
-           
+#> The t1 level was used as calibrator.
+   
 ```

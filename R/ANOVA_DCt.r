@@ -90,7 +90,6 @@
 #'
 #' @export
 
-
 ANOVA_DCt <- function(
     x,
     numOfFactors,
@@ -181,7 +180,6 @@ ANOVA_DCt <- function(
       model_i <- model
     }
     
-    #has_random_effects <- grepl("\\|", as.character(model_i)[3])
     has_random_effects <- grepl("\\|", paste(deparse(model_i), collapse = " "))
     
     is_singular <- FALSE
@@ -194,8 +192,11 @@ ANOVA_DCt <- function(
       stats::lm(model_i, data = gene_df, na.action = na.exclude)
     }
     
+    # Add residuals to the data frame for the perGene output
+    gene_df$residuals <- residuals(lm, type = "response")
+    
     ANOVA_table <- stats::anova(lm)
-    lm_formula <- formula(lm)
+    lm_formula <- paste(deparse(formula(lm)), collapse = " ")
     
     ## Estimated marginal means
     emm_formula <- as.formula(
@@ -213,19 +214,16 @@ ANOVA_DCt <- function(
     
     emm_df <- as.data.frame(emm_obj)
     
-    
-    
-    
+    # Choose basis for SE calculation
     if (!modelBased_se) {
-      wDCt <- gene_df$wDCt
+      gene_df$val_for_se <- gene_df$wDCt
     } else {
-      wDCt <- residuals(lm, type = "response")
+      gene_df$val_for_se <- gene_df$residuals
     }
     
-    
-    ## Raw means and se
+    ## Raw means and se (Calculated per group, not pooled)
     obs_df <- stats::aggregate(
-      wDCt ~ T,
+      cbind(wDCt, val_for_se) ~ T,
       data = gene_df,
       FUN = function(z) c(
         mean = mean(z, na.rm = TRUE),
@@ -233,15 +231,18 @@ ANOVA_DCt <- function(
       )
     )
     
-    obs_df <- do.call(data.frame, obs_df)
-    colnames(obs_df) <- c("T", "dCt", "se")
+    obs_df_final <- data.frame(
+      T = obs_df$T,
+      dCt = obs_df$wDCt[, "mean"],
+      se = obs_df$val_for_se[, "se"]
+    )
     
     ## Treatment ID for emmeans
     emm_df$T <- do.call(paste, c(emm_df[factors], sep = ":"))
     
     merged <- merge(
       emm_df,
-      obs_df,
+      obs_df_final,
       by = "T",
       all.x = TRUE,
       sort = FALSE
@@ -275,8 +276,6 @@ ANOVA_DCt <- function(
     
     merged$sig <- merged$.group
     merged$.group <- NULL
-    
-    
     
     Results <- merged[, c("T", factors, "dCt")]
     Results$RE <- RE
@@ -317,7 +316,8 @@ ANOVA_DCt <- function(
     Results$gene <- gene_name
     
     list(
-      Final_data = gene_df[, -ncol(gene_df)],
+      # Returning Final_data with residuals and without temporary helper columns
+      Final_data = gene_df[, !colnames(gene_df) %in% c("T", "val_for_se")],
       lm = lm,
       lm_formula = lm_formula,
       ANOVA_table = ANOVA_table,
@@ -329,14 +329,12 @@ ANOVA_DCt <- function(
   relativeExpression <- do.call(rbind, lapply(perGene, `[[`, "Results"))
   rownames(relativeExpression) <- NULL
   
-  
   relativeExpression <- relativeExpression[, c("gene",
                                                setdiff(colnames(relativeExpression), c("gene", "T", "sig")),
                                                "sig"), drop = FALSE]
   
   cat("\nRelative Expression\n\n")
   print(relativeExpression)
-  
   
   singular_vec <- vapply(perGene, `[[`, logical(1), "is_singular")
   singular_genes <- targetNames[singular_vec]

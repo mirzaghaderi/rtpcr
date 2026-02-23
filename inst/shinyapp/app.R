@@ -15,25 +15,55 @@ library(markdown)
 
 # UI
 ui <- fluidPage(
-  titlePanel('rtpcr: qPCR Data Analysis & Plotting'),
+  # JavaScript to trigger the specific button on 'Enter' based on active tab
+  tags$script(HTML("
+    $(document).on('keyup', function(e) {
+      if (e.which == 13) {
+        var activeTab = $('#func_tabs .active a').attr('data-value');
+        var btnId = '';
+        if (activeTab === 'ANOVA_DCt') btnId = '#run_dc';
+        if (activeTab === 'ANOVA_DDCt') btnId = '#run_ddct';
+        if (activeTab === 'Efficiency') btnId = '#run_eff';
+        if (activeTab === 'TTEST_DDCt') btnId = '#run_tt';
+        if (activeTab === 'WILCOX_DDCt') btnId = '#run_wx';
+        if (activeTab === 'plotFactor') btnId = '#run_pf';
+        
+        if (btnId !== '') {
+          $(btnId).click();
+        }
+      }
+    });
+  ")),
+  
+titlePanel('rtpcr: qPCR Data Analysis & Plotting'),
+fluidRow(
+  column(12,
+         div(style = "margin-bottom: 20px; color: #333; line-height: 1.6;",
+             p("rtpcr uses dCt and ddCt methods, including t-tests and ANOVA, repeated-measures models, and publication-ready visualizations. The package implements a general calculation method adopted from Ganger et al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl methods. The rtpcr package gets efficiency (E) from the Ct values of genes and performs different analyses using the following functions.")
+         )
+  )
+),
+
   
   br(),
   
   sidebarLayout(
     sidebarPanel(
       tabsetPanel(id = "func_tabs",
-                  tabPanel("Home", helpText("Welcome! Please select an analysis tool from these tabs.")),
-                  tabPanel("ANOVA_DCt",
+                  tabPanel("Home", value = "Home", helpText("Welcome! Please select an analysis tool from these tabs.")),
+                  tabPanel("ANOVA_DCt", value = "ANOVA_DCt",
                            radioButtons("src_dc", "Data Source", choices = c("Upload CSV" = "user", "Sample Data" = "sample"), selected = "user"),
                            conditionalPanel("input.src_dc == 'user'", fileInput("file_dc", "Upload CSV", accept = ".csv")),
                            numericInput("numFactors_dc", "Number of factors", 1, min = 1),
                            numericInput("numRefGenes_dc", "Number of reference genes", 1, min = 1),
                            textInput("block_dc", "Block column (optional)", ""),
+                           textInput("model_dc", "model (optional)", ""),
                            checkboxInput("set40_dc", "Set missing Ct to 40", FALSE),
+                           checkboxInput("setModelse_dc", "Model_based se", TRUE),
                            selectInput("pAdj_dc", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
-                           actionButton("run_dc", "Run ANOVA_DCt")
+                           actionButton("run_dc", "Run ANOVA_DCt (Enter)")
                   ),
-                  tabPanel("ANOVA_DDCt",
+                  tabPanel("ANOVA_DDCt", value = "ANOVA_DDCt",
                            radioButtons("src_ddct", "Data Source", choices = c("Upload CSV" = "user", "Sample Data" = "sample"), selected = "user"),
                            conditionalPanel("input.src_ddct == 'user'", fileInput("file_ddct", "Upload CSV", accept = ".csv")),
                            numericInput("numFactors_ddct", "Number of factors", 1, min = 1),
@@ -45,9 +75,10 @@ ui <- fluidPage(
                            textInput("model_ddct", "model (optional)", ""),
                            selectInput("pAdj_ddct", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
                            checkboxInput("set40_ddct", "Set missing Ct to 40", FALSE),
-                           actionButton("run_ddct", "Run ANOVA_DDCt")
+                           checkboxInput("setModelse_ddct", "Model_based se", TRUE),
+                           actionButton("run_ddct", "Run ANOVA_DDCt (Enter)")
                   ),
-                  tabPanel("Efficiency",
+                  tabPanel("Efficiency", value = "Efficiency",
                            radioButtons("src_eff", "Data Source",choices = c("Upload CSV" = "user", "Sample Data" = "sample"), selected = "user"),
                            conditionalPanel("input.src_eff == 'user'", fileInput("file_eff", "Upload CSV", accept = ".csv")),
                            numericInput("baseSize_eff", "Base font size", 12, min = 6),
@@ -58,9 +89,9 @@ ui <- fluidPage(
                              column(6, numericInput("eff_w", "Width (in)", 8, min = 1)),
                              column(6, numericInput("eff_h", "Height (in)", 6, min = 1))
                            ),
-                           actionButton("run_eff", "Run Efficiency")
+                           actionButton("run_eff", "Run Efficiency (Enter)")
                   ),
-                  tabPanel("TTEST_DDCt",
+                  tabPanel("TTEST_DDCt", value = "TTEST_DDCt",
                            radioButtons("src_tt", "Data Source", choices = c("Upload CSV" = "user", "Sample Data" = "sample"), selected = "user"),
                            conditionalPanel("input.src_tt == 'user'", fileInput("file_tt", "Upload CSV", accept = ".csv")),
                            numericInput("numRefGenes_tt", "Number of reference genes", 1),
@@ -69,9 +100,9 @@ ui <- fluidPage(
                            checkboxInput("equalVar_tt", "Equal variance", TRUE),
                            selectInput("pAdj_tt", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
                            checkboxInput("set40_tt", "Set missing Ct to 40", FALSE),
-                           actionButton("run_tt", "Run TTEST_DDCt")
+                           actionButton("run_tt", "Run TTEST_DDCt (Enter)")
                   ),
-                  tabPanel("WILCOX_DDCt",
+                  tabPanel("WILCOX_DDCt", value = "WILCOX_DDCt",
                            radioButtons("src_wx", "Data Source", choices = c("Upload CSV" = "user", "Sample Data" = "sample"), selected = "user"),
                            conditionalPanel("input.src_wx == 'user'", fileInput("file_wx", "Upload CSV", accept = ".csv")),
                            numericInput("numRefGenes_wx", "Number of reference genes", 1),
@@ -79,9 +110,9 @@ ui <- fluidPage(
                            checkboxInput("paired_wx", "Paired test", FALSE),
                            selectInput("pAdj_wx", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
                            checkboxInput("set40_wx", "Set missing Ct to 40", FALSE),
-                           actionButton("run_wx", "Run WILCOX_DDCt")
+                           actionButton("run_wx", "Run WILCOX_DDCt (Enter)")
                   ),
-                  tabPanel("plotFactor",
+                  tabPanel("plotFactor", value = "plotFactor",
                            radioButtons("src_pf", "Data Source", 
                                         choices = c("Upload CSV" = "user", 
                                                     "Sample Data" = "sample",
@@ -121,18 +152,18 @@ ui <- fluidPage(
                              column(6, numericInput("pf_w", "Width (in)", 8, min = 1)),
                              column(6, numericInput("pf_h", "Height (in)", 6, min = 1))
                            ),
-                           actionButton("run_pf", "Run plotFactor")
+                           actionButton("run_pf", "Run plotFactor (Enter)")
                   )
       )
     ),
     mainPanel(
       tabsetPanel(id = "output_tabs",
-                  tabPanel("Introduction",
+                  tabPanel("Introduction", value = "Introduction",
                            div(style = "padding: 15px;",
                                includeMarkdown("README.md")
                            )
                   ),
-                  tabPanel("ANOVA_DCt",
+                  tabPanel("ANOVA_DCt", value = "ANOVA_DCt",
                            selectInput("gene_dc", "Select gene:", choices = character(0)),
                            tabsetPanel(id = "sub_dc",
                                        tabPanel("Input data", tableOutput("preview_dc")),
@@ -142,12 +173,12 @@ ui <- fluidPage(
                                                   tabPanel("ANOVA Table", verbatimTextOutput("anova_dc")),
                                                   tabPanel("LM Object", downloadButton("download_lm_dc", "Download LM object (.rds)")),
                                                   tabPanel("LM Formula", verbatimTextOutput("formula_dc")),
-                                                  tabPanel("Final table", tableOutput("final_data_dc"))
+                                                  tabPanel("Final table", br(), downloadButton("download_final_dc", "Download Final Table"), br(), tableOutput("final_data_dc"))
                                                 )
                                        )
                            )
                   ),
-                  tabPanel("ANOVA_DDCt",
+                  tabPanel("ANOVA_DDCt", value = "ANOVA_DDCt",
                            selectInput("gene_ddct", "Select gene:", choices = character(0)),
                            tabsetPanel(id = "sub_ddct",
                                        tabPanel("Input data", tableOutput("preview_ddct")),
@@ -157,42 +188,53 @@ ui <- fluidPage(
                                                   tabPanel("ANOVA Table", verbatimTextOutput("anova_ddct")),
                                                   tabPanel("LM Object", downloadButton("download_lm_ddct", "Download LM object (.rds)")),
                                                   tabPanel("LM Formula", verbatimTextOutput("formula_ddct")),
-                                                  tabPanel("Final table", tableOutput("final_data_ddct"))
+                                                  tabPanel("Final table", br(), downloadButton("download_final_ddct", "Download Final Table"), br(), tableOutput("final_data_ddct"))
                                                 )
                                        )
                            )
                   ),
-                  tabPanel("Efficiency",
+                  tabPanel("Efficiency", value = "Efficiency",
                            tabsetPanel(id = "sub_eff",
                                        tabPanel("Input data", tableOutput("preview_eff")),
                                        tabPanel("Table", br(), downloadButton("download_eff", "Download CSV"), br(), tableOutput("table_eff")),
                                        tabPanel("Plot",
-                                                plotOutput("plot_eff"),
+                                                br(),
+                                                fluidRow(
+                                                  column(12, 
+                                                         downloadButton("download_eff_png", "Download PNG"),
+                                                         downloadButton("download_eff_pdf", "Download PDF")
+                                                  )
+                                                ),
                                                 hr(),
-                                                downloadButton("download_eff_png", "Download Plot as PNG"),
-                                                downloadButton("download_eff_pdf", "Download Plot as PDF"))
+                                                plotOutput("plot_eff")
+                                       )
                            )
                   ),
-                  tabPanel("TTEST_DDCt",
+                  tabPanel("TTEST_DDCt", value = "TTEST_DDCt",
                            tabsetPanel(id = "sub_tt",
                                        tabPanel("Input Data", tableOutput("preview_tt")),
                                        tabPanel("Results", br(), downloadButton("download_tt", "Download CSV"), br(), tableOutput("table_tt"))
                            )
                   ),
-                  tabPanel("WILCOX_DDCt",
+                  tabPanel("WILCOX_DDCt", value = "WILCOX_DDCt",
                            tabsetPanel(id = "sub_wx",
                                        tabPanel("Input Data", tableOutput("preview_wx") ),
                                        tabPanel("Results", br(), downloadButton("download_wx", "Download CSV"), br(), tableOutput("table_wx"))
                            )
                   ),
-                  tabPanel("plotFactor",
+                  tabPanel("plotFactor", value = "plotFactor",
                            tabsetPanel(id = "sub_pf",
                                        tabPanel("Input Data", tableOutput("preview_pf")),
                                        tabPanel("Plot",
-                                                plotOutput("plot_pf_main", height = "600px"),
+                                                br(),
+                                                fluidRow(
+                                                  column(12,
+                                                         downloadButton("download_pf_plot", "Download PNG"),
+                                                         downloadButton("download_pf_pdf", "Download PDF")
+                                                  )
+                                                ),
                                                 hr(),
-                                                downloadButton("download_pf_plot", "Download Plot as PNG"),
-                                                downloadButton("download_pf_pdf", "Download Plot as PDF")
+                                                plotOutput("plot_pf_main")
                                        )
                            )
                   )
@@ -204,7 +246,6 @@ ui <- fluidPage(
 # SERVER
 server <- function(input, output, session) {
   
-  # Logic to update ANOVA_DCt fields when Sample Data is selected
   observeEvent(input$src_dc, {
     if (input$src_dc == "sample") {
       updateNumericInput(session, "numFactors_dc", value = 3)
@@ -212,7 +253,6 @@ server <- function(input, output, session) {
     }
   })
   
-  # Logic to update ANOVA_DDCt fields when Sample Data is selected
   observeEvent(input$src_ddct, {
     if (input$src_ddct == "sample") {
       updateNumericInput(session, "numFactors_ddct", value = 2)
@@ -222,7 +262,6 @@ server <- function(input, output, session) {
     }
   })
   
-  # Logic to update plotFactor fields when Sample Data is selected
   observeEvent(input$src_pf, {
     if (input$src_pf == "sample") {
       updateSelectInput(session, "pf_group", selected = "gene")
@@ -246,7 +285,6 @@ server <- function(input, output, session) {
   data_tt   <- reactive({ get_data(input$src_tt, input$file_tt, "exp/data_ttest18genes.csv") })
   data_wx   <- reactive({ get_data(input$src_wx, input$file_wx, "exp/data_ttest18genes.csv") })
   
-  # Updated df_pf logic to accept results from memory
   df_pf <- reactive({ 
     if (input$src_pf == "user") {
       req(input$file_pf)
@@ -306,12 +344,15 @@ server <- function(input, output, session) {
     res
   })
   output$table_eff <- renderTable({ res_eff()$Efficiency })
-  output$plot_eff <- renderPlot({ res_eff()$plot })
+  output$plot_eff <- renderPlot({ 
+    res_eff()$plot 
+  }, width = function() input$eff_w * 72, height = function() input$eff_h * 72)
   
   res_tt <- eventReactive(input$run_tt, {
     TTEST_DDCt(data_tt(), numberOfrefGenes = input$numRefGenes_tt,
                Factor.level.order = if(input$factorLevels_tt == "") NULL else trimws(unlist(strsplit(input$factorLevels_tt, ","))),
-               paired = input$paired_tt, var.equal = input$equalVar_tt, p.adj = input$pAdj_tt, set_missing_target_Ct_to_40 = input$set40_tt)
+               paired = input$paired_tt, var.equal = input$equalVar_tt, p.adj = input$pAdj_tt, 
+               set_missing_target_Ct_to_40 = input$set40_tt)
   })
   output$table_tt <- renderTable({ res_tt() })
   
@@ -359,12 +400,18 @@ server <- function(input, output, session) {
     }
     p
   })
-  output$plot_pf_main <- renderPlot({ req(pf_plot_obj()); pf_plot_obj() })
+  output$plot_pf_main <- renderPlot({ 
+    req(pf_plot_obj())
+    pf_plot_obj() 
+  }, width = function() input$pf_w * 72, height = function() input$pf_h * 72)
   
   res_dc <- eventReactive(input$run_dc, {
     tryCatch({ ANOVA_DCt(data_dc(), numOfFactors = input$numFactors_dc, numberOfrefGenes = input$numRefGenes_dc,
-                         block = if(input$block_dc == "") NULL else input$block_dc, p.adj = input$pAdj_dc,
-                         set_missing_target_Ct_to_40 = input$set40_dc)
+                         block = if(input$block_dc == "") NULL else input$block_dc, 
+                         model = if(input$model_dc == "") NULL else input$model_dc,
+                         p.adj = input$pAdj_dc,
+                         set_missing_target_Ct_to_40 = input$set40_dc,
+                         modelBased_se = input$setModelse_dc)
     }, error = function(e) { showNotification(e$message, type="error"); NULL })
   })
   observe({
@@ -381,7 +428,8 @@ server <- function(input, output, session) {
                           specs = input$specs_ddct, block = if(input$block_ddct == "") NULL else input$block_ddct,
                           model = if(input$model_ddct == "") NULL else input$model_ddct,
                           calibratorLevel = if(input$calibrator_ddct == "") NULL else input$calibrator_ddct,
-                          p.adj = input$pAdj_ddct, set_missing_target_Ct_to_40 = input$set40_ddct, se.type = input$seType_ddct)
+                          p.adj = input$pAdj_ddct, set_missing_target_Ct_to_40 = input$set40_ddct, se.type = input$seType_ddct,
+                          modelBased_se = input$setModelse_ddct)
     }, error = function(e) { showNotification(e$message, type="error"); NULL })
   })
   observe({
@@ -398,6 +446,16 @@ server <- function(input, output, session) {
   output$download_eff <- downloadHandler(filename = "Efficiency.csv", content = function(f) write.csv(res_eff()$Efficiency, f, row.names=F))
   output$download_tt <- downloadHandler(filename = "TTEST.csv", content = function(f) write.csv(res_tt(), f, row.names=F))
   output$download_wx <- downloadHandler(filename = "WILCOX_DDCt.csv", content = function(f) write.csv(res_wx(), f, row.names = FALSE))
+  
+  output$download_final_dc <- downloadHandler(
+    filename = function() { paste0("Final_Table_DCt_", input$gene_dc, ".csv") },
+    content = function(file) { write.csv(res_dc()$perGene[[input$gene_dc]]$Final_data, file, row.names = FALSE) }
+  )
+  
+  output$download_final_ddct <- downloadHandler(
+    filename = function() { paste0("Final_Table_DDCt_", input$gene_ddct, ".csv") },
+    content = function(file) { write.csv(res_ddct()$perGene[[input$gene_ddct]]$Final_data, file, row.names = FALSE) }
+  )
   
   output$download_eff_png <- downloadHandler(
     filename = "Efficiency_Plot.png",

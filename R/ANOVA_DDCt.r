@@ -360,6 +360,7 @@ ANOVA_DDCt <- function(
     } else {
       NULL
     }
+    
     if (!modelBased_se) {
       gene_df$residual <- gene_df$wDCt
     } else {

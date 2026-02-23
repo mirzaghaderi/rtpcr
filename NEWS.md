@@ -1,3 +1,14 @@
+# rtpcr 2.1.5
+
+## New Features
+* `ANOVA_DDCt()` now supports complex experimental designs. Users can perform ddCt analysis across interactions of multiple factors (e.g., `specs = "FactorA | FactorB"`).
+
+## Deprecated
+* `mainFactor.column` (Integer) is now deprecated in favor of `specs`. 
+* `specs` now accepts one or more column names as a character (e.g. "A" or "A | B", or "A | B* C").
+* `mainFactor.level.order` whic already accepted a vector, is now deprecated in favor of `calibratorLevel` which accepts one of the levels of the main factor (e.g. `A`), Default (NULL) is the first level.
+* This allows for ddCt calculations to be performed separately within each level of a secondary factor or across factor combinations (e.g., `B`, or `B*C`).
+
 # rtpcr 2.1.4
 
 ## New features

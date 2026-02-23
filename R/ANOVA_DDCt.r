@@ -54,6 +54,7 @@
 #' calculated from model-based residuals. If \code{FALSE}, standard errors are calculated directly from the observed 
 #' \code{wDCt} values within each treatment group according to the selected \code{se.type}.  
 #' For single factor data, both methods are the same. It is recommended to use \code{modelBased_se = TRUE} (default).
+#' @param ... Additional arguments. Included for backward compatibility with deprecated \code{mainFactor.column}.
 #' 
 #' @importFrom stats setNames
 #'
@@ -135,22 +136,22 @@
 #'            p.adj = "none",
 #'            se.type = "single.group")
 #'   
-# # Repeated measure analysis
-# a <- ANOVA_DDCt(data_repeated_measure_1,
-#            numOfFactors = 1,
-#            numberOfrefGenes = 1,
-#            block = NULL,
-#            specs = "time",
-#            p.adj = "none", model = wDCt ~ time + (1 | id))
-#
-# a$perGene$Target$ANOVA_table
-#
-#
-# # Repeated measure analysis: split-plot in time
-# a <- ANOVA_DDCt(data_repeated_measure_2,
-#            numOfFactors = 2, numberOfrefGenes = 1,
-#            specs = "time", block = NULL,
-#            model = wDCt ~ treatment * time + (1 | id))
+#' # Repeated measure analysis
+#' a <- ANOVA_DDCt(data_repeated_measure_1,
+#'            numOfFactors = 1,
+#'            numberOfrefGenes = 1,
+#'            block = NULL,
+#'            specs = "time",
+#'            p.adj = "none", model = wDCt ~ time + (1 | id))
+#'
+#' a$perGene$Target$ANOVA_table
+#'
+#'
+#' # Repeated measure analysis: split-plot in time
+#' a <- ANOVA_DDCt(data_repeated_measure_2,
+#'            numOfFactors = 2, numberOfrefGenes = 1,
+#'            specs = "time", block = NULL,
+#'            model = wDCt ~ treatment * time + (1 | id))
 #'    
 ANOVA_DDCt <- function(
     x,
@@ -164,9 +165,20 @@ ANOVA_DDCt <- function(
     model = NULL,
     set_missing_target_Ct_to_40 = FALSE,
     se.type = c("single.group", "paired.group", "two.group"),
-    modelBased_se = TRUE) {
+    modelBased_se = TRUE, ...) {
   
   se.type <- match.arg(se.type)
+
+  
+  dots <- list(...)
+  deprecated_args <- c("mainFactor.column", "mainFactor.level.order")
+  for (arg in deprecated_args) {
+    if (arg %in% names(dots)) {
+      lifecycle::deprecate_warn(
+        when = "2.1.5", 
+        what = paste0("ANOVA_DDCt(", arg, ")"), 
+        with = "ANOVA_DDCt(specs)") } }
+  
   
   n <- ncol(x)
   nDesign <- if (is.null(block)) numOfFactors + 1 else numOfFactors + 2

@@ -16,7 +16,8 @@ ANOVA_DDCt(
   model = NULL,
   set_missing_target_Ct_to_40 = FALSE,
   se.type = c("single.group", "paired.group", "two.group"),
-  modelBased_se = TRUE
+  modelBased_se = TRUE,
+  ...
 )
 }
 \arguments{
@@ -81,6 +82,8 @@ computes SE within each level using a one-group t-test.}
 calculated from model-based residuals. If \code{FALSE}, standard errors are calculated directly from the observed 
 \code{wDCt} values within each treatment group according to the selected \code{se.type}.  
 For single factor data, both methods are the same. It is recommended to use \code{modelBased_se = TRUE} (default).}
+
+\item{...}{Additional arguments. Included for backward compatibility with deprecated \code{mainFactor.column}.}
 }
 \value{
 An object containing expression table, lm model, residuals, raw data and ANOVA table for each gene:
@@ -141,6 +144,22 @@ ANOVA_DDCt(data2,
            p.adj = "none",
            se.type = "single.group")
   
+# Repeated measure analysis
+a <- ANOVA_DDCt(data_repeated_measure_1,
+           numOfFactors = 1,
+           numberOfrefGenes = 1,
+           block = NULL,
+           specs = "time",
+           p.adj = "none", model = wDCt ~ time + (1 | id))
+
+a$perGene$Target$ANOVA_table
+
+
+# Repeated measure analysis: split-plot in time
+a <- ANOVA_DDCt(data_repeated_measure_2,
+           numOfFactors = 2, numberOfrefGenes = 1,
+           specs = "time", block = NULL,
+           model = wDCt ~ treatment * time + (1 | id))
    
 }
 \references{

@@ -1,7 +1,7 @@
 # rtpcr 2.1.5
 
 ## New Features
-* `ANOVA_DDCt()` now supports complex experimental designs. Users can perform ddCt analysis across interactions of multiple factors (e.g., `specs = "FactorA | FactorB"`).
+* `ANOVA_DDCt()` now supports complex experimental designs. Users can perform ddCt analysis across interactions of multiple factors (e.g., `specs = "FactorA | FactorB"`). As analysis across interactions of multiple factors output was not adopted with the `plotSingleGene()` function, this function was removed.
 
 ## Deprecated
 * `mainFactor.column` (Integer) is now deprecated in favor of `specs`. 

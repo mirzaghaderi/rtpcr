@@ -37,7 +37,6 @@ performs different analyses using the following functions.
 | `TTEST_DDCt` | $\Delta\Delta Ct$ method *t*-test analysis |
 | `WILCOX_DDCt` | $\Delta\Delta Ct$ method wilcox.test analysis |
 | `plotFactor` | Bar plot of gene expression for one-, two- or three-factor experiments |
-| `plotSingleGene` | Creates a bar plot of relative gene expression (fold change) values from single gene analysis showing all pairwise significances. |
 | `Means_DDCt` | Pairwise comparison of RE values for any user-specified effect |
 | `efficiency` | Amplification efficiency statistics and standard curves |
 | `meanTech` | Calculate mean of technical replicates |
@@ -400,7 +399,7 @@ data3 <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = 
 
 res <- ANOVA_DDCt(
   x = data3,
-  specs = 2,
+  specs = "Type | Concentration",
   numOfFactors = 2,
   numberOfrefGenes = 3,
   block = "block",
@@ -570,7 +569,7 @@ df <- read.csv(system.file("extdata", "data_Heffer2020PlosOne.csv", package = "r
 res <- ANOVA_DDCt(
   df,
   numOfFactors = 1,
-  specs = 1,
+  specs = "Treatment",
   numberOfrefGenes = 1,
   block = NULL)
 
@@ -599,24 +598,6 @@ plotFactor(
 ```
 
 <img src="man/figures/Rplot03.png" class="center" height="700" />
-
-### Plot output: example 4
-
-The function `plotSingleGene()` creates a bar plot of relative gene
-expression (fold change) values from single gene analysis showing all
-pairwise significances.
-
-    res <- ANOVA_DDCt(
-      data_Heffer2020PlosOne,
-      numOfFactors = 1,
-      specs = "condition",
-      numberOfrefGenes = 1,
-      block = NULL,
-      analyseAllTarget = "Tnfa") 
-
-    plotSingleGene(res, fill = "cyan4", color = "black", base_size = 12)
-
-<img src="man/figures/signif.png" class="center" height="400" />
 
 # Post-hoc analysis
 
@@ -696,8 +677,8 @@ res3 <- ANOVA_DDCt(
   numberOfrefGenes = 1,
   specs = "time",
   block = NULL,
-  model = wDCt ~ time + (1 | id)
-)
+  model = wDCt ~ time + (1 | id))
+
 residuals <- resid(res3$perGene$Target$lm)
 shapiro.test(residuals) 
 par(mfrow = c(1,2))

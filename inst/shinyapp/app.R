@@ -1,5 +1,5 @@
-#if (!require("rtpcr")) {install.packages("rtpcr")
-if (!requireNamespace("rtpcr", quietly = TRUE)) devtools::install_github("mirzaghaderi/rtpcr"))
+if (!require("rtpcr")) {
+  install.packages("rtpcr")
 library(rtpcr)}
 library(multcompView)
 library(rtpcr)

@@ -316,7 +316,6 @@ ANOVA_DCt <- function(
     Results$gene <- gene_name
     
     list(
-      # Returning Final_data with residuals and without temporary helper columns
       Final_data = gene_df[, !colnames(gene_df) %in% c("T", "val_for_se")],
       lm = lm,
       lm_formula = lm_formula,

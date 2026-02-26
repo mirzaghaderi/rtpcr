@@ -4,8 +4,8 @@ rtpcr uses dCt and ddCt methods, including t-tests and ANOVA,
 repeated-measures models, and publication-ready visualizations. The
 package implements a general calculation method adopted from Ganger et
 al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl
-methods. The rtpcr package gets efficiency (E) the Ct values of genes and
-performs different analyses using the following functions.
+methods. The rtpcr package gets efficiency (E) and Ct values of genes and
+performs different expression analysis.
 
 
 # Input data structure

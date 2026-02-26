@@ -25,7 +25,7 @@
 #' @param block Character. Block column name or \code{NULL}. 
 #'
 #' @param groups
-#' An integer vector or character vector specifying the column(s) to group
+#' An integer specifying the column(s) to group
 #' by before calculating the mean of technical replicates.
 #' 
 #' @param set_missing_target_Ct_to_40 If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA. 
@@ -41,14 +41,14 @@
 #'
 #' # Calculate mean of technical replicates using first four columns as groups
 #' meanTech(data1,
-#'          groups = 1:2,
+#'          groups = 2,
 #'          numOfFactors = 1,
 #'          numberOfrefGenes = 1,
 #'          block = NULL)
 #' 
 #' # Another example using different dataset and grouping columns
 #' data2 <- read.csv(system.file("extdata", "data_Lee_etal2020qPCR.csv", package = "rtpcr"))
-#' meanTech(data2, groups = 1:3,
+#' meanTech(data2, groups = 3,
 #'          numOfFactors = 2,
 #'          numberOfrefGenes = 1,
 #'          block = NULL)
@@ -60,10 +60,10 @@ meanTech <- function(x, groups, numOfFactors, numberOfrefGenes, block,
   x <- .cleanup(x = x, numOfFactors = numOfFactors + 1, numberOfrefGenes = numberOfrefGenes, block = block,
                 set_missing_target_Ct_to_40 = set_missing_target_Ct_to_40)
   
-  g <- colnames(x)[groups]
+  g <- colnames(x)[1:groups]
 
   # Concatenate the columns using paste0
-  x$T <- do.call(paste, c(x[groups], sep = ":"))
+  x$T <- do.call(paste, c(x[1:groups], sep = ":"))
 
   data_meanBiolRep <- x %>%
     group_by(across(all_of(g))) %>%

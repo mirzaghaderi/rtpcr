@@ -16,7 +16,7 @@ meanTech(
 \arguments{
 \item{x}{A raw data frame containing technical replicates.}
 
-\item{groups}{An integer vector or character vector specifying the column(s) to group
+\item{groups}{An integer specifying the column(s) to group
 by before calculating the mean of technical replicates.}
 
 \item{numOfFactors}{Integer. Number of experimental factor columns}
@@ -48,14 +48,14 @@ data1 <- read.csv(system.file("extdata", "data_withTechRep.csv", package = "rtpc
 
 # Calculate mean of technical replicates using first four columns as groups
 meanTech(data1,
-         groups = 1:2,
+         groups = 2,
          numOfFactors = 1,
          numberOfrefGenes = 1,
          block = NULL)
 
 # Another example using different dataset and grouping columns
 data2 <- read.csv(system.file("extdata", "data_Lee_etal2020qPCR.csv", package = "rtpcr"))
-meanTech(data2, groups = 1:3,
+meanTech(data2, groups = 3,
          numOfFactors = 2,
          numberOfrefGenes = 1,
          block = NULL)

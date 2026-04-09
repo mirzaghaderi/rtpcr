@@ -18,7 +18,7 @@ Ct (dCt) and delta delta Ct (ddCt) methods, including t-tests and ANOVA,
 repeated-measures models, and publication-ready visualizations. The
 package implements a general calculation method adopted from Ganger et
 al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl
-methods. See the [calculation method](Method.html) for details.
+methods. See the [calculation method](Method.md) for details.
 
 <figure>
 <img src="man/figures/shiny_rtpcr.png" class="center"

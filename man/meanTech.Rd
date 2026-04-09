@@ -16,8 +16,7 @@ meanTech(
 \arguments{
 \item{x}{A raw data frame containing technical replicates.}
 
-\item{groups}{An integer specifying the column(s) to group
-by before calculating the mean of technical replicates.}
+\item{groups}{An integer specifying the number of columns before the technical replicate column.}
 
 \item{numOfFactors}{Integer. Number of experimental factor columns}
 

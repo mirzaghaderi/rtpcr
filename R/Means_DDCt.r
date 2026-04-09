@@ -1,8 +1,7 @@
 #' @title Delta Delta Ct pairwise comparisons using a fitted model
 #'
 #' @description
-#' Performs relative expression (fold change) analysis based on the
-#' Delta Delta Ct (ddCt) methods using a fitted model object produced by
+#' Performs ddCt expression analysis using a fitted model object produced by
 #' \code{ANOVA_DCt()} or \code{ANOVA_DDCt()}.
 #'
 #' @details

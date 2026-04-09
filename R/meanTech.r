@@ -25,8 +25,7 @@
 #' @param block Character. Block column name or \code{NULL}. 
 #'
 #' @param groups
-#' An integer specifying the column(s) to group
-#' by before calculating the mean of technical replicates.
+#' An integer specifying the number of columns before the technical replicate column.
 #' 
 #' @param set_missing_target_Ct_to_40 If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA. 
 #' @param numberOfrefGenes Integer. Number of reference genes.

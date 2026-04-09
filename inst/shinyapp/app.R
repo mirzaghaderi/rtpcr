@@ -1,41 +1,41 @@
-if (!require("rtpcr")) {
-  install.packages("rtpcr")
-library(rtpcr)}
-library(multcompView)
+#install.packages("rtpcr")
 library(rtpcr)
 library(shiny)
+library(multcompView)
 library(dplyr)
 library(ggplot2)
 library(emmeans)
 library(multcomp)
 library(lme4)
 library(lmerTest)
-library(markdown)
-
-# --- Define meanTech function ---
-meanTech <- function(x, groups, numOfFactors, numberOfrefGenes, block,
-                     set_missing_target_Ct_to_40 = FALSE){
-  
-  x <- rtpcr:::.cleanup(x = x, numOfFactors = numOfFactors + 1, numberOfrefGenes = numberOfrefGenes, block = block,
-                        set_missing_target_Ct_to_40 = set_missing_target_Ct_to_40)
-  
-  g <- colnames(x)[1:groups]
-  
-  # Concatenate the columns using paste0
-  x$T <- do.call(paste, c(x[1:groups], sep = ":"))
-  
-  data_meanBiolRep <- x %>%
-    group_by(across(all_of(g))) %>%
-    summarise(across(where(is.numeric), mean, na.rm = TRUE))
-  
-  y <- data_meanBiolRep
-  m <- ncol(y)-4
-  databiol <- y[,-m]
-  return(as.data.frame(databiol))
-}
 
 # UI
 ui <- fluidPage(
+  
+  
+  tags$head(
+    tags$link(rel = "stylesheet", href = "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"),
+    tags$style(HTML("
+      body { font-family: 'Roboto', sans-serif; font-size: 16px; line-height: 1.7;  color: #333; }
+      .intro-container { padding: 20px; }
+      h2 { font-size: 30px; font-weight: 700; color: #2c3e50; }
+      h3 { font-size: 24px; font-weight: 700; color: #2c3e50; margin-top: 30px; }
+      h4 { font-size: 20px; font-weight: 400; }
+      .info-box { background-color: #f0f7ff; border-left: 4px solid #2a7df6; padding: 20px; margin: 25px 0; border-radius: 4px; font-size: 15.5px; }
+      .info-box2 { background-color: #f0ffff; border: 1px solid #2a7dff; padding: 20px; border-radius: 4px; font-size: 15.5px; }
+      .info-box3 { border: 2px solid #fff; padding: 20px; border-radius: 4px; font-size: 15.5px; }
+      .info-box strong { color: #2a7df6; }
+      .info-box br { margin-bottom: 10px; content: ' '; display: block; }
+      .note-title { font-weight: bold; color: #2a7df6; text-transform: uppercase; font-size: 0.85em; }
+      .img-container { text-align: center; margin: 35px 0; border: 1px solid #EE3B3B; padding: 15px; background: #fff; border-radius: 8px; }  
+      .logo-container { text-align: center; border-radius: 8px; }
+      .txt-container { margin: 35px 0; border: 1px solid #ddd; padding: 15px; background: #fff; border-radius: 8px; }
+      .fig-caption { font-style: italic; color: #666; margin-top: 12px; display: block; font-size: 14px; }
+      .section-divider { border-top: 1px solid #C1CDCD; margin: 20px 0; }
+    "))
+),
+  
+  
   tags$script(HTML("
     $(document).on('keyup', function(e) {
       if (e.which == 13) {
@@ -55,22 +55,29 @@ ui <- fluidPage(
       }
     });
   ")),
+
   
   titlePanel('rtpcr: qPCR Data Analysis & Plotting'),
-  fluidRow(
-    column(12,
-           div(style = "margin-bottom: 20px; color: #333; line-height: 1.6;",
-               p("rtpcr uses dCt and ddCt methods, including t-tests and ANOVA, repeated-measures models, and publication-ready visualizations. The package implements a general calculation method covering both the Livak and Pfaffl methods. The rtpcr package gets efficiency (E) and the Ct values of genes and performs different analyses using the following functions.")
-           )
-    )
-  ),
-  
+  fluidRow(column(12,
+           div(style = "margin-bottom: 20px; color: #333; line-height: 1.6;", 
+               p("Welcome! This is the shiny version of the rtpcr package, a web application developed using R/Shiny for comparative (dCt and ddCt) analysis of qPCR data.")))),
   br(),
   
   sidebarLayout(
     sidebarPanel(
       tabsetPanel(id = "func_tabs",
-                  tabPanel("Home", value = "Home", helpText("Welcome! Please select an analysis tool from these tabs.")),
+                  tabPanel("Home", value = "Home",
+                           br(),
+                           div(class = "info-box3", h4("Citation"), "Ghader Mirzaghaderi (2025). rtpcr: a package for statistical analysis 
+                               and graphical presentation of qPCR data in R. PeerJ 13:e20185.", 
+                               a(href="https://doi.org/10.7717/peerj.20185", "doi.org/10.7717/peerj.20185")),
+                           
+                           ),
+
+                  
+                  
+                  
+                  
                   
                   tabPanel("ANOVA_DCt", value = "ANOVA_DCt",
                            radioButtons("src_dc", "Data Source", 
@@ -79,12 +86,12 @@ ui <- fluidPage(
                            conditionalPanel("input.src_dc == 'user'", fileInput("file_dc", "Upload CSV", accept = ".csv")),
                            numericInput("numFactors_dc", "Number of factors", 1, min = 1),
                            numericInput("numRefGenes_dc", "Number of reference genes", 1, min = 1),
-                           textInput("block_dc", "Block column (optional)", ""),
-                           textInput("model_dc", "model (optional)", ""),
+                           textInput("block_dc", "Block column name (if present)", ""),
+                           textInput("model_dc", "model (optional; e.g., model = wDCt ~ factorA * factorB)", ""),
                            checkboxInput("set40_dc", "Set missing Ct to 40", FALSE),
                            checkboxInput("setModelse_dc", "Model_based se", TRUE),
                            selectInput("pAdj_dc", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
-                           actionButton("run_dc", "Run ANOVA_DCt (Enter)")
+                           actionButton("run_dc", "Run ANOVA_DCt"),
                   ),
                   
                   tabPanel("ANOVA_DDCt", value = "ANOVA_DDCt",
@@ -94,29 +101,29 @@ ui <- fluidPage(
                            conditionalPanel("input.src_ddct == 'user'", fileInput("file_ddct", "Upload CSV", accept = ".csv")),
                            numericInput("numFactors_ddct", "Number of factors", 1, min = 1),
                            numericInput("numRefGenes_ddct", "Number of reference genes", 1, min = 1),
-                           textInput("specs_ddct", "Specs (e.g., Concentration or Concentration | Type)", ""),
-                           textInput("block_ddct", "Block column (optional)", ""),
-                           textInput("calibrator_ddct", "Calibrator Level", ""),
+                           textInput("specs_ddct", "specs (e.g., A or A | B or A | B * C)", ""),
+                           textInput("block_ddct", "Block column name (if present)", ""),
+                           textInput("calibrator_ddct", "Calibrator Level (Optional; default is the first level)", ""),
                            selectInput("seType_ddct", "SE type", choices = c("single.group",  "two.group", "paired.group")),
-                           textInput("model_ddct", "model (optional)", ""),
+                           textInput("model_ddct", "model (optional; e.g., model = wDCt ~ factorA * factorB)", ""),
                            selectInput("pAdj_ddct", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
                            checkboxInput("set40_ddct", "Set missing Ct to 40", FALSE),
                            checkboxInput("setModelse_ddct", "Model_based se", TRUE),
-                           actionButton("run_ddct", "Run ANOVA_DDCt (Enter)")
+                           actionButton("run_ddct", "Run ANOVA_DDCt")
                   ),
                   
                   tabPanel("Efficiency", value = "Efficiency",
                            radioButtons("src_eff", "Data Source",choices = c("Upload CSV" = "user", "Sample Data" = "sample"), selected = "user"),
                            conditionalPanel("input.src_eff == 'user'", fileInput("file_eff", "Upload CSV", accept = ".csv")),
                            numericInput("baseSize_eff", "Base font size", 12, min = 6),
-                           textInput("extra_eff", "Further adjustments", ""),
+                           textInput("extra_eff", "Further ggplot layers (Optional; e.g., + ylab('Ct value'))", ""),
                            hr(),
-                           h4("Save Settings"),
+                           h4("Plot size"),
                            fluidRow(
                              column(6, numericInput("eff_w", "Width (in)", 8, min = 1)),
                              column(6, numericInput("eff_h", "Height (in)", 6, min = 1))
                            ),
-                           actionButton("run_eff", "Run Efficiency (Enter)")
+                           actionButton("run_eff", "Run Efficiency")
                   ),
                   
                   tabPanel("TTEST_DDCt", value = "TTEST_DDCt",
@@ -130,7 +137,7 @@ ui <- fluidPage(
                            checkboxInput("equalVar_tt", "Equal variance", TRUE),
                            selectInput("pAdj_tt", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
                            checkboxInput("set40_tt", "Set missing Ct to 40", FALSE),
-                           actionButton("run_tt", "Run TTEST_DDCt (Enter)")
+                           actionButton("run_tt", "Run TTEST_DDCt")
                   ),
                   
                   tabPanel("WILCOX_DDCt", value = "WILCOX_DDCt",
@@ -143,7 +150,7 @@ ui <- fluidPage(
                            checkboxInput("paired_wx", "Paired test", FALSE),
                            selectInput("pAdj_wx", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
                            checkboxInput("set40_wx", "Set missing Ct to 40", FALSE),
-                           actionButton("run_wx", "Run WILCOX_DDCt (Enter)")
+                           actionButton("run_wx", "Run WILCOX_DDCt")
                   ),
                   
                   tabPanel("plotFactor", value = "plotFactor",
@@ -163,33 +170,25 @@ ui <- fluidPage(
                            selectInput("pf_group", "Group (Fill) Column", choices = c("None" = "")),
                            selectInput("pf_facet", "Facet Column", choices = c("None" = "")),
                            selectInput("pf_letters", "Letters Column (Optional)", choices = c("None" = "")),
-                           hr(),
-                           h4("Data Cleaning"),
-                           checkboxInput("pf_removeRows", "Remove Calibrator Cols", FALSE),
-                           checkboxInput("pf_removeText", "Remove Calibrator Text", FALSE),
-                           hr(),
                            numericInput("pf_letters_d", "Letters vertical offset", 0.2, step = 0.05),
                            numericInput("pf_col_width", "Column width", 0.8, step = 0.05),
                            numericInput("pf_err_width", "Error bar width", 0.15, step = 0.05),
                            numericInput("pf_dodge_width", "Dodge width", 0.8, step = 0.05),
                            textInput("pf_fill_colors", "Fill colors (comma separated)", ""),
                            textInput("pf_color", "Outline color", "black"),
-                           sliderInput("pf_alpha", "Transparency (alpha)", min = 0, max = 1, value = 1, step = 0.05),
+                           sliderInput("pf_alpha", "Transparency (alpha)", min = 0, max = 1, value = 0.5, step = 0.05),
                            numericInput("pf_base_size", "Base font size", 12, min = 6),
                            checkboxInput("pf_legend_none", "Hide legend", FALSE),
-                           fluidRow(column(6, numericInput("pf_legend_x", "Legend X", 1, min = 0, max = 1, step = 0.05) ),
-                                    column(6, numericInput("pf_legend_y", "Legend Y", 1, min = 0, max = 1, step = 0.05) ) ),
-                           textInput("extra_pf", "Further adjustments", ""),
-                           hr(),
-                           h4("Save Settings"),
-                           fluidRow(
-                             column(6, numericInput("pf_w", "Width (in)", 8, min = 1)),
-                             column(6, numericInput("pf_h", "Height (in)", 6, min = 1))
-                           ),
-                           actionButton("run_pf", "Run plotFactor (Enter)")
+                           checkboxInput("pf_removeRows", "Remove Calibrator Cols", FALSE),
+                           checkboxInput("pf_removeText", "Remove Calibrator Text", FALSE),
+                           fluidRow(column(6, numericInput("pf_legend_x", "Legend X", 0.85, min = 0, max = 1, step = 0.05) ),
+                                    column(6, numericInput("pf_legend_y", "Legend Y", 0.85, min = 0, max = 1, step = 0.05) ) ),
+                           fluidRow(column(6, numericInput("pf_w", "Width (in)", 8, min = 1)),
+                                    column(6, numericInput("pf_h", "Height (in)", 9, min = 1))),
+                           textInput("extra_pf", "Further ggplot layers (Optional; e.g., + ylab('Fold change'))", ""),
+                           actionButton("run_pf", "Run plotFactor")
                   ),
                   tabPanel("meanTech", value = "meanTech",
-                           # Inserted Instruction Text
                            p("Only apply this function if your dataset requires averaging across technical replicates before further analysis.", 
                              style = "color: #555; font-style: italic; margin-top: 10px; margin-bottom: 15px;"),
                            
@@ -200,69 +199,164 @@ ui <- fluidPage(
                            numericInput("numRefGenes_mt", "Number of reference genes", 1, min = 1),
                            textInput("block_mt", "Block column (optional)", ""),
                            checkboxInput("set40_mt", "Set missing Ct to 40", FALSE),
-                           actionButton("run_mt", "Run meanTech (Enter)")
+                           actionButton("run_mt", "Run meanTech")
                   )
       )
     ),
     mainPanel(
       tabsetPanel(id = "output_tabs",
                   tabPanel("Introduction", value = "Introduction",
-                           div(style = "padding: 15px;", includeMarkdown("README.md"))
+                           div(style = "padding: 20px; line-height: 1.6;",
+                               h2("Getting Started with rtpcr"),
+                               p("The rtpcr package facilitates relative expression analysis using delta Ct (dCt) and delta delta Ct (ddCt) methods. It supports t-test, ANOVA, and publication-ready visualizations. The package implements a general calculation method adopted from Ganger et al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl methods."),
+                               
+                               div(class = "section-divider"),
+                               
+            
+                              h2("rtpcr Funtions"),
+                              p("In the rtpcr package, functions with _DDCt at the end of their name (ANOVA_DDCt, TTEST_DDCt, WILCOX_DDCt) perform expression analysis based on the delta delta Ct (ddCt)
+                               method, while ANOVA_DCt function analyze gene expression using the delta Ct (dCt) method. The ANOVA prefix in the function name means that the function uses analysis of variance (using a default full factorial
+                               model or a user defined model) for statistical analysis, and mean comparisons. Mean comparisons is performed by the emmeans function using the model resulting from the ANOVA analysis."),
+
+                              helpText(div(class = "info-box2",
+                                           tags$strong("ANOVA_DCt: "), " dCt expression analysis for all the level combinations of factor(s).", 
+                                           br(),
+                                             tags$strong("ANOVA_DDCt: "), " ddCt expression analysis for levels of a factor (geneally or per levels of another factors(s)), specified by the `specs` argument. ", tags$br(),
+                                             tags$strong("TTEST_DDCt: "), " ddCt method t.test analysis for paired or unpaired samples.", tags$br(),
+                                             tags$strong("WILCOX_DDCt: "), " ddCt method wilcox.test analysis for paired or unpaired samples.", tags$br(),
+                                             tags$strong("plotFactor: "), " Bar plot of gene expression", tags$br(),
+                                             tags$strong("efficiency: "), " Amplification efficiency statistics and standard curves", tags$br(),
+                                             tags$strong("meanTech: "), " Calculate mean of technical replicates. This is used if your data needs averaging over biological replicates. ")),
+
+                              
+
+                               h3("1. Input Data Structure"),
+                               p("For relative expression analysis, use TTEST_DDCt, WILCOX_DDCt, ANOVA_DCt, and ANOVA_DDCt functions from the left side panel. 
+                               You need to prepare your input data based on the experimenta design, amplification efficiency 
+                                 (E) and Ct values (the mean of technical replicates) which should include the following columns from left to 
+                                wright:"),
+                               tags$ol(
+                                 tags$li("Experimental condition columns (and one block column if you want the variation from different plates be concidered by the nodel)."),
+                                 tags$li("Replicate information (biological replicates or subjects)."),
+                                 tags$li("Target genes efficiency (E) and Ct values (paired columns)."),
+                                 tags$li("Reference genes efficiency (E) and Ct values (paired columns).")
+                               ),
+                               p("If the E values are not available you should use 
+                                 ‘2’ instead representing the complete primer amplification efficiency. The package supports one or more target or reference gene(s),
+                               supplied as efficiency–Ct column pairs. Reference gene columns must
+                               always appear last. Two sample input data sets are presented below."),
+                               
+                               div(class = "img-container",
+                                   img(src = "sampleData1.png", style = "width: 70%; max-width: 600px;"),
+                                   span(class = "fig-caption", tags$strong("Figure 1: "), "A sample input data with one experimetal factor, replicate column and E/Ct information of target and reference genes.")),
+                               
+                               p("If there is no blocking factor, omit that column. However, a replicate column (e.g., 'Rep' or 'id') is always required."),
+                               
+                               div(class = "img-container",
+                                   img(src = "dataStructure1.png", style = "width: 100%; max-width: 800px;"),
+                                   span(class = "fig-caption", tags$strong("Figure 2: "), "A sample input data with two experimental factors, blocking factor, replicate column and E/Ct information of target and reference genes.")),
+
+                               
+                               h3("2. Notes"),
+                               div(class = "info-box",
+                                   tags$strong("Note 1: Blocking:"), " When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene 
+                                                                       expression. One solution is to conduct each plate as a randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its
+                                                                       interaction with any main effect is not considered.", tags$br(),
+                                   br(),
+                                   tags$strong("Note 2: Biological Replicates:"), " For TTEST_DDCt and WILCOX_DDCt (independent groups), ANOVA_DCt,
+                                                                       and ANOVA_DDCt each row is from a separate and unique biological replicate. For example, a data frame with 12 rows has come from an experiment with 12 individuals. The repeated measure models are intended for experiments with repeated observations (e.g. time-course data). In repeated measure experiments the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a `1` at Rep column correspond to a single individual, all rows with a `2` correspond to another individual, and so on, which have been sampled at
+                                                                       specific time points.", tags$br(),
+                                   br(),
+                                   tags$strong("Note 3: Technical Replicates:"), " Your data table may also include a column of technical replicates (For example, using one target and one reference genes, if you want to have 4 
+                                                biological and 3 technical replicates under Control and Treatment conditions, there would be a table of 24 rows containing both biological 
+                                                replicates and technical replicate columns in the data). In this case, the meanTech function should be applied first to calculate the mean of 
+                                                the technical replicates. The resulting collapsed table is then used as the input for expression analysis. To use the meanTech function correctly, the technical replicate column must appear immediately after the biological replicate column (see the sample data of the meanTech function).", tags$br(),
+                                   br(),
+                                   tags$strong("Note 4: Efficiency (E):"), " Complete amplification efficiency (E) in the input data is denoted by
+                                                2. This means that 2 indicates 100%, and 1.85 and 1.70 indicate 0.85%
+                                                and 0.70% amplification efficiencies."),
+
+                               
+                               
+                               
+                               h3("3. Handling Missing Data"),
+                               p("Missing Ct values for target genes is Handled using the `set_missing_target_Ct_to_40` function. If TRUE, missing target gene
+                                  Ct values become 40; if FALSE (default), they become NA. missing Ct values of reference genes are always converted to NA. If there are more
+                                  than one reference gene, NA in the place of the E or the Ct value cause skipping that gene and remaining references are geometrically averaged in that replicate."),
+                               
+                               div(class = "section-divider"),
+                               
+                               p("Contact email: gh.mirzaghaderi at uok.ac.ir"),
+                               p("For further details please visit:",
+                                 a(href="https://github.com/mirzaghaderi/rtpcr", "https://github.com/mirzaghaderi/rtpcr")),
+                               )
                   ),
                   tabPanel("ANOVA_DCt", value = "ANOVA_DCt",
-                           selectInput("gene_dc", "Select gene:", choices = character(0)),
+                           br(),
                            tabsetPanel(id = "sub_dc",
                                        tabPanel("Input data", tableOutput("preview_dc")),
                                        tabPanel("Relative Expression", br(), downloadButton("download_dc","Download"), br(), tableOutput("table_dc")),
                                        tabPanel("Per-Gene Results",
+                                                selectInput("gene_dc", "Select gene:", choices = character(0)),
                                                 tabsetPanel(
-                                                  tabPanel("ANOVA Table", verbatimTextOutput("anova_dc")),
-                                                  tabPanel("LM Object", downloadButton("download_lm_dc", "Download LM (.rds)")),
-                                                  tabPanel("LM Formula", verbatimTextOutput("formula_dc")),
+                                                  tabPanel("ANOVA, Normality & Singularity", verbatimTextOutput("singular_dc"),
+                                                           p("NOTE ", style = "color: #EE3B3B;"),
+                                                           p("If the singularity of the model is TRUE, the statistical results including ANOVA and significance is not reliable !",
+                                                           style = "color: #9C9C9C; font-style: italic; margin-top: 10px; margin-bottom: 15px;")),
+                                                  tabPanel("LM Object", br(), downloadButton("download_lm_dc", "Download LM (.rds)")),
                                                   tabPanel("Final table", br(), downloadButton("download_final_dc", "Download Final Table"), br(), tableOutput("final_data_dc"))
                                                 ))
                            )
                   ),
                   tabPanel("ANOVA_DDCt", value = "ANOVA_DDCt",
-                           selectInput("gene_ddct", "Select gene:", choices = character(0)),
+                           br(),
                            tabsetPanel(id = "sub_ddct",
                                        tabPanel("Input data", tableOutput("preview_ddct")),
                                        tabPanel("Relative Expression", br(), downloadButton("download_ddct", "Download"), br(), tableOutput("table_ddct")),
                                        tabPanel("Per-Gene Results",
+                                                selectInput("gene_ddct", "Select gene:", choices = character(0)),
                                                 tabsetPanel(
-                                                  tabPanel("ANOVA Table", verbatimTextOutput("anova_ddct")),
-                                                  tabPanel("LM Object", downloadButton("download_lm_ddct", "Download LM (.rds)")),
-                                                  tabPanel("LM Formula", verbatimTextOutput("formula_ddct")),
+                                                  tabPanel("ANOVA, Normality & Singularity", verbatimTextOutput("singular_ddct"), 
+                                                           p("NOTE ", style = "color: #EE3B3B;"),
+                                                           p("If the singularity of the model is TRUE, the statistical results including ANOVA and significance is not reliable !",
+                                                           style = "color: #9C9C9C; font-style: italic; margin-top: 10px; margin-bottom: 15px;")),
+                                                  tabPanel("LM Object", br(), downloadButton("download_lm_ddct", "Download LM (.rds)")),
                                                   tabPanel("Final table", br(), downloadButton("download_final_ddct", "Download Final Table"), br(), tableOutput("final_data_ddct"))
                                                 ))
                            )
                   ),
                   tabPanel("Efficiency", value = "Efficiency",
+                           br(),
                            tabsetPanel(id = "sub_eff",
                                        tabPanel("Input data", tableOutput("preview_eff")),
-                                       tabPanel("Table", br(), downloadButton("download_eff", "Download CSV"), br(), tableOutput("table_eff")),
+                                       tabPanel("Values & Statistics", br(), downloadButton("download_eff", "Download CSV"), br(), verbatimTextOutput("table_eff")),
                                        tabPanel("Plot", br(), downloadButton("download_eff_png", "PNG"), downloadButton("download_eff_pdf", "PDF"), hr(), plotOutput("plot_eff"))
                            )
                   ),
                   tabPanel("TTEST_DDCt", value = "TTEST_DDCt",
+                           br(),
                            tabsetPanel(id = "sub_tt",
                                        tabPanel("Input Data", tableOutput("preview_tt")),
                                        tabPanel("Results", br(), downloadButton("download_tt", "Download CSV"), br(), tableOutput("table_tt"))
                            )
                   ),
                   tabPanel("WILCOX_DDCt", value = "WILCOX_DDCt",
+                           br(),
                            tabsetPanel(id = "sub_wx",
                                        tabPanel("Input Data", tableOutput("preview_wx") ),
                                        tabPanel("Results", br(), downloadButton("download_wx", "Download CSV"), br(), tableOutput("table_wx"))
                            )
                   ),
                   tabPanel("plotFactor", value = "plotFactor",
+                           br(),
                            tabsetPanel(id = "sub_pf",
                                        tabPanel("Input Data", tableOutput("preview_pf")),
                                        tabPanel("Plot", br(), downloadButton("download_pf_plot", "PNG"), downloadButton("download_pf_pdf", "PDF"), hr(), plotOutput("plot_pf_main"))
-                           )
+                                       )
                   ),
+                  
                   tabPanel("meanTech", value = "meanTech",
+                           br(),
                            tabsetPanel(id = "sub_mt",
                                        tabPanel("Input data", tableOutput("preview_mt")),
                                        tabPanel("Results", br(), downloadButton("download_mt", "Download Results"), br(), tableOutput("table_mt"))
@@ -289,7 +383,7 @@ server <- function(input, output, session) {
     }
   }
   
-  # --- meanTech Logic ---
+  # meanTech Logic
   data_mt <- reactive({ get_data(input$src_mt, input$file_mt, "mean/data_withTechRep.csv") })
   
   res_mt <- eventReactive(input$run_mt, {
@@ -301,10 +395,10 @@ server <- function(input, output, session) {
   })
   
   output$preview_mt <- renderTable({ req(data_mt()); head(data_mt(), 50) })
-  output$table_mt   <- renderTable({ req(res_mt()); head(res_mt(), 50) })
+  output$table_mt   <- renderTable({ req(res_mt()); head(res_mt(), 50) }, digits = 5)
   output$download_mt <- downloadHandler(filename = "meanTech_results.csv", content = function(f) write.csv(res_mt(), f, row.names=F))
   
-  # --- Analysis Logic ---
+  # Analysis Logic
   data_dc   <- reactive({ get_data(input$src_dc, input$file_dc, "exp/data_3factor.csv", res_mt()) })
   data_ddct <- reactive({ get_data(input$src_ddct, input$file_ddct, "exp/data_2factorBlock3ref.csv", res_mt()) })
   data_eff  <- reactive({ get_data(input$src_eff, input$file_eff, "eff/data_efficiency1.csv") })
@@ -336,7 +430,7 @@ server <- function(input, output, session) {
   observeEvent(input$run_mt,   { updateTabsetPanel(session, "sub_mt", selected = "Results") })
   observeEvent(input$run_dc,   { updateTabsetPanel(session, "sub_dc", selected = "Relative Expression") })
   observeEvent(input$run_ddct, { updateTabsetPanel(session, "sub_ddct", selected = "Relative Expression") })
-  observeEvent(input$run_eff,  { updateTabsetPanel(session, "sub_eff", selected = "Table") })
+  observeEvent(input$run_eff,  { updateTabsetPanel(session, "sub_eff", selected = "Values & Statistics") })
   observeEvent(input$run_tt,   { updateTabsetPanel(session, "sub_tt", selected = "Results") })
   observeEvent(input$run_wx,   { updateTabsetPanel(session, "sub_wx", selected = "Results") })
   observeEvent(input$run_pf,   { updateTabsetPanel(session, "sub_pf", selected = "Plot") })
@@ -355,6 +449,7 @@ server <- function(input, output, session) {
                           specs = input$specs_ddct, block = if(input$block_ddct == "") NULL else input$block_ddct,
                           calibratorLevel = if(input$calibrator_ddct == "") NULL else input$calibrator_ddct,
                           p.adj = input$pAdj_ddct, set_missing_target_Ct_to_40 = input$set40_ddct, 
+                          model = if(input$model_ddct == "") NULL else input$model_ddct,
                           se.type = input$seType_ddct, modelBased_se = input$setModelse_ddct)
     }, error = function(e) { showNotification(e$message, type="error"); NULL })
   })
@@ -381,7 +476,7 @@ server <- function(input, output, session) {
     }, error = function(e) { showNotification(e$message, type = "error"); NULL })
   })
   
-  # Gene selection updates - Automatically populates boxes after analysis
+  # Gene selection updates
   observe({
     req(res_dc())
     gene_list_dc <- names(res_dc()$perGene)
@@ -398,22 +493,29 @@ server <- function(input, output, session) {
     }
   })
   
-  output$table_dc <- renderTable({ res_dc()$relativeExpression })
-  output$anova_dc <- renderPrint({ req(res_dc(), input$gene_dc); res_dc()$perGene[[input$gene_dc]]$ANOVA_table })
-  output$formula_dc <- renderPrint({ req(res_dc(), input$gene_dc); res_dc()$perGene[[input$gene_dc]]$lm_formula })
-  output$final_data_dc <- renderTable({ req(res_dc(), input$gene_dc); res_dc()$perGene[[input$gene_dc]]$Final_data })
+  output$table_dc <- renderTable({ res_dc()$relativeExpression }, digits = 5)
+  output$singular_dc <- renderPrint({ req(res_dc(), input$gene_dc); list(
+    Linear_model = res_dc()$perGene[[input$gene_dc]]$lm_formula,
+    ANOVA_table = res_dc()$perGene[[input$gene_dc]]$ANOVA_table,
+    Normality_test_of_residuals = shapiro.test(res_dc()$perGene[[input$gene_dc]]$Final_data$residual),
+    Singularity_check_of_model = res_dc()$perGene[[input$gene_dc]]$is_singular)})
+  output$final_data_dc <- renderTable({ req(res_dc(), input$gene_dc); res_dc()$perGene[[input$gene_dc]]$Final_data }, digits = 5)
   
-  output$table_ddct <- renderTable({ res_ddct()$relativeExpression })
-  output$anova_ddct <- renderPrint({ req(res_ddct(), input$gene_ddct); res_ddct()$perGene[[input$gene_ddct]]$ANOVA_table })
-  output$formula_ddct <- renderPrint({ req(res_ddct(), input$gene_ddct); res_ddct()$perGene[[input$gene_ddct]]$lm_formula })
-  output$final_data_ddct <- renderTable({ req(res_ddct(), input$gene_ddct); res_ddct()$perGene[[input$gene_ddct]]$Final_data })
+  output$table_ddct <- renderTable({ res_ddct()$relativeExpression }, digits = 5)
+  output$singular_ddct <- renderPrint({ req(res_ddct(), input$gene_ddct); list(
+    Linear_model = res_ddct()$perGene[[input$gene_ddct]]$lm_formula,
+    res_ddct()$perGene[[input$gene_ddct]]$ANOVA_table,
+    Normality_test_of_residuals = shapiro.test(res_ddct()$perGene[[input$gene_ddct]]$Final_data$residual),
+    Singularity_check_of_model = res_ddct()$perGene[[input$gene_ddct]]$singular)})
+  output$final_data_ddct <- renderTable({ req(res_ddct(), input$gene_ddct); res_ddct()$perGene[[input$gene_ddct]]$Final_data }, digits = 5)
   
-  output$table_eff <- renderTable({ res_eff()$Efficiency })
+  output$table_eff <- renderPrint({ list(Efficiency = res_eff()$Efficiency, 
+                                         Slope_compare = res_eff()$Slope_compare) })
   output$plot_eff <- renderPlot({ res_eff()$plot }, width = function() input$eff_w * 72, height = function() input$eff_h * 72)
-  output$table_tt <- renderTable({ res_tt() })
-  output$table_wx <- renderTable({ res_wx() })
+  output$table_tt <- renderTable({ res_tt() }, digits = 5)
+  output$table_wx <- renderTable({ res_wx() }, digits = 5)
   
-  # --- plotFactor Logic ---
+  # plotFactor Logic
   df_pf <- reactive({ 
     if (input$src_pf == "user") { req(input$file_pf); read.csv(input$file_pf$datapath) }
     else if (input$src_pf == "sample") { read.csv("plot/out_ANOVA_DDCt.csv") }
@@ -441,7 +543,9 @@ server <- function(input, output, session) {
                     letters_col = if(input$pf_letters == "") NULL else input$pf_letters,
                     letters_d = input$pf_letters_d, col_width = input$pf_col_width, err_width = input$pf_err_width,
                     dodge_width = input$pf_dodge_width, fill_colors = if (input$pf_fill_colors == "") NULL else trimws(unlist(strsplit(input$pf_fill_colors, ","))),
-                    color = input$pf_color, alpha = input$pf_alpha, base_size = input$pf_base_size,
+                    color = if (input$pf_color == "") NA else input$pf_color, 
+                    alpha = input$pf_alpha, 
+                    base_size = input$pf_base_size,
                     legend_position = if (input$pf_legend_none) "none" else c(input$pf_legend_x, input$pf_legend_y),
                     removeCalibratorCols = input$pf_removeRows, removeCalibratorText = input$pf_removeText)
     if (nzchar(trimws(input$extra_pf))) {

@@ -1,6 +1,6 @@
 ---
 title: "Calculation method"
-output: rmarkdown::html_vignette
+output: github_document
 link-citations: true
 vignette: >
   %\VignetteIndexEntry{Calculation method}
@@ -81,7 +81,7 @@ wCt =
 \right]
 \right)^{1/n}
 $$
-where the geometric mean of the efficiency values of the reference genes is:
+where the geometric mean of the efficieny values of the referene genes is:
 
 $$
 \text{geoMeanE}

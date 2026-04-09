@@ -18,7 +18,7 @@ plotFactor(
   err_width = 0.15,
   dodge_width = 0.8,
   fill_colors = NULL,
-  color = "black",
+  color = NA,
   alpha = 1,
   base_size = 12,
   legend_position = "right",

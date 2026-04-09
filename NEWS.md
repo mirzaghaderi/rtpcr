@@ -1,3 +1,9 @@
+# rtpcr 2.1.6
+
+## New Features
+- Possibility of using shiny version of the rtpcr package as described in the manual.
+
+
 # rtpcr 2.1.5
 
 ## New Features

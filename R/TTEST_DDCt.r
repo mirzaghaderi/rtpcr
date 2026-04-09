@@ -1,8 +1,8 @@
-#' @title Delta Delta Ct method t-test analysis
+#' @title Delta Delta Ct method t.test analysis
 #'
 #' @description
 #' The \code{TTEST_DDCt} function performs fold change expression analysis based on
-#' the \eqn{\Delta \Delta C_T} method using Student's t-test. It supports analysis
+#' the \eqn{\Delta \Delta C_T} method using Student's t.test. It supports analysis
 #' of one or more target genes evaluated under two experimental conditions
 #' (e.g. control vs treatment).
 #'
@@ -240,9 +240,11 @@ TTEST_DDCt <- function(x,
   
   res <- transform(
     res,
-    log2FC = log2(RE),
-    Lower.se.RE = 2^(log2(RE) - se),
-    Upper.se.RE = 2^(log2(RE) + se),
+    log2FC = -ddCt,
+    Lower.se.RE = 2^(-ddCt - se),
+    Upper.se.RE = 2^(-ddCt + se),
+    Lower.se.log2FC = -ddCt - se,
+    Upper.se.log2FC = -ddCt + se,
     pvalue = stats::p.adjust(pvalue, method = p.adj)
   )
   
@@ -251,27 +253,7 @@ TTEST_DDCt <- function(x,
     breaks = c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf),
     labels = c("***", "**", "*", ".", " ")
   )
-  default.order <- unique(res$Gene)      
-  #res$sig[res$RE < 0.001] <- "ND" 
-  
 
-  a <- data.frame(res, d = 0, Lower.se.log2FC = 0, Upper.se.log2FC = 0)
-  
-  for (i in 1:length(res$RE)) {
-    if (res$RE[i] < 1) {
-      a$Lower.se.log2FC[i] <- (res$Upper.se.RE[i]*log2(res$RE[i]))/res$RE[i]
-      a$Upper.se.log2FC[i] <- (res$Lower.se.RE[i]*log2(res$RE[i]))/res$RE[i]
-      a$d[i] <- (res$Upper.se.RE[i]*log2(res$RE[i]))/res$RE[i] - 0.2
-    } else {
-      a$Lower.se.log2FC[i] <- (res$Lower.se.RE[i]*log2(res$RE[i]))/res$RE[i]
-      a$Upper.se.log2FC[i] <- (res$Upper.se.RE[i]*log2(res$RE[i]))/res$RE[i]
-      a$d[i] <- (res$Upper.se.RE[i]*log2(res$RE[i]))/res$RE[i] + 0.2
-    }
-  }
-  
-  res <- data.frame(res, 
-                    Lower.se.log2FC = a$Lower.se.log2FC,
-                    Upper.se.log2FC = a$Upper.se.log2FC)
 
   desired_order <- c("gene", "ddCt", "RE", "log2FC", "LCL", "UCL", "se",
                      "Lower.se.RE", "Upper.se.RE", "Lower.se.log2FC", "Upper.se.log2FC", 

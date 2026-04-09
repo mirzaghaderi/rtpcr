@@ -77,9 +77,9 @@ residuals, and raw data for each gene:
 }
 }
 \description{
-Performs Delta Ct (dCt) analysis of the data from a 1-, 2-, or 3-factor experiment 
-with support for both fixed effects and mixed effects models. Per-gene statistical 
-grouping is performed for all treatment combinations.
+Performs Delta Ct (dCt) analysis of the data from a factorial experiment 
+with support for both fixed- and mixed-effect models. Per-gene statistical 
+analysis and grouping is also performed.
 }
 \details{
 The function performs ANOVA analysis on weighted delta Ct (wDCt) values and returns 
@@ -88,15 +88,15 @@ variance components along with an expression table containing:
 \item \code{gene}: Name of target genes
 \item Factor columns: Experimental design factors
 \item \code{dCt}: Mean weighted delta Ct for each treatment combination
-\item \code{RE}: Relative expression = 2^-dCt
-\item \code{log2FC}: log2 of relative expression
+\item \code{RE}: Relative expression = fold change = 2^-dCt
+\item \code{log2FC}: log2 of RE
 \item \code{LCL}: 95\% lower confidence level
 \item \code{UCL}: 95\% upper confidence level
-\item \code{se}: Standard error of the mean calculated from wDCt values
-\item \code{Lower.se.RE}: Lower limit error bar for RE (2^(log2(RE) - se))
-\item \code{Upper.se.RE}: Upper limit error bar for RE (2^(log2(RE) + se))
-\item \code{Lower.se.log2FC}: Lower limit error bar for log2 RE
-\item \code{Upper.se.log2FC}: Upper limit error bar for log2 RE
+\item \code{se}: Standard error
+\item \code{Lower.se.RE}: Lower limit error bar for RE
+\item \code{Upper.se.RE}: Upper limit error bar for RE
+\item \code{Lower.se.log2FC}: Lower limit error bar for log2FC
+\item \code{Upper.se.log2FC}: Upper limit error bar for log2FC
 \item \code{sig}: Per-gene significance grouping letters
 }
 }
@@ -106,7 +106,7 @@ result <- ANOVA_DCt(data_2factorBlock3ref, numOfFactors = 2, numberOfrefGenes = 
                     block = "block")
 
 # Mixed model with random block effect
-result_mixed <- ANOVA_DCt(data_2factorBlock3ref, numOfFactors = 2, numberOfrefGenes = 3,
+result <- ANOVA_DCt(data_2factorBlock3ref, numOfFactors = 2, numberOfrefGenes = 3,
                           block = "block")
 
 # Custom mixed model formula with nested random effects

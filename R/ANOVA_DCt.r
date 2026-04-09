@@ -1,8 +1,8 @@
 #' Delta Ct ANOVA analysis with optional model specification
 #'
-#' Performs Delta Ct (dCt) analysis of the data from a 1-, 2-, or 3-factor experiment 
-#' with support for both fixed effects and mixed effects models. Per-gene statistical 
-#' grouping is performed for all treatment combinations.
+#' Performs Delta Ct (dCt) analysis of the data from a factorial experiment 
+#' with support for both fixed- and mixed-effect models. Per-gene statistical 
+#' analysis and grouping is also performed.
 #'
 #' @details
 #' The function performs ANOVA analysis on weighted delta Ct (wDCt) values and returns 
@@ -11,15 +11,15 @@
 #' \item \code{gene}: Name of target genes
 #' \item Factor columns: Experimental design factors
 #' \item \code{dCt}: Mean weighted delta Ct for each treatment combination
-#' \item \code{RE}: Relative expression = 2^-dCt
-#' \item \code{log2FC}: log2 of relative expression
+#' \item \code{RE}: Relative expression = fold change = 2^-dCt
+#' \item \code{log2FC}: log2 of RE
 #' \item \code{LCL}: 95\% lower confidence level
 #' \item \code{UCL}: 95\% upper confidence level
-#' \item \code{se}: Standard error of the mean calculated from wDCt values
-#' \item \code{Lower.se.RE}: Lower limit error bar for RE (2^(log2(RE) - se))
-#' \item \code{Upper.se.RE}: Upper limit error bar for RE (2^(log2(RE) + se))
-#' \item \code{Lower.se.log2FC}: Lower limit error bar for log2 RE
-#' \item \code{Upper.se.log2FC}: Upper limit error bar for log2 RE
+#' \item \code{se}: Standard error
+#' \item \code{Lower.se.RE}: Lower limit error bar for RE
+#' \item \code{Upper.se.RE}: Upper limit error bar for RE
+#' \item \code{Lower.se.log2FC}: Lower limit error bar for log2FC
+#' \item \code{Upper.se.log2FC}: Upper limit error bar for log2FC
 #' \item \code{sig}: Per-gene significance grouping letters
 #' }
 #'
@@ -79,7 +79,7 @@
 #'                     block = "block")
 #'
 #' # Mixed model with random block effect
-#' result_mixed <- ANOVA_DCt(data_2factorBlock3ref, numOfFactors = 2, numberOfrefGenes = 3,
+#' result <- ANOVA_DCt(data_2factorBlock3ref, numOfFactors = 2, numberOfrefGenes = 3,
 #'                           block = "block")
 #'
 #' # Custom mixed model formula with nested random effects
@@ -108,7 +108,7 @@ ANOVA_DCt <- function(
   ## Model specification
   if (!is.null(model)) {
     if (!inherits(model, "formula")) model <- as.formula(model)
-    message("Using user defined formula. Ignoring block and numOfFactors for model specification.")
+    message("Using user defined formula.")
   } else {
     factors <- colnames(x)[1:numOfFactors]
     rhs <- paste(factors, collapse = " * ")
@@ -250,9 +250,10 @@ ANOVA_DCt <- function(
     
     ## Fold change
     RE <- 2^(-merged$dCt)
-    log2FC <- log2(RE)
+    log2FC <- -merged$dCt
     RE_LCL <- 2^(-merged$upper.CL)
     RE_UCL <- 2^(-merged$lower.CL)
+    
     
     ## Compact letter display
     cld_df <- as.data.frame(
@@ -284,31 +285,11 @@ ANOVA_DCt <- function(
     Results$UCL <- RE_UCL
     Results$se <- merged$se
     Results$sig <- merged$sig
-    
-    ## SE propagation
-    Results$Lower.se.RE <- 2^(log2(Results$RE) - Results$se)
-    Results$Upper.se.RE <- 2^(log2(Results$RE) + Results$se)
-    
-    idx_less1 <- Results$RE < 1
-    idx_ge1   <- !idx_less1
-    
-    Results$Lower.se.log2FC <- Results$Upper.se.log2FC <- 0
-    
-    Results$Lower.se.log2FC[idx_less1] <-
-      (Results$Upper.se.RE[idx_less1] * log2(Results$RE[idx_less1])) /
-      Results$RE[idx_less1]
-    
-    Results$Upper.se.log2FC[idx_less1] <-
-      (Results$Lower.se.RE[idx_less1] * log2(Results$RE[idx_less1])) /
-      Results$RE[idx_less1]
-    
-    Results$Lower.se.log2FC[idx_ge1] <-
-      (Results$Lower.se.RE[idx_ge1] * log2(Results$RE[idx_ge1])) /
-      Results$RE[idx_ge1]
-    
-    Results$Upper.se.log2FC[idx_ge1] <-
-      (Results$Upper.se.RE[idx_ge1] * log2(Results$RE[idx_ge1])) /
-      Results$RE[idx_ge1]
+    Results$Lower.se.RE <- 2^(log2FC - Results$se)
+    Results$Upper.se.RE <- 2^(log2FC + Results$se)
+    Results$Lower.se.log2FC <- log2FC - Results$se
+    Results$Upper.se.log2FC <- log2FC + Results$se
+
     
     Results <- Results %>%
       dplyr::mutate_if(is.numeric, ~ round(., 5))
@@ -351,9 +332,7 @@ ANOVA_DCt <- function(
   }
   
   invisible(list(
-    perGene = setNames(perGene, targetNames),
     relativeExpression = relativeExpression,
-    singular_genes = singular_genes,
-    default_model_formula = default_model_formula
+    perGene = setNames(perGene, targetNames)
   ))
 }

@@ -111,7 +111,7 @@ plotFactor <- function(data,
                        err_width = 0.15,
                        dodge_width = 0.8,
                        fill_colors = NULL,
-                       color = "black",
+                       color = NA,
                        alpha = 1,
                        base_size = 12,
                        legend_position = "right",
@@ -163,7 +163,7 @@ plotFactor <- function(data,
   # 1-factor plot
   if (is.null(group_col) && is.null(facet_col)) {
     p <- ggplot(data, aes(x = .data[[x_col]], y = .data[[y_col]])) +
-      geom_col(width = col_width, fill = fill_colors[1] %||% "grey40", alpha = alpha, color = color, ...)
+      geom_col(width = col_width, fill = fill_colors[1] %||% "grey40", alpha = alpha, color = color %||% NULL, ...)
     p <- p + geom_errorbar(aes(ymin = ymin, ymax = ymax), width = err_width)
     
     if (!is.null(letters_col)) {
@@ -213,7 +213,9 @@ plotFactor <- function(data,
     xlab(NULL) +
     theme(axis.text.x = element_text(size = base_size, color = "black", angle = 45, hjust = 1),
           axis.text.y = element_text(size = base_size,color = "black", angle = 0),
-          panel.border = element_rect(color = "black"),
+          panel.border = element_rect(color = "black", linewidth = 1),
+          axis.line.y = element_line(linewidth = 0),
+          axis.line.x = element_line(linewidth = 0),
           legend.text = element_text(colour = "black", size = base_size),
           legend.background = element_rect(fill = "transparent"),
           strip.background = element_blank(),            # removes the faceting gray background

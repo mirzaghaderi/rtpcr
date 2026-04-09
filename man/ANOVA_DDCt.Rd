@@ -31,8 +31,8 @@ structure" in vignettes for details about data structure.}
 
 \item{numberOfrefGenes}{Integer. Number of reference genes.}
 
-\item{specs}{Example: "A", "A|B" or A|B*C" if A, B and C are name of factor columns in the input data
-The first name (here A) is the factor for which the relative expression analysis is applied.}
+\item{specs}{Example: "A", "A|B" or "A|B*C" if A, B and C are name of factor columns in the input data
+The first name (here A) is the factor for which the relative expression is analysed.}
 
 \item{block}{Character. Block column name or \code{NULL}. 
 When a qPCR experiment is done in multiple qPCR plates, 
@@ -54,7 +54,7 @@ If \code{TRUE} (default), all target genes are analysed.
 Alternatively, a character vector specifying the names (names of their Efficiency columns) of target genes
 to be analysed.}
 
-\item{model}{Optional model formula. If provided, this overrides the automatic formula (uni - or multi-factorial CRD or RCBD 
+\item{model}{Optional model formula. If provided, this overrides the automatic formula (factorial CRD or RCBD 
 based on \code{block} and \code{numOfFactors}). The formula uses 
 \code{wDCt} as the response variable. 
 For mixed models, random effects can be defined using \code{lmer} syntax 
@@ -101,10 +101,9 @@ and performs per-gene statistical analysis.
 }
 \details{
 ddCt analysis of variance (ANOVA) is performed for 
-the \code{mainFactor.column} based on a full model factorial 
-experiment by default. However, if \code{ANCOVA_DDCt} function is used, 
-analysis of covariance is performed for the levels of the \code{mainFactor.column} and the other factors are 
-treated as covariates. if the interaction between the main factor and the covariate is significant, ANCOVA is not appropriate.
+the main factor (as specified using \code{specs} argument) based on a full model factorial 
+experiment by default. Analysis of covariance is also possible depending on the user defined model. 
+If the interaction between the main factor and the covariate is significant, ANCOVA is not appropriate.
 
 All the functions for relative expression analysis (including \code{TTEST_DDCt()}, 
 \code{WILCOX_DDCt()}, \code{ANOVA_DDCt()}, and \code{ANOVA_DCt()}) return the 

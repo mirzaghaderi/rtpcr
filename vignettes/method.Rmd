@@ -1,6 +1,6 @@
 ---
 title: "Calculation method"
-output: rmarkdown::html_vignette
+output: html_vignette
 link-citations: true
 vignette: >
   %\VignetteIndexEntry{Calculation method}

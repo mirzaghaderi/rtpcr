@@ -68,20 +68,12 @@ $$
 and for more than one reference gene, the log2E.Ct term of the references, and the whole wDCt  is defined using the geometric mean as follow:
 
 $$
-wCt = \log_{2}\!\left(E_{\text{target}}\right)\cdot Ct_{\text{target}} - \left(\prod_{i=1}^{n}
-\left[
-\log_{2}\!\left(\text{geoMeanE}\right)\cdot Ct_{\text{ref}_i}
-\right]
-\right)^{1/n}
+wCt = \log_{2}\!\left(E_{\text{target}}\right)\cdot Ct_{\text{target}} - \left(\prod_{i=1}^{n}\left[\log_{2}\!\left(\text{geoMeanE}\right)\cdot Ct_{\text{ref}_i}\right]\right)^{1/n}
 $$
 where the geometric mean of the efficiency values of the reference genes is:
 
 $$
-\text{geoMeanE}
-=
-\left(
-\prod_{i=1}^{n} E_{\text{ref}_i}
-\right)^{1/n}
+\text{geoMeanE} = \left(\prod_{i=1}^{n} E_{\text{ref}_i}\right)^{1/n}
 $$
 
 
@@ -94,8 +86,7 @@ $$
 Relative expression is only calibrated for the reference gene(s) and not for a control condition. However, often one condition is considered as calibrator and the fold change (FC) expression in other conditions is calculated relative to the calibrator. Examples are Treatment versus Control where Control is served as the calibrator, or time 0 versus time 1 (e.g. after 1 hour) and time 2 (e.g. after 2 hours) where time 0 is served as the reference or calibrator level. So, calibrator is the reference level or sample that all others are compared to. The fold change (FC) expression of a target gene for the reference or calibrator level is 1 because it is not changed compared to itself. The fold change expression of a target gene due to the treatment can be calculated as follows: 
   
 $$
-  \text{Fold Change due to Treatment} =
-  2^{-(\overline{w\Delta C_t}_{\text{Tr}} - \overline{w\Delta C_t}_{\text{Co}})}
+  \text{Fold Change due to Treatment} = 2^{-(\overline{w\Delta C_t}_{\text{Tr}} - \overline{w\Delta C_t}_{\text{Co}})}
 $$
   
   

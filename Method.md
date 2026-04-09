@@ -87,20 +87,12 @@ references, and the whole wDCt is defined using the geometric mean as
 follow:
 
 $$
-wCt = \log_{2}\!\left(E_{\text{target}}\right)\cdot Ct_{\text{target}} - \left(\prod_{i=1}^{n}
-\left[
-\log_{2}\!\left(\text{geoMeanE}\right)\cdot Ct_{\text{ref}_i}
-\right]
-\right)^{1/n}
+wCt = \log_{2}\!\left(E_{\text{target}}\right)\cdot Ct_{\text{target}} - \left(\prod_{i=1}^{n}\left[\log_{2}\!\left(\text{geoMeanE}\right)\cdot Ct_{\text{ref}_i}\right]\right)^{1/n}
 $$ where the geometric mean of the efficiency values of the reference
 genes is:
 
 $$
-\text{geoMeanE}
-=
-\left(
-\prod_{i=1}^{n} E_{\text{ref}_i}
-\right)^{1/n}
+\text{geoMeanE} = \left(\prod_{i=1}^{n} E_{\text{ref}_i}\right)^{1/n}
 $$
 
 The relative expression of the target gene normalized to that of
@@ -127,8 +119,7 @@ expression of a target gene due to the treatment can be calculated as
 follows:
 
 $$
-  \text{Fold Change due to Treatment} =
-  2^{-(\overline{w\Delta C_t}_{\text{Tr}} - \overline{w\Delta C_t}_{\text{Co}})}
+  \text{Fold Change due to Treatment} = 2^{-(\overline{w\Delta C_t}_{\text{Tr}} - \overline{w\Delta C_t}_{\text{Co}})}
 $$
 
 Standard error of the FC and RE means is calculated according to

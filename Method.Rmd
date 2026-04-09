@@ -1,6 +1,6 @@
 ---
 title: "Calculation method"
-output: html_document
+output: github_document
 link-citations: true
 vignette: >
   %\VignetteIndexEntry{Calculation method}

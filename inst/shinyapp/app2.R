@@ -1,4 +1,6 @@
-#install.packages("rtpcr")
+if (!require("rtpcr")) {
+  install.packages("rtpcr")
+library(rtpcr)}
 library(multcompView)
 library(rtpcr)
 library(shiny)
@@ -349,16 +351,12 @@ server <- function(input, output, session) {
   })
   
   res_ddct <- eventReactive(input$run_ddct, {
-    tryCatch({ ANOVA_DDCt(data_ddct(), numOfFactors = input$numFactors_ddct, 
-                          numberOfrefGenes = input$numRefGenes_ddct,
-                          specs = input$specs_ddct, 
-                          block = if(input$block_ddct == "") NULL else input$block_ddct,
+    tryCatch({ ANOVA_DDCt(data_ddct(), numOfFactors = input$numFactors_ddct, numberOfrefGenes = input$numRefGenes_ddct,
+                          specs = input$specs_ddct, block = if(input$block_ddct == "") NULL else input$block_ddct,
                           calibratorLevel = if(input$calibrator_ddct == "") NULL else input$calibrator_ddct,
-                          p.adj = input$pAdj_ddct, 
-                          set_missing_target_Ct_to_40 = input$set40_ddct, 
-                          se.type = input$seType_ddct,
+                          p.adj = input$pAdj_ddct, set_missing_target_Ct_to_40 = input$set40_ddct, 
                           model = if(input$model_ddct == "") NULL else input$model_ddct,
-                          modelBased_se = input$setModelse_ddct)
+                          se.type = input$seType_ddct, modelBased_se = input$setModelse_ddct)
     }, error = function(e) { showNotification(e$message, type="error"); NULL })
   })
   
@@ -384,10 +382,21 @@ server <- function(input, output, session) {
     }, error = function(e) { showNotification(e$message, type = "error"); NULL })
   })
   
-  # Gene selection updates
+  # Gene selection updates - Automatically populates boxes after analysis
   observe({
-    updateSelectInput(session, "gene_dc", choices = if(!is.null(res_dc()$perGene)) names(res_dc()$perGene) else character(0))
-    updateSelectInput(session, "gene_ddct", choices = if(!is.null(res_ddct()$perGene)) names(res_ddct()$perGene) else character(0))
+    req(res_dc())
+    gene_list_dc <- names(res_dc()$perGene)
+    if(!is.null(gene_list_dc)) {
+      updateSelectInput(session, "gene_dc", choices = gene_list_dc, selected = gene_list_dc[1])
+    }
+  })
+  
+  observe({
+    req(res_ddct())
+    gene_list_ddct <- names(res_ddct()$perGene)
+    if(!is.null(gene_list_ddct)) {
+      updateSelectInput(session, "gene_ddct", choices = gene_list_ddct, selected = gene_list_ddct[1])
+    }
   })
   
   output$table_dc <- renderTable({ res_dc()$relativeExpression })

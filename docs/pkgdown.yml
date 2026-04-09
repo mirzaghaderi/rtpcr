@@ -1,0 +1,10 @@
+pandoc: 3.6.3
+pkgdown: 2.2.0
+pkgdown_sha: ~
+articles:
+  manual: manual.html
+  Method: Method.html
+last_built: 2026-04-09T05:07Z
+urls:
+  reference: https://mirzaghaderi.github.io/rtpcr/reference
+  article: https://mirzaghaderi.github.io/rtpcr/articles

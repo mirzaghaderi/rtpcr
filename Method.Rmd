@@ -60,8 +60,8 @@ $$
 # A generalized calculation method
   
 The `rtpcr` package was developed for the R environment in the major operating systems. The package functions are mainly based on the calculation of efficiency-weighted $\Delta C_t$ $(w\Delta C_t)$ values from target and reference gene Ct (equation 3). $w\Delta C_t$  values are weighted for the amplification efficiencies as described by Ganger et al. (2017) except that log2 is used instead of log10:
-  
-  
+
+
 $$
   w\Delta C_t = \log_2(E_{\text{target}}) \cdot C_{t,\text{target}} - \log_2(E_{\text{ref}}) \cdot C_{t,\text{ref}}
 $$
@@ -72,6 +72,7 @@ and for more than one reference gene, the log2E.Ct term of the references, and t
 $$
 wCt = \log_{2}\!\left(E_{\text{target}}\right)\cdot Ct_{\text{target}}-\left(\prod_{i=1}^{n}\left[\log_{2}\!\left(\text{geoMeanE}\right)\cdot Ct_{\text{ref}_i}\right]\right)^{1/n}
 $$
+
 where the geometric mean of the efficiency values of the reference genes is:
 
 $$

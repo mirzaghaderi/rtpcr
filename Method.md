@@ -87,11 +87,7 @@ references, and the whole wDCt is defined using the geometric mean as
 follow:
 
 $$
-wCt =
-\log_{2}\!\left(E_{\text{target}}\right)\cdot Ct_{\text{target}}
--
-\left(
-\prod_{i=1}^{n}
+wCt = \log_{2}\!\left(E_{\text{target}}\right)\cdot Ct_{\text{target}} - \left(\prod_{i=1}^{n}
 \left[
 \log_{2}\!\left(\text{geoMeanE}\right)\cdot Ct_{\text{ref}_i}
 \right]

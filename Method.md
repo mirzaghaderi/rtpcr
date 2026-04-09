@@ -82,14 +82,18 @@ al. (2017) except that log2 is used instead of log10:
 
 $$
   w\Delta C_t = \log_2(E_{\text{target}}) \cdot C_{t,\text{target}} - \log_2(E_{\text{ref}}) \cdot C_{t,\text{ref}}
-$$ and for more than one reference gene, the log2E.Ct term of the
+$$
+
+and for more than one reference gene, the log2E.Ct term of the
 references, and the whole wDCt is defined using the geometric mean as
 follow:
 
 $$
-wCt = \log_{2}\!\left(E_{\text{target}}\right)\cdot Ct_{\text{target}} - \left(\prod_{i=1}^{n}\left[\log_{2}\!\left(\text{geoMeanE}\right)\cdot Ct_{\text{ref}_i}\right]\right)^{1/n}
-$$ where the geometric mean of the efficiency values of the reference
-genes is:
+wCt = \log_{2}\!\left(E_{\text{target}}\right)\cdot Ct_{\text{target}}-\left(\prod_{i=1}^{n}\left[\log_{2}\!\left(\text{geoMeanE}\right)\cdot Ct_{\text{ref}_i}\right]\right)^{1/n}
+$$
+
+where the geometric mean of the efficiency values of the reference genes
+is:
 
 $$
 \text{geoMeanE} = \left(\prod_{i=1}^{n} E_{\text{ref}_i}\right)^{1/n}

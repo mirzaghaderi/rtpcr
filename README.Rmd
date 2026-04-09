@@ -1,5 +1,4 @@
 ---
-title: "Manual"
 output: github_document
 vignette: >
   %\VignetteIndexEntry{Manual}

@@ -1,5 +1,14 @@
 # Changelog
 
+## rtpcr 2.1.7
+
+CRAN release: 2026-04-13
+
+### New Features
+
+- Minor correction to the vignette’s method file so that it builds on
+  Debian as well.
+
 ## rtpcr 2.1.6
 
 CRAN release: 2026-03-14

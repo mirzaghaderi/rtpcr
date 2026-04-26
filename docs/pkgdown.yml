@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   manual: manual.html
   Method: Method.html
-last_built: 2026-04-09T05:07Z
+last_built: 2026-04-26T03:39Z
 urls:
   reference: https://mirzaghaderi.github.io/rtpcr/reference
   article: https://mirzaghaderi.github.io/rtpcr/articles

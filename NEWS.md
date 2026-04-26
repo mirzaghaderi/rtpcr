@@ -1,3 +1,9 @@
+# rtpcr 2.1.7
+
+## New Features
+- Minor correction to the vignette’s method file so that it builds on Debian as well.
+
+
 # rtpcr 2.1.6
 
 ## New Features

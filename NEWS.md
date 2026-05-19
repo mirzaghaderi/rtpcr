@@ -1,3 +1,8 @@
+# rtpcr 2.1.8
+
+## Correction
+- Minor correction to the `meanTech()` function.
+
 # rtpcr 2.1.7
 
 ## New Features

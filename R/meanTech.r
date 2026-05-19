@@ -61,15 +61,11 @@ meanTech <- function(x, groups, numOfFactors, numberOfrefGenes, block,
   
   g <- colnames(x)[1:groups]
 
-  # Concatenate the columns using paste0
-  x$T <- do.call(paste, c(x[1:groups], sep = ":"))
-
   data_meanBiolRep <- x %>%
-    group_by(across(all_of(g))) %>%
-    summarise(across(where(is.numeric), mean, na.rm = TRUE))
+    group_by(across(any_of(g))) %>%
+    summarise(across(!c(any_of(g)), ~ mean(., na.rm = TRUE)))
 
-  y <- data_meanBiolRep
-  m <- ncol(y)-4
-  databiol <- y[,-m]
+  m <- groups + 1
+  databiol <- data_meanBiolRep[,-m]
   return(as.data.frame(databiol))
 }

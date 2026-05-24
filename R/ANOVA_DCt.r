@@ -119,6 +119,18 @@ ANOVA_DCt <- function(
     }
   }
   
+  
+  if (!is.null(block) && block %in% colnames(x)) {
+    # Check if there is only 1 unique level (ignoring NAs)
+    if (length(unique(na.omit(x[[block]]))) <= 1) {
+      warning(sprintf("The block column '%s' contains only one level. It has been removed and analysis will proceed without blocking.", block), call. = FALSE)
+      # Remove the column from the dataset and reset the argument
+      x[[block]] <- NULL   
+      block <- NULL        
+    }
+  }
+  
+  
   n <- ncol(x)
   nDesign <- numOfFactors + if (is.null(block)) 1 else 2
   if (nDesign >= n) stop("Not enough columns for target and reference genes")

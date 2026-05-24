@@ -1,4 +1,4 @@
-#install.packages("rtpcr")
+#remotes::install_github("mirzaghaderi/rtpcr")
 library(rtpcr)
 library(shiny)
 library(multcompView)

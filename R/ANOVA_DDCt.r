@@ -166,6 +166,10 @@ ANOVA_DDCt <- function(
     se.type = c("single.group", "paired.group", "two.group"),
     modelBased_se = TRUE, ...) {
   
+  if (!is.null(calibratorLevel)) {
+    calibratorLevel <- as.character(calibratorLevel)
+  }
+  
   se.type <- match.arg(se.type)
 
   
@@ -315,32 +319,23 @@ ANOVA_DDCt <- function(
     specs2 <- stats::as.formula(paste("~ ", specs))
     pp1 <- suppressMessages(emmeans::emmeans(lm_fit, specs2, adjust = p.adj))    # mode = "satterthwaite" data = gene_df,
     cld_results <- multcomp::cld(pp1, alpha = 0.05, Letters = letters)
+    # if(is.null(calibratorLevel)) {calibratorLevel <- levels(factor(gene_df[[mainFactor]]))[1]}
+    # stats::confint(graphics::pairs(pp1), ref = calibratorLevel)
+    # contrast <- emmeans::contrast(pp1, "trt.vs.ctrl", ref = calibratorLevel, type = "response", adjust = "none")
     if(is.null(calibratorLevel)) {calibratorLevel <- levels(factor(gene_df[[mainFactor]]))[1]}
-    stats::confint(graphics::pairs(pp1), ref = calibratorLevel)
-    contrast <- emmeans::contrast(pp1, "trt.vs.ctrl", ref = calibratorLevel, type = "response", adjust = "none")
-    conf <- stats::confint(contrast)
+    stats::confint(graphics::pairs(pp1))
+    contrast <- emmeans::contrast(pp1, "trt.vs.ctrl", ref = 1, type = "response", adjust = "none")
     
-    # bootstrap_model <- function(data, indices) {
-    #   d <- data[indices, ]
-    #   model_boot <- update(lm_fit, data = d)
-    #   return(coef(model_boot))}
-    # boot_result <- boot::boot(data = gene_df, statistic = bootstrap_model, R = 1000)
-    # b <- boot::boot.ci(boot_result, type = "perc", conf = 0.95)
+    conf <- stats::confint(contrast)
     
     conf$RE <- 2^(-conf$estimate)
     conf$LCL <- 2^(-conf$upper.CL)
     conf$UCL <- 2^(-conf$lower.CL)
 
-    
-
     conf <- as.data.frame(conf)
     contrast <- as.data.frame(contrast)
     conf <- data.frame(conf, p.value = contrast$p.value)
-    # bsLCL = 2^-b$percent[length(b$percent)],
-    # bsUCL = 2^-b$percent[length(b$percent)-1]
-    
-    
-    
+
     all_cols <- names(conf)
     stat_cols <- c("contrast", "estimate", "SE", "df", "lower.CL", "upper.CL", "RE", "LCL", "UCL", "p.value")    
     grouping_cols <- setdiff(all_cols, stat_cols)
@@ -348,7 +343,7 @@ ANOVA_DDCt <- function(
       mutate(contrast = as.character(contrast)) %>%
       group_by(across(all_of(grouping_cols))) %>% 
       group_modify(~ {
-        ref_name <- sub(".*[ -]", "", .x$contrast[1])
+        ref_name <- sapply(strsplit(.x$contrast[1], " - "), `[`, 2) #ref_name <- sub(".*[ -]", "", .x$contrast[1])
         ref_name <- trimws(ref_name)
         ref_row <- .x[1, ]
         ref_row$contrast <- ref_name
@@ -412,10 +407,6 @@ ANOVA_DDCt <- function(
           
           val <- tryCatch({
             if (type == "paired.group") {
-              # Strict pairing by ID
-              #paired <- merge(ref_vals, comp_vals, by = id_col_name) #####
-              #if(nrow(paired) < 2) return(NA_real_) #####
-              #stats::sd(paired$residual.x - paired$residual.y, na.rm = TRUE) / sqrt(nrow(paired)) #####
               stats::t.test(comp_vals$residual, ref_vals$residual, paired = TRUE)$stderr
             } else {
               # Independent samples t-test stderr
@@ -499,10 +490,6 @@ ANOVA_DDCt <- function(
   
   names(relativeExpression)[names(relativeExpression) == "estimate"] <- "ddCt"
   
-  # desired_order <- c("gene", "contrast", "ddCt", "RE", "log2FC", "LCL", "UCL", "se",
-  #                    "Lower.se.RE", "Upper.se.RE", "Lower.se.log2FC", "Upper.se.log2FC", 
-  #                    "p.value", "sig")
-  # relativeExpression <- relativeExpression[, desired_order]
   relativeExpression$SE <- NULL   
   relativeExpression$df <- NULL
   relativeExpression$lower.CL <- NULL
@@ -510,9 +497,6 @@ ANOVA_DDCt <- function(
   relativeExpression <- relativeExpression[, c("gene",
                                                setdiff(colnames(relativeExpression), c("gene", "p.value", "sig")),
                                                "p.value", "sig"), drop = FALSE]
-  
-  
-  
   
   for (col in names(relativeExpression)) {
     if (is.numeric(relativeExpression[[col]])) {

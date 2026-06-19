@@ -179,13 +179,13 @@ ui <- fluidPage(
                            sliderInput("pf_alpha", "Transparency (alpha)", min = 0, max = 1, value = 0.5, step = 0.05),
                            numericInput("pf_base_size", "Base font size", 12, min = 6),
                            checkboxInput("pf_legend_none", "Hide legend", FALSE),
-                           checkboxInput("pf_removeRows", "Remove Calibrator Cols", FALSE),
+                           checkboxInput("pf_removeRows", "Remove Calibrator Columns", FALSE),
                            checkboxInput("pf_removeText", "Remove Calibrator Text", FALSE),
-                           fluidRow(column(6, numericInput("pf_legend_x", "Legend X", 0.85, min = 0, max = 1, step = 0.05) ),
-                                    column(6, numericInput("pf_legend_y", "Legend Y", 0.85, min = 0, max = 1, step = 0.05) ) ),
-                           fluidRow(column(6, numericInput("pf_w", "Width (in)", 8, min = 1)),
-                                    column(6, numericInput("pf_h", "Height (in)", 9, min = 1))),
-                           textInput("extra_pf", "Further ggplot layers (Optional; e.g., + ylab('Fold change'))", ""),
+                           fluidRow(column(6, numericInput("pf_legend_x", "Legend position X", 0.85, min = 0, max = 1, step = 0.05) ),
+                                    column(6, numericInput("pf_legend_y", "Legend position Y", 0.85, min = 0, max = 1, step = 0.05) ) ),
+                           fluidRow(column(6, numericInput("pf_w", "Plot width (in)", 8, min = 1)),
+                                    column(6, numericInput("pf_h", "Plot height (in)", 9, min = 1))),
+                           textInput("extra_pf", "Optional further ggplot layers e.g., + ylab('Fold change') + geom_hline(yintercept = 1, color = 'red', linetype = 'dashed', size = 0.5)", ""),
                            actionButton("run_pf", "Run plotFactor")
                   ),
                   tabPanel("meanTech", value = "meanTech",
@@ -209,6 +209,10 @@ ui <- fluidPage(
                            div(style = "padding: 20px; line-height: 1.6;",
                                h2("Getting Started with rtpcr"),
                                p("The rtpcr package facilitates relative expression analysis using delta Ct (dCt) and delta delta Ct (ddCt) methods. It supports t-test, ANOVA, and publication-ready visualizations. The package implements a general calculation method adopted from Ganger et al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl methods."),
+                               
+                               div(class = "img-container",
+                                   img(src = "qPCR_Plot.jpg", style = "width: 100%; max-width: 900px;"),
+                                   span(class = "fig-caption", tags$strong("Figure 1: "), "Sample output plots produced by the shiny rtpcr.")),
                                
                                div(class = "section-divider"),
                                
@@ -248,13 +252,13 @@ ui <- fluidPage(
                                
                                div(class = "img-container",
                                    img(src = "sampleData1.png", style = "width: 70%; max-width: 600px;"),
-                                   span(class = "fig-caption", tags$strong("Figure 1: "), "A sample input data with one experimetal factor, replicate column and E/Ct information of target and reference genes.")),
+                                   span(class = "fig-caption", tags$strong("Figure 2: "), "A sample input data with one experimetal factor, replicate column and E/Ct information of target and reference genes.")),
                                
                                p("If there is no blocking factor, omit that column. However, a replicate column (e.g., 'Rep' or 'id') is always required."),
                                
                                div(class = "img-container",
                                    img(src = "dataStructure1.png", style = "width: 100%; max-width: 800px;"),
-                                   span(class = "fig-caption", tags$strong("Figure 2: "), "A sample input data with two experimental factors, blocking factor, replicate column and E/Ct information of target and reference genes.")),
+                                   span(class = "fig-caption", tags$strong("Figure 3: "), "A sample input data with two experimental factors, blocking factor, replicate column and E/Ct information of target and reference genes.")),
 
                                
                                h3("2. Notes"),

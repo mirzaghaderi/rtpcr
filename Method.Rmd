@@ -72,7 +72,7 @@ and for more than one reference gene, the log2E.Ct term of the references, and t
 
 
 $$
-wCt = \log_{2}\left(E_{\text{target}}\right)\cdot Ct_{\text{target}}-\left(\prod_{i=1}^{n}\left[\log_{2}\left(\text{geoMeanE}\right)\cdot Ct_{\text{ref}_i}\right]\right)^{1/n}
+w\Delta C_t = \log_{2}\left(E_{\text{target}}\right)\cdot Ct_{\text{target}}-\left(\prod_{i=1}^{n}\left[\log_{2}\left(\text{geoMeanE}\right)\cdot Ct_{\text{ref}_i}\right]\right)^{1/n}
 $$
 
 
@@ -97,7 +97,7 @@ $$
   
   
 Standard error of the FC and RE means is calculated according to <a href="https://doi.org/10.1016/j.tibtech.2018.12.002">Taylor et al. (2019)</a> in `rtpcr` package.
-Here, a brief methodology is presented but details about the $w\Delta C_t$  calculations and statistical analysis are available in <a href="https://doi.org/10.1186/s12859-017-1949-5">Ganger et al. (2017)</a>. Importantly, because relative expression values follow a lognormal distribution, a normal distribution is expected for the $w \Delta C_t$ values making it possible to apply t-test or analysis of variance. Following analysis, $w\Delta C_t$ values are statistically compared and standard deviations and confidence interval are calculated, but the transformation $y = 2^{-x}$ is applied in the final step in order to report the results.
+Here, a brief methodology is presented but details about the $w\Delta C_t$  calculations and statistical analysis are available in <a href="https://doi.org/10.1186/s12859-017-1949-5">Ganger et al. (2017)</a>. Importantly, because relative expression values follow a lognormal distribution, a normal distribution is expected for the $w \Delta C_t$ values making it possible to apply t-test or analysis of variance. Following analysis, $w\Delta C_t$ values are statistically compared and standard deviation and confidence interval are calculated, but the transformation $y = 2^{-x}$ is applied in the final step in order to report the results.
 
 
 # References
@@ -111,5 +111,3 @@ Mirzaghaderi G. 2025. rtpcr: a package for statistical analysis and graphical pr
 Pfaffl MW, Horgan GW, Dempfle L. 2002. Relative expression software tool (REST©) for group-wise comparison and statistical analysis of relative expression results in real-time PCR. Nucleic acids research 30, e36-e36. <a href="https://doi.org/10.1093/nar/30.9.e36">doi.org/10.1093/nar/30.9.e36</a>.
 
 Taylor SC, Nadeau K, Abbasi M, Lachance C, Nguyen M, Fenrich, J. 2019. The ultimate qPCR experiment: producing publication quality, reproducible data the first time. Trends in Biotechnology, 37(7), 761-774. <a href="https://doi.org/10.1016/j.tibtech.2018.12.002">doi.org/10.1016/j.tibtech.2018.12.002</a>.
-
-Yuan, JS, Ann Reed, Feng Chen, and Neal Stewart. 2006. Statistical Analysis of Real-Time PCR Data. BMC Bioinformatics 7 (85). <a href="https://doi.org/10.1186/1471-2105-7-85">doi.org/10.1186/1471-2105-7-85</a>.

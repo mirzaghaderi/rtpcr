@@ -21,11 +21,11 @@ href="https://mirzaghaderi.shinyapps.io/rtpcr/"
 class="uri">https://mirzaghaderi.shinyapps.io/rtpcr/</a></figcaption>
 </figure>
 
-## Running the shiny version of the rtpcr
+## Running the shiny version of the rtpcr offline
 
 If you have problem with connecting to
 <https://mirzaghaderi.shinyapps.io/rtpcr/>, you can follow the following
-steps in Rstudio to run the shiny version of the rtpcr.
+steps in Rstudio to run the shiny version of the rtpcr offline.
 
 ``` r
 # install.packages("rtpcr")
@@ -60,7 +60,7 @@ ANOVA analysis.
 | `meanTech()` | Calculate mean of technical replicates. This is used if your data needs averaging over biological replicates. |
 | `multiplot()` | Combine multiple ggplot objects into a single layout |
 | `compute_wDCt()` | Cleaning data and weighted delta Ct (wDCt) calculation using the geometric mean of reference gene(s). |
-| `long_to_wide()` | Converts a 4-column qPCR long data format to wide format |
+| `long_to_wide()` | Converts a 4-column qPCR long data format (Condition, Gene, E, Ct) to wide format |
 
 # Quick start
 
@@ -92,7 +92,7 @@ efficiency (`E`) and `Ct` or `Cq` values (the mean of technical
 replicates) is used for the input table. If the `E` values are not
 available you should use ‘2’ instead representing the complete primer
 amplification efficiency. The input data table should include the
-following columns from left to wright:
+following columns from left to right:
 
 1.  Experimental condition columns (and one block if available [NOTE
     1](#note-1))
@@ -109,9 +109,9 @@ always appear last. Two sample input data sets are presented below.
 <figure>
 <img src="../man/figures/sampleData1.png" class="center"
 style="width:80.0%"
-alt="Figure 2: A sample input data with one experimetal factor, replicate column and E/Ct information of target and reference genes" />
+alt="Figure 2: A sample input data with one experimental factor, replicate column and E/Ct information of target and reference genes" />
 <figcaption aria-hidden="true">Figure 2: A sample input data with one
-experimetal factor, replicate column and E/Ct information of target and
+experimental factor, replicate column and E/Ct information of target and
 reference genes</figcaption>
 </figure>
 
@@ -192,7 +192,7 @@ This means that 2 indicates 100%, and 1.85 and 1.70 indicate 0.85% and
 
 # Handling missing data
 
-Missing Ct values for target genes is Handled using the
+Missing Ct values for target genes are handled using the
 `set_missing_target_Ct_to_40` argument. If `TRUE`, missing target gene
 Ct values become 40; if `FALSE` (default), they become NA. missing Ct
 values of reference genes are always converted to NA. If there are more
@@ -322,7 +322,7 @@ measure model such as `wDCt ~ Treatment + ( 1 | id)` or
 <figure>
 <img src="../man/figures/repeated_measure.png" class="center"
 style="width:100.0%"
-alt="Figure 6: A) Basic structure of independent group- or paired group-experiments. Data of paired group-experiments are analysed using the TTEST_DDCt() function with the argument paired = TRUE; or using the ANOVA_DDCt() function with a repeated measure model such as wDCt ~ Treatment + ( 1 | Rep). B) The standard error (se) in the ANOVA_DDCt() function is calculated from from weighted delta Ct (wDCt) values or model residuals (default, modelBased_se = TRUE) for the experimental groups according to the selected se.type (One of &quot;paired.group&quot;, &quot;two.group&quot;, or &quot;single.group&quot;). Note that in the &quot;paired.group&quot; method,se is computed from differences (wddCt or equivalent values from residuals) which resembles the standard error of a paired t.test, while &quot;two.group&quot; and &quot;single.group&quot; methods use wdCt or resudual values. In the &quot;two.group&quot; method, se is computed for each non-reference group from that group and the reference (calibrator) group which resembles the standard error of an unpaired t.test. &quot;single.group&quot; computes se within each reference or non-reference group. If a model for a repeated‐measure or a paired-group design is specified, se.type should be set to &quot;paired.group&quot; in the ANOVA_DDCt() function. In method 4, the 95% confidence interval (CI) is calculated and printed in the output expression table under LCL and UCL columns. CI uses the pooled standard error (SE) and can be used as another way of error presentation. It can be used for any experimental models as it is derived from a fitted model." />
+alt="Figure 6: A) Basic structure of independent group- or paired group-experiments. Data of paired group-experiments are analysed using the TTEST_DDCt() function with the argument paired = TRUE; or using the ANOVA_DDCt() function with a repeated measure model such as wDCt ~ Treatment + ( 1 | Rep). B) The standard error (se) in the ANOVA_DDCt() function is calculated from from weighted delta Ct (wDCt) values or model residuals (default, modelBased_se = TRUE) for the experimental groups according to the selected se.type (One of &quot;paired.group&quot;, &quot;two.group&quot;, or &quot;single.group&quot;). Note that in the &quot;paired.group&quot; method,se is computed from differences (wddCt or equivalent values from residuals) which resembles the standard error of a paired t.test, while &quot;two.group&quot; and &quot;single.group&quot; methods use wdCt or residual values. In the &quot;two.group&quot; method, se is computed for each non-reference group from that group and the reference (calibrator) group which resembles the standard error of an unpaired t.test. &quot;single.group&quot; computes se within each reference or non-reference group. If a model for a repeated‐measure or a paired-group design is specified, se.type should be set to &quot;paired.group&quot; in the ANOVA_DDCt() function. In method 4, the 95% confidence interval (CI) is calculated and printed in the output expression table under LCL and UCL columns. CI uses the pooled standard error (SE) and can be used as another way of error presentation. It can be used for any experimental models as it is derived from a fitted model." />
 <figcaption aria-hidden="true">Figure 6: A) Basic structure of
 independent group- or paired group-experiments. Data of paired
 group-experiments are analysed using the <code>TTEST_DDCt()</code>
@@ -338,7 +338,7 @@ to the selected <code>se.type</code> (One of
 <code>"paired.group"</code> method,<code>se</code> is computed from
 differences (wddCt or equivalent values from residuals) which resembles
 the standard error of a paired t.test, while <code>"two.group"</code>
-and <code>"single.group"</code> methods use wdCt or resudual values. In
+and <code>"single.group"</code> methods use wdCt or residual values. In
 the <code>"two.group"</code> method, <code>se</code> is computed for
 each non-reference group from that group and the reference (calibrator)
 group which resembles the standard error of an unpaired t.test.
@@ -525,13 +525,13 @@ plotFactor(
 
 <figure>
 <img src="../man/figures/Rplot02.png" class="center" height="400"
-alt="Figure 8: The bar plots of the log2 fold change expression expression of a gene produced by the plotFactor() function." />
+alt="Figure 8: The bar plots of the log2 fold change expression of a gene produced by the plotFactor() function." />
 <figcaption aria-hidden="true">Figure 8: The bar plots of the log2 fold
-change expression expression of a gene produced by the
+change expression of a gene produced by the
 <code>plotFactor()</code> function.</figcaption>
 </figure>
 
-# How to edit ouptput plots?
+# How to edit output plots?
 
 The plot can further be edited by adding new layers (see examples
 bellow):

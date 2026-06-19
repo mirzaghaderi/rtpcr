@@ -43,9 +43,9 @@ and delta delta Ct (ddCt) methods, including t-tests and ANOVA, repeated-measure
 
 
 
-# Running the shiny version of the rtpcr
+# Running the shiny version of the rtpcr offline 
 
-If you have problem with connecting to https://mirzaghaderi.shinyapps.io/rtpcr/, you can follow the following steps in Rstudio to run the shiny version of the rtpcr.
+If you have problem with connecting to https://mirzaghaderi.shinyapps.io/rtpcr/, you can follow the following steps in Rstudio to run the shiny version of the rtpcr offline.
 
 ```{r eval= F}
 install.packages("rtpcr")
@@ -73,7 +73,7 @@ In the rtpcr package, functions with _DDCt at the end of their name (`ANOVA_DDCt
 | `meanTech()`          | Calculate mean of technical replicates. This is used if your data needs averaging over biological replicates.     |
 | `multiplot()`         | Combine multiple ggplot objects into a single layout   |
 | `compute_wDCt()`	 | Cleaning data and weighted delta Ct (wDCt) calculation using the geometric mean of reference gene(s).   |
-| `long_to_wide()`	 | Converts a 4-column qPCR long data format to wide format    |
+| `long_to_wide()`	 | Converts a 4-column qPCR long data format (Condition, Gene, E, Ct) to wide format    |
 
 
 # Quick start

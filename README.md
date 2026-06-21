@@ -20,31 +20,10 @@ package implements a general calculation method adopted from Ganger et
 al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl
 methods. See the [calculation method](Method.md) for details.
 
-<figure>
-<img src="man/figures/shiny_rtpcr.png" class="center"
-style="width:100.0%"
-alt="Figure 1: rtpcr is now available as shiny_rtpcr, a web application developed using R/Shiny for interactive analysis of qPCR data at https://mirzaghaderi.shinyapps.io/rtpcr/" />
-<figcaption aria-hidden="true">Figure 1: rtpcr is now available as
-shiny_rtpcr, a web application developed using R/Shiny for interactive
-analysis of qPCR data at <a
-href="https://mirzaghaderi.shinyapps.io/rtpcr/"
-class="uri">https://mirzaghaderi.shinyapps.io/rtpcr/</a></figcaption>
-</figure>
+# The shiny version of the rtpcr
 
-# Running the shiny version of the rtpcr offline
+rtpcr is also available as shiny_rtpcr, a web application developed using R/Shiny for interactive analysis of qPCR data at https://mirzaghaderi.shinyapps.io/rtpcr/. Further details about the shiny_rtpcr is found at https://github.com/mirzaghaderi/shiny_rtpcr. 
 
-If you have problem with connecting to
-<https://mirzaghaderi.shinyapps.io/rtpcr/>, you can follow the following
-steps in Rstudio to run the shiny version of the rtpcr offline.
-
-``` r
-install.packages("rtpcr")
-install.packages("shiny")
-library(shiny)
-library(rtpcr)
-# Run the following code in Rstudio
-runApp(system.file("shinyapp/app.R", package = "rtpcr"))
-```
 
 # Functions
 

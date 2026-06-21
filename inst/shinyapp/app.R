@@ -134,7 +134,7 @@ ui <- fluidPage(
                            numericInput("numRefGenes_tt", "Number of reference genes", 1),
                            textInput("factorLevels_tt", "Factor levels (comma separated)", ""),
                            checkboxInput("paired_tt", "Paired test", FALSE),
-                           checkboxInput("equalVar_tt", "Equal variance", TRUE),
+                           checkboxInput("equalVar_tt", "Equal variances", TRUE),
                            selectInput("pAdj_tt", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
                            checkboxInput("set40_tt", "Set missing Ct to 40", FALSE),
                            actionButton("run_tt", "Run TTEST_DDCt")
@@ -292,7 +292,7 @@ ui <- fluidPage(
                                
                                p("Contact email: gh.mirzaghaderi at uok.ac.ir"),
                                p("For further details please visit:",
-                                 a(href="https://github.com/mirzaghaderi/rtpcr", "https://github.com/mirzaghaderi/rtpcr")),
+                                 a(href="https://github.com/mirzaghaderi/shiny_rtpcr", "https://github.com/mirzaghaderi/shiny_rtpcr")),
                                )
                   ),
                   tabPanel("ANOVA_DCt", value = "ANOVA_DCt",

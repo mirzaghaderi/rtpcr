@@ -35,27 +35,9 @@ rtpcr is a tool for analysis of RT-qPCR gene expression data using delta Ct (dCt
 and delta delta Ct (ddCt) methods, including t-tests and ANOVA, repeated-measures models, and publication-ready visualizations. The package implements a general calculation method adopted from Ganger et al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl methods. See the [calculation method](Method.md) for details.
 
 
+# The shiny version of the rtpcr
 
-![Figure 1: rtpcr is now available as shiny_rtpcr, a web application developed using R/Shiny for interactive analysis of qPCR data at https://mirzaghaderi.shinyapps.io/rtpcr/](man/figures/shiny_rtpcr.png){.center width="100%"}
-
-
-
-
-
-
-# Running the shiny version of the rtpcr offline 
-
-If you have problem with connecting to https://mirzaghaderi.shinyapps.io/rtpcr/, you can follow the following steps in Rstudio to run the shiny version of the rtpcr offline.
-
-```{r eval= F}
-install.packages("rtpcr")
-install.packages("shiny")
-library(shiny)
-library(rtpcr)
-# Run the following code in Rstudio
-runApp(system.file("shinyapp/app.R", package = "rtpcr"))
-```
-
+rtpcr is also available as shiny_rtpcr, a web application developed using R/Shiny for interactive analysis of qPCR data at https://mirzaghaderi.shinyapps.io/rtpcr/. Further details about the shiny_rtpcr is found at https://github.com/mirzaghaderi/shiny_rtpcr. 
 
 
 # Functions

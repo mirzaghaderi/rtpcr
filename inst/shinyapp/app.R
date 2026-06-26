@@ -33,7 +33,7 @@ ui <- fluidPage(
       .fig-caption { font-style: italic; color: #666; margin-top: 12px; display: block; font-size: 14px; }
       .section-divider { border-top: 1px solid #C1CDCD; margin: 20px 0; }
     "))
-),
+  ),
   
   
   tags$script(HTML("
@@ -55,12 +55,12 @@ ui <- fluidPage(
       }
     });
   ")),
-
+  
   
   titlePanel('rtpcr: qPCR Data Analysis & Plotting'),
   fluidRow(column(12,
-           div(style = "margin-bottom: 20px; color: #333; line-height: 1.6;", 
-               p("Welcome! This is the shiny version of the rtpcr package, a web application developed using R/Shiny for comparative (dCt and ddCt) analysis of qPCR data.")))),
+                  div(style = "margin-bottom: 20px; color: #333; line-height: 1.6;", 
+                      p("Welcome! This is the shiny version of the rtpcr package, a web application developed using R/Shiny for comparative (dCt and ddCt) analysis of qPCR data.")))),
   br(),
   
   sidebarLayout(
@@ -72,8 +72,8 @@ ui <- fluidPage(
                                and graphical presentation of qPCR data in R. PeerJ 13:e20185.", 
                                a(href="https://doi.org/10.7717/peerj.20185", "doi.org/10.7717/peerj.20185")),
                            
-                           ),
-
+                  ),
+                  
                   
                   
                   
@@ -216,24 +216,24 @@ ui <- fluidPage(
                                
                                div(class = "section-divider"),
                                
-            
-                              h2("rtpcr Funtions"),
-                              p("In the rtpcr package, functions with _DDCt at the end of their name (ANOVA_DDCt, TTEST_DDCt, WILCOX_DDCt) perform expression analysis based on the delta delta Ct (ddCt)
-                               method, while ANOVA_DCt function analyze gene expression using the delta Ct (dCt) method. The ANOVA prefix in the function name means that the function uses analysis of variance (using a default full factorial
+                               
+                               h2("rtpcr Funtions"),
+                               p("In the rtpcr package, functions with _DDCt at the end of their name (ANOVA_DDCt, TTEST_DDCt, WILCOX_DDCt) perform expression analysis based on the delta delta Ct (ddCt)
+                               method, while ANOVA_DCt function analyzes the data using the delta Ct (dCt) method. The ANOVA prefix in the function name means that the function uses analysis of variance (using a default full factorial
                                model or a user defined model) for statistical analysis, and mean comparisons. Mean comparisons is performed by the emmeans function using the model resulting from the ANOVA analysis."),
-
-                              helpText(div(class = "info-box2",
-                                           tags$strong("ANOVA_DCt: "), " dCt expression analysis for all the level combinations of factor(s).", 
-                                           br(),
-                                             tags$strong("ANOVA_DDCt: "), " ddCt expression analysis for levels of a factor (geneally or per levels of another factors(s)), specified by the `specs` argument. ", tags$br(),
-                                             tags$strong("TTEST_DDCt: "), " ddCt method t.test analysis for paired or unpaired samples.", tags$br(),
-                                             tags$strong("WILCOX_DDCt: "), " ddCt method wilcox.test analysis for paired or unpaired samples.", tags$br(),
-                                             tags$strong("plotFactor: "), " Bar plot of gene expression", tags$br(),
-                                             tags$strong("efficiency: "), " Amplification efficiency statistics and standard curves", tags$br(),
-                                             tags$strong("meanTech: "), " Calculate mean of technical replicates. This is used if your data needs averaging over biological replicates. ")),
-
-                              
-
+                               
+                               helpText(div(class = "info-box2",
+                                            tags$strong("ANOVA_DCt: "), " dCt expression analysis for all the level combinations of factor(s).", 
+                                            br(),
+                                            tags$strong("ANOVA_DDCt: "), " ddCt expression analysis for levels of a factor (geneally or per levels of another factors(s)), specified by the `specs` argument. ", tags$br(),
+                                            tags$strong("TTEST_DDCt: "), " ddCt method t.test analysis for paired or unpaired samples.", tags$br(),
+                                            tags$strong("WILCOX_DDCt: "), " ddCt method wilcox.test analysis for paired or unpaired samples.", tags$br(),
+                                            tags$strong("plotFactor: "), " Bar plot of gene expression", tags$br(),
+                                            tags$strong("efficiency: "), " Amplification efficiency statistics and standard curves", tags$br(),
+                                            tags$strong("meanTech: "), " Calculate mean of technical replicates. This is used if your data needs averaging over biological replicates. ")),
+                               
+                               
+                               
                                h3("1. Input Data Structure"),
                                p("For relative expression analysis, use TTEST_DDCt, WILCOX_DDCt, ANOVA_DCt, and ANOVA_DDCt functions from the left side panel. 
                                You need to prepare your input data based on the experimenta design, amplification efficiency 
@@ -246,8 +246,8 @@ ui <- fluidPage(
                                  tags$li("Reference genes efficiency (E) and Ct values (paired columns).")
                                ),
                                p("If the E values are not available you should use 
-                                 ‘2’ instead representing the complete primer amplification efficiency. The package supports one or more target or reference gene(s),
-                               supplied as efficiency–Ct column pairs. Reference gene columns must
+                                 '2' instead representing the complete primer amplification efficiency. The package supports one or more target or reference gene(s),
+                               supplied as efficiency-Ct column pairs. Reference gene columns must
                                always appear last. Two sample input data sets are presented below."),
                                
                                div(class = "img-container",
@@ -259,7 +259,7 @@ ui <- fluidPage(
                                div(class = "img-container",
                                    img(src = "dataStructure1.png", style = "width: 100%; max-width: 800px;"),
                                    span(class = "fig-caption", tags$strong("Figure 3: "), "A sample input data with two experimental factors, blocking factor, replicate column and E/Ct information of target and reference genes.")),
-
+                               
                                
                                h3("2. Notes"),
                                div(class = "info-box",
@@ -268,7 +268,7 @@ ui <- fluidPage(
                                                                        interaction with any main effect is not considered.", tags$br(),
                                    br(),
                                    tags$strong("Note 2: Biological Replicates:"), " For TTEST_DDCt and WILCOX_DDCt (independent groups), ANOVA_DCt,
-                                                                       and ANOVA_DDCt each row is from a separate and unique biological replicate. For example, a data frame with 12 rows has come from an experiment with 12 individuals. The repeated measure models are intended for experiments with repeated observations (e.g. time-course data). In repeated measure experiments the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a `1` at Rep column correspond to a single individual, all rows with a `2` correspond to another individual, and so on, which have been sampled at
+                                                                       and ANOVA_DDCt each row is from a separate and unique biological replicate. For example, a data frame with 12 rows has come from an experiment with 12 individuals. The repeated measure models are intended for experiments with repeated observations (e.g. time-course data). In repeated measure experiments the Replicate column contains identifiers for each individual (id or subject). For example, all rows with a `1` at Rep column correspond to a single individual, all rows with a `2` correspond to another individual, and so on, which have been sampled at
                                                                        specific time points.", tags$br(),
                                    br(),
                                    tags$strong("Note 3: Technical Replicates:"), " Your data table may also include a column of technical replicates (For example, using one target and one reference genes, if you want to have 4 
@@ -279,7 +279,7 @@ ui <- fluidPage(
                                    tags$strong("Note 4: Efficiency (E):"), " Complete amplification efficiency (E) in the input data is denoted by
                                                 2. This means that 2 indicates 100%, and 1.85 and 1.70 indicate 0.85%
                                                 and 0.70% amplification efficiencies."),
-
+                               
                                
                                
                                
@@ -293,7 +293,7 @@ ui <- fluidPage(
                                p("Contact email: gh.mirzaghaderi at uok.ac.ir"),
                                p("For further details please visit:",
                                  a(href="https://github.com/mirzaghaderi/shiny_rtpcr", "https://github.com/mirzaghaderi/shiny_rtpcr")),
-                               )
+                           )
                   ),
                   tabPanel("ANOVA_DCt", value = "ANOVA_DCt",
                            br(),
@@ -306,7 +306,7 @@ ui <- fluidPage(
                                                   tabPanel("ANOVA, Normality & Singularity", verbatimTextOutput("singular_dc"),
                                                            p("NOTE ", style = "color: #EE3B3B;"),
                                                            p("If the singularity of the model is TRUE, the statistical results including ANOVA and significance is not reliable !",
-                                                           style = "color: #9C9C9C; font-style: italic; margin-top: 10px; margin-bottom: 15px;")),
+                                                             style = "color: #9C9C9C; font-style: italic; margin-top: 10px; margin-bottom: 15px;")),
                                                   tabPanel("LM Object", br(), downloadButton("download_lm_dc", "Download LM (.rds)")),
                                                   tabPanel("Final table", br(), downloadButton("download_final_dc", "Download Final Table"), br(), tableOutput("final_data_dc"))
                                                 ))
@@ -323,7 +323,7 @@ ui <- fluidPage(
                                                   tabPanel("ANOVA, Normality & Singularity", verbatimTextOutput("singular_ddct"), 
                                                            p("NOTE ", style = "color: #EE3B3B;"),
                                                            p("If the singularity of the model is TRUE, the statistical results including ANOVA and significance is not reliable !",
-                                                           style = "color: #9C9C9C; font-style: italic; margin-top: 10px; margin-bottom: 15px;")),
+                                                             style = "color: #9C9C9C; font-style: italic; margin-top: 10px; margin-bottom: 15px;")),
                                                   tabPanel("LM Object", br(), downloadButton("download_lm_ddct", "Download LM (.rds)")),
                                                   tabPanel("Final table", br(), downloadButton("download_final_ddct", "Download Final Table"), br(), tableOutput("final_data_ddct"))
                                                 ))
@@ -356,7 +356,7 @@ ui <- fluidPage(
                            tabsetPanel(id = "sub_pf",
                                        tabPanel("Input Data", tableOutput("preview_pf")),
                                        tabPanel("Plot", br(), downloadButton("download_pf_plot", "PNG"), downloadButton("download_pf_pdf", "PDF"), hr(), plotOutput("plot_pf_main"))
-                                       )
+                           )
                   ),
                   
                   tabPanel("meanTech", value = "meanTech",
@@ -430,7 +430,19 @@ server <- function(input, output, session) {
     if (input$src_ddct == "sample") { updateNumericInput(session, "numFactors_ddct", value = 2); updateNumericInput(session, "numRefGenes_ddct", value = 3); updateTextInput(session, "specs_ddct", value = "Concentration"); updateTextInput(session, "block_ddct", value = "block") }
   })
   
-  # Event Handlers
+  # Tab sync: sidebar -> main panel (original)
+  observeEvent(input$func_tabs, {
+    if (input$func_tabs == "Home") updateTabsetPanel(session, "output_tabs", selected = "Introduction")
+    else updateTabsetPanel(session, "output_tabs", selected = input$func_tabs)
+  }, ignoreInit = TRUE)
+  
+  # Tab sync: main panel -> sidebar (NEW reverse direction)
+  observeEvent(input$output_tabs, {
+    target_sidebar <- if (input$output_tabs == "Introduction") "Home" else input$output_tabs
+    updateTabsetPanel(session, "func_tabs", selected = target_sidebar)
+  }, ignoreInit = TRUE)
+  
+  # Sub-tab auto-switching on Run buttons
   observeEvent(input$run_mt,   { updateTabsetPanel(session, "sub_mt", selected = "Results") })
   observeEvent(input$run_dc,   { updateTabsetPanel(session, "sub_dc", selected = "Relative Expression") })
   observeEvent(input$run_ddct, { updateTabsetPanel(session, "sub_ddct", selected = "Relative Expression") })
@@ -559,12 +571,6 @@ server <- function(input, output, session) {
   })
   output$preview_pf <- renderTable({ req(df_pf()); head(df_pf(), 50) })
   output$plot_pf_main <- renderPlot({ req(pf_plot_obj()); pf_plot_obj() }, width = function() input$pf_w * 72, height = function() input$pf_h * 72)
-  
-  # Navigation logic
-  observeEvent(input$func_tabs, {
-    if (input$func_tabs == "Home") updateTabsetPanel(session, "output_tabs", selected = "Introduction")
-    else updateTabsetPanel(session, "output_tabs", selected = input$func_tabs)
-  })
   
   # Downloads
   output$download_dc <- downloadHandler(filename = "ANOVA_DCt.csv", content = function(f) write.csv(res_dc()$relativeExpression, f, row.names = FALSE))

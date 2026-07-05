@@ -355,9 +355,12 @@ ui <- fluidPage(
                            br(),
                            tabsetPanel(id = "sub_pf",
                                        tabPanel("Input Data", tableOutput("preview_pf")),
-                                       tabPanel("Plot", br(), downloadButton("download_pf_plot", "PNG"), downloadButton("download_pf_pdf", "PDF"), hr(), plotOutput("plot_pf_main"))
-                           )
+                                       tabPanel("Plot", br(), downloadButton("download_pf_plot", "PNG"), downloadButton("download_pf_pdf", "PDF"), hr(), 
+                                                plotOutput("plot_pf_main")
+                                                )
+                                  )
                   ),
+            
                   
                   tabPanel("meanTech", value = "meanTech",
                            br(),

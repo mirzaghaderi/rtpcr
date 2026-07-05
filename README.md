@@ -530,7 +530,7 @@ below):
 
 | Task | Example Code |
 |----|----|
-| Change y-axis label | `p + ylab("Relative expression ($\Delta\Delta Ct$ method)")` |
+| Change y-axis label | `p + ylab(expression(paste("Relative expression (", Delta * Delta * Ct, " method)")))` |
 | Add a horizontal reference line | `p + geom_hline(yintercept = 0, linetype = "dashed")` |
 | Change y-axis limits | `p + scale_y_continuous(expand = expansion(mult = c(0, 0.1)))` |
 | Relabel x-axis | `p + scale_x_discrete(labels = c("A" = "Control", "B" = "Treatment"))` |

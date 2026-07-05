@@ -540,7 +540,7 @@ bellow):
 | number of facets per row | `p + facet_wrap(~ A, ncol = 4)` |
 | x.axis line width | `p + theme(axis.line.x = element_line(linewidth = 0))` |
 | y.axis line width | `p + theme(axis.line.y = element_line(linewidth = 0))` |
-| panel line width | `theme(panel.border = element_rect(color = "black", linewidth = 1))` |
+| panel line width | `p + theme(panel.border = element_rect(color = "black", linewidth = 1))` |
 
 ### Plot output: example 2
 

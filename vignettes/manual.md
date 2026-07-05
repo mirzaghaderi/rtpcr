@@ -126,9 +126,9 @@ However, a column for biological replicates (which may be named “Rep”,
 <figure>
 <img src="../man/figures/dataStructure1.png" class="center"
 style="width:100.0%"
-alt="Figure 3: A sample input data with two experimetal factors, blocking factor, replicate column and E/Ct information of target and reference genes" />
+alt="Figure 3: A sample input data with two experimental factors, blocking factor, replicate column and E/Ct information of target and reference genes" />
 <figcaption aria-hidden="true">Figure 3: A sample input data with two
-experimetal factors, blocking factor, replicate column and E/Ct
+experimental factors, blocking factor, replicate column and E/Ct
 information of target and reference genes</figcaption>
 </figure>
 
@@ -527,8 +527,8 @@ plotFactor(
 <img src="../man/figures/Rplot02.png" class="center" height="400"
 alt="Figure 8: The bar plots of the log2 fold change expression of a gene produced by the plotFactor() function." />
 <figcaption aria-hidden="true">Figure 8: The bar plots of the log2 fold
-change expression of a gene produced by the
-<code>plotFactor()</code> function.</figcaption>
+change expression of a gene produced by the <code>plotFactor()</code>
+function.</figcaption>
 </figure>
 
 # How to edit output plots?
@@ -538,8 +538,8 @@ bellow):
 
 | Task | Example Code |
 |----|----|
-| Change y-axis label | `p + ylab("Relative expression ($\Delta\Delta Ct$ method)")` |
-| Add a horizontal reference line | `p + geom_hline(yintercept = 0, linetype = "dashed")` |
+| Change y-axis label | `p + ylab(expression(paste("Relative expression (", Delta * Delta * Ct, " method)")))` |
+| Add a horizontal reference line | `p + geom_hline(yintercept = 1, color = 'red', linetype = 'dashed', size = 0.5)` |
 | Change y-axis limits | `p + scale_y_continuous(expand = expansion(mult = c(0, 0.1)))` |
 | Relabel x-axis | `p + scale_x_discrete(labels = c("A" = "Control", "B" = "Treatment"))` |
 | Change fill colors | `p + scale_fill_brewer(palette = "Set2")` |
@@ -578,9 +578,9 @@ plotFactor(
 
 <figure>
 <img src="../man/figures/Rplot01.png" class="center" height="300"
-alt="Figure 9: The bar plots of the relative expression expression and log2 fold change of a gene produced by the plotFactor() function." />
+alt="Figure 9: The bar plots of the relative expression and log2 fold change of a gene produced by the plotFactor() function." />
 <figcaption aria-hidden="true">Figure 9: The bar plots of the relative
-expression expression and log2 fold change of a gene produced by the
+expression and log2 fold change of a gene produced by the
 <code>plotFactor()</code> function.</figcaption>
 </figure>
 

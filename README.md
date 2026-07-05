@@ -22,8 +22,10 @@ methods. See the [calculation method](Method.md) for details.
 
 # The shiny version of the rtpcr
 
-rtpcr is also available as shiny_rtpcr, a web application developed using R/Shiny for interactive analysis of qPCR data at https://mirzaghaderi.shinyapps.io/rtpcr/. Further details about the shiny_rtpcr is found at https://github.com/mirzaghaderi/shiny_rtpcr. 
-
+rtpcr is also available as shiny_rtpcr, a web application developed
+using R/Shiny for interactive analysis of qPCR data at
+<https://mirzaghaderi.shinyapps.io/rtpcr/>. Further details about the
+shiny_rtpcr is found at <https://github.com/mirzaghaderi/shiny_rtpcr>.
 
 # Functions
 
@@ -81,7 +83,7 @@ efficiency (`E`) and `Ct` or `Cq` values (the mean of technical
 replicates) is used for the input table. If the `E` values are not
 available you should use ‘2’ instead representing the complete primer
 amplification efficiency. The input data table should include the
-following columns from left to right:
+following columns from left to wright:
 
 1.  Experimental condition columns (and one block if available [NOTE
     1](#note-1))
@@ -98,9 +100,9 @@ always appear last. Two sample input data sets are presented below.
 <figure>
 <img src="man/figures/sampleData1.png" class="center"
 style="width:80.0%"
-alt="Figure 2: A sample input data with one experimental factor, replicate column and E/Ct information of target and reference genes" />
+alt="Figure 2: A sample input data with one experimetal factor, replicate column and E/Ct information of target and reference genes" />
 <figcaption aria-hidden="true">Figure 2: A sample input data with one
-experimental factor, replicate column and E/Ct information of target and
+experimetal factor, replicate column and E/Ct information of target and
 reference genes</figcaption>
 </figure>
 
@@ -181,7 +183,7 @@ This means that 2 indicates 100%, and 1.85 and 1.70 indicate 0.85% and
 
 # Handling missing data
 
-Missing Ct values for target genes are handled using the
+Missing Ct values for target genes is Handled using the
 `set_missing_target_Ct_to_40` argument. If `TRUE`, missing target gene
 Ct values become 40; if `FALSE` (default), they become NA. missing Ct
 values of reference genes are always converted to NA. If there are more
@@ -282,9 +284,9 @@ of most common models that can be used.
 | wDCt ~ block + Factor1 \* Factor2 | Factorial under Randomized Complete Block Design (**default**) |
 | wDCt ~ time + (1 \| id) | Repeated measure analysis: different time points. Also can be used for t.test with two paired groups. |
 | wDCt ~ Condition \* time + (1 \| id) | Repeated measure analysis: split-plot in time |
-| wDCt ~ Condition \* time + (1 \| block) + (1 \| id) | Repeated measure analysis: split-plot in time |
-| wDCt ~ Type + Concentration | Analysis of Covariance (ANCOVA): e.g.: Type could be covariate |
-| wDCt ~ block + Type + Concentration | ANCOVA with blocking factor: e.g.: block and Type could be covariates |
+| wDCt ~ wDCt ~ Condition \* time + (1 \| block) + (1 \| id) | Repeated measure analysis: split-plot in time |
+| wDCt ~ Type + Concentration | Analysis of Covariance: Type is covariate |
+| wDCt ~ block + Type + Concentration | Analysis of Covariance with blocking factor: block and Type are covariates |
 
 #### NOTE
 
@@ -310,7 +312,7 @@ measure model such as `wDCt ~ Treatment + ( 1 | id)` or
 <figure>
 <img src="man/figures/repeated_measure.png" class="center"
 style="width:100.0%"
-alt="Figure 6: A) Basic structure of independent group- or paired group-experiments. Data of paired group-experiments are analysed using the TTEST_DDCt() function with the argument paired = TRUE; or using the ANOVA_DDCt() function with a repeated measure model such as wDCt ~ Treatment + ( 1 | Rep). B) The standard error (se) in the ANOVA_DDCt() function is calculated from weighted delta Ct (wDCt) values or model residuals (default, modelBased_se = TRUE) for the experimental groups according to the selected se.type (One of paired.group, two.group, or single.group). Note that in the paired.group method,se is computed from differences (wddCt or equivalent values from residuals) which resembles the standard error of a paired t.test, while two.group and single.group methods use wdCt or residual values. In the two.group method, se is computed for each non-reference group from that group and the reference (calibrator) group which resembles the standard error of an unpaired t.test. single.group computes se within each reference or non-reference group. If a model for a repeated‐measure or a paired-group design is specified, se.type should be set to paired.group in the ANOVA_DDCt() function. In method 4, the 95% confidence interval (CI) is calculated and printed in the output expression table under LCL and UCL columns. CI uses the pooled standard error (SE) and can be used as another way of error presentation. It can be used for any experimental models as it is derived from a fitted model. The calculated se in the TTEST_DDCt() and WILCOX_DDCt() functions is two.group or paired.group for unpaired and paired groups, respectively, and single.group is not available in these functions." />
+alt="Figure 6: A) Basic structure of independent group- or paired group-experiments. Data of paired group-experiments are analysed using the TTEST_DDCt() function with the argument paired = TRUE; or using the ANOVA_DDCt() function with a repeated measure model such as wDCt ~ Treatment + ( 1 | Rep). B) The standard error (se) in the ANOVA_DDCt() function is calculated from from weighted delta Ct (wDCt) values or model residuals (default, modelBased_se = TRUE) for the experimental groups according to the selected se.type (One of paired.group, two.group, or single.group). Note that in the paired.group method,se is computed from differences (wddCt or equivalent values from residuals) which resembles the standard error of a paired t.test, while two.group and single.group methods use wdCt or resudual values. In the two.group method, se is computed for each non-reference group from that group and the reference (calibrator) group which resembles the standard error of an unpaired t.test. single.group computes se within each reference or non-reference group. If a model for a repeated‐measure or a paired-group design is specified, se.type should be set to paired.group in the ANOVA_DDCt() function. In method 4, the 95% confidence interval (CI) is calculated and printed in the output expression table under LCL and UCL columns. CI uses the pooled standard error (SE) and can be used as another way of error presentation. It can be used for any experimental models as it is derived from a fitted model. The calculated se in the TTEST_DDCt() and WILCOX_DDCt() functions is two.group or paired.group for unpaired and paired groups, respectively, and single.group is not available in these functions." />
 <figcaption aria-hidden="true">Figure 6: A) Basic structure of
 independent group- or paired group-experiments. Data of paired
 group-experiments are analysed using the <code>TTEST_DDCt()</code>
@@ -517,21 +519,21 @@ plotFactor(
 
 <figure>
 <img src="man/figures/Rplot02.png" class="center" height="400"
-alt="Figure 8: The bar plots of the log2 fold change expression of a gene produced by the plotFactor() function." />
+alt="Figure 8: The bar plots of the log2 fold change expression expression of a gene produced by the plotFactor() function." />
 <figcaption aria-hidden="true">Figure 8: The bar plots of the log2 fold
-change expression of a gene produced by the
+change expression expression of a gene produced by the
 <code>plotFactor()</code> function.</figcaption>
 </figure>
 
-# How to edit output plots?
+# How to edit ouptput plots?
 
 The plot can further be edited by adding new layers (see examples
-below):
+bellow):
 
 | Task | Example Code |
 |----|----|
 | Change y-axis label | `p + ylab(expression(paste("Relative expression (", Delta * Delta * Ct, " method)")))` |
-| Add a horizontal reference line | `p + geom_hline(yintercept = 0, linetype = "dashed")` |
+| Add a horizontal reference line | `p + geom_hline(yintercept = 1, color = 'red', linetype = 'dashed', size = 0.5)` |
 | Change y-axis limits | `p + scale_y_continuous(expand = expansion(mult = c(0, 0.1)))` |
 | Relabel x-axis | `p + scale_x_discrete(labels = c("A" = "Control", "B" = "Treatment"))` |
 | Change fill colors | `p + scale_fill_brewer(palette = "Set2")` |

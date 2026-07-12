@@ -84,12 +84,55 @@ ui <- fluidPage(
                                         choices = c("Upload CSV" = "user", "Sample Data" = "sample", "Result: meanTech" = "res_mt"), 
                                         selected = "user"),
                            conditionalPanel("input.src_dc == 'user'", fileInput("file_dc", "Upload CSV", accept = ".csv")),
-                           numericInput("numFactors_dc", "Number of factors", 1, min = 1),
+                           numericInput("numFactors_dc", 
+                                        label = tagList(
+                                          "Number of factors",
+                                          tags$span(title = "Integer. Number of experimental factor columns (excluding rep and optional block).",
+                                                    style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                    "?")
+                                        ), 
+                                        value = 1, min = 1),
                            numericInput("numRefGenes_dc", "Number of reference genes", 1, min = 1),
-                           textInput("block_dc", "Block column name (if present)", ""),
-                           textInput("model_dc", "model (optional; e.g., model = wDCt ~ factorA * factorB)", ""),
-                           checkboxInput("set40_dc", "Set missing Ct to 40", FALSE),
-                           checkboxInput("setModelse_dc", "Model_based se", TRUE),
+                           textInput("specs_ddct", 
+                                     label = tagList(
+                                       "specs (e.g., A or A | B or A | B * C)",
+                                       tags$span(title = "Example: 'A', 'A|B' or 'A|B*C' if A, B and C are name of factor columns in the input data. The first name (here A) is the factor for which the relative expression is analysed.",
+                                                 style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                 "?")
+                                     ), 
+                                     ""),
+                           textInput("block_dc", 
+                                     label = tagList(
+                                       "Block column name (if present)",
+                                       tags$span(title = "Character. Block column name or NULL. When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.",
+                                                 style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                 "?")
+                                     ), 
+                                     ""),
+                           textInput("model_dc", 
+                                     label = tagList(
+                                       "model (optional; e.g., model = wDCt ~ factorA * factorB)",
+                                       tags$span(title = "In ANOVA_DCt or ANOVA_DDCt functions, CRD and RCBD (simple or factorial) are default and don’t need adding model. If required, the default model can be replaced by user defined model via the model argument. Some example of optional models for experimental designs other than CRD or RCBD are provided in the manual.",
+                                                 style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                 "?")
+                                     ), 
+                                     ""),
+                           checkboxInput("set40_dc", 
+                                         label = tagList(
+                                           "Set missing Ct to 40",
+                                           tags$span(title = "If ticked, missing target gene Ct values become 40; if not ticked (default), they become NA.",
+                                                     style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                     "?")
+                                         ), 
+                                         value = FALSE),
+                           checkboxInput("setModelse_dc", 
+                                         label = tagList(
+                                           "Model_based se",
+                                           tags$span(title = "Logical. If ticked (default), standard errors are calculated from model-based residuals. If not ticked, standard errors are calculated directly from the observed wDCt values within each treatment group according to the selected se.type. For single factor data, both methods are the same. It is recommended to use modelBased_se.",
+                                                     style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                     "?")
+                                         ), 
+                                         value = TRUE),
                            selectInput("pAdj_dc", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
                            actionButton("run_dc", "Run ANOVA_DCt"),
                   ),
@@ -99,16 +142,72 @@ ui <- fluidPage(
                                         choices = c("Upload CSV" = "user", "Sample Data" = "sample", "Result: meanTech" = "res_mt"), 
                                         selected = "user"),
                            conditionalPanel("input.src_ddct == 'user'", fileInput("file_ddct", "Upload CSV", accept = ".csv")),
-                           numericInput("numFactors_ddct", "Number of factors", 1, min = 1),
+                           numericInput("numFactors_ddct", 
+                                        label = tagList(
+                                          "Number of factors",
+                                          tags$span(title = "Integer. Number of experimental factor columns (excluding rep and optional block).",
+                                                    style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                    "?")
+                                        ), 
+                                        value = 1, min = 1),
                            numericInput("numRefGenes_ddct", "Number of reference genes", 1, min = 1),
-                           textInput("specs_ddct", "specs (e.g., A or A | B or A | B * C)", ""),
-                           textInput("block_ddct", "Block column name (if present)", ""),
-                           textInput("calibrator_ddct", "Calibrator Level (Optional; default is the first level)", ""),
-                           selectInput("seType_ddct", "SE type", choices = c("single.group",  "two.group", "paired.group")),
-                           textInput("model_ddct", "model (optional; e.g., model = wDCt ~ factorA * factorB)", ""),
+                           textInput("specs_ddct", 
+                                     label = tagList(
+                                       "specs (e.g., A or A | B or A | B * C)",
+                                       tags$span(title = "Example: 'A', 'A|B' or 'A|B*C' if A, B and C are name of factor columns in the input data. The first name (here A) is the factor for which the relative expression is analysed.",
+                                                 style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                 "?")
+                                     ), 
+                                     ""),
+                           textInput("block_ddct", 
+                                     label = tagList(
+                                       "Block column name (if present)",
+                                       tags$span(title = "Character. Block column name or NULL. When a qPCR experiment is done in multiple qPCR plates, variation resulting from the plates may interfere with the actual amount of gene expression. One solution is to conduct each plate as a randomized block so that at least one replicate of each treatment and control is present on a plate. Block effect is usually considered as random and its interaction with any main effect is not considered.",
+                                                 style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                 "?")
+                                     ), 
+                                     ""),
+                           textInput("calibrator_ddct", 
+                                     label = tagList(
+                                       "Calibrator Level (Optional; default is the first level)",
+                                       tags$span(title = "NULL or one of the levels of the first selected factor in specs argument. If NULL the first level of that factor is used as calibrator.",
+                                                 style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                 "?")
+                                     ), 
+                                     ""),
+                           selectInput("seType_ddct", 
+                                       label = tagList(
+                                         "SE type",
+                                         tags$span(title = "Character string specifying how standard error is calculated. One of paired.group, two.group, or single.group. paired.group computes SE from paired differences (used when a random id effect is present), two.group uses the unpaired two-group t-test standard error against the reference level, and single.group computes SE within each level using a one-group t-test.",
+                                                   style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                   "?")
+                                       ), 
+                                       choices = c("single.group", "two.group", "paired.group")),
+                           textInput("model_ddct", 
+                                     label = tagList(
+                                       "model (optional; e.g., model = wDCt ~ factorA * factorB)",
+                                       tags$span(title = "In ANOVA_DCt or ANOVA_DDCt functions, CRD and RCBD (simple or factorial) are default and don’t need adding model. If required, the default model can be replaced by user defined model via the model argument. Some example of optional models for experimental designs other than CRD or RCBD are provided in the manual.",
+                                                 style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                 "?")
+                                     ), 
+                                     ""),
                            selectInput("pAdj_ddct", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
-                           checkboxInput("set40_ddct", "Set missing Ct to 40", FALSE),
-                           checkboxInput("setModelse_ddct", "Model_based se", TRUE),
+                           checkboxInput("set40_ddct", 
+                                         label = tagList(
+                                           "Set missing Ct to 40",
+                                           tags$span(title = "If ticked, missing target gene Ct values become 40; if not ticked (default), they become NA.",
+                                                     style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                     "?")
+                                         ), 
+                                         value = FALSE),
+                           checkboxInput("setModelse_ddct", 
+                                         label = tagList(
+                                           "Model_based se",
+                                           tags$span(title = "Logical. If ticked (default), standard errors are calculated from model-based residuals. If not ticked, standard errors are calculated directly from the observed wDCt values within each treatment group according to the selected se.type. For single factor data, both methods are the same. It is recommended to use modelBased_se.",
+                                                     style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                     "?")
+                                         ), 
+                                         value = TRUE),
                            actionButton("run_ddct", "Run ANOVA_DDCt")
                   ),
                   
@@ -132,11 +231,22 @@ ui <- fluidPage(
                                         selected = "user"),
                            conditionalPanel("input.src_tt == 'user'", fileInput("file_tt", "Upload CSV", accept = ".csv")),
                            numericInput("numRefGenes_tt", "Number of reference genes", 1),
-                           textInput("factorLevels_tt", "Factor levels (comma separated)", ""),
+                           textInput("factorLevels_tt", 
+                                     label = tagList("Factor levels (comma separated)",
+                                       tags$span(title = "Optional vector specifying the order of factor levels. If NULL, the first level of the factor column is used as the calibrator.",
+                                                 style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                 "?")), ""),
                            checkboxInput("paired_tt", "Paired test", FALSE),
                            checkboxInput("equalVar_tt", "Equal variances", TRUE),
                            selectInput("pAdj_tt", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
-                           checkboxInput("set40_tt", "Set missing Ct to 40", FALSE),
+                           checkboxInput("set40_tt", 
+                                         label = tagList(
+                                           "Set missing Ct to 40",
+                                           tags$span(title = "If ticked, missing target gene Ct values become 40; if not ticked (default), they become NA.",
+                                                     style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                     "?")
+                                         ), 
+                                         value = FALSE),
                            actionButton("run_tt", "Run TTEST_DDCt")
                   ),
                   
@@ -146,7 +256,14 @@ ui <- fluidPage(
                                         selected = "user"),
                            conditionalPanel("input.src_wx == 'user'", fileInput("file_wx", "Upload CSV", accept = ".csv")),
                            numericInput("numRefGenes_wx", "Number of reference genes", 1),
-                           textInput("factorLevels_wx", "Factor levels (comma separated)", ""),
+                           textInput("factorLevels_wx", 
+                                     label = tagList(
+                                       "Factor levels (comma separated)",
+                                       tags$span(title = "Optional vector specifying the order of factor levels. If NULL, the first level of the factor column is used as the calibrator.",
+                                                 style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                 "?")
+                                     ), 
+                                     ""),
                            checkboxInput("paired_wx", "Paired test", FALSE),
                            selectInput("pAdj_wx", "p-value adjustment", choices = c("none","holm","bonferroni","fdr")),
                            checkboxInput("set40_wx", "Set missing Ct to 40", FALSE),

@@ -1,7 +1,7 @@
 # rtpcr 2.1.9
 
 ## Correction
-- The `ANOVA_DDCt()` function which already accepted only character as the experimental factor levels, now accepts numeric as well.
+- The `ANOVA_DDCt()` function which already accepted only character as the experimental factor levels, now can be numeric as well.
 
 # rtpcr 2.1.8
 

@@ -157,10 +157,10 @@ ui <- fluidPage(
                            radioButtons("src_pf", "Data Source", 
                                         choices = c("Upload CSV" = "user", 
                                                     "Sample Data" = "sample",
-                                                    "Result: ANOVA_DCt" = "res_dc",
-                                                    "Result: ANOVA_DDCt" = "res_ddct",
-                                                    "Result: TTEST_DDCt" = "res_tt",
-                                                    "Result: WILCOX_DDCt" = "res_wx"), 
+                                                    "Output of ANOVA_DCt" = "res_dc",
+                                                    "Output of ANOVA_DDCt" = "res_ddct",
+                                                    "Output of TTEST_DDCt" = "res_tt",
+                                                    "Output of WILCOX_DDCt" = "res_wx"), 
                                         selected = "user"),
                            conditionalPanel("input.src_pf == 'user'", fileInput("file_pf", "Upload CSV", accept = ".csv")),
                            selectInput("pf_x", "X Axis Column", choices = NULL),
@@ -546,14 +546,27 @@ server <- function(input, output, session) {
   
   observeEvent(df_pf(), {
     cols <- colnames(df_pf()); pick_col <- function(i) cols[min(i, length(cols))]
-    updateSelectInput(session, "pf_x", choices = cols, selected = pick_col(2))
-    updateSelectInput(session, "pf_y", choices = cols, selected = pick_col(4))
+    updateSelectInput(session, "pf_x", choices = cols, selected = if("contrast" %in% cols) "contrast" else pick_col(2))
+    updateSelectInput(session, "pf_y", choices = cols, selected = if("RE" %in% cols) "RE" else pick_col(4))
     updateSelectInput(session, "pf_low", choices = cols, selected = pick_col(9))
     updateSelectInput(session, "pf_up", choices = cols, selected = pick_col(10))
     updateSelectInput(session, "pf_group", choices = c("None" = "", cols), selected = if(input$src_pf=="sample") "gene" else "")
     updateSelectInput(session, "pf_facet", choices = c("None" = "", cols), selected = if(input$src_pf=="sample") "gene" else "")
-    updateSelectInput(session, "pf_letters", choices = c("None" = "", cols), selected = if(input$src_pf=="sample") "sig" else "")
+    updateSelectInput(session, "pf_letters", choices = c("None" = "", cols), selected = if("sig" %in% cols) "sig" else "")
   })
+  
+  # Auto-select matching SE columns when Y Axis Column is RE or log2FC
+  observeEvent(input$pf_y, {
+    req(df_pf())
+    cols <- colnames(df_pf())
+    if (input$pf_y == "RE" && all(c("Lower.se.RE", "Upper.se.RE") %in% cols)) {
+      updateSelectInput(session, "pf_low", selected = "Lower.se.RE")
+      updateSelectInput(session, "pf_up", selected = "Upper.se.RE")
+    } else if (input$pf_y == "log2FC" && all(c("Lower.se.log2FC", "Upper.se.log2FC") %in% cols)) {
+      updateSelectInput(session, "pf_low", selected = "Lower.se.log2FC")
+      updateSelectInput(session, "pf_up", selected = "Upper.se.log2FC")
+    }
+  }, ignoreInit = TRUE)
   
   pf_plot_obj <- eventReactive(input$run_pf, {
     p <- plotFactor(data = df_pf(), x_col = input$pf_x, y_col = input$pf_y, Lower.se_col = input$pf_low,

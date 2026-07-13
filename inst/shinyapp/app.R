@@ -93,14 +93,6 @@ ui <- fluidPage(
                                         ), 
                                         value = 1, min = 1),
                            numericInput("numRefGenes_dc", "Number of reference genes", 1, min = 1),
-                           textInput("specs_ddct", 
-                                     label = tagList(
-                                       "specs (e.g., A or A | B or A | B * C)",
-                                       tags$span(title = "Example: 'A', 'A|B' or 'A|B*C' if A, B and C are name of factor columns in the input data. The first name (here A) is the factor for which the relative expression is analysed.",
-                                                 style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
-                                                 "?")
-                                     ), 
-                                     ""),
                            textInput("block_dc", 
                                      label = tagList(
                                        "Block column name (if present)",
@@ -154,7 +146,7 @@ ui <- fluidPage(
                            textInput("specs_ddct", 
                                      label = tagList(
                                        "specs (e.g., A or A | B or A | B * C)",
-                                       tags$span(title = "Example: 'A', 'A|B' or 'A|B*C' if A, B and C are name of factor columns in the input data. The first name (here A) is the factor for which the relative expression is analysed.",
+                                       tags$span(title = "Example: A, A|B or A|B*C if A, B and C are name of factor columns in the input data. The first name (here A) is the factor for which the relative expression is analysed.",
                                                  style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
                                                  "?")
                                      ), 

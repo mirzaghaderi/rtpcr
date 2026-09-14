@@ -1,6 +1,6 @@
 # rtpcr 2.2.0
 
-* `Compute_wDCt()` (instead of the previous 'compute_wDCt') now correctly computes wDCt for all target genes in the input data, instead of only the last one. Output gains one `wDCt_<gene>` column per target gene (previously a single `wDCt` column reflecting only the final target).
+* `compute_wDCt()` now correctly computes wDCt for all target genes in the input data, instead of only the last one. Output gains one `wDCt_<gene>` column per target gene (previously a single `wDCt` column reflecting only the final target).
 
 # rtpcr 2.1.9
 

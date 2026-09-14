@@ -2,10 +2,10 @@
 
 export(ANOVA_DCt)
 export(ANOVA_DDCt)
-export(Compute_wDCt)
 export(Means_DDCt)
 export(TTEST_DDCt)
 export(WILCOX_DDCt)
+export(compute_wDCt)
 export(efficiency)
 export(long_to_wide)
 export(meanTech)

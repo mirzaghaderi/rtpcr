@@ -80,7 +80,7 @@
 
 
 
-.compute_wDCt <- function(x, 
+.Compute_wDCt <- function(x, 
                           numOfFactors,
                           numberOfrefGenes, 
                           block,
@@ -395,7 +395,7 @@
     }
     
     
-    gene_df <- .compute_wDCt(gene_df, numOfFactors, numberOfrefGenes, block,
+    gene_df <- .Compute_wDCt(gene_df, numOfFactors, numberOfrefGenes, block,
                             set_missing_target_Ct_to_40 = set_missing_target_Ct_to_40)
     
     gene_df[] <- lapply(gene_df, function(x) {

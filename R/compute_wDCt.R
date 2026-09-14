@@ -1,6 +1,6 @@
 #' Cleaning data and weighted delta Ct (wDCt) calculation
 #'
-#' The \code{Compute_wDCt} function cleans the data and computes wDCt for
+#' The \code{compute_wDCt} function cleans the data and computes wDCt for
 #' every target gene present in the data. This function is
 #' automatically applied to the expression analysis functions like \code{ANOVA_DDCt},
 #' \code{TTEST_DDCt}, etc. So it should not be applied in advance of expression analysis functions.
@@ -21,14 +21,14 @@
 #' @importFrom stats setNames
 #'
 #' @details
-#' The \code{Compute_wDCt} function computes weighted delta Ct (wDCt) for every
+#' The \code{compute_wDCt} function computes weighted delta Ct (wDCt) for every
 #' target gene in the input data. Missing data can be denoted by NA in the
 #' input data frame. Values such as '0' and 'undetermined' (for any E and Ct) are
 #' automatically converted to NA. For target genes, NA for E or Ct measurements cause returning NA for
 #' the corresponding delta Ct for that replicate (row).
 #' If there are more than one reference gene, NA in the place of the E or the Ct value cause
 #' skipping that gene and remaining references are geometrically averaged.
-#' The \code{Compute_wDCt} function is automatically applied to the expression analysis
+#' The \code{compute_wDCt} function is automatically applied to the expression analysis
 #' functions.
 #' @return
 #' The original data frame along with one weighted delta Ct column per target
@@ -40,7 +40,7 @@
 #'
 #' data <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
 #' data
-#' Compute_wDCt(x = data,
+#' compute_wDCt(x = data,
 #'              numOfFactors = 2,
 #'              numberOfrefGenes = 3,
 #'              block = "block")
@@ -48,7 +48,7 @@
 
 
 
-Compute_wDCt <- function(x,
+compute_wDCt <- function(x,
                          numOfFactors,
                          numberOfrefGenes,
                          block,

@@ -158,7 +158,7 @@ ANOVA_DCt <- function(
     gene_name <- targetNames[i]
     gene_df <- x[, c(designCols, targetPairs[[i]], refCols), drop = FALSE]
     
-    gene_df <- compute_wDCt(
+    gene_df <- .compute_wDCt(
       gene_df,
       numOfFactors,
       numberOfrefGenes,

@@ -59,7 +59,7 @@ ANOVA analysis.
 | `efficiency()` | Amplification efficiency statistics and standard curves |
 | `meanTech()` | Calculate mean of technical replicates. This is used if your data needs averaging over biological replicates. |
 | `multiplot()` | Combine multiple ggplot objects into a single layout |
-| `compute_wDCt()` | Cleaning data and weighted delta Ct (wDCt) calculation using the geometric mean of reference gene(s). |
+| `Compute_wDCt()` | Cleaning data and weighted delta Ct (wDCt) calculation using the geometric mean of reference gene(s). |
 | `long_to_wide()` | Converts a 4-column qPCR long data format (Condition, Gene, E, Ct) to wide format |
 
 # Quick start

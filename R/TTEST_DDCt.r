@@ -197,7 +197,7 @@ TTEST_DDCt <- function(x,
     tmp <- x[, c(1, 2, E_col, Ct_col, ref_start:nc)]
     
     ## Compute wDCt using helper
-    tmp <- compute_wDCt(
+    tmp <- .compute_wDCt(
       x = tmp,
       numOfFactors = 1, 
       numberOfrefGenes = numberOfrefGenes, 

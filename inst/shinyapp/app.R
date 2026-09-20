@@ -277,7 +277,30 @@ ui <- fluidPage(
                            selectInput("pf_low", "Lower Error Column", choices = NULL),
                            selectInput("pf_up", "Upper Error Column", choices = NULL),
                            selectInput("pf_group", "Group (Fill) Column", choices = c("None" = "")),
-                           selectInput("pf_facet", "Facet Column", choices = c("None" = "")),
+                           selectInput("pf_facet", "Facet Column (3rd factor)", choices = c("None" = "")),
+                           conditionalPanel("input.pf_facet != ''",
+                                            fluidRow(column(6, numericInput("pf_facet_ncol", "Facet columns", value = NA, min = 1, step = 1)),
+                                                     column(6, numericInput("pf_facet_nrow", "Facet rows", value = NA, min = 1, step = 1)))),
+                           selectInput("pf_split", 
+                                       label = tagList(
+                                         "Split Column (4th factor; optional)",
+                                         tags$span(title = "Character. Column name for the 4th (splitting) factor. One plotFactor() panel is produced per level of this column, and the panels are combined into a single layout with multiplot(). Within each panel the usual 1-3 factor logic applies.",
+                                                   style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                   "?")
+                                       ),
+                                       choices = c("None" = "")),
+                           conditionalPanel("input.pf_split != ''",
+                                            selectizeInput("pf_split_levels", 
+                                                           label = tagList(
+                                                             "Split levels to plot (optional)",
+                                                             tags$span(title = "Which levels of the split column to plot, in the order they should appear in the layout (left-to-right, top-to-bottom). Leave empty to plot all levels in their order of appearance in the data.",
+                                                                       style = "click: help; color: #2a7df6; font-weight: bold; margin-left: 5px;",
+                                                                       "?")
+                                                           ),
+                                                           choices = NULL, multiple = TRUE,
+                                                           options = list(placeholder = "All levels", plugins = list("remove_button"))),
+                                            checkboxInput("pf_split_titles", "Show panel titles", TRUE),
+                                            numericInput("pf_cols", "Panels per row (layout columns)", value = 2, min = 1, step = 1)),
                            selectInput("pf_letters", "Letters Column (Optional)", choices = c("None" = "")),
                            numericInput("pf_letters_d", "Letters vertical offset", 0.2, step = 0.05),
                            numericInput("pf_col_width", "Column width", 0.8, step = 0.05),
@@ -337,7 +360,7 @@ ui <- fluidPage(
                                             tags$strong("ANOVA_DDCt: "), " ddCt expression analysis for levels of a factor (geneally or per levels of another factors(s)), specified by the `specs` argument. ", tags$br(),
                                             tags$strong("TTEST_DDCt: "), " ddCt method t.test analysis for paired or unpaired samples.", tags$br(),
                                             tags$strong("WILCOX_DDCt: "), " ddCt method wilcox.test analysis for paired or unpaired samples.", tags$br(),
-                                            tags$strong("plotFactor: "), " Bar plot of gene expression", tags$br(),
+                                            tags$strong("plotFactor: "), " Bar plot of gene expression for 1- to 4-factor experiments (the 4th factor splits the data into panels)", tags$br(),
                                             tags$strong("efficiency: "), " Amplification efficiency statistics and standard curves", tags$br(),
                                             tags$strong("meanTech: "), " Calculate mean of technical replicates. This is used if your data needs averaging over biological replicates. ")),
                                
@@ -662,7 +685,21 @@ server <- function(input, output, session) {
     updateSelectInput(session, "pf_group", choices = c("None" = "", cols), selected = if(input$src_pf=="sample") "gene" else "")
     updateSelectInput(session, "pf_facet", choices = c("None" = "", cols), selected = if(input$src_pf=="sample") "gene" else "")
     updateSelectInput(session, "pf_letters", choices = c("None" = "", cols), selected = if("sig" %in% cols) "sig" else "")
+    # 4th factor: no split by default; reset the level selector for the new data
+    updateSelectInput(session, "pf_split", choices = c("None" = "", cols), selected = "")
+    updateSelectizeInput(session, "pf_split_levels", choices = character(0), selected = character(0))
   })
+  
+  # Offer the levels of the chosen split column (in order of appearance)
+  observeEvent(input$pf_split, {
+    req(df_pf())
+    if (input$pf_split == "" || !input$pf_split %in% colnames(df_pf())) {
+      updateSelectizeInput(session, "pf_split_levels", choices = character(0), selected = character(0))
+    } else {
+      updateSelectizeInput(session, "pf_split_levels", 
+                           choices = unique(as.character(df_pf()[[input$pf_split]])), selected = character(0))
+    }
+  }, ignoreInit = TRUE)
   
   # Auto-select matching SE columns when Y Axis Column is RE or log2FC
   observeEvent(input$pf_y, {
@@ -677,25 +714,82 @@ server <- function(input, output, session) {
     }
   }, ignoreInit = TRUE)
   
+  # Apply optional user-typed ggplot layers (e.g. + ylab('Fold change')) to one ggplot object
+  add_extra_layers <- function(p, extra) {
+    if (!nzchar(trimws(extra))) return(p)
+    tryCatch(eval(parse(text = paste0("p", extra))),
+             error = function(e) { showNotification(paste("Plot adjustment error:", e$message), type = "error", id = "pf_extra_err"); p })
+  }
+  
+  # With split_col, plotFactor() draws the combined multiplot() layout on the active graphics device and
+  # returns the individual panels invisibly. Here we only want the panels (so that extra layers can be
+  # added, and so the plot can be redrawn in renderPlot()/download devices), hence the throw-away device.
+  get_pf_panels <- function(args) {
+    grDevices::pdf(NULL)
+    dev_id <- grDevices::dev.cur()
+    on.exit(grDevices::dev.off(dev_id), add = TRUE)
+    do.call(plotFactor, args)
+  }
+  
+  # Returns list(type = "single", plot = <ggplot>) or list(type = "split", panels = <list of ggplots>, cols = <int>)
   pf_plot_obj <- eventReactive(input$run_pf, {
-    p <- plotFactor(data = df_pf(), x_col = input$pf_x, y_col = input$pf_y, Lower.se_col = input$pf_low,
-                    Upper.se_col = input$pf_up, group_col = if(input$pf_group == "") NULL else input$pf_group,
-                    facet_col = if(input$pf_facet == "") NULL else input$pf_facet,
-                    letters_col = if(input$pf_letters == "") NULL else input$pf_letters,
-                    letters_d = input$pf_letters_d, col_width = input$pf_col_width, err_width = input$pf_err_width,
-                    dodge_width = input$pf_dodge_width, fill_colors = if (input$pf_fill_colors == "") NULL else trimws(unlist(strsplit(input$pf_fill_colors, ","))),
-                    color = if (input$pf_color == "") NA else input$pf_color, 
-                    alpha = input$pf_alpha, 
-                    base_size = input$pf_base_size,
-                    legend_position = if (input$pf_legend_none) "none" else c(input$pf_legend_x, input$pf_legend_y),
-                    removeCalibratorCols = input$pf_removeRows, removeCalibratorText = input$pf_removeText)
-    if (nzchar(trimws(input$extra_pf))) {
-      tryCatch({ p <- eval(parse(text = paste0("p", input$extra_pf))) }, error = function(e) { showNotification(paste("Plot adjustment error:", e$message), type = "error") })
-    }
-    p
+    split_col   <- if (is.null(input$pf_split) || input$pf_split == "") NULL else input$pf_split
+    facet_col   <- if (input$pf_facet == "") NULL else input$pf_facet
+    int_or_null <- function(x) if (is.null(x) || is.na(x)) NULL else as.integer(x)
+    
+    args <- list(data = df_pf(), split_col = split_col, x_col = input$pf_x, y_col = input$pf_y, 
+                 Lower.se_col = input$pf_low, Upper.se_col = input$pf_up, 
+                 group_col = if (input$pf_group == "") NULL else input$pf_group,
+                 facet_col = facet_col,
+                 facet_ncol = if (is.null(facet_col)) NULL else int_or_null(input$pf_facet_ncol),
+                 facet_nrow = if (is.null(facet_col)) NULL else int_or_null(input$pf_facet_nrow),
+                 letters_col = if (input$pf_letters == "") NULL else input$pf_letters,
+                 letters_d = input$pf_letters_d, col_width = input$pf_col_width, err_width = input$pf_err_width,
+                 dodge_width = input$pf_dodge_width, 
+                 fill_colors = if (input$pf_fill_colors == "") NULL else trimws(unlist(strsplit(input$pf_fill_colors, ","))),
+                 color = if (input$pf_color == "") NA else input$pf_color, 
+                 alpha = input$pf_alpha, base_size = input$pf_base_size,
+                 legend_position = if (input$pf_legend_none) "none" else c(input$pf_legend_x, input$pf_legend_y),
+                 removeCalibratorCols = input$pf_removeRows, removeCalibratorText = input$pf_removeText)
+    
+    tryCatch({
+      if (is.null(split_col)) {
+        list(type = "single", plot = add_extra_layers(do.call(plotFactor, args), input$extra_pf))
+      } else {
+        args$split_levels <- if (length(input$pf_split_levels) == 0) NULL else input$pf_split_levels
+        args$split_titles <- input$pf_split_titles
+        args$cols <- if (is.null(int_or_null(input$pf_cols))) 2L else int_or_null(input$pf_cols)
+        panels <- get_pf_panels(args)
+        panels <- lapply(panels, add_extra_layers, extra = input$extra_pf)   # extra layers go to every panel
+        list(type = "split", panels = panels, cols = args$cols)
+      }
+    }, error = function(e) { showNotification(paste("plotFactor error:", e$message), type = "error"); NULL })
   })
+  
+  # Draw the result of pf_plot_obj() on the current device
+  draw_pf <- function(res) {
+    if (res$type == "single") {
+      print(res$plot)
+    } else {
+      do.call(multiplot, c(unname(res$panels), list(cols = res$cols)))
+    }
+    invisible(NULL)
+  }
+  
+  # Write the result of pf_plot_obj() to a png/pdf file
+  save_pf <- function(file, device = c("png", "pdf"), width, height) {
+    device <- match.arg(device)
+    res <- pf_plot_obj()
+    req(res)
+    if (device == "png") grDevices::png(file, width = width, height = height, units = "in", res = 300)
+    else grDevices::pdf(file, width = width, height = height)
+    on.exit(grDevices::dev.off(), add = TRUE)
+    draw_pf(res)
+  }
+  
   output$preview_pf <- renderTable({ req(df_pf()); head(df_pf(), 50) })
-  output$plot_pf_main <- renderPlot({ req(pf_plot_obj()); pf_plot_obj() }, width = function() input$pf_w * 72, height = function() input$pf_h * 72)
+  output$plot_pf_main <- renderPlot({ res <- pf_plot_obj(); req(res); draw_pf(res) }, 
+                                    width = function() input$pf_w * 72, height = function() input$pf_h * 72)
   
   # Downloads
   output$download_dc <- downloadHandler(filename = "ANOVA_DCt.csv", content = function(f) write.csv(res_dc()$relativeExpression, f, row.names = FALSE))
@@ -707,8 +801,8 @@ server <- function(input, output, session) {
   output$download_final_ddct <- downloadHandler(filename = function() paste0("Final_Table_DDCt_", input$gene_ddct, ".csv"), content = function(f) write.csv(res_ddct()$perGene[[input$gene_ddct]]$Final_data, f, row.names = FALSE))
   output$download_eff_png <- downloadHandler(filename = "Eff.png", content = function(f) ggsave(f, plot = res_eff()$plot, device = "png", width = input$eff_w, height = input$eff_h))
   output$download_eff_pdf <- downloadHandler(filename = "Eff.pdf", content = function(f) ggsave(f, plot = res_eff()$plot, device = "pdf", width = input$eff_w, height = input$eff_h))
-  output$download_pf_plot <- downloadHandler(filename = "qPCR_Plot.png", content = function(f) ggsave(f, plot = pf_plot_obj(), device = "png", width = input$pf_w, height = input$pf_h))
-  output$download_pf_pdf <- downloadHandler(filename = "qPCR_Plot.pdf", content = function(f) ggsave(f, plot = pf_plot_obj(), device = "pdf", width = input$pf_w, height = input$pf_h))
+  output$download_pf_plot <- downloadHandler(filename = "qPCR_Plot.png", content = function(f) save_pf(f, "png", input$pf_w, input$pf_h))
+  output$download_pf_pdf <- downloadHandler(filename = "qPCR_Plot.pdf", content = function(f) save_pf(f, "pdf", input$pf_w, input$pf_h))
   output$download_lm_dc <- downloadHandler(filename = function() paste0("LM_", input$gene_dc, ".rds"), content = function(f) saveRDS(res_dc()$perGene[[input$gene_dc]]$lm, f))
   output$download_lm_ddct <- downloadHandler(filename = function() paste0("LM_", input$gene_ddct, ".rds"), content = function(f) saveRDS(res_ddct()$perGene[[input$gene_ddct]]$lm, f))
 }

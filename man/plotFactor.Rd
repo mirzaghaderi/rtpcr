@@ -2,16 +2,19 @@
 % Please edit documentation in R/plotFactor.R
 \name{plotFactor}
 \alias{plotFactor}
-\title{Bar plot of gene(s) expression for 1-, 2-, or 3-factor experiments}
+\title{Bar plot layout for 1- to 4-factor experiments}
 \usage{
 plotFactor(
   data,
+  split_col = NULL,
   x_col,
   y_col,
   Lower.se_col,
   Upper.se_col,
   group_col = NULL,
   facet_col = NULL,
+  facet_ncol = NULL,
+  facet_nrow = NULL,
   letters_col = NULL,
   letters_d = 0.2,
   col_width = 0.8,
@@ -24,119 +27,154 @@ plotFactor(
   legend_position = "right",
   removeCalibratorCols = FALSE,
   removeCalibratorText = FALSE,
+  split_levels = NULL,
+  split_titles = TRUE,
+  cols = 2,
   ...
 )
 }
 \arguments{
-\item{data}{Data frame containing expression results}
+\item{data}{Data frame containing expression results.}
 
-\item{x_col}{Character. Column name for x-axis}
+\item{split_col}{Character. Column name for the 4th (splitting) factor
+(optional, default \code{NULL}) -- one \code{plotFactor()} panel is produced
+per level of this column, and the panels are combined with
+\code{multiplot()}. If \code{NULL}, the function behaves like
+\code{plotFactor()} (1-3 factors) and \code{split_levels},
+\code{split_titles} and \code{cols} are not used.}
 
-\item{y_col}{Character. Column name for bar height}
+\item{x_col}{Character. Column name for x-axis (1st factor).}
 
-\item{Lower.se_col}{Character. Column name for lower SE}
+\item{y_col}{Character. Column name for bar height.}
 
-\item{Upper.se_col}{Character. Column name for upper SE}
+\item{Lower.se_col}{Character. Column name for lower SE.}
 
-\item{group_col}{Character. Column name for grouping bars (optional)}
+\item{Upper.se_col}{Character. Column name for upper SE.}
 
-\item{facet_col}{Character. Column name for faceting (optional)}
+\item{group_col}{Character. Column name for grouping bars (2nd factor, optional).}
 
-\item{letters_col}{Character. Column name for significance letters (optional)}
+\item{facet_col}{Character. Column name for faceting within each panel (3rd factor, optional).}
 
-\item{letters_d}{Numeric. Vertical offset for letters (default \code{0.2})}
+\item{facet_ncol}{Integer. Number of columns in the \code{facet_wrap()} layout of
+\code{facet_col}'s levels, within each \code{split_col} panel (optional; see
+\code{plotFactor()}).}
 
-\item{col_width}{Numeric. Width of bars (default \code{0.8})}
+\item{facet_nrow}{Integer. Number of rows in that same \code{facet_wrap()} layout
+(optional; see \code{facet_ncol}).}
 
-\item{err_width}{Numeric. Width of error bars (default \code{0.15})}
+\item{letters_col}{Character. Column name for significance letters (optional).}
 
-\item{dodge_width}{Numeric. Width of dodge for grouped bars (default \code{0.8})}
+\item{letters_d}{Numeric. Vertical offset for letters (default \code{0.2}).}
 
-\item{fill_colors}{Optional vector of fill colors to change the default colors}
+\item{col_width}{Numeric. Width of bars (default \code{0.8}).}
 
-\item{color}{Optional color for the bar outline}
+\item{err_width}{Numeric. Width of error bars (default \code{0.15}).}
 
-\item{alpha}{Numeric. Transparency of bars (default \code{1})}
+\item{dodge_width}{Numeric. Width of dodge for grouped bars (default \code{0.8}).}
 
-\item{base_size}{Numeric. Base font size for theme (default \code{12})}
+\item{fill_colors}{Optional vector of fill colors to change the default colors.}
 
-\item{legend_position}{Character or numeric vector. Legend position (default \code{right})}
+\item{color}{Optional color for the bar outline.}
 
-\item{removeCalibratorCols}{= NULL or remove Calibrator Cols}
+\item{alpha}{Numeric. Transparency of bars (default \code{1}).}
 
-\item{removeCalibratorText}{= NULL or remove Calibrator text}
+\item{base_size}{Numeric. Base font size for theme (default \code{12}).}
 
-\item{...}{Additional ggplot2 layer arguments}
+\item{legend_position}{Character or numeric vector. Legend position (default \code{"right"}).}
+
+\item{removeCalibratorCols}{Logical. Passed through to \code{plotFactor()}.}
+
+\item{removeCalibratorText}{Logical. Passed through to \code{plotFactor()}.}
+
+\item{split_levels}{Optional character vector giving which levels of
+\code{split_col} to plot and the order (left-to-right, top-to-bottom) they
+appear in the \code{multiplot()} layout. Defaults to all levels, in the
+order they first appear in \code{data}. Ignored (with a warning) when
+\code{split_col} is \code{NULL}.}
+
+\item{split_titles}{Logical. If \code{TRUE} (default), each panel gets a
+\code{ggtitle()} of \code{"<split_col>: <level>"} so panels stay
+identifiable once combined.}
+
+\item{cols}{Integer. Number of columns in the \code{multiplot()} layout
+(default \code{2}).}
+
+\item{...}{Additional ggplot2 layer arguments, forwarded to \code{plotFactor()}.}
 }
 \value{
-ggplot2 plot object
+If \code{split_col} is \code{NULL}, a single \code{ggplot2} object, exactly as
+returned by \code{plotFactor()}. Otherwise, invisibly returns a named list of the individual \code{ggplot2} objects (one
+per level of \code{split_col}, in the order plotted), after drawing them
+combined via \code{multiplot()}. Access an individual panel later with
+e.g. \code{result[["<level>"]]}.
 }
 \description{
-Creates a bar plot of relative gene expression (fold change) values
-from 1-, 2-, or 3-factor experiments, including error bars and statistical
-significance annotations.
+\code{plotFactor()} produces bar plot layout for 1- to 4-factor experiments.
+
+\code{split_col} is optional. If it is \code{NULL} (the default), no
+splitting is done.
 }
 \examples{
-data <- read.csv(system.file("extdata", "data_2factorBlock3ref.csv", package = "rtpcr"))
+# 3-factor experiment: no `split_col`.
+data3 <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
 
-res <- ANOVA_DDCt(x = data,
-  numOfFactors = 2,
-  numberOfrefGenes = 3,
-  block = "block",
-  specs = "Concentration",
-  p.adj = "none")
-
-df <- res$relativeExpression
-
-p1 <- plotFactor(
-  data = df,
-  x_col = "contrast",
-  y_col = "RE",
-  group_col = "gene",
-  facet_col = "gene",
-  Lower.se_col = "Lower.se.RE",
-  Upper.se_col = "Upper.se.RE",
-  letters_col = "sig",
-  letters_d = 0.2,
-  alpha = 1,
-  col_width = 0.7,
-  dodge_width = 0.7,
-  base_size = 14, 
-  legend_position = "none")
-
-p1
-
-
-data2 <- read.csv(system.file("extdata", "data_3factor.csv", package = "rtpcr"))
-#Perform analysis first
-res <- ANOVA_DCt(
-  data2,
+res3 <- ANOVA_DCt(
+  data3,
   numOfFactors = 3,
   numberOfrefGenes = 1,
   block = NULL)
   
-df <- res$relativeExpression
-# Generate three-factor bar plot
- p <- plotFactor(
-  df,
-  x_col = "SA",       
-  y_col = "log2FC",       
-  group_col = "Type",   
-  facet_col = "Conc",    
+
+p <- plotFactor(
+  res3$relativeExpression,
+  x_col = "SA",
+  y_col = "log2FC",
+  group_col = "Type",
+  facet_col = "Conc",
+  facet_ncol = 3,
   Lower.se_col = "Lower.se.log2FC",
   Upper.se_col = "Upper.se.log2FC",
   letters_col = "sig",
   letters_d = 0.3,
-  col_width = 0.7, 
+  col_width = 0.7,
   dodge_width = 0.7,
-  #fill_colors = c("blue", "brown"),
-  color = "black",
-  base_size = 14, 
-  alpha = 1,
-  legend_position = c(0.1, 0.2))
+  base_size = 14)
 p
-  
-}
-\author{
-Ghader Mirzaghaderi
+
+
+# A data_3factor_Multi_Target data example with data splitting. 
+data2 <- read.csv(system.file("extdata", "data_3factorMultiTarget.csv", package = "rtpcr"))
+#Perform analysis first
+res <- ANOVA_DDCt(
+  data2,
+  numOfFactors = 3,
+  numberOfrefGenes = 1,
+  specs = "stress|genotype*stage",
+  block = NULL)
+df <- res$relativeExpression
+
+plotFactor(df,
+  split_col = "gene",
+  x_col = "contrast",
+  y_col = "RE",
+  Lower.se_col = "Lower.se.RE",
+  Upper.se_col = "Upper.se.RE",
+  group_col = "genotype",
+  facet_col = "stage",
+  facet_ncol = 4,
+  letters_col = "sig",
+  letters_d = 0.2,
+  col_width = 0.8,
+  err_width = 0.15,
+  dodge_width = 0.8,
+  fill_colors = c("green", "blue"),
+  color = NA,
+  alpha = 1,
+  base_size = 12,
+  legend_position = "none",
+  removeCalibratorCols = FALSE,
+  removeCalibratorText = TRUE,
+  split_levels = NULL,
+  split_titles = TRUE,
+  cols = 4)
 }

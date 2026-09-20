@@ -45,7 +45,7 @@ ANOVA analysis.
 | `ANOVA_DDCt()` | ddCt expression analysis for levels of a factor (generally or per levels of another factors(s)), specified by the `specs` argument. |
 | `TTEST_DDCt()` | ddCt method *t*.test analysis for paired or unpaired samples. |
 | `WILCOX_DDCt()` | ddCt method wilcox.test analysis for paired or unpaired samples. |
-| `plotFactor()` | Bar plot of gene expression for one-, two- or three-factor experiments |
+| `plotFactor()` | Bar plot of gene expression for one- to four-factor experiments |
 | `Means_DDCt()` | Pairwise comparison of RE values for any user-specified effect |
 | `efficiency()` | Amplification efficiency statistics and standard curves |
 | `meanTech()` | Calculate mean of technical replicates. This is used if your data needs averaging over biological replicates. |

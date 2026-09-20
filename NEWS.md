@@ -1,6 +1,7 @@
 # rtpcr 2.2.0
 
-* `compute_wDCt()` now correctly computes wDCt for all target genes in the input data, instead of only the last one. Output gains one `wDCt_<gene>` column per target gene (previously a single `wDCt` column reflecting only the final target).
+- `plotFactor()` which already handled one to three factors, now can generate bar plots from one- to four-factor expression data.
+- `compute_wDCt()` now correctly computes wDCt for all target genes in the input data, instead of only the last one. Output gains one `wDCt_<gene>` column per target gene (previously a single `wDCt` column reflecting only the final target).
 
 # rtpcr 2.1.9
 

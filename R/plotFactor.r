@@ -125,33 +125,32 @@
 #' # Access an individual panel with e.g. p2[["<level>"]]
 #' p2[["Gene_1"]]
 plotFactor <- function(data,
-                         split_col = NULL,
-                         x_col,
-                         y_col,
-                         Lower.se_col,
-                         Upper.se_col,
-                         group_col = NULL,
-                         facet_col = NULL,
-                         facet_ncol = NULL,
-                         facet_nrow = NULL,
-                         letters_col = NULL,
-                         letters_d = 0.2,
-                         col_width = 0.8,
-                         err_width = 0.15,
-                         dodge_width = 0.8,
-                         fill_colors = NULL,
-                         color = NA,
-                         alpha = 1,
-                         base_size = 12,
-                         legend_position = "right",
-                         removeCalibratorCols = FALSE,
-                         removeCalibratorText = FALSE,
-                         split_levels = NULL,
-                         split_titles = TRUE,
-                         cols = 2,
-                         ...) {
-
-  # Calls plotFactor() on a (sub)set of the data with all the shared arguments
+                       split_col = NULL,
+                       x_col,
+                       y_col,
+                       Lower.se_col,
+                       Upper.se_col,
+                       group_col = NULL,
+                       facet_col = NULL,
+                       facet_ncol = NULL,
+                       facet_nrow = NULL,
+                       letters_col = NULL,
+                       letters_d = 0.2,
+                       col_width = 0.8,
+                       err_width = 0.15,
+                       dodge_width = 0.8,
+                       fill_colors = NULL,
+                       color = NA,
+                       alpha = 1,
+                       base_size = 12,
+                       legend_position = "right",
+                       removeCalibratorCols = FALSE,
+                       removeCalibratorText = FALSE,
+                       split_levels = NULL,
+                       split_titles = TRUE,
+                       cols = 2,
+                       ...) {
+  
   make_panel <- function(d, ...) {
     .plotF(
       data = d,
@@ -178,29 +177,25 @@ plotFactor <- function(data,
       ...
     )
   }
-
-  # No 4th factor: behave exactly like plotFactor() (1-3 factors) and return
-  # the single ggplot object.
+  
   if (is.null(split_col)) {
     if (!is.null(split_levels)) {
       warning("`split_levels` is ignored because `split_col` is NULL.")
     }
     return(make_panel(data, ...))
   }
-
+  
   if (!is.character(split_col) || length(split_col) != 1L) {
     stop("`split_col` must be NULL or a single column name.")
   }
-
+  
   if (!split_col %in% colnames(data)) {
     stop("`split_col` does not exist in `data`.")
   }
-
+  
   split_values <- as.character(data[[split_col]])
-
+  
   if (is.null(split_levels)) {
-    # Preserve first-appearance order, matching plotFactor()'s own
-    # factor(x, levels = unique(x)) convention for character columns.
     split_levels <- unique(split_values)
   } else {
     missing_levels <- setdiff(split_levels, unique(split_values))
@@ -209,22 +204,25 @@ plotFactor <- function(data,
            paste(missing_levels, collapse = ", "))
     }
   }
-
+  
   plots <- setNames(vector("list", length(split_levels)), split_levels)
-
+  
   for (lev in split_levels) {
     sub_data <- data[split_values == lev, , drop = FALSE]
-
     p <- make_panel(sub_data, ...)
-
     if (split_titles) {
-      p <- p + ggtitle(lev)
+      p <- p + ggplot2::ggtitle(lev)
     }
-
     plots[[lev]] <- p
   }
+  
+  # Nothing is drawn here; printing the object draws the combined grid only.
+  structure(plots, cols = cols, class = c("plotFactorList", "list"))
+}
 
-  do.call(multiplot, c(unname(plots), list(cols = cols)))
-
-  invisible(plots)
+#' @export
+print.plotFactorList <- function(x, ...) {
+  plots <- lapply(seq_along(x), function(i) x[[i]])   # plain ggplot objects
+  do.call(multiplot, c(plots, list(cols = attr(x, "cols"))))
+  invisible(x)
 }

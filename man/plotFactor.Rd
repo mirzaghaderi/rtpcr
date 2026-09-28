@@ -37,10 +37,9 @@ plotFactor(
 \item{data}{Data frame containing expression results.}
 
 \item{split_col}{Character. Column name for the 4th (splitting) factor
-(optional, default \code{NULL}) -- one \code{plotFactor()} panel is produced
+(optional, default \code{NULL}). One bar plot panel is produced
 per level of this column, and the panels are combined with
-\code{multiplot()}. If \code{NULL}, the function behaves like
-\code{plotFactor()} (1-3 factors) and \code{split_levels},
+\code{multiplot()}. If \code{NULL}, the function (1-3 factors) and \code{split_levels},
 \code{split_titles} and \code{cols} are not used.}
 
 \item{x_col}{Character. Column name for x-axis (1st factor).}
@@ -56,8 +55,7 @@ per level of this column, and the panels are combined with
 \item{facet_col}{Character. Column name for faceting within each panel (3rd factor, optional).}
 
 \item{facet_ncol}{Integer. Number of columns in the \code{facet_wrap()} layout of
-\code{facet_col}'s levels, within each \code{split_col} panel (optional; see
-\code{plotFactor()}).}
+\code{facet_col}'s levels, within each \code{split_col} panel (optional.}
 
 \item{facet_nrow}{Integer. Number of rows in that same \code{facet_wrap()} layout
 (optional; see \code{facet_ncol}).}
@@ -82,9 +80,9 @@ per level of this column, and the panels are combined with
 
 \item{legend_position}{Character or numeric vector. Legend position (default \code{"right"}).}
 
-\item{removeCalibratorCols}{Logical. Passed through to \code{plotFactor()}.}
+\item{removeCalibratorCols}{Logical.}
 
-\item{removeCalibratorText}{Logical. Passed through to \code{plotFactor()}.}
+\item{removeCalibratorText}{Logical.}
 
 \item{split_levels}{Optional character vector giving which levels of
 \code{split_col} to plot and the order (left-to-right, top-to-bottom) they
@@ -93,7 +91,7 @@ order they first appear in \code{data}. Ignored (with a warning) when
 \code{split_col} is \code{NULL}.}
 
 \item{split_titles}{Logical. If \code{TRUE} (default), each panel gets a
-\code{ggtitle()} of \code{"<split_col>: <level>"} so panels stay
+\code{ggtitle()} of \code{"<level>"} so panels stay
 identifiable once combined.}
 
 \item{cols}{Integer. Number of columns in the \code{multiplot()} layout
@@ -125,7 +123,7 @@ res3 <- ANOVA_DCt(
   block = NULL)
   
 
-p <- plotFactor(
+p1 <- plotFactor(
   res3$relativeExpression,
   x_col = "SA",
   y_col = "log2FC",
@@ -139,7 +137,7 @@ p <- plotFactor(
   col_width = 0.7,
   dodge_width = 0.7,
   base_size = 14)
-p
+p1
 
 
 # A data_3factor_Multi_Target data example with data splitting. 
@@ -153,7 +151,7 @@ res <- ANOVA_DDCt(
   block = NULL)
 df <- res$relativeExpression
 
-plotFactor(df,
+p2 <- plotFactor(df,
   split_col = "gene",
   x_col = "contrast",
   y_col = "RE",
@@ -177,4 +175,8 @@ plotFactor(df,
   split_levels = NULL,
   split_titles = TRUE,
   cols = 4)
+p2
+
+# Access an individual panel with e.g. p2[["<level>"]]
+p2[["Gene_1"]]
 }

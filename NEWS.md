@@ -1,11 +1,12 @@
 # rtpcr 2.2.0
 
+## New Features
 - `plotFactor()` which already handled one to three factors, now can generate bar plots from one- to four-factor expression data.
 - `compute_wDCt()` now computes wDCt for all target genes in the input data, instead of only the last one. Output gains one `wDCt_<gene>` column per target gene (previously a single `wDCt` column reflecting only the final target).
 
 # rtpcr 2.1.9
 
-## Correction
+## New Features
 - The `ANOVA_DDCt()` function which already accepted only character as the experimental factor levels, now can be numeric as well.
 
 # rtpcr 2.1.8

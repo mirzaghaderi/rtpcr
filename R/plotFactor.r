@@ -12,10 +12,9 @@
 #'
 #' @param data Data frame containing expression results.
 #' @param split_col Character. Column name for the 4th (splitting) factor
-#'   (optional, default \code{NULL}) -- one \code{plotFactor()} panel is produced
+#'   (optional, default \code{NULL}). One bar plot panel is produced
 #'   per level of this column, and the panels are combined with
-#'   \code{multiplot()}. If \code{NULL}, the function behaves like
-#'   \code{plotFactor()} (1-3 factors) and \code{split_levels},
+#'   \code{multiplot()}. If \code{NULL}, the function (1-3 factors) and \code{split_levels},
 #'   \code{split_titles} and \code{cols} are not used.
 #' @param x_col Character. Column name for x-axis (1st factor).
 #' @param y_col Character. Column name for bar height.
@@ -24,8 +23,7 @@
 #' @param group_col Character. Column name for grouping bars (2nd factor, optional).
 #' @param facet_col Character. Column name for faceting within each panel (3rd factor, optional).
 #' @param facet_ncol Integer. Number of columns in the \code{facet_wrap()} layout of
-#'   \code{facet_col}'s levels, within each \code{split_col} panel (optional; see
-#'   \code{plotFactor()}).
+#'   \code{facet_col}'s levels, within each \code{split_col} panel (optional.
 #' @param facet_nrow Integer. Number of rows in that same \code{facet_wrap()} layout
 #'   (optional; see \code{facet_ncol}).
 #' @param letters_col Character. Column name for significance letters (optional).
@@ -38,15 +36,15 @@
 #' @param alpha Numeric. Transparency of bars (default \code{1}).
 #' @param base_size Numeric. Base font size for theme (default \code{12}).
 #' @param legend_position Character or numeric vector. Legend position (default \code{"right"}).
-#' @param removeCalibratorCols Logical. Passed through to \code{plotFactor()}.
-#' @param removeCalibratorText Logical. Passed through to \code{plotFactor()}.
+#' @param removeCalibratorCols Logical.
+#' @param removeCalibratorText Logical.
 #' @param split_levels Optional character vector giving which levels of
 #'   \code{split_col} to plot and the order (left-to-right, top-to-bottom) they
 #'   appear in the \code{multiplot()} layout. Defaults to all levels, in the
 #'   order they first appear in \code{data}. Ignored (with a warning) when
 #'   \code{split_col} is \code{NULL}.
 #' @param split_titles Logical. If \code{TRUE} (default), each panel gets a
-#'   \code{ggtitle()} of \code{"<split_col>: <level>"} so panels stay
+#'   \code{ggtitle()} of \code{"<level>"} so panels stay
 #'   identifiable once combined.
 #' @param cols Integer. Number of columns in the \code{multiplot()} layout
 #'   (default \code{2}).

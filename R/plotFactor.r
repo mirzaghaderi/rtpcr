@@ -68,7 +68,7 @@
 #'   block = NULL)
 #'   
 #'
-#' p <- plotFactor(
+#' p1 <- plotFactor(
 #'   res3$relativeExpression,
 #'   x_col = "SA",
 #'   y_col = "log2FC",
@@ -82,7 +82,7 @@
 #'   col_width = 0.7,
 #'   dodge_width = 0.7,
 #'   base_size = 14)
-#' p
+#' p1
 #' 
 #'
 #' # A data_3factor_Multi_Target data example with data splitting. 
@@ -96,7 +96,7 @@
 #'   block = NULL)
 #' df <- res$relativeExpression
 #' 
-#' plotFactor(df,
+#' p2 <- plotFactor(df,
 #'   split_col = "gene",
 #'   x_col = "contrast",
 #'   y_col = "RE",
@@ -120,6 +120,10 @@
 #'   split_levels = NULL,
 #'   split_titles = TRUE,
 #'   cols = 4)
+#' p2
+#' 
+#' # Access an individual panel with e.g. p2[["<level>"]]
+#' p2[["Gene_1"]]
 plotFactor <- function(data,
                          split_col = NULL,
                          x_col,

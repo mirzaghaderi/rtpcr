@@ -20,14 +20,68 @@ package implements a general calculation method adopted from Ganger et
 al. (2017) and Taylor et al. (2019), covering both the Livak and Pfaffl
 methods. See the [calculation method](Method.md) for details.
 
-# The shiny version of the rtpcr
+# Quick start
 
-rtpcr is also available as shiny_rtpcr, a web application developed
-using R/Shiny for interactive analysis of qPCR data at
-<https://mirzaghaderi.shinyapps.io/rtpcr/>. Further details about the
-shiny_rtpcr is found at <https://github.com/mirzaghaderi/shiny_rtpcr>.
+### Installing and loading
 
-# Functions
+rtpcr can be run in four ways:
+
+1.  Installing on windows using msi installation file (Operating System:
+    Windows only). Download
+    [rtpcr_2.2.0_win.msi](https://github.com/mirzaghaderi/rtpcr/releases).
+    Install as a common windows installer then double-click rtpcr icon
+    to launch the app.
+
+2.  Compiled [JAR file](https://github.com/mirzaghaderi/rtpcr/releases)
+    which works on Windows, Linux, or macOS provided that Java Runtime
+    Environment (JRE) or Java Development Kit (JDK) is installed. Check
+    Java Installation. Open Command Prompt (CMD) or a terminal and run:
+
+<!-- -->
+
+    java -version
+
+If Java is installed, you should see the installed Java version, for
+example:
+
+    openjdk version "17.x.x"
+
+Run IdeoKar Place rtpcr.jar file in a convenient folder. Open CMD and
+navigate to that folder:
+
+    cd C:\Path\To\rtpcr
+     
+
+Then run:
+
+    java -jar rtpcr.jar
+
+3.  rtpcr is also available as shiny_rtpcr, a web application developed
+    using R/Shiny for interactive analysis of qPCR data at
+    <https://mirzaghaderi.shinyapps.io/rtpcr/>. Further details about
+    the shiny_rtpcr is found at
+    <https://github.com/mirzaghaderi/shiny_rtpcr>.
+
+4.  The R version `rtpcr` package can be installed by running the
+    following code in R:
+
+from CRAN:
+
+``` r
+# Installing from CRAN
+install.packages("rtpcr")
+
+# Loading the package
+library(rtpcr)
+```
+
+Or from from GitHub (developing version):
+
+``` r
+devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
+```
+
+# rtpcr Functions
 
 In the rtpcr package, functions with \_DDCt at the end of their name
 (`ANOVA_DDCt()`, `TTEST_DDCt()`, `WILCOX_DDCt()`) perform expression
@@ -52,28 +106,6 @@ ANOVA analysis.
 | `multiplot()` | Combine multiple ggplot objects into a single layout |
 | `compute_wDCt()` | Cleaning data and weighted delta Ct (wDCt) calculation using the geometric mean of reference gene(s). |
 | `long_to_wide()` | Converts a 4-column qPCR long data format (Condition, Gene, E, Ct) to wide format |
-
-# Quick start
-
-### Installing and loading
-
-The `rtpcr` package can be installed by running the following code in R:
-
-from CRAN:
-
-``` r
-# Installing from CRAN
-install.packages("rtpcr")
-
-# Loading the package
-library(rtpcr)
-```
-
-Or from from GitHub (developing version):
-
-``` r
-devtools::install_github("mirzaghaderi/rtpcr", build_vignettes = TRUE)
-```
 
 # Input data structure
 

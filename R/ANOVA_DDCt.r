@@ -42,7 +42,12 @@
 #' it will use \code{stats::lm()}. Note that \code{emmeans} supports both 
 #' model types and will use appropriate degrees of freedom methods (Satterthwaite by default).
 #' @param p.adj
-#' Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.
+#' Method for p-value adjustment, one of \code{"none"} (default), \code{"holm"}, 
+#' \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"}, \code{"BH"}, \code{"BY"} 
+#' or \code{"fdr"}. See \code{\link[stats]{p.adjust}}. As in \code{TTEST_DDCt()} and 
+#' \code{WILCOX_DDCt()}, the adjustment is applied across all comparisons against the 
+#' calibrator in the output table, i.e. over all target genes and over all levels or 
+#' groups defined by \code{specs}. Confidence intervals are not adjusted.
 #' @param set_missing_target_Ct_to_40 If \code{TRUE}, missing target gene Ct values become 40; if \code{FALSE} (default), they become NA. 
 #' @param se.type Character string specifying how standard error is calculated. 
 #' One of \code{"paired.group"}, \code{"two.group"}, or \code{"single.group"}. 
@@ -171,6 +176,7 @@ ANOVA_DDCt <- function(
   }
   
   se.type <- match.arg(se.type)
+  p.adj <- match.arg(p.adj, stats::p.adjust.methods)
 
   
   dots <- list(...)
@@ -335,10 +341,13 @@ ANOVA_DDCt <- function(
     # stats::confint(graphics::pairs(pp1), ref = calibratorLevel)
     # contrast <- emmeans::contrast(pp1, "trt.vs.ctrl", ref = calibratorLevel, type = "response", adjust = "none")
     if(is.null(calibratorLevel)) {calibratorLevel <- levels(factor(gene_df[[mainFactor]]))[1]}
-    stats::confint(graphics::pairs(pp1))
-    contrast <- emmeans::contrast(pp1, "trt.vs.ctrl", ref = 1, type = "response", adjust = "none")
+    # Raw (unadjusted) p-values are computed here for each gene. The multiple
+    # testing adjustment chosen by `p.adj` is applied afterwards, across all
+    # comparisons of all genes in the final table (as in TTEST_DDCt/WILCOX_DDCt).
+    contrast <- suppressMessages(
+      emmeans::contrast(pp1, "trt.vs.ctrl", ref = 1, type = "response", adjust = "none"))
     
-    conf <- stats::confint(contrast)
+    conf <- suppressMessages(stats::confint(contrast))
     
     conf$RE <- 2^(-conf$estimate)
     conf$LCL <- 2^(-conf$upper.CL)
@@ -499,6 +508,15 @@ ANOVA_DDCt <- function(
   
   relativeExpression <- do.call(rbind, relativeExpression_list)
   rownames(relativeExpression) <- NULL
+  
+  # p-value adjustment across ALL comparisons against the calibrator
+  # (all target genes, and all levels / groups defined by `specs`).
+  # Calibrator rows (no " vs " in the contrast label) are not tests and are excluded.
+  is_comparison <- grepl(" vs ", relativeExpression$contrast, fixed = TRUE)
+  adj_p <- relativeExpression$p.value
+  adj_p[is_comparison] <- stats::p.adjust(adj_p[is_comparison], method = p.adj)
+  relativeExpression$p.value <- adj_p
+  relativeExpression$sig <- .convert_to_character(adj_p)
   
   names(relativeExpression)[names(relativeExpression) == "estimate"] <- "ddCt"
   

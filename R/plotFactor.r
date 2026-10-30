@@ -119,7 +119,7 @@
 #'   removeCalibratorText = TRUE,
 #'   split_levels = NULL,
 #'   split_titles = TRUE,
-#'   cols = 4)
+#'   cols = 3)
 #' p2
 #' 
 #' # Access an individual panel with e.g. p2[["<level>"]]

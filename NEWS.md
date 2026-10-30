@@ -1,3 +1,8 @@
+# rtpcr 2.2.1
+
+## Correction
+- `ANOVA_DDCt()` now applies the p.adj method. Previously p-values were always unadjusted.
+
 # rtpcr 2.2.0
 
 ## New Features

@@ -47,7 +47,7 @@ Optional character vector specifying the order of levels for the main factor.
 If \code{NULL}, the first observed level is used as the calibrator.
 If provided, the first element of the vector is used as the calibrator level.}
 
-\item{p.adj}{Method for p-value adjustment. See \code{\link[stats]{p.adjust}}.}
+\item{p.adj}{Method for p-value adjustment, one of \code{"none"} (default), \code{"holm"}, \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"}, \code{"BH"}, \code{"BY"} or \code{"fdr"}. See \code{\link[stats]{p.adjust}}. As in \code{TTEST_DDCt()} and \code{WILCOX_DDCt()}, the adjustment is applied across all comparisons against the calibrator in the output table, i.e. over all target genes and over all levels or groups defined by \code{specs}. Confidence intervals are not adjusted.}
 
 \item{analyseAllTarget}{Logical or character.
 If \code{TRUE} (default), all target genes are analysed.
